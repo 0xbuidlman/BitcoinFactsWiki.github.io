@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Block chain download</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Block chain download
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Block_chain_download" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<h2 id="Bitcoin_Chain_Download">Bitcoin Chain Download</h2>
+
+<p>See also <a href="../Satoshi_Client_Block_Exchange/">Satoshi Client Block Exchange</a> for an overview.</p>
+
+<h3 id="Downloader_Behavior">Downloader Behavior</h3>
+
+<ul>
+<li><p>When receiving an <a href="../Satoshi_Client_Block_Exchange/#Inventory_Messages">inv (Inventory Message)</a></p>
+
+<ul>
+<li>For each <a href="../Block/">block</a>
+
+<ul>
+<li>If already have as <a href="../Orphan_Block/">orphan</a>, send <a href="../Protocol_documentation/#getblocks">getblocks</a>(locator(chainHead), <a href="../Vocabulary/#Orphan_root">orphanRoot</a>(block))</li>
+<li>If not already have
+
+<ul>
+<li>send <a href="../Protocol_documentation/#getdata">getdata</a>(block)</li>
+</ul>
+</li>
+<li>If already have and this is last block in message (NOTE: this triggers specific behavior in peer getdata)
+
+<ul>
+<li>send getdata(block)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>When receiving a block</p>
+
+<ul>
+<li>If already have, ignore</li>
+<li>Else if have parent not in <a href="../Vocabulary/#Main_Chain">main chain</a>
+
+<ul>
+<li>store as orphan</li>
+<li>getblocks(locator(chainHead), orphanRoot(block))</li>
+</ul>
+</li>
+<li>Else
+
+<ul>
+<li>Accept block</li>
+<li>Accept orphan blocks that depend on this one</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>When starting download from a peer</p>
+
+<ul>
+<li>getblocks(locator(chainHead), 0)</li>
+</ul>
+</li>
+</ul>
+
+
+<h3 id="Responder_Behavior">Responder Behavior</h3>
+
+<ul>
+<li><p>When receiving getdata, for each requested block</p>
+
+<ul>
+<li>Send block</li>
+<li>If block == hashContinue(peer)
+
+<ul>
+<li>send inv(chainHead)</li>
+<li>set hashContinue(peer)=0</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>When receiving getblocks(locator, hashStop)</p>
+
+<ul>
+<li>Iterate from locate(locator)-&gt;next, going forward in chain
+
+<ul>
+<li>If reached hashStop or ran off end of chain, break</li>
+<li>If reached limit of 500 or buffer limit
+
+<ul>
+<li>Set current hashContinue(peer) to current block hash</li>
+<li>break</li>
+</ul>
+</li>
+<li>Send inv for block</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>When receiving getheaders(hashLocator, hashStop)</p>
+
+<ul>
+<li>If hashLocator = 0, return block(hashStop)</li>
+<li>Send up to 2000 block headers, iterating from block(hashLocator) to hashStop</li>
+</ul>
+</li>
+</ul>
+
+
+<h3 id="Locator">Locator</h3>
+
+<p>Downloader: create locator(block)</p>
+
+<ul>
+<li>For 1..10
+
+<ul>
+<li>block = block-&gt;prev</li>
+<li>add block-&gt;hash</li>
+</ul>
+</li>
+<li>step = 1</li>
+<li>Do
+
+<ul>
+<li>block = block-&gt;prev &#39;step&#39; times</li>
+<li>add block-&gt;hash</li>
+<li>step = step * 2</li>
+</ul>
+</li>
+<li>add genesis-&gt;hash</li>
+</ul>
+
+
+<p>Responder: locate(locator)</p>
+
+<ul>
+<li>Foreach hash in locator
+
+<ul>
+<li>If hash exists in main chain, return block</li>
+</ul>
+</li>
+<li>Otherwise return genesis block</li>
+</ul>
+
+
+<h2 id="Analysis">Analysis</h2>
+
+<p>Observations:</p>
+
+<ul>
+<li>the locator is dense near downloader chain head, and exponentially sparse as it goes towards the genesis</li>
+<li>downloading is accomplished in cooperation:
+
+<ul>
+<li>downloader sends getblocks with locator based on downloader chain head</li>
+<li>responder sends invs for first 500 blocks going forward from latest common block (approximate, per locator)</li>
+<li>downloader sends getdata for blocks it does not have</li>
+<li>responder sends blocks and a gratuitious inv for reponder chain head</li>
+<li>downloader incorporates blocks into chain and now has a new chain head</li>
+<li>downloader sends another getblocks in response to the gratuitious inv with new locator based on new chain head</li>
+</ul>
+</li>
+</ul>
+
+
+<p>Here are some cases. dChainHead is the downloader chain head, rChainHead is the responder chain head.</p>
+
+<h3 id="Single_Block_Case">Single Block Case</h3>
+
+<ul>
+<li>Responder sends an inv for a newly solved block</li>
+<li>Downloader sends getdata</li>
+<li>Responder sends block</li>
+</ul>
+
+
+<h3 id="Small_Catchup_Case">Small Catchup Case</h3>
+
+<ul>
+<li>Downloader sends getblocks(locator(dChainHead), 0)</li>
+<li>Responder sends invs for blocks from dChainHead to rChainHead</li>
+<li>Downloader sends getdata for each inv</li>
+<li>Responder sends blocks for each getdata</li>
+</ul>
+
+
+<h3 id="Large_Catchup_Case">Large Catchup Case</h3>
+
+<ul>
+<li>Downloader sends getblocks(locator(dChainHead), 0)</li>
+<li>Responder sends invs for blocks from dChainHead to dChainHead + 500</li>
+<li>(getdata / blocks sent by responder / blocks added to chain by downloader)</li>
+<li>The last getdata triggers an inv(rChainHead)</li>
+<li>Downloader sends getdata(rChainHead)</li>
+<li>Responder sends block</li>
+<li>Downloader puts block on orphan list</li>
+<li>Downloader sends getblocks(locator(dChainHead), rChainHead)</li>
+<li>goto step 2</li>
+</ul>
+
+
+<h3 id="Side_Chain_Case">Side Chain Case</h3>
+
+<ul>
+<li>Downloader sends getblocks(locator(dChainHead), 0)</li>
+<li>Responder does not have dChainHead in best chain.  Responder iterates over locator until it finds a block in common for the two chains.</li>
+<li>Responder sends invs for blocks from commonBlock to rChainHead</li>
+<li>Downloader adds the blocks that it did not have and reorganizes</li>
+</ul>
+
+
+<p>For this to work, the invs must fit the network buffer.</p>
+
+<h3 id="Large_Side_Chain_Case">Large Side Chain Case</h3>
+
+<p>More invs than fits the network buffer.</p>
+
+<p>If the side chain has blocks than fits in the network buffer this does not seem to work.  getblocks(locator(dChainHead), rChainHead) will not return enough blocks for the Downloader to switch chains.  If the Downloader does not switch chains, it will send the same getblocks message again.</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+<a href="../tags/Vocabulary/" rel="tag">Vocabulary</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Block_chain/">Block chain</a>
+
+<a href="../Transferring_coins_from_Bitcoin-Qt_to_Electrum/">Transferring coins from Bitcoin-Qt to Electrum</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-01-26T19:43:40Z">Tue 26 Jan 2016 07:43:40 PM Europe</time>
+<!-- Created <time datetime="2012-06-07T04:58:35Z" pubdate="pubdate">Thu 07 Jun 2012 04:58:35 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

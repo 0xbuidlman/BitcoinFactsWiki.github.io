@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Da2ce7:New Transaction</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Da2ce7:New Transaction
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Da2ce7%3ANew_Transaction&amp;page=Talk&amp;do=create" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p><em>New Transaction</em> is an proposal for a new extendable method of creating transactions.<br />
+Each new transaction is defined by a random <em>txnumber</em> that should be unique globally.<br />
+Advanced functions, such as transaction scripts, and importing and exporting can appropriately be done using the group of supporting functions.</p>
+
+<h3 id="Transaction_life-cycle">Transaction life-cycle</h3>
+
+<p>Every New Transaction goes through the following steps. (not always in the same order)</p>
+
+<h4 id="Build">Build</h4>
+
+<p>In this stage, a transaction is being built:<br /></p>
+
+<ul>
+<li>Any feature of the transaction may be modified.</li>
+<li>Users can add, remove, any input, output or script.</li>
+</ul>
+
+
+<h4 id="Ready">Ready</h4>
+
+<p>In this stage, only certain features may be modified:<br /></p>
+
+<ul>
+<li>Only inputs may be changed. (is this correct, or will past signatures be destroyed if we change them?)</li>
+<li>Any other attribute that doesn&#39;t effect the existing signatures.</li>
+</ul>
+
+
+<h4 id="Done">Done</h4>
+
+<p>In this stage, the transaction is complete, and would be accepted by the network:</p>
+
+<ul>
+<li>User still can add inputs, however all the outputs have already been fulfilled, these new inputs will be counted as fees.</li>
+<li>After any change, a &#39;done&#39; transaction gets automatically demoted to &#39;Ready&#39; state.</li>
+</ul>
+
+
+<h4 id="Submitted">Submitted</h4>
+
+<p>In this stage the transaction has been published to the bitcoin network and is in/or is awaiting to be included in a block.</p>
+
+<h3 id="Terms">Terms</h3>
+
+<p><em>txnumber</em> is a random string given to every transaction for identification purposes.<br />
+<em>pubkey</em> is assumed to be owned by the client that preforms the &#39;readying&#39; of the transition (build &gt; ready states)</p>
+
+<p><strong>This entire processing is lazy!  Bitcoin will automatically fill-out everything just as it dose at-the-moment with the <em>readytransaction</em> stage.</strong></p>
+
+<p>Please not this draft doesn&#39;t include all possible error responses.</p>
+
+<h2 id="commands.3A">commands:</h2>
+
+<pre><code>/// make a new transaction (6 override)
+newtransaction
+newtransaction {name}
+
+newtransaction {txuniqueid}
+newtransaction {txuniqueid} {name}
+
+newtransaction {txid}
+newtransaction {txid} {name}
+
+response {txtxuniqueid}
+
+
+/// add an input to the transaction. (1 overrides)
+addinput {txuniqueid} {txid} {index}
+addinput {txuniqueid} {txid} {index} {comment}
+
+response {txuniqueid} {iouniqueid}
+
+
+/// add outputs to the transaction (6 overrides)
+/// add fee to transaction
+addoutput {txuniqueid} {amount} {forcedsuggestedoptional}
+addoutput {txuniqueid} {amount} {forcedsuggestedoptional} {comment}
+
+// add change address to transaction
+addoutput {txuniqueid} {pubkey}
+addoutput {txuniqueid} {pubkey} {comment}
+
+// add send outputs
+addoutput {txuniqueid} {address} {amount}
+addoutput {txuniqueid} {address} {amount} {comment}
+
+response  {txuniqueid} {iouniqueid}
+
+// add many send outputs
+addoutputlist {txuniqueid} {}{}&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=amount&amp;amp;from=Da2ce7%3ANew_Transaction&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;amount&lt;/span&gt;
+
+response {txuniqueid}  {}&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=iouniqueid&amp;amp;from=Da2ce7%3ANew_Transaction&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;iouniqueid&lt;/span&gt;
+
+
+/// remove input or outpus (1 override)
+remove {txuniqueid} {iouniqueid}
+remove {txuniqueid} {}&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Da2ce7%3ANew_Transaction&amp;amp;page=iouniqueid&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;iouniqueid&lt;/span&gt;
+
+response {txuniqueid} droped: {iouniqueid}
+response {txuniqueid} droped: {}&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=iouniqueid&amp;amp;do=create&amp;amp;from=Da2ce7%3ANew_Transaction&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;iouniqueid&lt;/span&gt;
+
+
+/// prints out human readable information about the tranaction
+shownewtransaction {txuniqueid} (1 override)
+
+response {txuniqueid}
+in: {}{}{}&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Da2ce7%3ANew_Transaction&amp;amp;page=%2C%28comment%29&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;,(comment)&lt;/span&gt;
+in total: {amount}
+out: {}{}{}&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Da2ce7%3ANew_Transaction&amp;amp;page=%2C%28comment%29&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;,(comment)&lt;/span&gt;
+out total: {amount}
+fee: {amount}
+size: {readytxn bit}
+state: {building:ready:done:submitted}
+
+shownewtransaction {txid} (1 override)
+
+response {txid}
+in: {}{}{}&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=%2C%28comment%29&amp;amp;from=Da2ce7%3ANew_Transaction&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;,(comment)&lt;/span&gt;
+in total: {amount}
+out: {}{}&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Da2ce7%3ANew_Transaction&amp;amp;page=%2C%28comment%29&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;,(comment)&lt;/span&gt;
+out total: {amount}
+fee: {amount}
+size: {readytxn bit}
+block: {block number}
+
+
+/// demote a transaction (1 override)
+demotetransaction {txuniqueid}
+demotetransaction {txuniqueid} {buildreadydone}
+
+response {txuniqueid} {buildingreadydone}
+
+
+/// exports a binary encoded transition (4 override)
+exporttransaction {txuniqueid}
+exporttransaction &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=txuniqueid&amp;amp;do=create&amp;amp;from=Da2ce7%3ANew_Transaction&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;txuniqueid&lt;/span&gt;
+exporttransaction {txid}
+exporttransaction &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=txid&amp;amp;from=Da2ce7%3ANew_Transaction&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;txid&lt;/span&gt;
+
+response {binary data}
+
+
+/// import binary encoded transition(s) (1 override)
+inporttransaction {binary data}
+inporttransaction {}[data](binary)
+
+response {}&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=txuniqueid&amp;amp;do=create&amp;amp;from=Da2ce7%3ANew_Transaction&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;txuniqueid&lt;/span&gt;
+
+
+/// check and complete *build* translation (1 override)
+reddytransaction {txuniqueid}
+reddytransaction {}&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Da2ce7%3ANew_Transaction&amp;amp;do=create&amp;amp;page=txuniqueid&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;txuniqueid&lt;/span&gt;
+
+response {}&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Da2ce7%3ANew_Transaction&amp;amp;do=create&amp;amp;page=txuniqueid&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;txuniqueid&lt;/span&gt; {has made changesno changes needednot enough coinsinvalid transaction}
+
+
+/// sign *ready* transaction (6 override)
+signtransaction {txuniqueid}
+signtransaction {}&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=txuniqueid&amp;amp;do=create&amp;amp;from=Da2ce7%3ANew_Transaction&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;txuniqueid&lt;/span&gt;
+
+// calls reddytransaction before hand if needed
+signtransaction -r {txuniqueid}
+signtransaction -r {}&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Da2ce7%3ANew_Transaction&amp;amp;page=txuniqueid&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;txuniqueid&lt;/span&gt;
+
+// sign a pre-signed/partial transaction (signs for owned private keys)
+signtransaction -o {txuniqueid}
+signtransaction -o {}&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=txuniqueid&amp;amp;do=create&amp;amp;from=Da2ce7%3ANew_Transaction&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;txuniqueid&lt;/span&gt;
+
+response {}{}[failed](done)
+
+
+/// publish a *done* transaction to peers (2 override)
+// submits all &#39;done&#39;  transactions
+submittransaction -a
+
+// submits a single  &#39;done&#39;  transaction
+submittransaction {txuniqueid}
+
+//  submits a list of &#39;done&#39;  transaction
+submittransaction {}&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Da2ce7%3ANew_Transaction&amp;amp;do=create&amp;amp;page=txuniqueid&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;txuniqueid&lt;/span&gt;
+
+response {}{}&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=txid&amp;amp;do=create&amp;amp;from=Da2ce7%3ANew_Transaction&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;txid&lt;/span&gt;
+
+
+/// complete transaction from any stage and publish it (1 override)
+completeransaction {txuniqueid}
+
+response {txuniqueid} {txid}
+
+
+/// delete a transaction from local client
+droptransaction {txuniqueid}
+
+responce dropped: {txuniqueid}
+</code></pre>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Metonymous:Transactions/">Metonymous:Transactions</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2011-07-25T19:56:24Z">Mon 25 Jul 2011 07:56:24 PM Europe</time>
+<!-- Created <time datetime="2011-07-25T11:36:07Z" pubdate="pubdate">Mon 25 Jul 2011 11:36:07 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

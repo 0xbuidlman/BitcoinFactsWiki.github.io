@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Securing your wallet</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Securing your wallet
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<h2 id="Introduction">Introduction</h2>
+
+<p>Unless you are using a <a href="../Hardware_wallet/">hardware wallet</a> it is strongly recommended to read this page.</p>
+
+<p>Wallet security can be broken down into two independent goals:</p>
+
+<ol>
+<li>Protecting your wallet against loss.</li>
+<li>Protecting your wallet against theft.</li>
+</ol>
+
+
+<p>In the case that your current wallet hasn&#39;t been protected adequately (e.g. put online with a weaker password):</p>
+
+<ol>
+<li>Making a new secure wallet, using appropriate long-term protection.</li>
+</ol>
+
+
+<p><em>For a brief overview see also: <a href="../Wallet_Security_Dos_and_Donts/">Wallet Security Dos and Don&#39;ts</a></em></p>
+
+<h2 id="Paper_Wallets">Paper Wallets</h2>
+
+<p>Main page: <a href="../Paper_wallet/">Paper wallet</a></p>
+
+<p><a href="../Paper_wallet/">Paper wallet</a>s can be used to store bitcoins offline in non-digital format. Using securely generated paper wallets significantly decreases the chances of your bitcoins being stolen by hackers or computer viruses.
+Fundamentally, a paper wallet is merely a physical record of a HD wallet private seed.</p>
+
+<h2 id="Hardware_wallets">Hardware wallets</h2>
+
+<p><a href="../Hardware_wallet/">Hardware wallet</a>s are a major step to enhanced security and usability.</p>
+
+<p>See the <a href="../Hardware_wallet/">Hardware wallet</a>s page for more information on which hardware wallet solutions are currently available.</p>
+
+<h2 id="Importance_of_security_updates">Importance of security updates</h2>
+
+<p>No software is perfect, and from time to time there may be security vulnerabilities found in your Bitcoin client as well.
+Be sure you keep your client updated with the latest bug fixes, especially when a new vulnerability is discovered.
+We maintain a <a href="../CVEs/">list a known vulnerabilities</a> on this wiki - you can watch that page to get updates.
+Note that you <em>don&#39;t</em> need to be running the latest major client version: some clients, including the popular Bitcoin-Qt, have older versions available with bugfix-only updates.</p>
+
+<h2 id="Securing_the_Bitcoin-Qt_or_bitcoind_wallet">Securing the Bitcoin-Qt or bitcoind wallet</h2>
+
+<p>Bitcoin transactions send Bitcoins to a specific public key. A Bitcoin address is an encoded hash of a public key. In order to use received Bitcoins, you need to have the private key matching the public key you received with. This is sort of like a super long password associated with an account (the account is the public key). Your Bitcoin wallet contains all of the private keys necessary for spending your received transactions. If you delete your wallet without a backup, then you no longer have the authorization information necessary to claim your coins, and the coins associated with those keys are lost forever.</p>
+
+<p>The wallet contains a pool of queued keys. By default there are 100 keys in the <a href="../Key_pool/">key pool</a>.  The size of the pool is configurable using the &quot;-keypool&quot; command line argument.  When you need an address for whatever reason (send, &ldquo;new address&rdquo;, generation, etc.), the key is not actually generated freshly, but taken from this pool. A brand new address is generated to fill the pool back to 100. So when a backup is first created, it has all of your old keys plus 100 unused keys. After sending a transaction, it has 99 unused keys. After a total of 100 new-key actions, you will start using keys that are not in your backup. Since the backup does not have the private keys necessary for authorizing spends of these coins, restoring from the old backup will cause you to lose Bitcoins.</p>
+
+<p>Creating a new address generates a new pair of public and private keys, which are added to your wallet. Each keypair is mostly random numbers, so they cannot be known prior to generation. If you backup your wallet and then create more than 100 new addresses, the keypair associated with the newest addresses will not be in the old wallet because the new keypairs are only known after creating them. Any coins received at these addresses will be lost if you restore from the backup.</p>
+
+<p>The situation is made somewhat more confusing because the receiving addresses shown in the UI are not the only keys in your wallet. Each Bitcoin generation is given a new public key, and, more importantly, each sent transaction also sends some number of Bitcoins back to yourself at a new key. When sending Bitcoins to anyone, you generate a new keypair for yourself and simultaneously send Bitcoins to your new public key and the actual recipient&#39;s public key. This is an anonymity feature &ndash; it makes tracking Bitcoin transactions much more difficult.</p>
+
+<p>So if you create a backup, and then do more than 100 things that cause a new key to be used, and then restore from the backup, some Bitcoins will be lost. Bitcoin has not deleted any keys (keys are never deleted) &ndash; it has created a new key that is not in your old backup and then sent Bitcoins to it. A backup is therefore recommended roughly every 50 transactions (or address creations) just to be safe.</p>
+
+<h2 id="Making_a_new_Bitcoin-Qt_or_bitcoind_wallet">Making a new Bitcoin-Qt or bitcoind wallet</h2>
+
+<p>If a wallet or an encrypted wallet&#39;s password has been compromised, it is wise to create a new wallet and transfer the full balance of bitcoins to addresses contained only in the newly created wallet. Examples of ways a wallet may be compromised are through password re-use, minimal strength passwords, computer hack or virus attack.</p>
+
+<p>There are a number of ways to create a new wallet with Bitcoin-Qt or bitcoind but this is a process that has been tested with bitcoind 0.6.3. We use the copy command to minimize the chance of any data loss but you are warned to make backups of any wallet.dat that holds a balance for you.</p>
+
+<blockquote><ol>
+<li>Shut down the Bitcoin program.</li>
+<li>Find and make a backup of the &quot;compromised&quot; wallet.dat file and rename it, perhaps adding a short description:
+wallet.dat -&gt;  wallet-compromised.dat
+Depending on your OS, the wallet file will be located at:
+Windows: %APPDATA%\Bitcoin\
+Linux: ~/.bitcoin/
+Mac: ~/Library/Application Support/Bitcoin/</li>
+<li>Start the Bitcoin program and it will create a new wallet.dat. You may then encrypt the wallet as desired and make a new backup.</li>
+<li>Once you&#39;ve made a new wallet, you can obtain one or more addresses and copy them into a text editor. After obtaining the new address(es), shut down the Bitcoin program, make a backup of the new wallet.dat file and copy it to a new file named wallet-new.dat.</li>
+<li>Copy the wallet-compromised.dat file back to wallet.dat, start the Bitcoin program and transfer your balance to the new address(es) you put in your text editor. Once the balance is back to 0 for your compromised wallet, you may want to wait a couple minutes or for a confirmation or check block explorer to be sure the transactions have been broadcasted. Then you may shut down the Bitcoin program.</li>
+<li>Rename wallet.dat to wallet-compromised.dat.</li>
+<li>Rename wallet-new.dat to wallet.dat.</li>
+</ol>
+</blockquote>
+
+<p>You should now have a new wallet with all the bitcoins from the old wallet.</p>
+
+<h2 id="Making_a_secure_workspace">Making a secure workspace</h2>
+
+<p>Unless you are using a <a href="../Hardware_wallet/">hardware wallet</a>, you must take care that the system is free of malware, viruses, keyloggers, remote access tools, and other tools that may be used to make remote copies of your wallet, Bitcoin-related passwords, or Bitcoin private keys. When your computer is compromised, the precautions taken below may provide additional protection.</p>
+
+<p>A <a href="../Hardware_wallet/">hardware wallet</a> typically holds the private keys on its internal storage that is not accessible by any malware. The device signs the transactions internally and only transmits the signed transactions to the computer. The separation of the private keys from the vulnerable environment allows the user to spend bitcoins on a compromised computer without any risk.</p>
+
+<h3 id="Debian-based_Linux">Debian-based Linux</h3>
+
+<h4 id="Store_all_into_an_encrypted_folder_.28Tomb.29">Store all into an encrypted folder (Tomb)</h4>
+
+<p>Tomb is a simple tool to manage encrypted storage on GNU/Linux. Among its features are bind-hooks to set up a tomb&#39;s contents in the place where other programs expect them, for example in our case mount -o bind the .bitcoin directory in a user&#39;s home.</p>
+
+<p>First install tomb from https://files.dyne.org/tomb (homepage is on http://www.dyne.org/software/tomb)</p>
+
+<p>Among the requirements: zsh, cryptsetup, pinentry-curses, gnupg, sudo.</p>
+
+<p>Recommended: wipe, dcfldd, steghide, qrencode.</p>
+
+<p>Then create a tomb (we name it bitcoin) with three commands:</p>
+
+<p><code>tomb dig -s 100 bitcoin.tomb</code></p>
+
+<p><code>tomb forge bitcoin.tomb.key</code></p>
+
+<p><code>tomb lock  bitcoin.tomb -k bitcoin.tomb.key</code></p>
+
+<p>Then open it</p>
+
+<p><code>tomb open bitcoin.tomb</code></p>
+
+<p>This will require you to input again the password you selected.</p>
+
+<p>Once open the tomb contents are in /media/bitcoin.tomb</p>
+
+<p>Move there your bitcoin wallet:</p>
+
+<p><code>mv ~/.bitcoin /media/bitcoin.tomb/my-safe-wallet</code></p>
+
+<p>Then create a file &quot;/media/bitcoin.tomb/bind-hooks&quot; and put a single line:</p>
+
+<p><code>my-safe-wallet    .bitcoin</code></p>
+
+<p>Which means that every time the tomb is open, the directory my-safe-wallet needs to be bound to ~/.bitcoin. Just make sure an empty ~/.bitcoin directory exists in your home.</p>
+
+<p>Now close the tomb and store its keys safely, make sure you memorize the password. Have a look at Tomb&#39;s documentation, there is a number of things you can do like steganography or printing out keys on a paper to hide and such.</p>
+
+<p>That&#39;s it. Every time you like to access your wallet open the tomb and the .bitcoin will be in place. One can also store the bitcoin binary inside the tomb and even start the bitcoin client using the exec-hooks. Tomb&#39;s manual page &quot;man tomb&quot; explains the possibilities.</p>
+
+<p>The advantage of this approach over an encrypted home is that it becomes extremely portable across computers and even online shells: a Tomb is just a file and its key can be stored far away, on different shells, usb sticks or mobile phones.</p>
+
+<h4 id="Secure_the_whole_user_home_directory">Secure the whole user home directory</h4>
+
+<p>The first step is to make a <a href="http://www.howtogeek.com/howto/ubuntu/add-a-user-on-ubuntu-server/">new user</a>. In order for that new user to have an encrypted home directory, you&#39;ll first need the encryption utility. Run:</p>
+
+<p><code>sudo apt-get install ecryptfs-utils</code></p>
+
+<p>Now you&#39;re ready to create a new user</p>
+
+<p><code>sudo adduser --encrypt-home new_user_name</code></p>
+
+<p>You&#39;ll need to come up with a <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=secure__124__&amp;from=Securing_your_wallet" rel="nofollow">?</a>secure|</span> new password for that user.</p>
+
+<p>When you get to the prompt &#39;Enter the new value, or press ENTER for the default&#39;, just keep hitting ENTER.</p>
+
+<p>Then switch user to the new user.  To get to the new user you can use the switch user icon for your system, which on Ubuntu is in the &#39;System/Quit&#39; screen, or if there is no switch icon on your system you can log out and log back in as the new user.</p>
+
+<p>Since the home folder of this user is encrypted, if you&#39;re not logged in as that user, data that is saved there can&#39;t be browsed, even by a root user. If something goes wrong with your system, and you need to decrypt the new user&#39;s files, you&#39;ll need its decryption key.</p>
+
+<p><code>ecryptfs-unwrap-passphrase</code></p>
+
+<p>It will ask you for your user&#39;s password and give you the decryption key. <strong>WRITE DOWN OR SAVE THE CODE IT RETURNS</strong> because you will need it if you ever have to pull your data off while the OS is not working. (You can run it again later if you need to, but run it now so that you can get your data if your Linux install gets botched.)</p>
+
+<p>The encrypted folder data is not encrypted while it&#39;s in memory, and so if it&#39;s ever sent to the swap partition it can be stolen from there unless that too is encrypted - be aware that this will mean you cannot use Hibernate anymore, as the bootloader won&#39;t be able to restore the hibernation data.</p>
+
+<p><code>ecryptfs-setup-swap</code></p>
+
+<p>Then click on a folder in the new user to display the file browser, then keep going up folders until you see the new user home directory, then right click to bring up the Properties dialog, then click on the Permissions tab, then in the Others section, set the folder access to None.</p>
+
+<p>For secure browsing, open Firefox, and then go into the Edit menu and click Preferences.  Starting from the left, click on the General tab, and in the &#39;Startup/When Firefox starts&#39; pop up menu, choose &#39;Show a Blank Page&#39;.  Then click on the Content tab, and deselect &#39;Load images automatically&#39; and deselect &#39;Enable JavaScript&#39;.  Then click on the Privacy tab, and in the &#39;History/Firefox will&#39; pop up menu, choose &#39;Never remember history&#39;.  Then click on the Security tab, and in the Passwords section, deselect &#39;Remember passwords for sites&#39; and deselect &#39;Use a master password&#39;.  Then click on the Advanced tab, then click on the Update tab, and then in the &#39;Automatically check for updates to&#39; section, deselect &#39;Add-ons&#39; and &#39;Search Engines&#39;.</p>
+
+<p>When JavaScript is disabled, the <a href="http://sourceforge.net/projects/bitcoin/files/Bitcoin/bitcoin-0.3.23/bitcoin-0.3.23-linux.tar.gz/download">Linux download page</a> will not download automatically, so you&#39;ll have to click on the &#39;direct link&#39; part of the &quot;Problems with the download? Please use this &#39;direct link&#39; or try another mirror.&quot; line.</p>
+
+<h3 id="Mac">Mac</h3>
+
+<p>This solution <strong>does not scale</strong>; the amount of needed space can grow beyond the image size.</p>
+
+<h3 id="Windows">Windows</h3>
+
+<p>Due to the frequency with which Windows computers are compromised, it is advised to encrypt your wallet or to keep your wallet on an encrypted disk image created by third-party software, such as <a href="http://www.truecrypt.org/">TrueCrypt</a> (open source) or <a href="http://www.jetico.com/encryption-bestcrypt/">Jetico BestCrypt</a> (commercial). This also applies to the storage of passwords, private keys and other data that can be used to access any of your Bitcoin balances.</p>
+
+<p>Assuming that you have installed the Windows Bitcoin client and run it at least once, the process is described below.</p>
+
+<p><b>To mount the Bitcoin data directory on an encrypted drive</b></p>
+
+
+<ol start="1" type="1">
+<li>Use the third-party disk image encryption program of your choice to create and mount an encrypted disk image of at least 5GB in size. This procedure stores the entire block chain database with the wallet.dat file so the required size of the encrypted disk image required may grow in the future.</li>
+<li>Locate the Bitcoin data directory, and copy the directory with all contents to the encrypted drive.
+<p>For help finding this directory, see <b><a href="./#Locating_Bitcoin_s_data_directory">Locating Bitcoin&#39;s Data Directory</a></b>.</p></li>
+<li>Create a Windows shortcut that starts Bitcoin with the <code>-datadir</code> parameter and specifies the encrypted drive and directory.
+<p>For example, if you installed Bitcoin in the default directory, mounted your Bitcoin encrypted drive as <code>E:\</code>, and stored your Bitcoin data directory on it as <code>Bitcoin</code>, you would type the following command as the shortcut Target:</p>
+<blockquote><code>C:\Program Files\Bitcoin\bitcoin.exe -datadir=E:\Bitcoin</code></blockquote></li>
+<li>Open Bitcoin&#39;s settings and configure it <b>NOT</b> to start automatically when you start Windows.
+<p>This is to allow you to mount the Bitcoin encrypted disk image before starting Bitcoin.</p></li>
+<li>Shut down Bitcoin, and then restart it from the new shortcut.</li>
+</ol>
+
+
+<p>After doing this, any time you want to use Bitcoin, you must first mount the Bitcoin encrypted disk image using the same drive designation, and then run Bitcoin from the shortcut that you created, so that it can find its data and your wallet.</p>
+
+<h3 id="General_Solutions">General Solutions</h3>
+
+<p>Your wallet.dat file is not encrypted by the Bitcoin program by default but the most current release of the Bitcoin client provides a method to encrypt with a passphrase the private keys stored in the wallet. Anyone who can access an unencrypted wallet can easily steal all of your coins.  Use one of these encryption programs if there is any chance someone might gain access to your wallet.</p>
+
+<ul>
+<li><a href="http://www.7-zip.org/">7-zip</a> - Supports strongly-encrypted archives.</li>
+<li><a href="http://www.axantum.com/axcrypt/">AxCrypt by Axantum</a></li>
+<li><a href="http://lrzip.kolivas.org">lrzip</a> - Compression software for Linux and OSX that supports very high grade password protected encryption</li>
+<li><a href="http://www.truecrypt.org/">TrueCrypt</a> - Volume-based on-the-fly encryption (for advanced users)</li>
+</ul>
+
+
+<p>There is also a list of <a href="../OpenSourceEncryptionSoftware/">open source encryption software.</a></p>
+
+<p>Decrypting and encrypting the wallet.dat every time you start or quit the Bitcoin client can be <em>tedious</em> (and outright error-prone). If you want to keep your wallet encrypted (except while you&#39;re actually running the Bitcoin client), it&#39;s better to relegate the automation to a <a href="http://lorelei.kaverit.org/bitcoin.sh">small shell script</a> that handles the en/decryption and starting up Bitcoin client for you (Linux and OSX).</p>
+
+<p>There is also a method to print out and encrypt your wallet.dat as a special, scannable code. See details here: <a href="../WalletPaperbackup/">WalletPaperbackup</a></p>
+
+<h4 id="Password_Strength">Password Strength</h4>
+
+<p>Brute-force password cracking has come a long way. A password including capitals, numbers, and special characters with a length of 8 characters can be trivially solved now (using appropriate hardware). The recommended length is <strong>at least</strong> 12 characters long.  You can also use a multi-word password and there are techniques to increase the strength of your passwords without sacrificing usability. <a href="http://www.baekdal.com/tips/password-security-usability">The Usability of Passwords</a></p>
+
+<p>However, simply using dictionary words is also insecure as it opens you up to a dictionary attack. If you use dictionary words, be sure to include random symbols and numbers in the mix as well.</p>
+
+<p>If you use keyfiles in addition to a password, it is unlikely that your encrypted file can ever be cracked using brute-force methods, even when even a 12 character password might be too short.</p>
+
+<p>Assume that any encrypted files you store online (eg. Gmail, Dropbox) will be stored somewhere forever and can never be erased.</p>
+
+<h5 id="Choosing_A_Strong_Password">Choosing A Strong Password</h5>
+
+<p>Make sure you pick at least one character in each group:<br /></p>
+
+<pre><code>Lowercase: abcdefghijklmnopqrstuvwxyz
+Uppercase: ABCDEFGHIJKLMNOPQRSTUVWXYZ
+Number: 1234567890
+Symbol: `~!@#$%^&amp;*()-_=+\{[]};:&#39;&quot;,&lt;.&gt;/? (space)
+
+&lt;9 char = unsuitable for use
+09 char = insecure
+10 char = low security
+11 char = medium security
+12 char = good security (good enough for your wallet)
+13 char = very good, enough for anything.
+</code></pre>
+
+<p>You might want to read <a href="http://security.stackexchange.com/questions/662/what-is-your-way-to-create-good-passwords-that-can-actually-be-remembered">What is your way to create good passwords that can actually be remembered?</a> and <a href="http://security.stackexchange.com/questions/6095/xkcd-936-short-complex-password-or-long-dictionary-passphrase">XKCD #936: Short complex password, or long dictionary passphrase?</a></p>
+
+<h2 id="Backing_up_your_wallet">Backing up your wallet</h2>
+
+<p>Backing up your wallet is not necessary if you use a wallet with implemented <a href="../BIP_0032/">BIP 0032</a> (hierarchical deterministic wallet). Today, only <span class="createlink"><a href="/ikiwiki.cgi?from=Securing_your_wallet&amp;do=create&amp;page=TREZOR" rel="nofollow">?</a>TREZOR</span>, <a href="../Electrum/">Electrum</a> and <span class="createlink"><a href="/ikiwiki.cgi?from=Securing_your_wallet&amp;page=CarbonWallet&amp;do=create" rel="nofollow">?</a>CarbonWallet</span> fully support BIP 0032.</p>
+
+<p>For advise on the backup process see <a href="../Backingup_your_wallet/">Backing up your wallet</a>.</p>
+
+<h2 id="Erasing_Plain-text_Wallets">Erasing Plain-text Wallets</h2>
+
+<p>In most operating systems, including Windows, Linux, and Mac OS X, simply deleting a wallet.dat file will <em>not</em> generally destroy it. It is likely that advanced tools can still be used to recover the wallet.dat file, even after it has been deleted.</p>
+
+<p>The Linux <strong>shred</strong> command can be used to overwrite the wallet file with random data prior to deleting; this particular copy of the file will then be practically impossible to recover.  Using shred (and similar tools on Windows) however does not guarantee that still other copies don&#39;t exist somewhere hidden on your HD. That will depend on your system configuration and what packages you have installed. Some system restore and backup tools, for instance, create periodic snapshots of your  filesystem, duplicating your wallet.dat.</p>
+
+<p>In Mac OS, the equivalent of <strong>shred</strong> is <strong>srm</strong> (introduced in Leopard). Using the Finder to remove files, clicking &quot;Secure Empty Trash&quot; in the Finder menu will shred the contents of the trash can. As with any OS this doesn&#39;t guarantee that there are not other copies elsewhere on your system.</p>
+
+<p>For Windows, the built-in command <em>cipher /W</em> will shred all previously-deleted files. <a href="http://www.cylog.org/utilities/cybershredder.jsp">CyberShredder</a> can securely deleted individual files.</p>
+
+<h2 id="Online_and_Mobile_Wallets">Online and Mobile Wallets</h2>
+
+<p>Thus far, this article has been discussing the security of a wallet file for Bitcoin-Qt or bitcoind that is under your sole control.</p>
+
+<p>Online wallets have a number of pros and cons to consider. For example, you can access your wallet on any computer in the world, but you are essentially storing your private keys or wallet with the provider of the online wallet.
+Depending on the level of security of such service, your bitcoins may be lost if the service is compromised.</p>
+
+<p>The invention of <a href="../Hardware_wallet/">hardware wallet</a>s makes it possible to use online wallets in a more secure manner.
+A hardware wallet keeps your private keys apart from the computer and internet. An online wallet compatible with a hardware wallet (such as <a href="http://mytrezor.com">myTREZOR.com</a>) then does not need to store any sensitive data (private keys, passwords or email addresses) and only serves as tool for broadcasting transactions signed in the hardware wallet out to the blockchain.</p>
+
+<p>Mobile wallet applications are available for Android devices that allow you to send bitcoins by QR code or NFC, but this opens up the possibility of loss if mobile device is compromised. It may be possible to encrypt and backup the wallet or private keys on a mobile device but it is not advisable to store a large amount of bitcoins there without doing your own research and testing. Mobile wallets are useful for small spending and not for storing your bitcoin savings.</p>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../Data_directory/">Data directory</a></li>
+<li><a href="../How_to_import_private_keys/">How to import private keys</a></li>
+<li><a href="https://www.weusecoins.com/en/getting-started/">Where to get a Bitcoin wallet</a></li>
+<li><a href="https://www.weusecoins.com/">What is Bitcoin?</a></li>
+<li><a href="https://www.bitcoinmining.com/">Bitcoin Mining</a></li>
+<li><a href="https://www.youtube.com/watch?v=GmOzih6I1zs">Video: What is Bitcoin Mining</a></li>
+<li><a href="http://startbitcoin.com/how-to-create-a-secure-bitcoin-wallet/">Secure Bitcoin Wallet Tutorial</a></li>
+<li><a href="../How_to_set_up_a_secure_offline_savings_wallet/">How to set up a secure offline savings wallet</a></li>
+<li><a href="http://arimaa.com/bitcoin/">Bitcoin Gateway - A Peer-to-peer Bitcoin Vault and Payment Network</a></li>
+<li><a href="http://blog.cyplo.net/2012/04/01/bitcoin-wallet-recovery-photorec/">Find lost wallet eg. after disk format, using Photorec</a></li>
+<li><a href="https://docs.google.com/document/d/1dNZ7N_lQXHQp0jWkeN7dW4bWNMpcTBRM4iEoSuQwLho/edit#">The Ultimate Guide to Web Wallet Security</a></li>
+<li><a href="https://www.buybitcoinworldwide.com/wallets/">Bitcoin Wallet Information at Buy Bitcoin Worldwide</a></li>
+</ul>
+
+
+<p><span class="createlink"><a href="/ikiwiki.cgi?from=Securing_your_wallet&amp;page=de%3ASichere%20deine%20Geldb%C3%B6rse&amp;do=create" rel="nofollow">?</a>de:Sichere deine Geldb&ouml;rse</span>
+<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=ru%3ABitcoin%20%D0%B8%20%D0%B1%D0%B5%D0%B7%D0%BE%D0%BF%D0%B0%D1%81%D0%BD%D0%BE%D1%81%D1%82%D1%8C&amp;from=Securing_your_wallet" rel="nofollow">?</a>ru:Bitcoin &#x438; &#x431;&#x435;&#x437;&#x43E;&#x43F;&#x430;&#x441;&#x43D;&#x43E;&#x441;&#x442;&#x44C;</span>
+<span class="createlink"><a href="/ikiwiki.cgi?page=es%3AC%C3%B3mo%20asegurar%20su%20monedero&amp;do=create&amp;from=Securing_your_wallet" rel="nofollow">?</a>es:C&oacute;mo asegurar su monedero</span>
+<span class="createlink"><a href="/ikiwiki.cgi?page=zh-cn%3A%E4%BF%9D%E6%8A%A4%E4%BD%A0%E7%9A%84%E9%92%B1%E5%8C%85&amp;do=create&amp;from=Securing_your_wallet" rel="nofollow">?</a>zh-cn:&#x4FDD;&#x62A4;&#x4F60;&#x7684;&#x94B1;&#x5305;</span></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Security/" rel="tag">Security</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Best_Practices/">Best Practices</a>
+
+<a href="../Bitcoin_Core/">Bitcoin Core</a>
+
+<a href="../Data_directory/">Data directory</a>
+
+<a href="../Help:Installing_Bitcoin_Core/">Help:Installing Bitcoin Core</a>
+
+<a href="../How_to_use_a_Bitcoin_wallet_(for_newbies)/">How to use a Bitcoin wallet (for newbies)</a>
+
+<a href="../Key_pool/">Key pool</a>
+
+<a href="../Myths/">Myths</a>
+
+<a href="../Paper_wallet/">Paper wallet</a>
+
+<a href="../Secure_Trading/">Secure Trading</a>
+
+<a href="../Securing_Your_Computer/">Securing Your Computer</a>
+
+
+<span class="popup">...
+<span class="balloon">
+
+<a href="../Wallet/">Wallet</a>
+
+<a href="../Wallet_Security_Dos_and_Donts_(general)/">Wallet Security Dos and Donts (general)</a>
+
+<a href="../">index</a>
+
+</span>
+</span>
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-01-22T21:13:41Z">Fri 22 Jan 2016 09:13:41 PM Europe</time>
+<!-- Created <time datetime="2010-12-18T20:44:36Z" pubdate="pubdate">Sat 18 Dec 2010 08:44:36 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

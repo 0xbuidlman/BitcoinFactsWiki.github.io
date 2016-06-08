@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Libbitcoin Client</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Libbitcoin Client
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Libbitcoin_Client&amp;page=Talk&amp;do=create" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>The <a href="https://github.com/libbitcoin/libbitcoin-client">libbitcoin-client</a> library provides an abstraction over the low level networking calls required to communicate with <a href="../Bitcoin_Server/">Bitcoin Server</a> (bs) or other services implementing the Libbitcoin client-server protocol. With few exceptions (fetch-stealth and watch-address), the client is compatible with both <a href="../Obelisk/">Obelisk</a> and <a href="../Bitcoin_Server/">Bitcoin Server</a>.</p>
+
+<h2 id="Example">Example</h2>
+
+<pre><code>#include &lt;iostream&gt;
+#include &lt;czmq++/czmqpp.hpp&gt;
+#include &lt;bitcoin/client.hpp&gt;
+
+int main(int argc, char* argv[])
+{
+czmqpp::context context;
+czmqpp::socket socket(context, ZMQ_DEALER);
+
+if (argc &lt; 2  socket.connect(argv&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Libbitcoin_Client&amp;amp;page=1&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;1&lt;/span&gt;) &lt; 0)
+{
+std::cerr &lt;&lt; &quot;server argument required&quot; &lt;&lt; std::endl;
+return 1;
+}
+
+auto stream = std::make_shared&lt;bc::client::socket_stream&gt;(socket);
+auto message = std::static_pointer_cast&lt;bc::client::message_stream&gt;(stream);
+auto obelisk = std::make_shared&lt;bc::client::obelisk_codec&gt;(message);
+
+const auto error_handler = [](const std::error_code&amp; code)
+{
+std::cout &lt;&lt; &quot;error: &quot; &lt;&lt; code.message() &lt;&lt; std::endl;
+};
+
+const auto handler = [](size_t height)
+{
+std::cout &lt;&lt; &quot;height: &quot; &lt;&lt; height &lt;&lt; std::endl;
+};
+
+obelisk-&gt;fetch_last_height(error_handler, handler);
+
+while (obelisk-&gt;outstanding_call_count())
+{
+czmqpp::poller poller;
+poller.add(socket);
+
+const auto delay = static_cast&lt;int&gt;(obelisk-&gt;wakeup().count());
+if (!delay)
+break;
+
+poller.wait(delay);
+if (poller.terminated())
+break;
+
+if (!poller.expired())
+stream-&gt;signal_response(obelisk);
+}
+
+return 0;
+}
+</code></pre>
+
+<h2 id="Messaging">Messaging</h2>
+
+<p>The client-server protocol (API) is build on <a href="http://zeromq.org">&Oslash;MQ (aka ZMQ, ZeroMQ and Zero Message Queue)</a>, a &quot;High-speed asynchronous I/O engine, in a tiny library.&quot; (3.1) &Oslash;MQ sits directly on sockets and, &quot;Carries messages across inproc, IPC, TCP, TIPC, multicast.&quot; (3.2) The API supports the pub-sub pattern (3.3) (e.g. monitoring Bitcoin addresses) and the router-dealer pattern (3.4) (e.g. requesting stealth transactions).</p>
+
+<h2 id="Authentication_and_Encryption">Authentication and Encryption</h2>
+
+<p>The API incorporates <a href="http://curvezmq.org">CurveZMQ</a>, &quot;An authentication and encryption protocol for ZeroMQ.&quot; (4.1) (4.2) CurveZMQ is based on <a href="http://curvecp.org">CurveCP</a> and <a href="http://nacl.cr.yp.to">NaCl</a>, providing fast, secure elliptic-curve crypto. (4.3)</p>
+
+<p>Private key certificates are self-generated as <a href="http://rfc.zeromq.org/spec:4">ZPL (ZeroMQ Property Language)</a> encoded files with public and secret key properties. The keys are <a href="http://rfc.zeromq.org/spec:32">Z85 - (ZeroMQ Base-85 Encoding Algorithm)</a> encoded elliptic curve points. Keys can be fabricated by Bitcoin Explorer (bx) (4.4) as follows.</p>
+
+<pre><code>$ bx cert-new citizen4.private
+
+$ cat citizen4.private
+#   ****  Generated on 2015-05-18 15:09:59 by CZMQ  ****
+#   ZeroMQ CURVE **Secret** Certificate
+#   DO NOT PROVIDE THIS FILE TO OTHER USERS nor change its permissions.
+
+metadata
+curve
+public-key = &quot;Mu^Lc6Y(ebQAzQRGl^XkZKXMpb+&lt;pnVDZcd:WSv&quot;
+secret-key = &quot;dCSl9&lt;(u#4L4$(6&gt;CqJ@NX-kvo+I5^&amp;WPHDX+&quot;
+</code></pre>
+
+<p>Client applications can be configured with the public key of one or more servers (4.5) and thereby securely authenticate the server that is configured with the corresponding private key certificate (4.6). A client with a server&#39;s public key may also create a secure channel with the server. Client applications may be configured with a self-generated private key and thereby securely authenticate to a server that holds a copy of that that client&#39;s public key.</p>
+
+<h2 id="History">History</h2>
+
+<ul>
+<li><p>The libbitcoin client-server protocol (API) is sometimes referred to as the Obelisk protocol, as this was the name of the first version of the server. In the first version the client API was contained within the libbitcoin-server library, which led to a dependency between client applications such as <a href="../Bitcoin_Explorer/">Bitcoin Explorer</a> (bx), and the server library.</p></li>
+<li><p>In the summer of 2014 William Swanson redesigned the client library as libbitcoin-client. The first release of the independent library shipped as version 2.0 coincident with Bitcoin Explorer 2.0. This was a client to Obelisk, the original server application. As Obelisk was upgraded to Bitcoin Server (version 2.0) the client (version 2.1) was adapted to minor corresponding changes in the client-server API.</p></li>
+</ul>
+
+
+<h2 id="Dependencies">Dependencies</h2>
+
+<ul>
+<li><a href="http://www.boost.org">boost</a></li>
+<li><a href="https://github.com/bitcoin/secp256k1">secp256k1</a></li>
+<li><a href="https://github.com/jedisct1/libsodium">sodium</a></li>
+<li><a href="https://github.com/zeromq/libzmq">zmq</a></li>
+<li><a href="https://github.com/zeromq/czmq">czmq</a></li>
+<li><a href="https://github.com/zeromq/czmqpp">czmqpp</a></li>
+<li><a href="../Libbitcoin_Common/">libbitcoin</a></li>
+</ul>
+
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../Libbitcoin/">Libbitcoin</a></li>
+</ul>
+
+
+<h2 id="References">References</h2>
+
+<p>3.1: <a href="http://zeromq.org">&Oslash;MQ - Code Connected</a><br />
+3.2: <a href="http://zeromq.org">&Oslash;MQ - Code Connected</a><br />
+3.3: <a href="http://zguide.zeromq.org/page:all#Getting-the-Message-Out">&Oslash;MQ - Getting the Message Out</a><br />
+3.4: <a href="http://zguide.zeromq.org/php:chapter3#The-DEALER-to-ROUTER-Combination">&Oslash;MQ - Advanced Request-Reply Patterns</a><br />
+4.1: <a href="http://curvezmq.org">CurveZMQ - Security for ZeroMQ</a><br />
+4.2: <a href="http://rfc.zeromq.org/spec:26">CurveZMQ Authentication and Encryption Protoco</a><br />
+4.3: <a href="http://cr.yp.to/highspeed/coolnacl-20120725.pdf">&quot;The security impact of a new cryptographic library&quot; - Daniel J. Bernstein et. al.</a><br />
+4.4: <a href="https://github.com/libbitcoin/libbitcoin-explorer/wiki/bx-cert-new">Bitcoin Explorer cert-new command.</a><br />
+4.5: <a href="https://github.com/libbitcoin/libbitcoin-explorer/wiki/Configuration-Settings#default-configuration-settings">Bitcoin Explorer Configuration Settings</a><br />
+4.6: <a href="https://github.com/libbitcoin/libbitcoin-server/wiki/Configuration-Settings#configuration-settings">Bitcoin Server Configuration Settings</a></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Clients/" rel="tag">Clients</a>
+
+<a href="../tags/Open_Source/" rel="tag">Open Source</a>
+
+<a href="../tags/Software__8207____8206__/" rel="tag">Software‏‎</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Libbitcoin/">Libbitcoin</a>
+
+<a href="../Libbitcoin_Explorer/">Libbitcoin Explorer</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-02-04T10:09:38Z">Thu 04 Feb 2016 10:09:38 AM Europe</time>
+<!-- Created <time datetime="2015-05-13T21:29:23Z" pubdate="pubdate">Wed 13 May 2015 09:29:23 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

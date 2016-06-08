@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Wallet protocol</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Wallet protocol
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>This is a project to define a new wallet protocol addressing problems with the current JSON-RPC implementation in bitcoind.
+Please feel free to make edits. If you disagree with something, turn it into a &quot;debate&quot;.</p>
+
+<h2 id="Explanation">Explanation</h2>
+
+<p>This protocol aims to be a standard for communication between Wallets and User Interfaces.
+It can be used to access a Wallet remotely, or even locally, even if the Wallet and User Interface are produced by different or competing vendors. For example, you could use an Android User Interface from Google to control a QBitcoin Wallet.</p>
+
+<p>Please see the <a href="../Infrastructure/">Infrastructure</a> page for an overview of where this protocol fits into the big picture.</p>
+
+<h2 id="Requirements">Requirements</h2>
+
+<ul>
+<li>Never use human-formatted data (for example, use base bitcoin units, not Decimal BitCoins nor Tonal BitCoins, which should only be used in formatting for humans)</li>
+<li>Don&#39;t require polling (for example, broadcast events for new transactions, or changes to current &quot;work&quot;)</li>
+<li>Cooperative mining (see below)</li>
+<li>Allow calculating expected minimum fee for transactions, with either (wallet&#39;s choice) locking on the used inputs, or prebuilding the tx and error if it becomes invalid before sending</li>
+<li>Easy to use in a RPC-like manner, for simple applications</li>
+</ul>
+
+
+<h3 id="Debates">Debates</h3>
+
+<h4 id="Binary_or_plaintext">Binary or plaintext</h4>
+
+<ul>
+<li>Binary is more efficient to parse and create</li>
+<li>Plaintext is easier for humans to debug, and avoids forming a dependency on a specific number of bits, endianness, or precision</li>
+<li><p>Binary can include custom transactions as-is for transmission</p>
+
+<h4 id="Binary_wire_formats">Binary wire formats</h4></li>
+<li><p><a href="http://code.google.com/p/protobuf/Protobuf">Protobuf</a> seems efficient and easy to use from all major languages</p></li>
+</ul>
+
+
+<h4 id="Plaintext_wire_formats">Plaintext wire formats</h4>
+
+<ul>
+<li><a href="http://www.json.org/">JSON</a> implementations tend to be buggy.</li>
+</ul>
+
+
+<h3 id="Cooperative_mining">Cooperative mining</h3>
+
+<p>The protocol should support submitting completed blocks, such that it can get (just) addresses from an upstream pool to generate to, and send all completed blocks to that pool for verification and counting (and possibly submission to the network). This can reduce the pool&#39;s load.</p>
+
+<h3 id="UI_bundling">UI bundling</h3>
+
+<p>For more secure use by ordinary end users, UIs and Wallets should support stream-based communication over standard I/O (stdio). This allows the UI to simply execute a dedicated Wallet, without requiring the user to setup Wallet-side authentication.  This also permits full compatibility with a hardware-based wallet located on a secured device (for example, a cryptographic hardware module, or a wallet device connected via RS232 or USB).  (Suggestion, if UI&#39;s could talk to any stream, including a child process&#39;s stdio, as well as a pipe or a device, the flexibility would be valuable)</p>
+
+<h1 id="DRAFT_0">DRAFT 0</h1>
+
+<p>Everything beyond this point is strictly DRAFT, should NOT be implemented, and is subject to being completely rewritten or modified!</p>
+
+<h2 id="Conformance_requirements">Conformance requirements</h2>
+
+<p>All diagrams, examples, and notes in this specification are non-normative, as are all sections explicitly marked non-normative. Everything else in this specification is normative.</p>
+
+<p>The key words &quot;MUST&quot;, &quot;MUST NOT&quot;, &quot;REQUIRED&quot;,  &quot;SHOULD&quot;, &quot;SHOULD NOT&quot;, &quot;RECOMMENDED&quot;, &quot;MAY&quot;, and &quot;OPTIONAL&quot; in the normative parts of this document are to be interpreted as described in RFC2119. For readability, these words do not appear in all uppercase letters in this specification.</p>
+
+<p>Requirements phrased in the imperative as part of algorithms (such as &quot;strip any leading space characters&quot; or &quot;return false and abort these steps&quot;) are to be interpreted with the meaning of the key word (&quot;must&quot;, &quot;should&quot;, &quot;may&quot;, etc) used in introducing the algorithm.</p>
+
+<h2 id="Transport.2FSession_Layer">Transport/Session Layer</h2>
+
+<p>Must support at least reliable in-order stream data.</p>
+
+<p>Such as:</p>
+
+<ul>
+<li>stdio (required for self-contained UI bundling)</li>
+<li>serial</li>
+<li>TCP</li>
+</ul>
+
+
+<h2 id="Presentation_Layer">Presentation Layer</h2>
+
+<h3 id="Encryption">Encryption</h3>
+
+<ul>
+<li>TLS (recommended)</li>
+<li>SSH</li>
+</ul>
+
+
+<h3 id="Packetization">Packetization</h3>
+
+<p>Reliable, in-order packetization is required.
+Packets should be request-oriented, while supporting:</p>
+
+<ul>
+<li>Fixed-length responses (MIME-encoded)</li>
+<li>Persistent response streams (eg, HTTP chunked encoding)</li>
+<li>Optional: Full-duplex (two-way) communication (eg, WebSockets)</li>
+</ul>
+
+
+<p>This supports:</p>
+
+<ul>
+<li>HTTP with SSE (and WebSockets)</li>
+<li>SPDY</li>
+<li>0MQ, protobuf, and specialized .proto files</li>
+</ul>
+
+
+<p>Request types:</p>
+
+<ul>
+<li>Optional: CONNECT for establishing a full-duplex stream</li>
+<li>GET for read-only access, always returning a fixed-length response</li>
+<li>POST for method calls</li>
+<li>PUT for uploads</li>
+<li>HEAD for metadata</li>
+</ul>
+
+
+<p>Note: Some protocols (eg, HTTP) do not allow complex structures in GET requests. An implementation using these protocols should allow silently upgrading GET to a POST with the same semantics.</p>
+
+<p>Note: A logical CONNECT request may not map directly to the HTTP method by the same name. The current WebSocket specification uses a HTTP GET request.</p>
+
+<h3 id="MIME_Formats">MIME Formats</h3>
+
+<p>These content types may be specified in the Content-Type header, and Accept header.</p>
+
+<ul>
+<li>application/x-www-form-urlencoded (required)</li>
+<li>application/x-ripemd-160 (required)</li>
+<li>application/x-sha (required)</li>
+<li>multipart/mixed (required)</li>
+<li>text/event-stream (required for events over HTTP)</li>
+<li>application/x-bitcoin (required wallet-side)</li>
+<li>application/json (recommended)</li>
+<li>application/xml</li>
+</ul>
+
+
+<h2 id="Application_Layer">Application Layer</h2>
+
+<h3 id="Authentication_.2F_security">Authentication / security</h3>
+
+<p>Wallets may micro-manage security as they like, but the following are RECOMMENDED security levels:</p>
+
+<p>|&quot;Miner&quot; |Can generate new addresses, get work, and report found blocks
+|Merchant |Can create a transaction (only with &#39;proposal&#39; flag), but not send it
+|Read-only |Can view accounts, addresses, and any public data, and combinations thereof (eg, balances)
+|Financial |Can create new transactions using the wallet&#39;s keys
+|Full/Admin |Can administrate (download, destroy, etc) wallet keys</p>
+
+<p>Wallets MAY grant full access to username &#39;admin&#39; with a null password, to requests over stdio.</p>
+
+<p>Wallets SHOULD grant Merchant access to username &#39;merchant&#39; will a null password, to requests made over direct (ie, physically local, like Bluetooth) connections.
+User interfaces SHOULD monitor for new, unsigned transactions with the &#39;proposal&#39; flag set, and prompt the user to sign or delete them.</p>
+
+<h3 id="Object.2FQuery_Schema">Object/Query Schema</h3>
+
+<p>May be provided in multipart/mixed, JSON, XML, etc...</p>
+
+<p>|id||||||||Unique data identifier; only guaranteed to remain the same for a single session
+|type||||||||Type of data: &#39;key&#39;, &#39;tx&#39;, &#39;coin&#39;, &#39;block&#39;, &#39;account&#39;, &#39;accounting&#39;
+|hash|||||||
+|size|||||||
+|time|||||||
+|difficulty|||||||
+|difficultyNext|||||||
+|height|||||||
+|confirmations||||||||-2 for rejected, -1 for unsent, 0 for broadcast, 1+ for number of confirms
+|accepted||||||||An unconfirmed, accepted tx, is part of the current mining merkle tree
+|related||||||||Can have multiple entries (in JSON, an array value)
+|coinbase|||||||
+|inputs|||||||
+|outputs|||||||
+|mine|||||||
+|network||||||||0xF9BEB4D9 for the main network; 0xFABFB5DA for testnet
+|proposal|||||||</p>
+
+<h3 id="Data">Data</h3>
+
+<ul>
+<li>Arbitrary data can be accessed with the path /data/</li>
+<li>GET to fetch</li>
+<li>To get only block header, use /data//header</li>
+<li>To get only actual content (eg, no calculated values), use /data//raw</li>
+<li>Optional: PUT to upload</li>
+</ul>
+
+
+<h3 id="Information">Information</h3>
+
+<ul>
+<li>GET /state//connections</li>
+<li>Mining info: (required for mining support)
+
+<ul>
+<li>GET /state//hashesPerSec (optional)</li>
+<li>GET /state//merkle</li>
+</ul>
+</li>
+<li>GET /info/protocols
+
+<ul>
+<li>Returns a list of supported protocols/versions and their URIs</li>
+</ul>
+</li>
+</ul>
+
+
+<h3 id="Requests">Requests</h3>
+
+<h4 id="Address_validation">Address validation</h4>
+
+<ul>
+<li>GET /validate/address?network=&amp;address=</li>
+</ul>
+
+
+<h4 id="Calculate_balance">Calculate balance</h4>
+
+<ul>
+<li>GET /balance?
+Match transactions to be included in the balance.
+To ignore spends, use matching.</li>
+</ul>
+
+
+<h4 id="Data_search">Data search</h4>
+
+<ul>
+<li>GET /dataSearch?</li>
+<li>POST /dataSearch allowed for more complex queries</li>
+</ul>
+
+
+<p>NOTE: To get the id rather than the data itself, use a HEAD request and check the Location header.</p>
+
+<h4 id="Generate_new_address">Generate new address</h4>
+
+<ul>
+<li>POST /newAddress
+
+<ul>
+<li>Optional parameter: recycle (bool) -- allows wallet to reuse a spent change address; if not supported, wallet should silently ignore</li>
+<li>Optional parameter: generate (bool) -- if true, make a new address on the spot, never use a preexisting one; if not supported, throw an error</li>
+<li>Optional parameter: account -- associate new address funds with this account id</li>
+</ul>
+</li>
+</ul>
+
+
+<h4 id="Monitor_events">Monitor events</h4>
+
+<ul>
+<li>Always POST</li>
+</ul>
+
+
+<h5 id="New_data_available">New data available</h5>
+
+<ul>
+<li>Query</li>
+</ul>
+
+
+<h4 id="Move_between_accounts">Move between accounts</h4>
+
+<ul>
+<li>POST /accounting/move
+
+<ul>
+<li>dest=</li>
+<li>query= OR amount=</li>
+<li>Optional: comment=</li>
+</ul>
+</li>
+</ul>
+
+
+<h4 id="Transaction_creation">Transaction creation</h4>
+
+<ul>
+<li>POST /tx/new
+
+<ul>
+<li>send (bool) -- If true, sign and broadcast the transaction immediately</li>
+<li>fee (amount or range) -- If range, the wallet will try to calculate the minimum it expects the network to accept; if omitted, automatic fee range is unlimited unless bound by other factors (eg, input+strict)</li>
+<li>Optional: fromAccount (account id)</li>
+<li>Optional: input (multiple allowed of: coin id, OR coin id=&gt;scriptSig)</li>
+<li>output (multiple allowed of: address=&gt;amount pairs, OR script=&gt;amount)</li>
+<li>strict (bool) -- If set, error rather than vary any parameters</li>
+<li>Optional: comment=</li>
+</ul>
+</li>
+</ul>
+
+
+<h4 id="Transaction_broadcast">Transaction broadcast</h4>
+
+<ul>
+<li>POST /tx/send?id=</li>
+</ul>
+
+
+<h4 id="Shutdown_wallet">Shutdown wallet</h4>
+
+<ul>
+<li>POST /shutdown</li>
+</ul>
+
+
+<h3 id="Events">Events</h3>
+
+<h4 id="New_Data_Available">New Data Available</h4>
+
+<h3 id="p2p_protocol_encapsulation">p2p protocol encapsulation</h3>
+
+<p>Optional: Establish a full-duplex connection to /p2p to speak direct p2p protocol</p>
+
+<h2 id="Appendix_A._Useful_algorithms">Appendix A. Useful algorithms</h2>
+
+<h3 id="Counting_confirmations">Counting confirmations</h3>
+
+<p>Because numerous (most) transactions change confirmation at the same event, the only way to do this efficiently, is to monitor for new block events. When a block arrives, increment the confirmation count of all transactions with at least 1 confirmation already. Then check the new block&#39;s introduced transactions (incrementing them from 0 to 1), and delete/invalidate any revoked transactions (eg, from a competing chain).</p>
+
+<h2 id="Appendix_B._JSON-RPC_equivalents">Appendix B. JSON-RPC equivalents</h2>
+
+<h3 id="backupwallet">backupwallet</h3>
+
+<h3 id="getaccount_.2F_getlabel">getaccount / getlabel</h3>
+
+<h3 id="getaddressesbyaccount_.2F_getaccountaddress_.2F_getaddressesbylabel">getaddressesbyaccount / getaccountaddress / getaddressesbylabel</h3>
+
+<h3 id="getbalance">getbalance</h3>
+
+<h3 id="getblockcount_.2F_getblocknumber">getblockcount / getblocknumber</h3>
+
+<h3 id="getconnectioncount">getconnectioncount</h3>
+
+<h3 id="getdifficulty">getdifficulty</h3>
+
+<h3 id="getgenerate">getgenerate</h3>
+
+<h3 id="gethashespersec">gethashespersec</h3>
+
+<h3 id="getinfo">getinfo</h3>
+
+<h3 id="getnewaddress">getnewaddress</h3>
+
+<h3 id="getreceivedbyaccount_.2F_getreceivedbylabel">getreceivedbyaccount / getreceivedbylabel</h3>
+
+<h3 id="getreceivedbyaddress_.2F_getamountreceived">getreceivedbyaddress / getamountreceived</h3>
+
+<h3 id="gettransaction">gettransaction</h3>
+
+<h3 id="getwork">getwork</h3>
+
+<h3 id="help">help</h3>
+
+<h3 id="listaccounts">listaccounts</h3>
+
+<h3 id="listreceivedbyaccount_.2F_listreceivedbylabel">listreceivedbyaccount / listreceivedbylabel</h3>
+
+<h3 id="listreceivedbyaddress_.2F_getallreceived">listreceivedbyaddress / getallreceived</h3>
+
+<h3 id="listtransactions">listtransactions</h3>
+
+<h3 id="move">move</h3>
+
+<h3 id="sendfrom">sendfrom</h3>
+
+<h3 id="sendtoaddress">sendtoaddress</h3>
+
+<h3 id="setaccount_.2F_setlabel">setaccount / setlabel</h3>
+
+<h3 id="setgenerate">setgenerate</h3>
+
+<h3 id="settxfee">settxfee</h3>
+
+<h3 id="stop">stop</h3>
+
+<h3 id="validateaddress">validateaddress</h3>
+
+<h2 id="References">References</h2>
+
+<p>
+ (67.1)
+ (67.2)
+ (67.3)
+ (67.4)
+ (67.5)
+ (67.6)
+ (67.7)
+ (67.8)
+ (67.9)
+ (67.10)
+</p>
+
+<p>67.1: <a href="http://rfc.zeromq.org/spec:2">The Size-Prefixed Blob Format</a> , iMatix Corporation.<br />
+67.2: <a href="http://code.google.com/apis/protocolbuffers/docs/encoding.html">Protocol Buffers Encoding</a> , Google.<br />
+67.3: <a href="http://tools.ietf.org/html/rfc2045">Multipurpose Internet Mail Extensions (MIME)</a> , Freed &amp; Borenstein, First Virtual.<br />
+67.4: <a href="http://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a> , S. Bradner. IETF.<br />
+67.5: <a href="http://tools.ietf.org/html/rfc2616">Hypertext Transfer Protocol -- HTTP/1.1</a> , Fielding, et al, W3C.<br />
+67.6: <a href="http://tools.ietf.org/html/rfc4627">The application/json Media Type for JavaScript Object Notation (JSON)</a> , D. Crockford. JSON.org.<br />
+67.7: <a href="http://dev.w3.org/html5/eventsource/">Server-Sent Events</a> , Ian Hickson, Google, Inc.<br />
+67.8: <a href="http://www.chromium.org/spdy/spdy-protocol/spdy-protocol-draft2">SPDY Protocol</a> , various. Google, Inc.<br />
+67.9: <a href="http://tools.ietf.org/html/draft-ietf-hybi-thewebsocketprotocol-06">The WebSocket protocol</a> , Ian Hickson, Google, Inc.<br />
+67.10: <a href="http://www.w3.org/TR/REC-xml">Extensible Markup Language (XML) 1.0 (Second Edition)</a> , Tim Bray, Jean Paoli, C. M. Sperberg-McQueen and Eve Maler, W3C.</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Developer/" rel="tag">Developer</a>
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Infrastructure/">Infrastructure</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2011-08-20T03:35:28Z">Sat 20 Aug 2011 03:35:28 AM Europe</time>
+<!-- Created <time datetime="2011-02-23T00:38:16Z" pubdate="pubdate">Wed 23 Feb 2011 12:38:16 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

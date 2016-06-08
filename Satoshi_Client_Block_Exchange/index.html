@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Satoshi Client Block Exchange</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Satoshi Client Block Exchange
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Satoshi_Client_Block_Exchange&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<h2 id="Overview">Overview</h2>
+
+<p>This article describes how blocks are exchanged between nodes.
+See <a href="../Protocol_rules/">Protocol rules</a> for more information on how blocks are <a href="../Invalid_block/">validated</a>.</p>
+
+<p>Upon initial connection, if the connection was not inbound[1],
+or in other words, if the connection was initiated by the local node,
+the version message is queued for sending immediately. When the remote node
+receives the version message it replies with its own version message.[2]</p>
+
+<p>When a node receives a &quot;version&quot; message, it may send a &quot;getblocks&quot; request
+to the remote node if EITHER:</p>
+
+<ol>
+<li>The node has never sent an initial getblocks request to any node yet.</li>
+<li>Or, this is the only active node connection. Presumably the node had zero connections prior to this connection, so maybe it was disconnected for a long time. So, it will ask for blocks to catch up.</li>
+</ol>
+
+
+<p>The getblocks message contains multiple block hashes that the requesting
+node already possesses, in order to help the remote note find the latest
+common block between the nodes.  The list of hashes starts with the latest
+block and goes back ten and then doubles in an exponential progression
+until the genesis block is reached.[3]  Since both nodes are hard coded
+with the genesis block, they are guaranteed to a least start there.
+If that block does not match for some reason, no blocks are exchanged.</p>
+
+<h2 id="Inventory_Messages">Inventory Messages</h2>
+
+<p>Note that the node receiving the getblocks request does not actually send
+full blocks in response. The node sends an &quot;inv&quot; message containing just
+the hashes of the series of blocks that fit the request, which verifies
+that the node does indeed have blocks to send that the remote node does
+not have (but does not presume the remote node wants the full blocks yet).</p>
+
+<p>When the local node receives the &quot;inv&quot; message, it will request the actual
+blocks with a &quot;getdata&quot; message. See Below.</p>
+
+<p>But first, here is more detail how the remote node sends the &quot;inv&quot; message
+in response to the &quot;getblocks&quot; request sent by the local node. The remote
+node calls pFrom-&gt;PushInventory which is a method on the CNode instance that
+represents the node that requested the blocks (the local node in this
+walkthrough), and PushInventory adds the block hash to the vInventoryToSend
+variable of the CNode. The SendMessages function in <a href="https://github.com/bitcoin/bitcoin/blob/master/src/main.cpp">main.cpp</a> will take the
+inv items out of vInventoryToSend and add it to a vInv variable which
+means they are really ready for sending.[4]
+The reason for the seperate variable is that some inventory items
+(transactions only right now) may be &quot;trickled&quot; to the remote node,
+which means they may kept from from being sent right away.
+When the vInv variable fills up with 1000 entries, a message is queued
+with those 1000 entries and the loop continues.  At the end, any
+remaining entries are sent in a final &quot;inv&quot; message.</p>
+
+<p>When the local node receives the &quot;inv&quot; message, it will request the actual
+block with a &quot;getdata&quot; message. To be precise, the node calls pfrom-&gt;AskFor
+to request the block, and that method queues the request for the blocks in
+mapAskFor, and the multipurpose SendMessage() sends the &quot;getdata&quot; requests
+in batches of 1000 entries from the map.[5]</p>
+
+<p>The code attempts to limit redundant requests to every 2 minutes for the
+same block by using a map called mapAlreadyAskedFor to delay the message
+if necessary.[6]</p>
+
+<h2 id="Block_Batching">Block Batching</h2>
+
+<p>The responding node to a &quot;getblocks&quot; request attempts to limit the response
+to the requestor to 500 blocks.[7]</p>
+
+<p>However, in a peculiar twist, if the requestor appears to have diverged
+from the main branch, the node will send as many blocks as necessary to
+replace the entire bad chain of the requestor, from the lastest common block
+between the nodes, up to the last block the requestor has (on their bad main
+branch). That is in addition to the 500 &quot;catch up&quot; blocks for main branch
+updates that will also be sent.[8]</p>
+
+<p>Note that in addition to a flat limit on the number of blocks queued for
+sending, bitcoind also limits the total size of the blocks that are being
+queued. This is currently limited to half the send buffer size[9], which is
+10MB, for a limit of 5MB of queued blocks for send.[10]</p>
+
+<h2 id="Batch_Continue_Mechanism">Batch Continue Mechanism</h2>
+
+<p>When a node is finished sending a batch of block inventory, it records the
+hash of the last block in the batch.[11]  When the node receives a request
+for that full block, it realizes the remove node is done with the current
+batch and directly queues a special &quot;inv&quot; message (bypassing the normal
+SendMessage mechanism) with one block hash entry containing the
+latest block hash.[12] When the remote node receives that &quot;inv&quot; message,
+it will see that it does not have that block and it it will ask for that
+block as described above. However, this time when it receives the block
+and processes it, it will notice that it does not have the previous block,
+so it will record the latest block as an &quot;orphan&quot; block, and will request a
+block update starting with the latest block it has up to the block before
+the orphan [13], in order to fill in the gap. That goes out as a &quot;getblocks&quot;
+request and the whole batch process repeats itself.</p>
+
+<p>However, there is a twist. When the next batch finishes, the remote node
+sending the blocks will send the &quot;inv&quot; with latest block hash as usual, and
+the local node will notice it already has this block in the orphan block
+map this time and so it will skip requesting the block and directly ask
+for a block update.[14] This process will continue until the last
+block prior to the latest block is received. At the end of processing
+that block, it will notice there is an orphan that pointed to this block
+and will process the orphan block, (and any other orphans, recursively)
+thus completing the entire process.[15]</p>
+
+<h2 id="Stall_Recovery">Stall Recovery</h2>
+
+<p>If the batching processes is interrupted for some reason, such as the
+remote node failing to honor the &quot;Batch Continue Mechanism&quot; or if a
+disconnection occurs, there is a way for the process to restart. When
+a new block is solved and advertised around[16], any nodes that are
+behind will notice the new block in the &quot;inv&quot; and that will trigger it
+to request a &quot;getblocks&quot; update from the node that sent it the message.
+That will cause blocks to be sent starting from wherever in the block
+chain that the node that is behind is currently at.</p>
+
+<h2 id="Long_Orphan_Chains">Long Orphan Chains</h2>
+
+<p>In various tests, it has proven relatively common (say more than one
+in ten) to discover nodes that are significantly behind on the block
+chain, probably because they are in the process of catching up as well.
+Since a well connected node will have at least 8 and up to dozens of
+connections, it is fairly likely that a new node will connect to
+another node that is also catching up.</p>
+
+<p>Nodes that are catching up will advertise the blocks they are processing,
+as they accept blocks into their main chain, to every other node.[16]
+While there is code to prevent advertising old blocks before a certain
+checkpoint, that code also has a clause that does advertise blocks to
+remote nodes if the block height is over the remote node&#39;s current best
+height minus 2000 blocks.[17] This appears to allow nodes to &quot;help&quot; other
+nodes catch up, even if they are both processing old blocks.</p>
+
+<p>These advertisements cause the local node to request those blocks
+from the remote node, which could be blocks well into the future compared
+to what has been processed locally. Due to the way blocks are requested,
+the remote node will send a large batch of blocks in response and will
+continue sending blocks to the local node until it reaches the end.
+Note that this is likely to occur at the same time the local node is
+downloading earlier blocks on the main chain from another node. That
+process may eventually catch up with the orphan chain and produce a
+very, very long operation to revalidate and connect up all the orphan
+blocks. Orphan chains over ten thousand blocks long, taking over an hour
+to process are possible.</p>
+
+<p>Therefore, two nodes talking to each other that are both catching up can
+lead to suboptimal interactions, especially when one both are far behind
+and one is far ahead of the other.</p>
+
+<h2 id="Flood_Limit_Effects">Flood Limit Effects</h2>
+
+<p>Even with the batching mechanism described above, there are scenarios
+that occur that result in the remote node overflowing the local receive
+buffer while blocks are being exchanged.</p>
+
+<p>For example, if a remote node is &quot;catching up&quot;, it will advertise each block
+it processes to the local node in certain circumstances (see above [17]).
+The local node will request each of those blocks right away. There is no
+protection against the local node requesting too many of these blocks.
+The remote node will send all blocks requested. There is no protection
+against the remote node sending too many blocks before the local node has
+time to process them, in this circumstance.</p>
+
+<p>The local receive buffer can fill up. When the local node notices a receive
+buffer is full, it disconnects that node connection.[18]
+If sets the fDisconnect flag, and once the buffers are empty[19], the
+socket is closed.</p>
+
+<h2 id="Performance">Performance</h2>
+
+<p>As of September 1, 2011, on a server class computer circa 2005 running
+Ubuntu with a Comcast cable internet connection takes over 10 hours
+to download and process the block chain. While it is debatable what
+the bottleneck is early in the download process, it is clear from
+the processing of recent blocks that the network is not the bottleneck
+for all but the slowest internet connections.</p>
+
+<p>Blocks are taking over a second, on average, to process once downloaded.[20]
+However, the average size of a block is only around 24 kilobytes
+in August 2011. It certainly does not take 1 second to download 24K.
+Also, testing reveals very large queues of blocks being processed per
+message loop, which is not what you would expect if the thread was
+pulling them out of the queue as they arrive on the sockets.</p>
+
+<p>There are a number of &quot;false signals&quot; that lead one to believe the problem
+is with network performance. The first false signal is that, as of
+August 2011, nearly all of the first 60 or 70% of  blocks downloaded are
+very small. Recent average block sizes are around one hundred times bigger!
+So, almost all of a sudden, the block rate goes from very fast to very slow.
+It looks like something went wrong. In reality, if you measure the rate
+of block processing by kilobyte, the rate remains relatively constant.</p>
+
+<p>Another false signal is related to the fact that message queues are
+processed to completion, one at a time per node. This can result in big
+backups of messages from other nodes. So, a long period of increasing
+blocks may freeze for long periods as other nodes are serviced. Consider
+that block downloads typically come from just one remote node (at
+least until a miner or other relaying or downloading node advertises
+a late block and disrupts the process) and so all the work might
+be on one node. Things go fast processing the blocks from a node,
+and then that looks like it stops as &quot;addr&quot; messages are processed from
+other nodes and other work is done. But it looks like something is wrong.</p>
+
+<p>Also, the orphaning effects described above can lead to excessive block
+processing with nothing to show for it until the orphan chain is connected.
+Also, you do ocassionally run into a node that is slow to respond, perhaps
+because they are also processing blocks or because they have a slow machine
+or connection.</p>
+
+<p>All of the above contributes to heavy &quot;jitter&quot; in the block download process,
+and that is a more frustrating user experience than a constant download rate.</p>
+
+<h2 id="Footnotes">Footnotes</h2>
+
+<ol>
+<li><p>See <code>pfrom-&gt;fInbound</code> where pfrom is a CNode.</p></li>
+<li><p>See ProcessMessage() in main.cpp where strCommand == &quot;version&quot;.</p></li>
+<li><p>See CBlockLocator in main.h.</p></li>
+<li><p>See Message: inventory in SendMessage in main.cpp.</p></li>
+<li><p>See Message: getdata at the end of SendMessage in main.cpp.</p></li>
+<li><p>See CNode::AskFor in net.h.</p></li>
+<li><p>See ProcessMessage() in main.cpp where strCommand ==&quot;getblocks&quot;.</p></li>
+<li><p>See<br />
+     int nLimit = 500 + locator.GetDistanceBack();<br />
+ in ProcessMessage in main.cpp where strCommand ==&quot;getblocks&quot;.</p></li>
+<li><p>See<br />
+     if (--nLimit &lt;= 0  nBytes &gt;= SendBufferSize()/2)<br />
+ in ProcessMessage() in main.cpp where strCommand ==&quot;getblocks&quot;.</p></li>
+<li><p>See<br />
+    inline unsigned int SendBufferSize() {<br />
+    return 1000<em>GetArg(&quot;-maxsendbuffer&quot;, 10</em>1000); }<br />
+in net.h.</p></li>
+<li><p>See pfrom-&gt;hashContinue = pindex-&gt;GetBlockHash();
+    in ProcessMessage() in main.cpp where strCommand ==&quot;getblocks&quot;.</p></li>
+<li><p>See: if (inv.hash == pfrom-&gt;hashContinue)
+    in ProcessMessage() in main.cpp where strCommand ==&quot;getdata&quot;.</p></li>
+<li><p>See:<br />
+    // Ask this guy to fill in what we&#39;re missing
+    if (pfrom)
+    pfrom-&gt;PushGetBlocks(pindexBest, GetOrphanRoot(pblock2));
+in ProcessBlock() in main.cpp.</p></li>
+<li><p>See:<br />
+    else if (inv.type == MSG_BLOCK &amp;&amp; mapOrphanBlocks.count(inv.hash))
+    pfrom-&gt;PushGetBlocks(pindexBest, GetOrphanRoot(mapOrphanBlocks<span class="createlink"><a href="/ikiwiki.cgi?from=Satoshi_Client_Block_Exchange&amp;do=create&amp;page=inv.hash" rel="nofollow">?</a>inv.hash</span>));
+in ProcessMessage() in main.cpp where strCommand ==&quot;inv&quot;.</p></li>
+<li><p>See:<br />
+    // Recursively process any orphan blocks that depended on this one
+in ProcessBlock() in main.cpp.</p></li>
+<li><p>See the last block of code in AcceptBlock in main.cpp.</p></li>
+<li><p>See:<br />
+    if (nBestHeight &gt; (pnode-&gt;nStartingHeight != -1 ? pnode-&gt;nStartingHeight - 2000 : 134444))
+    in AcceptBlock() in main.cpp.</p></li>
+<li><p>See:<br />
+    if (nPos &gt; ReceiveBufferSize()) {
+in ThreadSocketHandler2() in net.cpp.</p></li>
+<li><p>See:<br />
+    if (pnode-&gt;fDisconnect
+    (pnode-&gt;GetRefCount() &lt;= 0 &amp;&amp; pnode-&gt;vRecv.empty() &amp;&amp; pnode-&gt;vSend.empty()))
+in ThreadSocketHandler2() in net.cpp.</p></li>
+<li><p>This is from the authors experience and also<br />
+    see https://bitcointalk.org/index.php?topic=31376.0.</p></li>
+</ol>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Developer/" rel="tag">Developer</a>
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Bitcoind/">Bitcoind</a>
+
+<a href="../Block_chain_download/">Block chain download</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-06-07T14:24:02Z">Tue 07 Jun 2016 02:24:02 PM Europe</time>
+<!-- Created <time datetime="2011-09-17T21:38:27Z" pubdate="pubdate">Sat 17 Sep 2011 09:38:27 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

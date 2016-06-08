@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Nanopayments</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Nanopayments
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=Nanopayments" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p><em>a.k.a. Micropayments</em></p>
+
+<p>Nanopayments are tiny payments for a trivial service. For example, 0.0001 BTC for each of three Tor nodes to relay one megabyte of traffic with premium priority.</p>
+
+<p>It should be easy to see that a series of payments like this would be &quot;spam&quot; to Bitcoin, and infeasible due to transaction fees, and unwelcome to everyone who must download and store the whole block chain.</p>
+
+<p>The idea, in a nutshell, is for Alice to make a 0.0001 BTC nanopayment to Bob by signing a message not worth 0.0001 BTC, but by signing a message that has 1 in 10000 probability of being worth 1 BTC, and sending it to Bob directly. This message would function much like a share in a mining pool. Out of 10000 nanopayments, on average, 9999 will be worthless and 1 will not.</p>
+
+<p>For it to work fairly, Alice must not have any way to know which share is actually redeemable to the recipient.</p>
+
+<p>Of course, due to variance, Alice will sometimes get her services for free, and sometimes she will vastly overpay. However, if she consumes such services regularly, the amount she pays will tend toward the amount she consumes.</p>
+
+<h5 id="Technical_stuff.3A_How_can_probabilistic_transactions_be_created.3F">Technical stuff: How can probabilistic transactions be created?</h5>
+
+<p>Bob creates a secret transaction that will be used for a &quot;guess my hash&quot; challenge. The value can be the minimum and will be sent back by Alice&#39;s transaction. He doesn&#39;t broadcast it yet.</p>
+
+<p>Alice will create a multi-input transaction that spends her own coin AND Bob&#39;s secret transaction. Here&#39;s where the random chance comes in. We&#39;re going to randomize the prevout identifying Bob&#39;s transaction. Multi-input transactions are not valid unless all their inputs exist, so if Bob&#39;s transaction is misidentified, the whole transaction is void.</p>
+
+<p>For the hash identifying the secret transaction, Bob only gives Alice a numeric range that the hash is in. If the hash is H, and we want a 1/N chance of the nanopayment being real, then Bob would take H1=H-rand(N) and tell Alice the hash is between H1 and H1+N.</p>
+
+<p>Alice chooses H2 in the range H1 to H1+N and creates the transaction. Input 1 is her coin, and input 2 uses H2 as the prevout hash that may or may not match Bob&#39;s secret transaction. She signs input 1 and gives the transaction to Bob. Note that signing one input locks in the prevouts of all inputs, so Bob can&#39;t change H2.</p>
+
+<p>Bob now checks if the H2 she used equals H. If it is, he signs input 2 and broadcasts both his secret transaction and Alice&#39;s transaction.</p>
+
+<p>If H2 is not H, then the transaction can never be valid, because there can be no previous transaction that hashes to H2. Since the transaction is invalid, not just unspendable, Bob can&#39;t be a jerk and submit it to the network just to waste Alice&#39;s coin.</p>
+
+<p><em>What if Alice tries to <a href="../Double-spending/">double spend</a> her 1 BTC out from under Bob before he gets his successful transaction into the block chain?</em></p>
+
+<p>If Alice tries to double spend on nanopayments, she&#39;ll spend more on transaction fees than she saves.</p>
+
+<p>She would need to selectively double spend the real ones, but she doesn&#39;t know if the transaction she gave Bob was real. All she can do is wait and watch if Bob broadcasts it, but by then his transaction will already <a href="https://bitcointalk.org/index.php?topic=423.msg3819#msg3819">have a big head start</a>. If Bob is really paranoid, he could connect directly to the pool miners and broadcast only to them first to get most of the mining power sewed up before Alice would even know.</p>
+
+<p><em>What if Alice uses that same 1 BTC to buy services from somebody else, who won&#39;t know she is pledging shares of that same coin in more than one place, where somebody would be shortchanged if both services won the same bitcoin at around the same time?</em></p>
+
+<p>This may not be a big enough problem to matter for most casual, low value uses.</p>
+
+<p>If need be, this could be solved with hub servers that nanopayment recipients would use to announce coins currently in use to other nanopayment recipients.</p>
+
+<p>When Alice sends her nanopayment transaction to Bob, she would need to use her coin&#39;s EC-DSA key to sign a reserve message containing the current time, her coin&#39;s hash, and the address she&#39;s paying to. Bob sends this message to the hub server to reserve her coin for some predetermined period like 1 minute.</p>
+
+<p>A hub server would be pretty simple, just a single lookup table. A merchant sends it a reserve message. The server checks that the signature matches the coin. If a reserve is already in effect for that coin, it returns an error, otherwise OK. It adds the reservation to its lookup table and purges it when it expires. Merchants could connect to several hub servers to keep them honest and for redundancy. It would be fitting to pay the hub servers with nanopayments.</p>
+
+<p>This article is derived from <a href="https://bitcointalk.org/index.php?topic=62558">Sustainable nanopayment idea: Probabilistic Payments</a> by casascius.</p>
+
+<p>The <a href="https://github.com/paulkernfeld/bitcoin-nanopayment">bitcoin-nanopayment</a> project is a relatively unproven implementation of this using Node.js.</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Lightning_Network/">Lightning Network</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-09-05T16:05:52Z">Sat 05 Sep 2015 04:05:52 PM Europe</time>
+<!-- Created <time datetime="2012-04-03T17:02:27Z" pubdate="pubdate">Tue 03 Apr 2012 05:02:27 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

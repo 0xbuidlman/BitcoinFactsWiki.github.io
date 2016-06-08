@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>talk</title>
+
+<link rel="stylesheet" href="../../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../../">bitcoin</a>/ 
+
+<a href="../">Securing your wallet</a>/ 
+
+</span>
+<span class="title">
+talk
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>The article is too huge. The Mac solution does not scale; the suggested sizes are too low and the maximum size is infinite. <a>X</a> 17:10, 8 January 2012 (GMT)</p>
+
+<p>This article needs a rewrite following the introduction of the Bitcoin.org client&#39;s ability to passphrase protect the keys in the wallet.  Perhaps some sections also -- something like &quot;typical consumer use&quot; (where the client&#39;s encryption is adequate) and &quot;commercial-grade protection&quot; where the topics such as encryption at the filesystem is addressed. - <a>Sgornick</a> 10:24, 28 December 2011 (GMT)</p>
+
+<p>The five paragraphs in Technical Background all say the same thing. --<a>Mcandre</a></p>
+
+<p>Note: the backupwallet.sh script in the linux section doesn&#39;t actually work.
+I suspect it is caused by the wiki changing the formatting.
+I wrote my own version that uses much more standard shell syntax.</p>
+
+<p><a>Wscott</a> 11:28, 11 February 2011 (GMT)</p>
+
+<p>I fixed the backupwallet.sh script. It just needed a nowiki tag around a conditional statement. -- <a>Mweather</a> 23:48, 20 May 2011 (GMT)</p>
+
+<p>The approach for &quot;Making a secure workspace&quot; seems to differ greatly for linux and mac. Why? It seems like if you are going to make firefox secure, which is basically all the linux section recommends, you would want to do that on a mac too. And the recommendation in the mac section to keep the wallet in an encrypted volume with a symlink in the expected system location should be done on a linux box too, shouldn&#39;t it, like using truecrypt or something... Am I wrong??? Can someone with advanced knowledge please advise...? Also, if you want bitcoin to run all the time in the background on linux, but you have it set up in a separate user from your main user account, well, you are out of luck? Can justifications and explanations be added to the recommendations, and also I guess some alternatives with pros and cons be offered, for people with different needs and computing situations. Thanks! --<a>GusGustavo</a> 13:33, 26 May 2011 (GMT)</p>
+
+<h2 id="Time_Sensitivity">Time Sensitivity</h2>
+
+<p>Is it possible to still send money to my wallet, even if it&#39;s backed up and offline?  Do bitcoins ever expire if they&#39;re not spent, or is there anything bad that can happen by not using my bitcoin client in a long time? <a>Daniel.benoy</a> 23:18, 8 June 2011 (GMT)</p>
+
+<p>Technically your wallet does not hold bitcoins but rather the keys to those bitcoins. So whether you are online, offline, or dead is totally irrelevant to the Bitcoin network. They also never expire. The worst that can happen by not using it for a long time is that it will take a while to sync with the network. <a>Lordcirth</a> 00:02, 28 May 2012 (GMT)</p>
+
+<h2 id="How_often_is_it_needed_to_backup_the_Wallet.3F">How often is it needed to backup the Wallet?</h2>
+
+<p>Is it necessary to make a backup after each transaction? This page is not clear about this.
+Please add this information to the page!</p>
+
+<h2 id="Creating_a_New_Wallet">Creating a New Wallet</h2>
+
+<p>This section isn&#39;t helpful; it tells you when to create a new wallet, but not how.  I&#39;m a new user, and the wallet was created when I installed the BitCoin program.  I will find out how to create a new wallet, and then edit this section so that it actually explains the task that it sets out to explain. :-) <a>ErgoOne</a> 15:19, 9 June 2011 (GMT)</p>
+
+<h2 id="Making_a_secure_workspace">Making a secure workspace</h2>
+
+<p>For me space needed in ~/Library/Application Support/Bitcoin (Mac) is more than 400MB (!) after having loaded all blocks from bitcoin app. So 100MB is much too small (may be sufficient for just wallet.dat, but then the steps to do had to be changed). <a>Hartrock</a> 18:48, 12 June 2011 (GMT)</p>
+
+<p>I updated the wiki steps to just backup wallet.dat --<a>ChocoboLee</a> 19:18, 15 June 2011 (GMT)</p>
+
+<h2 id="Flaws_with_argument_regarding_encryption">Flaws with argument regarding encryption</h2>
+
+<p>Can someone please explain to me how encrypting your wallet will actually protect against a trojan stealing it.  Because once you mount the encrypted file, and decrypt it not only can bitcoin see it but the trojan can as well.  This strategy seems to work only in the following circumstances:
+1. The wallet that has the majority of your cash you never decrypt when you have an open internet connection.
+2. Assumes that a trojan only operates when an internet connection is present and it can transmit the wallet data file.</p>
+
+<p>Even if you were paranoid and never were connected to the internet when the wallet file with the bulk of your funds was decrypted this still would not solve the problem.  In the event that a trojan seeks to copy your wallet file to another location on your computer it could wait for an open internet connection to transmit this data.  So even if you reencrypt the wallet file before connecting to the internet this type of trojan has already made a copy of the decrypted file and can transmit it as soon as an internet connection becomes available.</p>
+
+<p>Also how in the world could you ever use this wallet to transfer cash to another user if you are offline?  Maybe I don&#39;t understand how bitcoin works but don&#39;t you need to be online in order to transfer bitcoins?  Basically the bottom line is that bitcoin cannot read an encrypted wallet file which means that in order to use the wallet you need to decrypt it which means its vulnerable to trojans who can steal it the moment you want to use it.</p>
+
+<p>This seems to be a fundamental flaw in this discussion &quot;securing your wallet&quot;  Why doesn&#39;t bitcoin just address this in the software allowing for the wallet to always be encrypted and require a password upon startup.  If you want bitcoin to go mainstream I don&#39;t understand why you can&#39;t address this fundamental flaw that would be solved by an always encrypted wallet file that the software can read and write to.</p>
+
+<blockquote><p>The fundamental flaw is trying to secure the wallet when the whole system is already technically compromised. It does not help to have a secure wallet then. What a trojan could do is, for example, to replace the bitcoin client by a sligthly changed one that usually works as expected, but once in a while sends the money to an address which is owned by the attacker. The people you think you pay will become angry because the money you think to send never does arrive at them. Of course, the malicious client can be intelligent enough to wait until the is some real amount of coins in the play. One day you&#39;ll think you bought a car but the money is somewhere else. The same applies, for example, if the payment addresses you receive are modified by some malicious e-mail program.</p>
+
+<p>So what is the bottom line? Encrypting the wallet helps against a roommate stealing your coins if he has two minutes of physical access to your computer. It helps against burglary and forgetting the laptop in the train. It generally does NOT help against compromise of the system. The <strong>whole</strong> system <strong>must</strong> be kept safe, not just the data in the wallet. And this is not something that the bitcoin software is responsible for. It is the responsibility of the user to install and maintain a secure system. It is a fundamental fallacy to expect that a certain piece of software should still work as the user expects if the whole system is not any more under the control of the user. In this sense, bitcoin can not go mainstream. Instead, main stream users need to reach some point of mental sanity. --<a>Joise</a> 09:14, 14 August 2011 (GMT)</p></blockquote>
+
+<h4 id="Added_a_new_entry_to_backup_methods">Added a new entry to backup methods</h4>
+
+<p><a href="../../WalletPaperbackup/">WalletPaperbackup</a> Is a great way to get your wallet out of the digital world and onto paper
+--<a>Jrwr</a> 02:02, 24 June 2011 (GMT)</p>
+
+<h2 id="Unsecure_suggestion_for_passwords">Unsecure suggestion for passwords</h2>
+
+<p>Especially with Bitcoins the Password advice from Gibson Research is dangerous because passwords must
+also be safe in the future when it comes to wallet storing.
+This is definitely not given with this system. It might be true, that
+with today&#39;s brute-force tools, the &quot;d0g...........&quot; pw is safer than
+hkjhHZ756s=&amp;g%7 but in the very near future (maybe already exists)
+there will be new tools, that will find out, what kind of simplifiers
+are often used by humans and will combine brutforce with simplifiers
+and thus come to &quot;d0g............&quot; very quickly!</p>
+
+<h2 id="Section_4.2">Section 4.2</h2>
+
+<p>If you recommend  that one backup wallet.dat on a mac via creating an encrypted image file, don&#39;t you think you should also remind the user to backup his ~/Library/Keychains directory? There is little point in backing up wallet.dmg on Wuala or whatever if you lose your AES key to the image, and the scenario when you need to recover wallet.dmg is probably the scenario where you&#39;ve also lost ~/Library/Keychains... e.g. laptop stolent, etc.</p>
+
+<h2 id="Back-Translation_of_German_Version">Back-Translation of German Version</h2>
+
+<p>Hi,</p>
+
+<p>I have translated the page to the German Version, expanded it by several points and concepts  which seem important to me - namely, a disticion between data confidentality, system integrity and the notion of technical compromise, and adapted the ordering according to these concepts. Here is the back-translated version as a suggestion what could be expanded. I&#39;ve translated it quickly using Google Translate, that means wording and style can&#39;t be expected to be perfect. Nevertheless, I hope it&#39;s helpful. --<a>Joise</a> 09:14, 14 August 2011 (GMT)</p>
+
+<hr />
+
+<h3 id="Introduction">Introduction</h3>
+
+<p>The security of the wallet can be divided into two separate objectives:</p>
+
+<ol>
+<li><p>Safeguard against loss</p></li>
+<li><p>Secure against theft</p></li>
+</ol>
+
+
+<p>In the case of a currently not adequately secured wallet (eg with a weak password uploaded on the Internet):</p>
+
+<ol>
+<li>New, create a mew secure wallet (with a reasonably long password)</li>
+</ol>
+
+
+<h3 id="Technical_background">Technical background</h3>
+
+<p>The important first objective of the design of the wallet is protection against data loss. The personal bitcoin wallet has a pool of queued keys stored in a file named wallet.dat. The default number is 100 keys in the  <a href="../../Key_pool/">Key pool.</a> The number of can be adjusted with the &quot;-keypool&quot; parameter in the command line. If for some reason you need a new address, it is not generated on the fly, but taken from the pool. A new key is then created to fill the pool back to 100 keys. If a backup is first created, it contains all used keys plus 100 unused ones. After a transaction, 99 unused keys remain. After 100 operations which require a new key, new keys are used, which are not present in the backup. Because the backup does not have these new keys, this backup can possibly lead to a recovery loss of Bitcoins if the wallet file is destroyed, for example by a head crash.</p>
+
+<p>The safety of deposits in Bitcoin depends on three conditions:</p>
+
+<ol>
+<li>The <strong>confidentiality (secrecy)</strong> of the private key for the entire time from initial production to final use</li>
+<li>The <strong>integrity</strong> of the software on the system used.</li>
+<li>As well as the <strong>protection from loss of wallet</strong> eg by failure of the hard disk</li>
+</ol>
+
+
+<p>The bitcoin software assumes (for very good reasons) that integrity and confidentality of the computer and user account is intact. The reason for this is that, strictly spoken, securing the computer is not the business of some application software like bitcoin. A computer which has not <strong>both</strong> its confidentiality <strong>and</strong> integrity ensured, is <strong>compromised</strong>. This means, that it can not longer be excluded that Bitcoins are stolen. A computer on which <strong>malware</strong> in the form of some trojan is installed or which runs any virus, is always compromised. All data - including the bitcoin wallet - could be &quot;stolen&quot;. On the other hand - and this is far more far-reaching and important  - the other software on the computer is absolutely no longer under control of the user. A compromised system can <strong>only</strong> be brought back to a safe condition if it is completely erased, fully installed with a fresh operating system and all new security updates are applied. A &quot;disinfection&quot; of virus-infected programs is not enough! Erasing the old, compromised system can also mean it is necessary to flash the BIOS and do a BIOS update - there is some malware which modifies the BIOS.</p>
+
+<p>A password that belongs to a data backup must be permanently protected from loss just like the files themselves, otherwise in case of doubt the backup is worthless.</p>
+
+<h3 id="Securing_the_confidentiality_and_integrity_of_the_Wallet_and_Software">Securing the confidentiality and integrity of the Wallet and Software</h3>
+
+<h4 id="Creating_a_New_Wallet">Creating a New Wallet</h4>
+
+<p>In the event that the wallet was possibly or actually stored in a compromised state, or spreaded, it is wise to create a new wallet and to transfer all money amounts in the old wallet to the new. Once this is done, someone who has attained knowledge of the old private keys, can not longer use them to steal bitcoins. Keep in mind that leaked keys can be used much later from their generation. For example, if you generate some keys to day, transfer them to a new computer in three years, and throw the old computer in ten years to the trash, and it still contains keys that you have created today, these could still be used to access bitcoins that you received in the meantime.</p>
+
+<p>Creating a new wallet can be useful, for example, if someone has saved a wallet with a password of 12 characters for a service online. Meanwhile, passwords with 12 up to about 15 characters are decoded and the private keys are no longer safe. The strategy only to re-encrypt the wallet is not enough, because the keys are not safe.</p>
+
+<h4 id="Creating_a_safe_and_secure_work_space">Creating a safe and secure work space</h4>
+
+<p>Large and complex programs like Web browsers are never completely safe. Therefore, it is extremely useful, not to run the Bitcoin client program with the user identity that you use to surf the Web or read e-mails. The modern operating systems can isolate applications for different user IDs from each other quite effectively, and this is a huge advantage to security.</p>
+
+<h5 id="Digression.3A_Secure_Passwords">Digression: Secure Passwords</h5>
+
+<p>====== Passwords ======
+A proven method for producing safe, but still learnable passwords goes as follows:</p>
+
+<ul>
+<li><p>Make up a nonsense phrase like
+  &quot;Thirty crows fly backwards to the moon, but they do not have a ticket.&quot;
+The more bizarre the sentence, the better you remember it.</p></li>
+<li><p>The first letters and numbers are used for the password:
+  30CfbwttM,btdnhaT</p></li>
+<li><p>Now we get creative and replace a few characters, eg &quot;A&quot; looks like but like &quot;4&quot;:
+  30Cfbw2tM,bdnh@T</p></li>
+<li><p>Now insert one or a few signs that are not found on English keyboards <a href="https://en.bitcoin.it/wiki/Microsoft_Windows_Unicode_Input">(Tips)</a>:
+  3&szlig;0C&thorn;fb&ouml;w2tM,bdnh@&#xE3F;T</p></li>
+</ul>
+
+
+<p>Strong passwords are now, where huge computing resources like hashed databases and botnets are available for cracking, about 15 to 20 characters long. Few people can remember so long passwords  error-free, especially if they make some longer holiday. Therefore, write to the password and put it in his wallet. (That&#39;s still heretical but I have a good Reference - <a href="http://en.wikipedia.org/wiki/Bruce_Schneier">Bruce Schneier</a> <a href="http://www.schneier.com/blog/archives/2005/06/write_down_your.html">(1)</a>)</p>
+
+<ul>
+<li>To protect against unauthorized use of the written down password one should append some characters that you really have in your head.</li>
+</ul>
+
+
+<p>Now it is so that a forgotten password is at least as bad as a cracked. A button labeled &quot;Forgot your password, sent new by e-mail&quot; does not exist in Bitcoin. <strong>So the consequence of &quot;Password away&quot; is inevitable &quot;money away &quot;</strong>. Don&#39;t forget that!</p>
+
+<ul>
+<li><strong>The written-down password</strong> should be preserved in something like a bank deposit box (can be rented for a few bucks yearly) or in a fireproof safe. I you have USD 100,000 in BTC, you want to have a fireproof safe if your house has burned down. Believe me.</li>
+</ul>
+
+
+<p>====== Passphrases (password phrases) or mantras ======</p>
+
+<ul>
+<li><p>An alternative to passwords which has at least the same strength against techniques like rainbow tables, <strong>but is in comparison  much easier to remember</strong> is the use of <strong>pass-phrases</strong> or a &quot;mantra&quot;. The required length depends on the use. Passphrases for online services may be safe enough with four common words. Secure passphrases for files (which can be rapidly tried off-line) should contain at least six unusual words and at least 35 characters in length. This <a href="http://www.explainxkcd.com/2011/08/10/password-strength/">comic by XKCD</a> explains the principle.</p></li>
+<li><p>An example sentence would be: &quot;The Lemon flamb&eacute; the okapi a phosphorescent absolution.&quot;</p></li>
+<li><p>Much of the strength of this method relies on technical reasons: Once a password has reached a certain minimal complexity, the fastest way to crack the password is a brute-force search with rainbow tables and charts. And since for this methods, the length of the password is the decisive factor, long pass phrases, which are comparatively much better to remember, win over short very complex passwords (which are hard to remember but easier to crack).</p></li>
+<li><p>In-depth information on passphrases here: <a href="http://www.iusmentis.com/security/passphrasefaq/">passphrase FAQ</a> by Randall T. Williams.</p></li>
+<li><p>Warning: Completely unsuitable are fixed expressions and popular idioms. Don&#39;t use any meaningful sentence and anything that might be published on the web.</p></li>
+</ul>
+
+
+<h5 id="Special_Linux_distributions">Special Linux distributions</h5>
+
+<p>To  secure a Windows system comprehensively is a complex and difficult task. Securing which is appropriate for the administration of five-figure amounts requires knowledge which the average user does not have.</p>
+
+<p>As an alternative, there are some special Linux distributions. Using them, one can create a secure space specially for Bitcoin,  and they require almost no setup:</p>
+
+<ul>
+<li><a href="http://www.heise.de/ct/projekte/Sicheres-Online-Banking-mit-Bankix-284099.html">c&#39;t Bankix</a>, a distribution for online banking, is a adapted and, of course, free version of Ubuntu that was created by the renowned German Heise magazine publisher. Following to the (important) first update the system will be put on a read-only medium and cannot longer be manipulated by unauthorized changes to the software.</li>
+<li><a href="http://en.wikipedia.org/wiki/Damn_Small_Linux">Damn Small Linux</a> is a popular, small Debian-based Linux, which contains only the most important functions and thus provides less attack surface. The derivation from Debian guarantees speedy and thorough security updates.</li>
+<li><a href="http://en.wikipedia.org/wiki/Knoppix">Knoppix</a> is a popular live-CD distribution with excellent hardware detection, which has a slightly larger footprint than Damn Small Linux, and a number of interesting features. For example, it offers support for blind and visually impaired persons.</li>
+<li><a href="http://forum.bitcoin.org/index.php?topic=7374">LinuxCoin</a>, many additional functions for mining</li>
+</ul>
+
+
+<p>The following distributions are suitable only for users with good knowledge. However, their excellent safety features makes them quite interesting starting points for Bitcoin Appliances:</p>
+
+<ul>
+<li><a href="http://en.wikipedia.org/wiki/Tin_Hat_Linux">Tin Hat Linux</a> is a <a href="http://en.wikipedia.org/wiki/Hardened_Gentoo">Hardened Gentoo</a> derivative. In addition to a very small size and a very comprehensive encryption it has interesting additional security features, such as <a href="http://en.wikipedia.org/wiki/Grsecurity">Grsecurity</a>.</li>
+<li><a href="http://en.wikipedia.org/wiki/Alpine_Linux">Alpine Linux</a> uses, similar to Tin Hat Linux etc. Kernel functions with Stack Smashing Protection. It uses instead of the standard glibc the uClibc, which means that the Bitcoin client needs to be compiled specifically for this distribution.</li>
+</ul>
+
+
+<h5 id="Linux">Linux</h5>
+
+<p>====== Protected user account ======</p>
+
+<p>The first step is <a href="https://help.ubuntu.com/8.04/serverguide/C/user-management.html">to create a new user</a>, which goes with the command:</p>
+
+<p>sudo adduser <code> new_user_name </code></p>
+
+<p>On the message &quot;Enter a new value or press ENTER for the default&quot; one needs only to press the Return key.</p>
+
+<p>Then do you register as a new user, eg &quot;Switch User&quot; with (at Ubuntu in the menu to log off). If you are logged in, we search for the file manager, select this from the home directory (with the house icon), then right-click &quot;Properties&quot;, then the access permissions. Here you select &quot;Other&quot; and set the permissions to &quot;nobody&quot;. With this step, other programs can not read the other user&#39;s wallet.</p>
+
+<p>The newly created user should be safe to use in order to keep him safe, exclusively for Bitcoin.</p>
+
+<p>There is also a good idea to encrypt this user&#39;s home directory with the package ecryptfs-utils.</p>
+
+<ol>
+<li>If the home directory is not empty, first backup it to some other medium.</li>
+<li>Now install ecryptfs-utils (Ubuntu: sudo apt-get install ecryptfs-utils)</li>
+<li>From X11 (graphical system) log and log in with Ctrl + Alt + F1 in the Linux console - if you are logged in X11, the home directory is encrypted.</li>
+<li>The current directory change so that it is not in the home folder, eg &quot;Cd /&quot;.</li>
+<li>The migration tool to run: (in Ubuntu: sudo ecryptfs-migrate-home-u username)</li>
+<li>If it succeeds then you can press ALT + F8 to go back and log in X11.</li>
+<li>Run the command &#39;ecryptfs-unwrap-passphrase&#39;. Without exception <strong>write and store the code that you receive on a secure medium*. </strong>Without this code no data - including the wallet  - can be accessed if the system does not work**</li>
+<li>Run the command &#39;ecryptfs-setup-swap&#39; run, which encrypts the swap partition. Otherwise, keys in your purse in plain text can go to the the swap partition where they might be stolen. This unfortunately also means that &quot;idle&quot; or Hibernate can not be used anymore because the bootloader can not restore the dump. An more conventient alternative is to overwrite the swap partition when you shut down the machine (after the deactivation of virtual memory) with random data.</li>
+</ol>
+
+
+<p>(Instructions from <a href="http://bodhizazen.net/Tutorials/Ecryptfs/"># Migrate</a>)</p>
+
+<p>====== For more information ======</p>
+
+<ul>
+<li><p><a href="https://help.ubuntu.com/community/Security">Security features on ubuntu</a></p></li>
+<li><p><a href="http://www.techrepublic.com/blog/10things/10-ways-to-secure-your-linux-desktop/359">10 ways to secure your lInux desktop</a></p></li>
+</ul>
+
+
+<h5 id="Windows">Windows</h5>
+
+<ul>
+<li><p><a href="http://windows.microsoft.com/de-DE/windows7/help/security-privacy-user-accounts">Basics</a></p></li>
+<li><p>Create an extra user, under which only the Bitcoin software is running. So the wallet is somewhat protected from malicious code in applications for other users:</p>
+
+<ul>
+<li><a href="http://support.microsoft.com/kb/905056/en">Windows XP</a></li>
+<li><a href="http://windows.microsoft.com/en-US/windows7/Create-a-user-account">Windows 7</a></li>
+</ul>
+</li>
+</ul>
+
+
+<h4 id="Browser_Security">Browser Security</h4>
+
+<h5 id="Firefox">Firefox</h5>
+
+<p>To secure the browser, you start Firefox, go to menu &quot;Edit&quot; (edit), and select &quot;Preferences&quot; (Settings).</p>
+
+<ul>
+<li>Now you start with the tabs on the left, select the &quot;Startup&quot; option &quot;Show a blank page&quot; (Clean Slate).</li>
+<li>By &quot;content&quot; (content)
+
+<ul>
+<li>The option &quot;Load images automatically / Load images automatically&quot; opt out,</li>
+<li>Also &quot;Enable Javascript Enable / javascript&quot; opt out.</li>
+</ul>
+</li>
+<li>In the tab &quot;privacy / data protection&quot; in the &quot;History / History History,&quot; select &quot;Never remember history&quot; / &quot;do not save history&quot;.</li>
+<li>In the tab &quot;Security&quot; in the &quot;Passwords&quot;
+
+<ul>
+<li>The &quot;remember passwords / passwords save&quot; deselect</li>
+<li>Also &quot;use a master password&quot; / &quot;master password&quot;.</li>
+</ul>
+</li>
+<li>Finally, in the tab &quot;Advanced&quot; / &quot;Advanced&quot; option
+
+<ul>
+<li>&quot;Automatically check for updates&quot; deselect</li>
+<li>As &quot;add-ons&quot; and</li>
+<li>&quot;Search engines&quot; / &quot;search engines&quot; opt out.</li>
+</ul>
+</li>
+</ul>
+
+
+<p>If Javascript is disabled, the page linux download page to download new versions of the Bitcoin Clients will no longer automatically download, so you have to link to the &quot;direct link&quot; on notice &quot;Problems with the download? Please use this &#39;direct link&#39; or try another mirror.&quot; . click Once you make the effort made, of course you checked the download of new clients Bitcoin the checksums, which are indicated on the sourceforge page, with the program sha1.</p>
+
+<h3 id="Protect_against_data_loss.3A_Backup">Protect against data loss: Backup</h3>
+
+<p>Secure the only file you need is the wallet.dat. Advance to make sure that Bitcoin not running anymore! The best way would be to encrypt the file and store somewhere safe.</p>
+
+<p>You can also  <span class="createlink"><a href="/ikiwiki.cgi?from=Securing_your_wallet%2Ftalk&amp;page=API&amp;do=create" rel="nofollow">?</a>backupwallet</span> JSON-RPC command used to create a backup on the fly.</p>
+
+<h4 id="Where_to_find_the_Bitcoin_folder">Where to find the Bitcoin folder</h4>
+
+<p>The <span class="createlink"><a href="/ikiwiki.cgi?from=Securing_your_wallet%2Ftalk&amp;do=create&amp;page=Bitcoin_folder" rel="nofollow">?</a>Bitcoin folder</span> is the folder where the data is wallet.dat along with the file.</p>
+
+<h5 id="Windows">Windows</h5>
+
+<p>Click on &quot;Start&quot;, then Run and enter this:</p>
+
+<blockquote><p>% APPDATA% \ Bitcoin
+A folder should open now, for most it would be:
+    C: \ Documents and Settings \ username \ Application Data \ Bitcoin (XP)
+    C: \ Users \ username \ appdata \ roaming \ Bitcoin (Vista and 7)</p></blockquote>
+
+
+
+
+<p>===== Linux =====
+Bitcoin should create a hidden folder in your home directory of the running user.
+ ~ /. Bitcoin /</p>
+
+<p>It should not be there, it can be possibly due
+Find /-name wallet.dat-print 2&gt; / dev / null
+. find Or as root
+     Updatedb
+followed by
+     Locate wallet.dat</p>
+
+<p>The handiest backup method under Linux is probably the copy on one or more wallet.dat used for USB flash drives or memory cards that are kept in a safe place (fireproof safe, bank safe, aquarium with piranhas, etc).</p>
+
+<p>====== Individual encryption of the wallet.dat file ======
+* For individual encryption of the purse, the available cross-platform program&#39;&#39;&#39;[http://ccrypt.sourceforge.net/ ccrypt]&#39;&#39;&#39; is well suited. It encodes a variant of the AES Rijndael algorithm. a recognized standard, which is considered very safe. The plain-text version of Wallet.dat will be replaced automatically. As with all strong encryption, a careful backup of data and keys is essential - under Linux, the risk of loss due to forgetting the key is much higher than by computer intrusions and malware.</p>
+
+<ul>
+<li><p>For automatic storage of encrypted copies GnuPG  (Gnu Privacy Guard) is well suited. To encrypt data, ones need  only the public key.  Only to decrypt a backup, the private key is used, which can be stored otherwise in a safe place. Using a fixed pair of keys reduces also the risk of loss of a key by unnoticed typos when typing them.</p></li>
+<li><p>Additional protection against attacks by key loggers provide smart cards and hardware tokens like the [http://www.privacyfoundation.de/crypto_stick/ Crypto Stick] the Deutsch Privacy Foundation or the  GnuPG Fellowship smart card. The special advantage is that you GnuPG keys that are very safe due to their length, and can be stored on the smart card. A six-digit PIN code protects the contents of the smart card. If it is entered incorrectly multiple times, then the content will be deleted. [https://www.privacyfoundation.de/wiki/CryptoStickSoftware instructions here].</p></li>
+<li><p>Together with the FUSE-based file system [http://de.wikipedia.org/wiki/EncFS EncFS] can you also back up individual files as wallet.dat individually. The entire list can Bitcoin but are not used because the database is encrypted with EncFS.</p></li>
+</ul>
+
+
+<p>===== Mac =====</p>
+
+<p>&#39;&#39;Note: The following instruction are not checked due to lack of hardware. Please check and correct if necessary, then remove the note!&#39;&#39;</p>
+
+<p>The directory containing the Bitcoin wallet.dat is usually here:
+ ~ / Library / Application Support / Bitcoin /</p>
+
+<p>====== Secure all data (500 megabytes) ======
+These steps (chain wallet and block) of all data stored on Bitcoin an encrypted disk image:</p>
+
+<h1 id="Disk_Utility_Open">Disk Utility Open</h1>
+
+<h1 id="Click_on_New_Image.2C_500MB.2C_128-bit_or_256-bit_.28faster_or_more_secure.29_encryption_specify_eintelne_partition.">Click on &quot;New Image&quot;, 500MB, 128-bit or 256-bit (faster or more secure) encryption specify eintelne partition.</h1>
+
+<h1 id="Copy_in_a_place_where_you_will_not_lose_the_image_.28eg_Wuala.2C_Strong_Space_ofer_whatever.29">Copy in a place where you will not lose the image (eg Wuala, Strong Space ofer whatever)</h1>
+
+<h1 id="A_strong_and_secure_password_select">A strong and secure password select</h1>
+
+<h1 id="Copy_everything_from_~_.2F_Library_.2F_Application_Support_.2F_Bitcoin_.2F_in_the_image">Copy everything from ~ / Library / Application Support / Bitcoin / in the image</h1>
+
+<h1 id="Create_symlink_to_the_old_place.2C_so_the_app_can_benuutzen_it">Create symlink to the old place, so the app can benuutzen it</h1>
+
+<pre><code>:: Ln-s / Volumes / Bitcoin ~ / Library / Application Support / Bitcoin
+</code></pre>
+
+<p>Do not forget to mount the image before using Bitcoin and unmount afterwards.</p>
+
+<p>====== Backup file wallet.dat purses alone (40MB ) ======
+These steps only protect the file wallet.dat. This causes a small memory dump, but is more complicated.</p>
+
+<h1 id="Disk_Utility_Open">Disk Utility Open</h1>
+
+<h1 id="Click_on_New_Image.2C_40MB.2C_128-bit_or_256-bit.2C_single_select_partition.">Click on &quot;New Image&quot;, 40MB, 128-bit or 256-bit, single select partition.</h1>
+
+<h1 id="Store_in_a_place_where_you_will_not_lose_the_backup.">Store in a place where you will not lose the backup.</h1>
+
+<h1 id="A_secure_and_strong_password.2C_select">A secure and strong password, select</h1>
+
+<h1 id="The_file_wallet.dat_move_in_the_image">The file wallet.dat move in the image</h1>
+
+<h1 id="Create_symlink_to_the_old_place.2C_so_the_app_can_find_and_use_the_file">Create symlink to the old place, so the app can find and use the file</h1>
+
+<pre><code>:: Ln-s / Volumes / Bitcoin / wallet.dat ~ / Library / Application Support / Bitcoin / wallet.dat
+</code></pre>
+
+<p><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=%20thumbnail%20__124__%20150px%20__124__%20Mount%20Wallet%20and%20launch%20Bitcoin&amp;from=Securing_your_wallet%2Ftalk" rel="nofollow">?</a>File: MountWalletAndLauchnBitcoin OSX Automator.png </span>
+Do not forget to mount the image before using Bitcoin and unmount afterwards.</p>
+
+<p>&#39;&#39;&#39;Note:&#39;&#39;&#39; If you start the application Bitcoin without the image is mounted, the program is the symlink (a kind of shortcut) wallet.dat with the new one. Do not panic! Rename the new order wallet.dat or delete it, mount the image, and just put a new symlink. The old wallet.dat may of course be canceled under any circumstances.</p>
+
+<p>&#39;&#39;&#39;Automation:&#39;&#39;&#39; The program [http://en.wikipedia.org/wiki/Automator_% 29% 28software Automator] (included in OS X) can automatically mount your wallet and start Bitcoin App.</p>
+
+<p>Alternatively, the following shell script can be used to decrypt wallet.dat which automatically starts the Bitcoin client, and they subsequently re-encrypted. The script works for sowoghl for OSX and Linux: [http://lorelei.kaverit.org/bitcoin.sh Bitcoin-launch-script]</p>
+
+<p>==== General solution ====
+wallet.dat is not usually encrypted, everyone who has access to the file, can freely dispose of the coins. You can encrypt your wallet.dat with one of these programs, should there be the slightest chance that someone else has access.</p>
+
+<p>Note: Encryption does not protect the wallet against security risk &#39;&#39;after&#39;&#39; they have occured. Encryping a wallet after finding a computer virus or a trojan helps absolutely nothing. Also, encryption does not help against the complete loss of control which a system compromise means.</p>
+
+<ul>
+<li>[http://www.7-zip.org/ 7-Zip]</li>
+<li>[http://www.axantum.com/axcrypt/ AxCrypt]</li>
+<li>[http://www.truecrypt.org/ TrueCrypt]</li>
+<li>[http://www.rarlab.com/ WinRar]</li>
+<li>[http://de.wikipedia.org/wiki/EncFS EncFS] (Linux)</li>
+</ul>
+
+
+<p>==== Encryption with Smart Card ====</p>
+
+<p>Folders can be encrypted with GnuPG-compatible smart card. A very secure solution is to stick the Crypto Deutsch Privacy Foundation:</p>
+
+<p>[http://www.privacyfoundation.de/crypto_stick/ Crypto Stick overview]</p>
+
+<p>[https://www.privacyfoundation.de/wiki/CryptoStickSoftware Intallation and use]</p>
+
+<p>==== Storing the Archives ====
+A backup on Flash Media / Memory Sticks and storing them in secure locations is a reasonable solution.</p>
+
+<p>=== BOTG: Bitcoin Off The Grid===
+* Another alternative that is suitable for high security requirements,is  &quot;BOTG - Bitcoin off-the-grid&quot; [http://forum.bitcoin.org/index.php?topic=7374.msg108351 see info in the announcement to LinuxCoin]. It is a script that  can create a key pair &#39;&#39;without&#39;&#39; Internet connection. As the private keys are created on a system that does not have Internet access, and are stored offline, they can not get lost via the Internet. The public key can be passed on and received as normal transactions that can be looked up in block Explorer. Only if you want to use the fund, you must import the private key into a Bitcoin client. From then on, the normal safety precautions apply.</p>
+
+<p>=Securing your wallet on Ubuntu and/or Suse=
+For users that use a Linux system that comes with AppArmor, it is probably possible to use
+the MinorFs system with a procedure not unlike that described here for secure ssh without a passphrase:</p>
+
+<p>http://minorfs.polacanthus.net/wiki/Ssh_private_keys_without_passphrase</p>
+
+<p>Its a bit of a hack, but it would make it impossible for malware running under the same user id as
+bitcoin to gain access to the wallet.</p>
+
+<p>It may be worth it if someone would describe the correct procedure to secure the bitcoin wallet using MinorFs/AppArmor in a way similar to described in the above link for ssh keys without passphrases.</p>
+
+<p>= &lsquo;Shred&rsquo; cannot always be assumed to be secure on modern filesystems! =</p>
+
+<p>I don&#39;t feel entirely comfortable with the suggested usage of the &lsquo;shred&rsquo; command in the given Linux script.  My understanding (and according to shred&#39;s manpage) is that on modern (especially journaled) filesystems, there is &#39;&#39;no&#39;&#39; guarantee that when an application like shred asks the OS to overwrite a file, that the file will actually be physically overwritten in place on the disk.  Unless there have been features implemented to allow special handling by the kernel for such security applications (I haven&#39;t investigated, so maybe there are, or maybe not), it would probably be safer to disable all system swap (i.e., with &lsquo;swapoff&rsquo;) and then store the unencrypted data on a temporary RAM disk only, then unmount the RAM disk afterwards to ensure it never gets written to disk.  I&#39;ve done this before, though unfortunately it&#39;s a bit of a hassle and normally requires running commands that need root privileges or sudo, etc.  Comments?
+~&nbsp;<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Ijel&amp;from=Securing_your_wallet%2Ftalk" rel="nofollow">?</a>User:Ijel</span> 03:49, 11 February 2012 (GMT)</p>
+
+<p>@Ijel Well, TrueCrypt uses RAM-only storage when mounting a file. I&#39;m pretty sure it has anti-swap protection too. <span class="createlink"><a href="/ikiwiki.cgi?from=Securing_your_wallet%2Ftalk&amp;do=create&amp;page=Lordcirth" rel="nofollow">?</a>User:Lordcirth</span> 23:55, 27 May 2012 (GMT)</p>
+
+<p>== Automated backup: inotify v.s. cron ==</p>
+
+<p>Hi, what would you think about a an automated backup using inotify (or pynotify: http://pyinotify.sourceforge.net/doc-v07/) to monitor writes on the wallet, which trigger the backup. It would save space by not copying the same versions of a wallet, and not wait for the next cron iteration to backup the wallet (which could be lost in between). --<span class="createlink"><a href="/ikiwiki.cgi?page=Mammique&amp;do=create&amp;from=Securing_your_wallet%2Ftalk" rel="nofollow">?</a>User:Mammique</span> (<span class="selflink">User talk:Mammique</span>) 06:17, 25 September 2012 (GMT)
+    There is also lsyncd: http://code.google.com/p/lsyncd/--<span class="createlink"><a href="/ikiwiki.cgi?from=Securing_your_wallet%2Ftalk&amp;page=Mammique&amp;do=create" rel="nofollow">?</a>User:Mammique</span> (<span class="selflink">User talk:Mammique</span>) 06:20, 25 September 2012 (GMT)</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../">Securing your wallet</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2012-09-25T06:20:05Z">Tue 25 Sep 2012 06:20:05 AM Europe</time>
+<!-- Created <time datetime="2011-02-11T11:28:07Z" pubdate="pubdate">Fri 11 Feb 2011 11:28:07 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Using Bitcoin</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Using Bitcoin
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<div>
+Current releases of the bitcoin client have a different user interface than the versions used in this article.
+
+This article could use an update.  See the discussion for this article for more.
+</div>
+
+
+<p>This page is a detailed tutorial to help new users understand and using bitcoin. After you read this page, you&#39;ll know the basics of what bitcoin is and how it is structured, how to get and install the bitcoin client, where to get coins, and how to use the client to send and receive transactions.</p>
+
+<p>If you want to ignore all the details of how the system works, and just want to start using it, see the <a href="../Getting_started/">Getting started</a> page instead.</p>
+
+<h1 id="What_is_Bitcoin">What is Bitcoin</h1>
+
+<p>Bitcoin is a distributed <a href="../Digital_currency/">digital currency</a> based on strong cryptographic principles. Each coin is assigned to the owner&#39;s public key, and is transferrable via cryptographically signed messages.</p>
+
+<h1 id="Getting_started">Getting started</h1>
+
+<p>In this section, you&#39;ll learn where to get the client, how to install it on different operating systems, and download the <a href="../Block_chain/">block chain</a>.</p>
+
+<h2 id="Download_and_install_the_client">Download and install the client</h2>
+
+<p>First, download the bitcoin client from http://bitcoin.org/. Choose the appropriate link depending on your operating system, and install in the usual manner. For Windows, easiest is probably the executable installer. For Linux, note that the tar.gz contains the binary build, in addition to the source, so if you run a recent distribution, you should be able to just run the binary without compiling yourself.</p>
+
+<h3 id="Issues_with_Linux_package_repositories">Issues with Linux package repositories</h3>
+
+<p>Be warned that the version of Bitcoin Core in some package repositories are severely out of date and may be harmful to use. For Debian, users should use <a href="https://packages.debian.org/source/unstable/bitcoin">the package from the &#39;unstable&#39; repository</a>. For Ubuntu and derivatives, please use the PPA link <a href="https://bitcoin.org/en/download">on bitcoin.org</a>. Please see <a href="https://launchpad.net/+help-soyuz/ppa-sources-list.html">this guide</a> for details on how to use the PPA. You can also choose to use the static binary or to compile from source (both are in the &#39;tgz&#39; file on the bitcoin.org download page), although updates will not be automated. Please refer to <a href="https://bitcoin.org/en/download">this page</a> for the latest version number.</p>
+
+<h2 id="Starting_the_client_and_connecting_to_the_network">Starting the client and connecting to the network</h2>
+
+<p><span class="createlink"><a href="/ikiwiki.cgi?page=First_time_run_fin.png&amp;do=create&amp;from=Using_Bitcoin" rel="nofollow">?</a>First time run fin.png</span>
+Bitcoin comes with a GUI client called &quot;bitcoin&quot;, and a CLI (text-mode) client called &quot;bitcoind&quot;. It is probably more user-friendly to start with the GUI, so launch the bitcoin client.</p>
+
+<p>When you start for the first time, your bitcoin wallet will be created automatically, and the client will attempt to establish connections to other nodes on the network and start downloading the bitcoin <a href="../Block_chain/">block chain</a>. You must get all of the blocks in the chain before sending/receiving transactions. <a href="http://blockexplorer.com/q/getblockcount">Click here</a> to see the current number of blocks in the chain. This download may take as long as several hours.</p>
+
+<h2 id="Client_features">Client features</h2>
+
+<p>Your starting bitcoin address (you can have as many as you want - we&#39;ll talk about <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=addresses__124__&amp;from=Using_Bitcoin" rel="nofollow">?</a>addresses|</span> later) shows in a text box at the top. Right below it is your total bitcoin balance, which, of course, to start with will be zero. There is a list box below it showing all your transactions, which can be variously filtered with tabs, which again will be empty to start with.</p>
+
+<p>The status bar at the bottom will display some important information. If you have <span class="createlink"><a href="/ikiwiki.cgi?from=Using_Bitcoin&amp;page=bitcoin%20generation%20%28block%20hashing%29__124__&amp;do=create" rel="nofollow">?</a>bitcoin generation (block hashing)|</span> turned on, on the left the client will display your hash rate. To the right of that, you will see the number of bitcoin nodes your client is connected to, then, the number of blocks your client has in its chain, and finally, the number of transactions you have in your wallet.</p>
+
+<h1 id="Using_bitcoin">Using bitcoin</h1>
+
+<p>In this section you will learn about bitcoin addresses, sending and receiving transactions, the block chain and transaction confirmations, where to get your first bitcoins (faucet), generation. Tips on keeping wallet safe.</p>
+
+<h2 id="Getting_your_first_bitcoins">Getting your first bitcoins</h2>
+
+<p>There are few things more exciting than getting your first bitcoins! So once you have all the blocks downloaded, head on over to the <a href="https://freebitcoins.appspot.com/">bitcoin faucet</a>, fill out the form and put in your bitcoin address, and receive some free bitcoin! (You can do this before finishing the block chain download, but you won&#39;t see the coins in your wallet until you finish downloading the blocks... which would put a damper on the whole excitement bit.)</p>
+
+<p>See <a href="http://en.bitcoin.it/wiki/Trade#Samples_and_Marketing_Offers">Samples and Marketing Offers</a> for other free bitcoins and marketing offers.</p>
+
+<p>Once you submit the form successfully, you should see a new transaction in your client within seconds. But it will be grayed out, and have 0/unconfirmed status:
+<a href="../First_btc_recv.png"><img class="img" height="117" src="../First_btc_recv.png" width="754" /></a></p>
+
+<p>Once your transaction makes it into the block chain, the confirmation count will grow in step with the number of blocks in the chain. By default, the client stops showing &quot;unconfirmed&quot; after the transaction is 6 blocks deep in the chain:
+<span class="createlink"><a href="/ikiwiki.cgi?from=Using_Bitcoin&amp;do=create&amp;page=Six_confirms_bitcoin_client.png" rel="nofollow">?</a>Six confirms bitcoin client.png</span></p>
+
+<h2 id="Bitcoin_addresses">Bitcoin addresses</h2>
+
+<p>You can create as many new addresses as you like. Using a different address each time helps to preserve your <a href="../Anonymity/">anonymity</a>.</p>
+
+<p>You cannot send BTC to an invalid address. Client will refuse to send payment to a misspecified address. (Though with care you can craft a valid but nonexistent address.)</p>
+
+
+
+
+
+
+
+<h2 id="Generating_bitcoins">Generating bitcoins</h2>
+
+<p>In order to generate bitcoins, you will need to perform bitcoin <a href="../Mining/">mining</a>. As of 2013, the competition for bitcoin mining has become intense, so you are unlikely to achieve much without specialized hardware.</p>
+
+<h1 id="See_also">See also</h1>
+
+<ul>
+<li><a href="../Getting_started/">Getting started</a> A brief tutorial for the impatient</li>
+<li><a href="http://bitcoinX.io">BitcoinX.io</a> View where to buy and store your bitcoins on the only Bitcoin peer-to-peer review site, BitcoinX</li>
+<li><a href="https://www.weusecoins.com">What Is Bitcoin?</a></li>
+<li><a href="https://www.bitcoinmining.com">What Is Bitcoin Mining?</a></li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Introduction/" rel="tag">Introduction</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Bitcoin/">Bitcoin</a>
+
+<a href="../How_bitcoin_works/">How bitcoin works</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-07-07T15:33:10Z">Tue 07 Jul 2015 03:33:10 PM Europe</time>
+<!-- Created <time datetime="2011-01-09T00:32:33Z" pubdate="pubdate">Sun 09 Jan 2011 12:32:33 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

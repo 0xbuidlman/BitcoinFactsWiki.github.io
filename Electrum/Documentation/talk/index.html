@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>talk</title>
+
+<link rel="stylesheet" href="../../../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../../../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../../../">bitcoin</a>/ 
+
+<a href="../../">Electrum</a>/ 
+
+<a href="../">Documentation</a>/ 
+
+</span>
+<span class="title">
+talk
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<h3 id="seeds">seeds</h3>
+
+<p>{
+Open Point: It is <em>not clear</em> whether the algorithm of deterministic address generation is designed such that for any two seeds &quot;S1&quot; and &quot;S2&quot; (out of the 2<sup>128</sup> possible different seeds) the following condition holds true:</p>
+
+<ul>
+<li>If 4.3 Billion (2<sup>32</sup> to be exact) new addresses are calculated from each S1 and from S2, does the algorithm guarantee that there will be no collision between the set of 2<sup>32</sup> addresses from S1 and the set of 2<sup>32</sup> addresses from S2?
+If this condition does not hold true, it needs to be clarified whether the use of deterministic wallets still bares an acceptably low probability of address collisions.
+}</li>
+</ul>
+
+
+<p>I am not an expert in cryptography.
+However, 128 bits of entropy is believed to be enough to prevent attacks.
+<a>ThomasV</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Electrum%2FDocumentation%2Ftalk&amp;do=create&amp;page=User_talk%3AThomasV" rel="nofollow">?</a>talk</span>) 08:26, 14 June 2012 (GMT)</p>
+
+<h3 id="gap_limit">gap limit</h3>
+
+<p>{</p>
+
+<p>To avoid misunderstandings and panic: This does not mean that you will irrecoverably loose your funds when you have forgotten the gap limit and want to recover your wallet from seed. It just means:</p>
+
+<ul>
+<li>If you enter a too low gap limit when recovering a wallet from seed, it may happen that some of the later addresses in the deterministic sequence of addresses are not recovered although they have a balance&gt;0, such that your wallet will not show the full balance.</li>
+<li>If you enter a too high value for the gap limit when recovering a wallet from seed, you will unnecessarily generate too many new addresses that will then show up in your wallet, all with zero balance. But at least all your funds are recovered in this case.</li>
+</ul>
+
+
+<p>}</p>
+
+<p>of course you can always recover your coins.
+but some people will never go into the details of understanding this; these people are at risk of losing coins.
+we want to design a client that can be used by non-techies. Not having to worry about an extra parameter is important.
+<a>ThomasV</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Electrum%2FDocumentation%2Ftalk&amp;page=User_talk%3AThomasV&amp;do=create" rel="nofollow">?</a>talk</span>) 08:24, 14 June 2012 (GMT)</p>
+
+<h3 id="tx">tx</h3>
+
+<p>{
+The number of outgoing transactions is apparently not counted. It is unclear why the column is called &quot;Tx&quot; and not &quot;Rx&quot;, because it indicates the number of times that Bitcoins have been sent to this address, i.e. how often this address has &quot;received&quot; Bitcoins.
+Does this &quot;Tx&quot; come from blockchain/blockexplorer terminology? Or why is it called &quot;Tx&quot; (&quot;transmit&quot;) and not &quot;Rx&quot; (&quot;receive&quot;)? To be clarified.
+}</p>
+
+<p>tx=transaction. <a>ThomasV</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Electrum%2FDocumentation%2Ftalk&amp;do=create&amp;page=User_talk%3AThomasV" rel="nofollow">?</a>talk</span>) 08:24, 14 June 2012 (GMT)</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../">Documentation</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2012-06-14T08:26:52Z">Thu 14 Jun 2012 08:26:52 AM Europe</time>
+<!-- Created <time datetime="2012-06-14T08:14:11Z" pubdate="pubdate">Thu 14 Jun 2012 08:14:11 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

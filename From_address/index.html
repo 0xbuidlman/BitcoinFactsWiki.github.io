@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>From address</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+From address
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=From_address" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>Bitcoin addresses are used to receive payments, but not to send them:
+there is no concept of a &quot;from&quot; address in Bitcoin.</p>
+
+<p>A common exchange on Bitcoin forums goes like this:</p>
+
+<ul>
+<li>X: How do I see the address that a transaction came from?
+
+<ul>
+<li>or: Why does my wallet software not tell me where transactions came from?</li>
+</ul>
+</li>
+<li>Y: (You can&rsquo;t,) because there is no &lsquo;from&rsquo; address.</li>
+<li>X: What the hell do you mean? My transaction came from somewhere!
+This is an attempt to explain readably but fairly completely in one easily linkable place.</li>
+</ul>
+
+
+<h2 id="It_depends_what_your_definition_of_.E2.80.98from.E2.80.99_is">It depends what your definition of &lsquo;from&rsquo; is</h2>
+
+<p>OK, so before you had these coins, someone else had them (2.1) &mdash; let&rsquo;s say your friend Monica paid you back her share of your restaurant bill right there in the restaurant.
+The reason for avoiding the word &lsquo;from&rsquo; is that in common English usage it&rsquo;s tempting to assume that if something came <em>from somewhere</em>, and you need to return it or correspond later about something else, that&rsquo;s where you should <em>return it to/reply to</em>.
+In the case of Bitcoin transactions (and actually often in the real world) this is an unreliable assumption;
+it confuses the who with the where/how.
+The distinction isn&rsquo;t just <a href="http://www.deadprogrammer.com/technically-correct">pedantry</a>;
+people (especially <span class="createlink"><a href="/ikiwiki.cgi?page=Satoshi_Dice&amp;do=create&amp;from=From_address" rel="nofollow">?</a>Satoshi Dice</span> customers) have made this mistake and have lost money, so it&rsquo;s primarily an effort to minimise such losses in future (2.2).</p>
+
+<p>I suspect the following factors have contributed to the popularity of the &ldquo;from&rdquo; misconception:</p>
+
+<ol>
+<li>We often learn by comparing new phenomena to those we&rsquo;re already familiar with, and in most other payment systems and sender/recipient models the sender has a single permanent identifier.</li>
+<li>Most blockchain explorers (2.3) attempt to show all last-sent-to addresses for a transaction in an effort to be user-friendly, and either show a suggestive arrow or even (in the case of blockexplorer.com) actually label the last-sent-to as &ldquo;From&rdquo;. All those I checked represent addresses as having a &ldquo;balance&rdquo; which tempts people to think addresses operate like bank accounts.</li>
+<li>The depiction or use of addresses in some local wallets somewhat encourages it:</li>
+<li><ul>
+<li>Multibit prefers simpler key management over privacy, <a href="https://bitcointalk.org/index.php?topic=208808.msg2191181#msg2191181">sending change &ldquo;back&rdquo; to one of the last-sent-to addresses</a></li>
+</ul>
+</li>
+<li><ul>
+<li>Electrum <a href="https://iwilcox.me.uk/2014/no-from/electrum-screenshot">represents addresses as having balances</a></li>
+</ul>
+</li>
+<li>Vanity address use can easily be interpreted as meaning there&rsquo;s a one-to-one relationship between people and addresses.</li>
+</ol>
+
+
+<p>2.1: Unless you were <span class="createlink"><a href="/ikiwiki.cgi?from=From_address&amp;do=create&amp;page=Coinbasemining" rel="nofollow">?</a>Coinbasemining</span>.<br />
+2.2: Secondarily, understanding why it&rsquo;s unreliable is useful both for sound understanding of Bitcoin and for writing robust financial code that doesn&rsquo;t lose other people&rsquo;s money or cause support headaches for you.<br />
+2.3: <a href="https://blockr.io">blockr.io</a> At least , ,  and  (at time of writing).</p>
+
+<h2 id="Why_there.E2.80.99s_no_.E2.80.98from.E2.80.99_address">Why there&rsquo;s no &lsquo;from&rsquo; address</h2>
+
+<h3 id="By_analogy">By analogy</h3>
+
+<p>Relying on things that <em>seem</em> like &lsquo;from&rsquo; addresses would be like:</p>
+
+<ul>
+<li>getting on a train/bus that just arrived from where you want to go, in the hope that all trains/buses always turn around and head back the way they came</li>
+<li>trying to reply to mail you recieved in a re-used envelope &mdash; by peeling the sticker bearing your address off, and using the previous address you find underneath</li>
+</ul>
+
+
+<h3 id="More_technically">More technically</h3>
+
+<p>At the protocol level, when looking at a transaction in isolation as it appears on the wire or in a block, no part of it directly encodes a &ldquo;from&rdquo;.
+A transaction provides solutions for some challenges and poses some new challenges, both in the form of <a href="../Script/">scripts</a> (5.1)
+.
+Here&rsquo;s one way to depict that for a transaction like <a href="https://blockexplorer.com/rawtx/e9e2c646890be8aa2f32b221e1ac771467839a660dab1e269d1b6d8c11b25063">e9e2....5063</a>:</p>
+
+<p><img alt="4ce9ef5f165d910881386f1d65fe1bf93b66ada3.png" src="../4ce9ef5f165d910881386f1d65fe1bf93b66ada3.png" /></p>
+
+<p>None of the <code>prev_outs</code> in the <a href="https://blockexplorer.com/rawtx/e9e2c646890be8aa2f32b221e1ac771467839a660dab1e269d1b6d8c11b25063">decoded version</a> directly encode addresses in any form.
+It does encode <em>indirect references</em> to unspent coins, and maybe for some unspent coins you can infer something about <em>their</em> previous destination, but conceptually those are at best references to previous &ldquo;to&rdquo; addresses.
+Even that inference is not always sensible (advanced transactions will probably <a href="https://blockexplorer.com/rawtx/e9e2c646890be8aa2f32b221e1ac771467839a660dab1e269d1b6d8c11b25063">defeat</a> <a href="https://blockchain.info/tx/54fabd73f1d20c980a0686bf0035078e07f69c58437e4d586fb29aa0bee9814f?show_adv=true">most</a> <a href="https://www.biteasy.com/blockchain/transactions/54fabd73f1d20c980a0686bf0035078e07f69c58437e4d586fb29aa0bee9814f">block</a> <a href="http://blockr.io/tx/info/54fabd73f1d20c980a0686bf0035078e07f69c58437e4d586fb29aa0bee9814f">explorers</a>) and is never necessary or appropriate in everyday use of Bitcoin. The rest of this post will use the term &ldquo;<em>last-sent-to</em> address&rdquo; (5.2).</p>
+
+<p>5.1: Although in practice the network currently limits solution scripts to providing solutions directly; solution scripts can&rsquo;t compute anything.<br />
+5.2: Because transactions are multiple-input, multiple-output, it&rsquo;s really &ldquo;all last-sent-to addresses&rdquo;, since without assumptions you&rsquo;ve no information about whether any one is more valid than any other.</p>
+
+<h2 id="Unreliable_assumptions">Unreliable assumptions</h2>
+
+<p>So when and how does sending to the last-sent-to address fail?
+Suppose you carefully reconcile your personal accounts at the end of each month and notice then that Monica overpaid.
+Now you need to return some of the money.
+If you send to the last-sent-to address, you&rsquo;re relying on the assumptions that Monica:</p>
+
+<ul>
+<li>uses a local wallet rather than a shared/web wallet</li>
+<li>didn&rsquo;t drop her phone in a puddle in the meantime</li>
+<li>didn&rsquo;t have her phone stolen in the meantime</li>
+<li>used coins she received via a simple transaction to pay you</li>
+<li>knows (or can definitely work out) who is sending that money to her and why</li>
+<li>is comfortable with the security implications of address re-use</li>
+<li>is comfortable with the privacy implications of address re-use</li>
+</ul>
+
+
+<p>If any of these assumptions turn out to be untrue you&rsquo;ll lose coins, inconvenience Monica, or both.
+Since this is more than you&rsquo;re likely to know with sufficient confidence about her without checking with her, it&rsquo;s safer and easier simply to ask her for the correct address to send the overpayment to (hopefully a freshly generated, dedicated one) when you communicate.</p>
+
+<p>The following sections briefly look at why each listed assumption about the last-sent-to address is risky.</p>
+
+<ul>
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Recipient%20created%20the%20private%20key__124__&amp;do=create&amp;from=From_address" rel="nofollow">?</a>Recipient created the private key|</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Recipient%20still%20has%20a%20copy%20of%20the%20private%20key__124__&amp;do=create&amp;from=From_address" rel="nofollow">?</a>Recipient still has a copy of the private key|</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Recipient%20has%20maintained%20exclusive%20control%20of%20the%20private%20key__124__&amp;do=create&amp;from=From_address" rel="nofollow">?</a>Recipient has maintained exclusive control of the private key|</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Recipient%20used%20coins%20they%20recieved%20through%20pay-to-pubkey-hash%20transactions__124__&amp;do=create&amp;from=From_address" rel="nofollow">?</a>Recipient used coins they recieved through pay-to-pubkey-hash transactions|</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Recipient%20can%20work%20out%20the%20origin%20reliably__124__&amp;do=create&amp;from=From_address" rel="nofollow">?</a>Recipient can work out the origin reliably|</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=From_address&amp;page=Recipient%20is%20comfortable%20with%20the%20security%20implications%20of%20address%20re-use__124__&amp;do=create" rel="nofollow">?</a>Recipient is comfortable with the security implications of address re-use|</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Recipient%20is%20comfortable%20with%20the%20privacy%20implications%20of%20address%20re-use__124__&amp;do=create&amp;from=From_address" rel="nofollow">?</a>Recipient is comfortable with the privacy implications of address re-use|</span></li>
+</ul>
+
+
+<h3 id="Recipient_created_the_private_key">Recipient created the private key</h3>
+
+<p>Many web wallets/exchanges (7.1) (shared wallets) manage addresses and private keys for you, and pool all deposited coins.
+After you deposit coins to such a site they will almost always use coins you deposited to fulfill other customers&rsquo; withdrawals, maintaining your balance only as a centralised database entry.
+Similarly, when you go to withdraw coins to an external address, your withdrawal will probably consist entirely of coins last-sent-to some other customer&rsquo;s deposit address and/or addresses used purely internally by the site to receive <a href="../Change/">change</a>.</p>
+
+<p><em>FIXME: diagram of typical shared wallet coin-pooling, picturing your freshly deposited coins being used satisfy another customer&rsquo;s withdrawal, then someone else&rsquo;s coins being used to satisfy yours.</em></p>
+
+<p>In that case, the address Monica&rsquo;s coins were last-sent-to might just be the deposit address of a completely unrelated user of the same shared wallet Monica uses, or at best, a change address used purely internally by the shared wallet, not associated with any particular user.
+Either way, Monica would be unlikely ever to recover what you sent.</p>
+
+<p>This wouldn&rsquo;t be a problem if the last-sent-to address (7.2) was created with a local wallet such as Bitcoin QT, Electrum or Multibit &mdash; but you can&rsquo;t safely assume that, and even if you know Monica used a local wallet recently she may have changed her habits when creating that address, or switched wallets since.</p>
+
+<p>This doesn&rsquo;t mean shared wallets are misbehaving by pooling deposits;
+it&rsquo;s necessary for keeping most coins in cold storage.
+The model has other benefits too;
+they can make more efficient use of block space (and reduce fees as a result) by grouping withdrawals  (7.3) and by handling transfers between customers internally, and provided they protect/expire their logs, they increase privacy.</p>
+
+<p>7.1: Besides some sites that provide nothing but wallet services, this includes some centralised exchanges, peer-to-peer or escrow-based exchanges, betting sites, mining pools &mdash; any site that holds coins on your behalf and doesn&rsquo;t give you exclusive access to your private key, or sufficient multisig control of your coins.<br />
+7.2: Or, more correctly, if the private key from which that address was derived was created with a local wallet.<br />
+7.3: Bitstamp does this.</p>
+
+<h3 id="Recipient_still_has_a_copy_of_the_private_key">Recipient still has a copy of the private key</h3>
+
+<p>Monica may have lost all copies of the last-sent-to address&rsquo;s private key since paying you, so you may be destroying coins by sending them there.
+While this is unlikely if the interval is short, there are a multitude of ways to lose data:</p>
+
+<ul>
+<li>accidental/na&iuml;ve deletion; especially:
+
+<ul>
+<li><a href="http://www.reddit.com/r/Bitcoin/comments/26xw2s/lost_all_my_btc_depressed_pointless_rant/">switching devices without keeping old wallet data</a></li>
+<li>switching wallet software without keeping old wallet data</li>
+<li>spending a paper wallet or &ldquo;physical&rdquo; bitcoin then discarding it</li>
+</ul>
+</li>
+<li>physically losing the media</li>
+<li>data corruption</li>
+<li>device failure</li>
+<li>forgotten password or death of the owner</li>
+<li>bad app uninstall procedures</li>
+</ul>
+
+
+<p>and most people are pretty poor at keeping suitably regular/redundant backups.
+Even if Monica is fantastic at keeping regular backups, perhaps the private key is physically distant or requires some tedious recovery procedure, so it might be very inconvenient.</p>
+
+<h3 id="Recipient_has_maintained_exclusive_control_of_the_private_key">Recipient has maintained exclusive control of the private key</h3>
+
+<p>Monica may have had her private keys extracted from her by an attacker:</p>
+
+<ul>
+<li>fallen prey to malware</li>
+<li>been socially engineered</li>
+<li>been physically robbed/mugged</li>
+<li>suffered from a bug in a common wallet</li>
+</ul>
+
+
+<p>or may have been negligent with it/underestimated attacks:</p>
+
+<ul>
+<li>used a weak password</li>
+<li>left her phone/laptop unattended and unlocked</li>
+<li>used her wallet from a USB stick in an Internet caf&eacute;</li>
+</ul>
+
+
+<p>and have taken measures to recover, generating fresh keys/addresses.</p>
+
+<p>Another way Monica might not have exclusive control of the key is if she received the coins by someone handing her a paper wallet, as a present or tip.
+While a careful giver would be sure to wipe the private key from their wallet once they were sure it was spent, they may have forgotten, gone rogue or fallen victim to a wallet-stealing malware themselves.</p>
+
+<h3 id="Recipient_used_coins_they_recieved_through_pay-to-pubkey-hash_transactions">Recipient used coins they recieved through pay-to-pubkey-hash transactions</h3>
+
+<p>If Monica received those coins she used to pay you at a multisignature address, she may now lack sufficient signing keys to release anything you send there, and it may be inconvenient or impossible for her to get signatures from the other keyholders.
+For instance, maybe she used <a href="https://www.bitrated.com/">Bitrated</a> and had a dispute resolved in her favour but the arbitrator she chose since discarded or lost their key, went rogue or died.
+Multisignature addresses are just one use of pay-to-script-hash, so you can&rsquo;t even infer that a pay-to-script-hash is a multisignature address;
+she may have used a more exotic variety.</p>
+
+<p>Even if she received those coins with pay-to-pubkey-hash transactions (10.1), her transaction to you may have consumed multiple inputs.
+How are you going to distribute your repayment between those?
+Equally?
+Pick one at random?
+Existing use of <a href="https://bitcointalk.org/index.php?topic=279249.0">CoinJoin</a> probably involves people participating in a join between external transactions, as a separate privacy enhancement step, but as more implementations appear perhaps clients will support direct payments via CoinJoins.
+That would be a similar situation to the shared wallets point above.</p>
+
+<p>10.1: Or, I guess, pay-to-pubkey.</p>
+
+<h3 id="Recipient_can_work_out_the_origin_reliably">Recipient can work out the origin reliably</h3>
+
+<p>This is more about respecting a payee&rsquo;s preferred payment method and making life easy for them than about avoiding loss.
+To ease accounting (and other reasons) Monica might always create a dedicated address for every receive, and label it with the name of the expected sender and purpose of the transaction.
+If you send to an address Monica gave out to her employer, her accounts won&rsquo;t balance.
+Assuming her employer and you both follow best practices regarding privacy/address re-use, she can&rsquo;t tell anything about the mystery incoming funds with any certainty.</p>
+
+<p>In some business (and perhaps tax return) situations having an inexplicable imbalance on an account can be a serious compliance problem;
+while folks in that situation could delete all related keys to prevent that, you can&rsquo;t be sure they have and even if they did, you&rsquo;re destroying coins.</p>
+
+<h3 id="Recipient_is_comfortable_with_the_security_implications_of_address_re-use">Recipient is comfortable with the security implications of address re-use</h3>
+
+<p>Established security best practices discourage address re-use because when Monica sends you the restaurant bill, she reveals the public key for the last-sent-to address;
+before that, the world knew only the address (a hash of the public key) and would have had to perform a pre-image attack to find the public key.
+While it&rsquo;s pretty unlikely, ECDSA is relatively new and could be found to be weak;
+private keys may somehow be found to be easily derived from public ones, exposing any unspent coins where the public key is known.</p>
+
+<p>Re-using addresses also probably increased the <a href="http://tradeblock.com/research/security-vulnerability-in-all-android-bitcoin-wallets/">losses suffered via the Android SecureRandom bug</a>, since <a href="http://www.nilsschneider.net/2013/01/28/recovering-bitcoin-private-keys.html">exploiting it</a> required seeing two transactions with the same last-sent-to and the same r values.</p>
+
+<p>The discoverers of the OpenSSL ECDSA <a href="http://arstechnica.com/security/2014/03/scientist-devised-crypto-attack-could-one-day-steal-secret-bitcoin-keys/">&ldquo;FLUSH+RELOAD&rdquo; attack</a> estimated that under the right conditions they could recover a private key by observing as few as 200 signatures (in Bitcoin&rsquo;s case, typical transactions) made with it.</p>
+
+<p>Hopefully those are the last bugs we&rsquo;ll see related to re-use, but we can&rsquo;t be sure.</p>
+
+<p>Since it&rsquo;s Monica&rsquo;s money at stake here, the decision on whether these threats are significant should be up to her.</p>
+
+<h3 id="Recipient_is_comfortable_with_the_privacy_implications_of_address_re-use">Recipient is comfortable with the privacy implications of address re-use</h3>
+
+<p><a href="https://bitcoin.org/en/protect-your-privacy">Established privacy best practices</a> discourage address re-use because it reduces privacy both for you and, <a href="http://www.bitcoinnotbombs.com/innovations-that-enhance-bitcoin-anonymity/">infectiously</a>, for all other users (most directly, people you transact with, but also to a lesser extent the people they transact with, and so on).
+Even if you feel the simpler key management is worth the privacy cost to you and the rest of the network, it&rsquo;s more polite to avoid inflicting that cost on Monica any more than you already are &mdash; again, you should let her make her own decision on this.</p>
+
+<h2 id="Solutions">Solutions</h2>
+
+<p>Perhaps we&rsquo;re doomed, and Bitcoin will never see mass adoption because of traps like these that await the unwary.
+On the other hand, things can be done.</p>
+
+<p>If you&rsquo;re telling someone about Bitcoin you should avoid mentioning the concept, except to explain how, in this respect, Bitcoin doesn&rsquo;t operate like other payment systems or sender/receiver systems they might know.</p>
+
+<p>Tools like block explorers and wallets should either refrain from showing inferences altogether, or should show them only in an advanced mode &mdash; with the right name and a prominent list of reasons why they&rsquo;re of academic interest only.
+Perhaps if folks make enough noise, they will.</p>
+
+<p>Uptake of the <a href="https://github.com/bitcoin/bips/blob/master/bip-0070.mediawiki">payment protocol</a> and other such measures that deliver refund addresses in the same communication as payment requests/payments should be encouraged.
+These hide such dirty temptations from the user.</p>
+
+<p>Privacy-protecting wallets should be preferred, since those avoid address re-use anyway.</p>
+
+<hr />
+
+
+<p><em>2014-05-30: incorporate feedback from Andrew Poelstra and Burrito. 2014-05-31: incorporate feedback from Greg Maxwell, btiefert, dsnrk. 2014-06-01: incorporate feedback from Luke-Jr.</em></p>
+
+<p><em>Original source: <a href="https://iwilcox.me.uk/2014/no-from-address">https://iwilcox.me.uk/2014/no-from-address</a></em></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Address/">Address</a>
+
+<a href="../Address_reuse/">Address reuse</a>
+
+<a href="../Anonymity/">Anonymity</a>
+
+<a href="../Best_Practices/">Best Practices</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-04-12T21:32:55Z">Sun 12 Apr 2015 09:32:55 PM Europe</time>
+<!-- Created <time datetime="2014-08-07T09:10:20Z" pubdate="pubdate">Thu 07 Aug 2014 09:10:20 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

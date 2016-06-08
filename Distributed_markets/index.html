@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Distributed markets</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Distributed markets
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Distributed_markets" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>Bitcoin allows us to create <strong>distributed markets</strong> for the trading of securities, like stocks and bonds. Such markets have no central clearing house and can support securities of a size too small to be practical with today&#39;s techniques. It&#39;s also possible to build a P2P replacement for <em>investment funds</em>.</p>
+
+<p>This page was written by <a href="mailto:mike@plan99.net">Mike Hearn</a>. Contact him if you have any questions. Jeff Garzik has started implementing some of these ideas in his <a href="https://github.com/jgarzik/smartcoin">smartcoin</a> project.</p>
+
+<h2 id="Introduction">Introduction</h2>
+
+<p>Let&#39;s start by defining some terms.</p>
+
+<p>A <em>bond</em> is a securitized loan. That means somebody who wants a loan can sell some bonds and whoever owns that bond receives the re-payments and any interest that accrues. The bond, being an asset like any other, is transferable - if you get tired of receiving the repayments you can sell the bond to somebody else. Once the full amount of the bond has been repaid, we say it has reached maturity. Some bonds never mature and yield interest payments in perpetuity.</p>
+
+<p>A <em>stock</em> is somewhat similar to a bond, except it never matures, yields irregular dividend payments instead of regular interest payments and confers voting rights upon the owner. In this document we will talk mostly about bonds, but the same ideas can be applied to build a stock market too.</p>
+
+<p>A <em>ratings agency</em> evaluates the creditworthiness of bond sellers and assigns bonds a consistent score (AAA, AA, junk, etc).</p>
+
+<p><em>Sahai-Waters CP-ABE</em> is a recent advance based on pairing-based encryption. Standard Bitcoin payments are point-to-point: I must know the target of my payment by knowing their key/address, and then I can send value to that target alone. Bitcoin script allows some flexibility, eg, by allowing threshold signatures or password based coins. But we lack the ability to pay to anyone who satisfies an arbitrary policy. Ciphertext-policy attribute based encryption (CP-ABE) allows you to encrypt some data such that anyone in possession of a key with attributes that match a formula can decrypt it.</p>
+
+<h2 id="Detour.3A_a_financial_distributed_hashmap">Detour: a financial distributed hashmap</h2>
+
+<p>A common problem encountered when designing advanced financial markets on top of Bitcoin is the need for a place to temporarily store small pieces of data, keyed by hash. This is because the block chain is not always the right place to put non-trivial amounts of data. The <a>Kademlia</a> protocol and similar designs have solved this problem, albeit in a way that is vulnerable to a variety of DoS and Sybil attacks. But there is no network designed specifically for use in Bitcoin related systems. Today, their most common usage is in file sharing networks that are typically used for copyright infringement.</p>
+
+<p>A separate Kademlia network can be built that is optimized solely for financial usage. Nodes would restrict the size of the stored data and artificially throttle the serving of it, thus discouraging storage of movies, games, MP3s and other such things. Initial insertion or value longevity could be made subject to proof of a Bitcoin stake (aged balances or posted bond), deterring garbage. This means users who are interested in the financial applications but don&#39;t wish to assist file sharing can donate their resources to the network without issue.</p>
+
+<h2 id="A_P2P_bond_network">A P2P bond network</h2>
+
+<p>We start with the familiar structure of an independent P2P broadcast network that connects to the financial hashmap. There is no need for an alternative block chain. Bonds can be modeled as if they were <a href="../Smart_Property/">Smart Property</a>.</p>
+
+<pre><code>&lt;nowiki&gt;
+</code></pre>
+
+<p>message OutPoint {
+ &nbsp;required bytes tx_hash = 1;
+ &nbsp;required int index = 2;
+}</p>
+
+<p>message Issuer {
+ &nbsp;enum AuthType {
+ &nbsp; &nbsp;PUBLIC_KEY,
+ &nbsp; &nbsp;EMAIL_ADDRESS,
+ &nbsp; &nbsp;// Could add more in future, like EV SSL.
+ &nbsp;}
+ &nbsp;required AuthType auth_type = 1;</p>
+
+<p> &nbsp;// Only one of the following should be set, according to authtype.
+ &nbsp;optional bytes pubkey = 2;
+ &nbsp;optional string email = 3;</p>
+
+<p> &nbsp;// Name of the issuer as it will appear in the software, eg, a real name or company name.
+ &nbsp;required string display_name = 4;
+ &nbsp;// The script the issuer wants to receive the payments on.
+ &nbsp;required bytes pay_to_script = 5;
+}</p>
+
+<p>message Bond {
+ &nbsp;required OutPoint start_point = 1;
+ &nbsp;required Issuer issuer = 3;
+ &nbsp;required int value = 2;
+ &nbsp;required int coupon_value = 3;</p>
+
+<p> &nbsp;// You could model more complex repayment schedules in future.
+ &nbsp;required int repayment_value = 4;</p>
+
+<p> &nbsp;// UNIX time of when the bond was issued.
+ &nbsp;required int timestamp = 5;</p>
+
+<p> &nbsp;// URL of the peer issuing the bond. This can be http://:12345/ or
+ &nbsp;// perhaps a Tor onion address.
+ &nbsp;required string peer_url = 6;
+}
+</p>
+
+<p>The issuer, timestamp and value fields should be self explanatory. The bond message would be inserted into the hashmap so others who know its hash can find it.</p>
+
+<p>The start point identifies an output on the Bitcoin network that is created by the bond issuer. That output has a special form: it is of zero value and contains a script like this:</p>
+
+<pre><code>&quot;BOND&quot; &lt;hash of bond message&gt; 2DROP &lt;issuer pubkey&gt; CHECKSIG
+</code></pre>
+
+<p>This output tracks the current owner of the bond. The owner receives the repayments and any accrued interest. Of course a newly issued bond is special, it starts out being owned by the issuer.</p>
+
+<p>The bond market client app that runs on your desktop follows the block chain, looking for Bitcoin transactions of that form. When it finds one, it downloads the bond message from the hashmap and shows the details in the UI.</p>
+
+<p>If the bond owner wishes to sell the bond, a sale message is broadcast on the exchange p2p network:</p>
+
+<pre><code>&lt;nowiki&gt;
+</code></pre>
+
+<p>message ProposedBondSale {
+ &nbsp;required bytes bond_hash = 1;
+ &nbsp;required int requested_value = 2;
+ &nbsp;required bytes pay_to_script = 3;
+ &nbsp;required string peer_url = 4;
+}
+</p>
+
+<p>If somebody wishes to buy that bond and sees the broadcast, they construct a transaction that spends requested_value of their own money to the pay_to_script, and add an input that connects to the zero-valued output of the current bondholder, and adds an output of the same BOND form to their own key. They pass it to the selling peer who checks that it looks valid and if so, signs for it then broadcasts thus atomically transferring the bond and the money.</p>
+
+<p>By scanning the block chain for payments to the current owner of the bond, and checking them against the repayment schedule, the software can automatically calculate which bonds are delinquent and which are mature. Issuers of delinquent bonds would show up in the UI as in debt until sufficient sums were paid to the owners pubkey.</p>
+
+<h2 id="Pay_to_policy_outputs">Pay to policy outputs</h2>
+
+<p>Creating a decentralized bond market is a good start, but real financial markets are more complex. Often there is a layer of abstraction between buyer and seller: an investment fund. The funds encapsulate general instructions from the clients, such as &quot;buy low risk municipal bonds&quot; or &quot;invest in energy stocks&quot; and translates that into a stream of purchases and sales of specific assets. Funds compete on how they choose the specific assets and therefore what return they get.</p>
+
+<p>Bitcoin payments today must be to a specific, concrete owner. By combining Bitcoin with CP-ABE we can instead make payments to a <strong>policy</strong>. A policy is a formula over a set of attributes. Attributes are arbitrary strings or string=integer pairs. Example policies include:</p>
+
+<ol>
+<li><em>ceo or (accounts_department AND manager)</em> - a policy that allows the CEO of the company access, or a manager in the accounts department, but not any other kind of manager or member of accounting.</li>
+<li><em>master_key OR (3 OF (a, b, c, d, e))</em> - a threshold policy that is overridable by a master key. Your key must have at least 3 of the 5 lettered attributes to be usable.</li>
+<li><em>verification_class=MtGoxBasicKYC AND common_name=MikeHearn AND access_level &gt; 5</em> - a policy that requires a key with a basic identity assertion of a specific name, verified according to the MtGox basic class, and which has an &quot;access level&quot; above a certain number.</li>
+<li><em>debt_rating(bobs_rating_agency) &gt; 3 AND mining_bond AND interest_rate &gt; 2300 AND interest_rate &lt; 5000 AND repayment_months &lt; 6</em> - a policy stating that it can be unlocked by anyone in possession of a key that asserts it was issued for a mining bond with better than a rating of &quot;3&quot; (imagine an AAA like rating system), that will repay fully within 6 months and with an interest rate between 2.3 and 5%.</li>
+</ol>
+
+
+<p>The policy is encoded into the ciphertext at encryption time, and the result can only be unlocked by a key that matches the policy. Keys attributes are assigned by an issuing authority.</p>
+
+<p>It may at first appear that some of the policies expressed above are also expressible with script. For instance, if each attribute is considered to be a separate private key, you could try expressing the first example as a script that uses some CHECKSIGs along with boolean operators. But there are some problems with that approach.</p>
+
+<p>The first problem is that people can collude to give themselves &quot;superkeys&quot;. The Sahai-Waters scheme is collusion-resistant. In the first example, a manager who is not in accounting could team up with somebody who&#39;s not a manager but in the right department, and combine their keys to be able to spend the companies money. With CP-ABE the keys cannot be combined to merge attributes like that.</p>
+
+<p>The second problem is that script cannot contain signatures over anything other than transactions, and only limited forms at that. So you cannot have numeric assertions in outputs because you have no way to verify the inputs are legitimate.</p>
+
+<p>The third problem is that script rapidly becomes inefficient if you want complex policies over hundreds or thousands of attributes. CP-ABE policies can be quite large whilst remaining feasible.</p>
+
+<p>There is a final reason to explore CP-ABE: whilst keys cannot be merged together to elevate privilege, you <em>can</em> remove attributes and thus delegated weakened power to others. In the first example, the manager of the accounts department does not need to get a new key issued from the key authority when a new employee joins: he can just remove the &quot;manager&quot; attribute from his key and generate a new key for the employee himself.</p>
+
+<p>In the straightforward CP-ABE scheme, there must be exactly one key issuing authority that verifies the client deserves the attributes they&#39;re about to be given and then mints the keys. It is possible to decentralize the scheme to become <a href="http://eprint.iacr.org/2010/351.pdf">multi-authority CP-ABE</a> using the Lewko-Waters design.</p>
+
+<p>Whilst some ABE schemes allow for hiding of the policy, the most expressive types make the policy public as part of the ciphertext. Fortunately this constraint is not a problem for us, indeed, it is an advantage.</p>
+
+<p>An implementation of single-authority CP-ABE (as well as KP-ABE where keys contain policies and ciphertexts contain attributes) is available in <a href="http://code.google.com/p/libfenc/">libfenc</a>. Multi-authority CP-ABE is available in a Python library called Charm. There are obviously many applications of this technique. Here we will explore only one.</p>
+
+<h2 id="Investment_funds">Investment funds</h2>
+
+<p>Rather than wait for specific bonds to become available and then manually evaluate each one by hand, we can construct a kind of distributed investment fund by sending money to a Bitcoin private key that is then encrypted under a policy and uploaded into the financial hashmap:</p>
+
+<p>&nbsp;&quot;POLICY&quot;  2DROP  CHECKSIG</p>
+
+<p>Policy-locked ciphertexts are potentially quite large, depending on the size of the policy (a comparison against a large number like a date can use over a kilobyte), so it makes sense to use the same hash disassociation used in the bond protocol above in order to minimize block chain size.</p>
+
+<p>The hash would actually identify a data structure containing the ciphered private key:</p>
+
+<pre><code>&lt;nowiki&gt;
+</code></pre>
+
+<p>message InvestmentFundAdvertisement {
+ &nbsp;required bytes owner_pubkey = 1; &nbsp;// The key that will control the bond once sold.
+ &nbsp;required bytes ciphertext = 2; &nbsp; &nbsp;// Policy is embedded within this.
+}
+</p>
+
+<p>As the bond market client crawls the block chain, it may encounter policy locked coins. By downloading the ciphertext from the hashmap, it can identify what conditions would unlock the coins and advertise that in the client. Somebody who is looking for business opportunities may see a message like this in their GUI:</p>
+
+<p>There are <em>200 BTC</em> available to any bond issuer meeting the following criteria:</p>
+
+<ol>
+<li>Must be a mining bond.</li>
+<li>Must be repaid entirely within 6 months.</li>
+<li>Must yield an interest rate between 2.3% and 5%</li>
+<li>Debt must be rated as AA or better by one of {MtGox Ratings, Moodys, Standard&amp;Poors}.</li>
+<li>These assertions must have been issued within the last month</li>
+</ol>
+
+
+<p>Therefore demand is communicated to suppliers. By submitting such policy-locked coins, investors can send a message to the markets indicating that more mining capacity should be built.</p>
+
+<p>To be able to find the private key and take the coins, you must obtain a key that matches these attributes by talking to the various issuing authorities. Once you have such a key, any coins sent to such a policy can be taken by yourself. By requiring attributes such as &quot;issued_in=2012/06&quot; the policies can be expired when needed (at the cost of an additional block chain transaction to update the hash).</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Contract/">Contract</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-07-11T17:14:24Z">Sat 11 Jul 2015 05:14:24 PM Europe</time>
+<!-- Created <time datetime="2012-11-02T11:16:40Z" pubdate="pubdate">Fri 02 Nov 2012 11:16:40 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

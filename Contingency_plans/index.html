@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Contingency plans</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Contingency plans
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>The purpose of this page is to create plans for the first few days after a catastrophic failure of the network in order to save time should any such failure actually occur.</p>
+
+<p>Only failures that would not allow much time for discussion will be covered here. <em>Preventing</em> future problems will not be discussed.</p>
+
+<p>Once the plans themselves are well-accepted, code implementing the plans can be written and tested in case the code is ever required.</p>
+
+<h2 id="Getting_the_word_out">Getting the word out</h2>
+
+<h3 id="Alerts">Alerts</h3>
+
+<p>These people have <a href="../Alerts/">alert keys</a> and should be contacted ASAP in case of emergencies:</p>
+
+<ul>
+<li>Satoshi</li>
+<li>Gavin</li>
+<li>theymos
+Email Satoshi, even though he is believed to be gone. A serious issue may &quot;bring him out of retirement&quot;, which would be helpful.</li>
+</ul>
+
+
+<p>Because alerts are known to be very secure, all information related to an emergency should be sent with alerts. For example, hashes of new releases should be included in alerts.</p>
+
+<p>The most important part of alert messages should be put at the front, since the remaining text might get cut off. A good way to begin would be: &quot;EMERGENCY: DO NOT ACCEPT OR SEND PAYMENTS&quot;.</p>
+
+<h3 id="Pools">Pools</h3>
+
+<p>The owners of all pools must be contacted, as changes will be required of them.</p>
+
+<h3 id="IRC">IRC</h3>
+
+<p>The relevant <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=IRC_channels&amp;from=Contingency_plans" rel="nofollow">?</a>IRC channels</span> should have their topics updated to spread info about the emergency.</p>
+
+<h3 id="Forum">Forum</h3>
+
+<p>A topic should be posted in &quot;development and technical discussion&quot;, and a sticky locked topic pointing to the main topic should be created in all other sections. The main topic should not be sticky, as this makes it more difficult to see and it will be bumped to the top constantly, anyway.</p>
+
+<h3 id="Sites">Sites</h3>
+
+<p>The owners of all big sites, especially exchanges and banks, should be contacted.</p>
+
+<h3 id="Stock_message">Stock message</h3>
+
+<p>Here is a message that could be used to spread the word. Preferably it would be updated to reflect specifics and signed by some trusted people.</p>
+
+<p>A critical bug has been discovered in Bitcoin. Transactions must be considered REVERSIBLE for the time being. Do not send payments, and do not trust payments that you receive.</p>
+
+<p>If you run a Bitcoin-related site, shut down the site and replace it with this message.</p>
+
+<p><a>The following paragraph only applies to certain attacks and may need to be removed.</a></p>
+
+<p>If you are solo mining or running a pool, you must stop mining until you upgrade to the latest version (which may not be released quite yet). If you are mining in a pool, shut down your miner until your pool upgrades. If you continue mining, any blocks you solve will end up being rejected eventually, and you will be working against the legitimate chain.</p>
+
+<p>Look to your favorite HTTPS-enabled Bitcoin sites for more news. Before running any software, check that a consensus exists among several sites. Do not trust information from Google, as it can be manipulated by the attacker. Other sites, such as bitcoin.org, can likewise be manipulated, though with more difficulty. The most trustworthy source of information is the text that appears at the bottom of the graphical Bitcoin client.</p>
+
+<h2 id="Coordination">Coordination</h2>
+
+<p>During an emergency, coordination will take place on the #bitcoin-dev channel on chat.freenode.net. All decisions will take place there. Possibly additional channels will be created if there is too much discussion happening for one channel, though #bitcoin-dev is where all developers will naturally go, and it is therefore best if general discussion about the emergency takes place there.</p>
+
+<p>Channel mode &quot;+q $~a&quot; should be set in order to prevent unregistered users from speaking. The last thing we want is an impersonator or a spam flood. People should also be identified with <span class="createlink"><a href="/ikiwiki.cgi?from=Contingency_plans&amp;page=gribble&amp;do=create" rel="nofollow">?</a>gribble</span> if possible. Mode +m may also need to be set if there is too much spam.</p>
+
+<h3 id="Backup_communication_methods">Backup communication methods</h3>
+
+<p>It is not impossible for an attacker to make #bitcoin-dev unusable, either through abuse or denial-of-service attacks. There must be several backup methods of communication.</p>
+
+<h4 id="IRC">IRC</h4>
+
+<p>If #bitcoin-dev becomes unusable due to flooding or other abuse that the Freenode IRC operators are unable/unwilling to handle, then moving #bitcoin-dev to irc.lfnet.org will be useful. The operators of LFnet are Bitcoin users who will be very helpful in fighting abuse.</p>
+
+<p>If Freenode is taken down by a denial-of-service attack, #bitcoin-dev can be moved to one of the larger networks, which will (presumably) be more resistant to attacks.</p>
+
+<p>So if the regular #bitcoin-dev is broken, try #bitcoin-dev on these networks:</p>
+
+<ul>
+<li>LFnet</li>
+<li>IRCnet</li>
+<li>EFnet</li>
+<li>Undernet</li>
+<li>Any other IRC networks you know of</li>
+</ul>
+
+
+<p>Gribble can be moved to any network in order to facilitate GPG identification.</p>
+
+<h4 id="Other_real-time_chat">Other real-time chat</h4>
+
+<p>In case all IRC networks are made unusable, Google+ multi-user chat might work well, and it is unlikely to be brought down by denial-of-service attacks.</p>
+
+<p>(A distributed chat network where every participant needs to send his message directly to all other participants would be best, as this would be difficult to attack. Does something like this exist?)</p>
+
+<h4 id="Non-realtime_communication">Non-realtime communication</h4>
+
+<p>The SourceForge mailing list can be used for non-realtime communication. In case this list is brought down, participants can send emails manually to a list of people.</p>
+
+<h3 id="Issuing_statements">Issuing statements</h3>
+
+<p>When it has been decided by the developers that action is required by Bitcoin users, a statement will be issued. All statements should contain text encouraging people to distribute the statement. Statements should be numbered sequentially from the start of the incident.</p>
+
+<p>Statements should be PGP signed by a few people present at the time and then emailed to owners of big sites and posted on bitcoin.org and the forums.</p>
+
+<p>An alert summarizing the statement will probably need to be issued, as well.</p>
+
+<h3 id="Emergency_versions">Emergency versions</h3>
+
+<p>Emergency versions of Bitcoin should preferably be based on the latest stable versions instead of the very latest code in order to avoid introducing new bugs.</p>
+
+<p>Source releases should be made as soon as a fix is available, even if it can&#39;t yet be hosted on SourceForge. In most cases, binary releases can wait for the people who normally build binaries to do it. If source releases are available without binary releases, statements should encourage users to either compile themselves or wait for official binary releases built using the standard <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=release_process&amp;from=Contingency_plans" rel="nofollow">?</a>release process</span> (instead of using binaries provided by third-parties).</p>
+
+<h2 id="Contingencies">Contingencies</h2>
+
+<h3 id="Many_historical_blocks_replaced">Many historical blocks replaced</h3>
+
+<p>Situation: 6+ historical blocks have been replaced by new versions all at once, allowing confirmed transactions to be invalidated.</p>
+
+<h4 id="Impact">Impact</h4>
+
+<ul>
+<li>People who have received payments from the attacker might have these payments reversed.</li>
+<li>The double-spent versions of these transactions might immediately get 6+ confirmations. So people receiving the attacker&#39;s stolen coins might accept them.</li>
+<li>Other transactions may become unconfirmed again.</li>
+</ul>
+
+
+<h4 id="Response">Response</h4>
+
+<ul>
+<li>Alert users to stop accepting payments, as an attacker clearly has too much control over the network. The network will be unusable for weeks or more while the issue is straightened out.</li>
+</ul>
+
+
+<p>If more than a few BTC was stolen by the attacker, then the transaction ordering may need to be manually modified. This is done by adding new block checkpoints and/or hardcoding transaction ordering <a>code should be prepared for hardcoded transaction ordering</a>.</p>
+
+<p>A lot of time should be taken to decide whether and how to re-order the transactions. It may be a very complex issue, as restoring the original versions of transactions could cause damage many times larger than the original transaction reversal. The network will need to be offline for a week or more after an incident of this scale, anyway.</p>
+
+<h3 id="SHA-256_is_broken">SHA-256 is broken</h3>
+
+<p>Situation: Severe, 0-day failure of SHA-256. First/second preimage resistance or collision resistance can be defeated with only a few days of work.</p>
+
+<h4 id="Impact">Impact</h4>
+
+<ul>
+<li>Attacker may be able to defeat OP_CHECKSIG, which hashes transactions before signing.</li>
+<li>Attacker may be able to split the network by creating identical transactions or blocks with the same hashes.</li>
+<li>Attacker may be able to create blocks very quickly.</li>
+<li>The alert system may be compromised.</li>
+</ul>
+
+
+<h4 id="Response">Response</h4>
+
+<ul>
+<li>Users will be notified to shut down their clients. Note that the attacker may be able to send valid alerts, which could disrupt notification efforts.</li>
+<li>OP_CHECKSIG will be changed to use some other hash outside of old blocks.</li>
+<li>All addresses in the version-1 chain that have a known public key and at least one unspent output will have their public keys hardcoded into the client. When a version-2 transaction spends one of these version-1 outputs, the hardcoded public key will be used instead of the hash.</li>
+<li>The version-1 chain will be securely hashed into a hash tree. At least the root of the version-1 tree will be hardcoded into the client.</li>
+<li>All hashing Bitcoin does will use the new hashing algorithm.</li>
+</ul>
+
+
+<p><a href="Code">for all of this should be prepared.</a></p>
+
+<h3 id="ECDSA_is_broken">ECDSA is broken</h3>
+
+<p>Situation: an attacker can sign for a public key that he does not own the private key for in only a few days of work.</p>
+
+<h4 id="Impact">Impact</h4>
+
+<ul>
+<li>Attacker can spend money that is not his in a large number of cases. Transactions to addresses that have never been used before may be protected if SHA-256 and RIPEMD-160 are still strong.</li>
+<li>Alert system may be compromised.</li>
+</ul>
+
+
+<h4 id="Response">Response</h4>
+
+<p>If the attacker can&#39;t get the private key from the public key easily and a stronger algorithm that can use ECDSA keys is available:</p>
+
+<ul>
+<li>Switch to the stronger algorithm.</li>
+<li>Get users to update. Alerts will be compromised.</li>
+</ul>
+
+
+<p>Otherwise:</p>
+
+<ul>
+<li>OP_CHECKSIG should use some other signing algorithm.</li>
+<li>As soon as the new version of Bitcoin is run, it should automatically send all old transactions somewhere else using the new algorithm.</li>
+<li>Get users to update immediately. Alerts will be compromised.</li>
+</ul>
+
+
+<p><a href="Code">for all of this should be prepared.</a></p>
+
+<h3 id="Remote_attacker_can_execute_arbitrary_code">Remote attacker can execute arbitrary code</h3>
+
+<p>Situation: Due to a bug in Bitcoin, a remote attacker is able to run arbitrary code on the machines of some/all Bitcoin users.</p>
+
+<h4 id="Impact">Impact</h4>
+
+<ul>
+<li>Attacker can install malware, which could be used to steal private keys from wallets that are decrypted while the malware is installed.</li>
+</ul>
+
+
+<h4 id="Response">Response</h4>
+
+<ul>
+<li>Issue an alert telling people to shut down their clients immediately and look for updates elsewhere. Put special effort into alerting people through other means.</li>
+<li>Remove critical powers (git push, bitcoin.org update, IRC op, etc.) from people who do not need them, as all Bitcoin users are at a high risk of having their passwords compromised. Trust GPG signatures a bit less than usual.</li>
+</ul>
+
+
+<p>Stock alert message: &quot;EMERGENCY: SHUT DOWN YOUR CLIENT RIGHT NOW! Look for updates on popular Bitcoin sites. A bug has been discovered that can allow a remote attacker to install malware on your computer through Bitcoin.&quot;</p>
+
+<p>Stock statement:</p>
+
+<p>A bug has been discovered in Bitcoin that can allow a remote attacker to execute arbitrary code. The attacker could install malware onto your computer, which could steal your wallet. Shut down Bitcoin now. Under no circumstances should you enter your wallet passphrase until this incident is resolved and you have made absolutely sure that there is no malware on your computer. If possible, carefully copy your wallet to some offline safe location and then securely delete the copy on your computer.</p>
+
+<p>Look to your favorite HTTPS-enabled Bitcoin sites for more news. Before running any software, check that a consensus exists among several sites. Do not trust information from Google, as it can be manipulated by the attacker. Other sites, such as bitcoin.org, can likewise be manipulated, though with more difficulty.</p>
+
+<h3 id="Emergency_rule_change">Emergency rule change</h3>
+
+<p>Situation: A core network rule in Bitcoin is broken and needs to be changed ASAP. Like the <a href="../Incidents/#CVE-2010-5139">overflow incident</a>.</p>
+
+<h4 id="Response">Response</h4>
+
+<ul>
+<li>Issue an alert. Tell people to stop mining.</li>
+<li>After the issue is fixed, get people to update.</li>
+</ul>
+
+
+<p>It is preferable to make a rule more restrictive than to relax a rule. In the former case, only miners need update.</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-05-15T15:54:53Z">Fri 15 May 2015 03:54:53 PM Europe</time>
+<!-- Created <time datetime="2011-09-04T06:39:51Z" pubdate="pubdate">Sun 04 Sep 2011 06:39:51 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

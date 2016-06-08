@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>July 2015 flood attack</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+July 2015 flood attack
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>The <strong>July 2015 <a href="../Flood_attack/">flood attack</a></strong> was a large &quot;stress test&quot; of the Bitcoin network. The possibly distributed attack has provoked hundreds of thousands of <a href="../Transaction/">transaction</a>s, leaving over 80,000 in the <a href="../Mempool/">mempool</a> at one time. (1.1) (1.2) The attack is subsequent to stress tests executed in June.</p>
+
+<p>Some charities and organizations, including WikiLeaks and Voat, have received thousands of dust outputs. (1.3) (1.4) Additionally, some single-word <a href="../Brainwallet/">brainwallet</a>s (&quot;password&quot;, &quot;cat&quot; (1.5), etc.) have been the recipients of thousands of transactions, leaving 0.00001 BTC outputs. <span class="createlink"><a href="/ikiwiki.cgi?page=F2Pool&amp;do=create&amp;from=July_2015_flood_attack" rel="nofollow">?</a>F2Pool</span> has been concatenating these outputs in huge 1MB transactions. (1.6) (1.7) These transactions fill up an entire block on their own, and are far too large to be relayed by nodes; they have only been confirmed because F2Pool dedicated blocks to them. (1.8) (1.9) Some nodes reported having spent over 20 seconds on one of these transactions, (1.10) explaining momentary but extreme latency and downtime on block chain explorers. (1.11) (1.12)</p>
+
+<p><span class="createlink"><a href="/ikiwiki.cgi?page=Gregory_Maxwell&amp;do=create&amp;from=July_2015_flood_attack" rel="nofollow">?</a>Gregory Maxwell</span> later contacted F2Pool, advising them to use the same signature for each input in the large transactions. (1.13) (1.14) This made the transactions highly compressible and far easier to verify. (1.15)</p>
+
+<p>The attack seems to have concluded by July 15. (1.16)</p>
+
+<h2 id="Motivation">Motivation</h2>
+
+<p>The attackers may have had an agenda related to the <a href="../Blocksize_debate/">blocksize debate</a>, attempting to demonstrate the infeasibility of 1MB blocks including transactions of hundreds of thousands of users. (1.9) Specifically, the Chinese <a href="../Mining_Pool/">mining pool</a>s (<span class="createlink"><a href="/ikiwiki.cgi?from=July_2015_flood_attack&amp;do=create&amp;page=AntPool" rel="nofollow">?</a>AntPool</span>, <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=BW_Mining&amp;from=July_2015_flood_attack" rel="nofollow">?</a>BW Mining</span>, <span class="createlink"><a href="/ikiwiki.cgi?from=July_2015_flood_attack&amp;do=create&amp;page=F2Pool" rel="nofollow">?</a>F2Pool</span>, <span class="createlink"><a href="/ikiwiki.cgi?from=July_2015_flood_attack&amp;do=create&amp;page=BTC_China" rel="nofollow">?</a>BTC China</span>, &amp; <span class="createlink"><a href="/ikiwiki.cgi?page=Huobi&amp;do=create&amp;from=July_2015_flood_attack" rel="nofollow">?</a>Huobi</span>) have expressed distaste towards <span class="createlink"><a href="/ikiwiki.cgi?from=July_2015_flood_attack&amp;page=Gavin_Andresen&amp;do=create" rel="nofollow">?</a>Gavin Andresen</span>&#39;s proposals to increase the blocksize limit, citing concerns of relatively low bandwidth compared to that available in the United States and Europe. (1.9) (2.1) The flood attack may have been attempting to discredit the pools, and subsequently force them off the network after the raised blocksize limit is in effect. (1.9) (2.2)</p>
+
+<p>It is unlikely that the attack was used in an attempt to damage or shut down Bitcoin, as it appears to have been controlled and benevolent. (1.9) (2.3) It has also resulted in the donation of over 30 BTC to various sites. (1.4)</p>
+
+<h2 id="Suspects">Suspects</h2>
+
+<p><span class="createlink"><a href="/ikiwiki.cgi?page=Coinwallet.eu&amp;do=create&amp;from=July_2015_flood_attack" rel="nofollow">?</a>Coinwallet.eu</span>, who had executed the previous stress tests, may have something to do with this attack as one of their bitcoin addresses had been used in both efforts. (1.9) However, Coinwallet.eu did not announce involvement in this attack, as they had in the stress tests. (1.9) (3.1)</p>
+
+<p><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Peter_Todd&amp;from=July_2015_flood_attack" rel="nofollow">?</a>Peter Todd</span> had previously offered to execute a stress test for $7,000 (3.2) but he denies involvement in this attack. (3.3)</p>
+
+<p>Redditor /u/TheGiv3r has published the private keys to hundreds of addresses which have been recipients of dust outputs in 2013, perhaps in an attempt to incite additional spam as redditors try to claim the funds. (3.4) (3.5)</p>
+
+<p><a href="../Satoshi_Nakamoto/">Satoshi Nakamoto</a> has been (perhaps jokingly) labelled a suspect, (1.9) (3.6) as he had mentioned that the block size should be increased when it is needed (3.7) and may be campaigning for this change without revealing his involvement.</p>
+
+<h2 id="References">References</h2>
+
+<p>1.1: 8 July 2015 Id: 3ck5z9 R: Bitcoin<br />
+1.2: 7 July 2015 Id: 1113292 Post: 11823370<br />
+1.3: <a href="http://motherboard.vice.com/read/wikileaks-is-now-a-target-in-the-massive-spam-attack-on-bitcoin">WikiLeaks Is Now a Target In the Massive Spam Attack on Bitcoin</a> Vice Media LLC 9 July 2015 Jordan Pearson Journal: Motherboard<br />
+1.4: 10 July 2015 Id: 3cs0ln Post: https://www.reddit.com/r/technology/comments/3cs0ln/voatco_and_wikileaks_under_attack_from_bitcoin/csyhbzt R: technology<br />
+1.5: 7 July 2015 Id: 3cgft7 Post: https://www.reddit.com/r/Bitcoin/comments/3cgft7/largest_transaction_ever_mined_999657_kb_consumes/csvbnv4 R: Bitcoin<br />
+1.6: 7 July 2015 Id: 1112943<br />
+1.7: 7 July 2015 Id: 3cgft7 R: Bitcoin<br />
+1.8: 7 July 2015 Id: 3cgft7 Post: https://www.reddit.com/r/Bitcoin/comments/3cgft7/largest_transaction_ever_mined_999657_kb_consumes/csvasnz R: Bitcoin<br />
+1.9: <a href="http://motherboard.vice.com/read/the-mystery-behind-the-biggest-bitcoin-transaction-ever-made">The Mystery Behind the Biggest Bitcoin Transaction Ever Made</a> Vice Media LLC 9 July 2015 Jordan Pearson Journal: Motherboard<br />
+1.10: 7 July 2015 Id: 3cgft7 Post: https://www.reddit.com/r/Bitcoin/comments/3cgft7/largest_transaction_ever_mined_999657_kb_consumes/csva1ei R: Bitcoin<br />
+1.11: 8 July 2015 Id: 3ckhcj R: Bitcoin<br />
+1.12: 7 July 2015 Id: 1112943 Post: 11823487<br />
+1.13: 11 July 2015 Id: 3cvw52 Post: https://www.reddit.com/r/Bitcoin/comments/3cvw52/is_this_a_selfinterested_or_altruistically/cszhxqa R: Bitcoin<br />
+1.14: Id: 9fdbcf0ef9d8d00f66e47917f67cc5d78aec1ac786e2abb8d2facb4e4790aad6<br />
+1.15: 11 July 2015 Id: 3cvw52 Post: https://www.reddit.com/r/Bitcoin/comments/3cvw52/is_this_a_selfinterested_or_altruistically/cszic86 R: Bitcoin<br />
+1.16: 15 July 2015 Id: 3dbu73 R: Bitcoin<br />
+2.1: <a href="http://motherboard.vice.com/read/chinas-powerful-bitcoin-miners-say-their-bandwidth-sucks">China&#39;s Powerful Bitcoin Miners Say Their Bandwidth Sucks</a> Vice Media LLC 16 June 2015 Jordan Pearson Journal: Motherboard<br />
+2.2: 13 June 2015 Id: 1089283<br />
+2.3: 8 July 2015 Id: 3ci9av Post: https://www.reddit.com/r/Bitcoin/comments/3ci9av/could_the_recent_attack_on_bitcoin_be_the_product/csvtpxk R: Bitcoin<br />
+3.1: 20 June 2015 Id: 1094865<br />
+3.2: 29 June 2015 Id: 3bk12f Post: https://www.reddit.com/r/Buttcoin/comments/3bk12f/why_doesnt_buttcoin_start_its_own_stress_test/csn4nbz R: Buttcoin<br />
+3.3: 8 July 2015 Id: 3ci9av Post: https://www.reddit.com/r/Bitcoin/comments/3ci9av/could_the_recent_attack_on_bitcoin_be_the_product/csw1e50?context=1 R: Bitcoin<br />
+3.4: 7 July 2015 Id: 3cf6qg Post: https://www.reddit.com/r/Bitcoin/comments/3cf6qg/need_help_moving_coins_to_new_address/csuyyi3 R: Bitcoin<br />
+3.5: 7 July 2015 Id: 3chere R: Bitcoin<br />
+3.6: 8 July 2015 Id: 3ci9av Post: https://www.reddit.com/r/Bitcoin/comments/3ci9av/could_the_recent_attack_on_bitcoin_be_the_product/csw750p R: Bitcoin<br />
+3.7: 3 October 2010 Id: 1347 Post: 15139</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/2015_events/" rel="tag">2015 events</a>
+
+</nav>
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-07-15T05:17:43Z">Wed 15 Jul 2015 05:17:43 AM Europe</time>
+<!-- Created <time datetime="2015-07-08T16:41:51Z" pubdate="pubdate">Wed 08 Jul 2015 04:41:51 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

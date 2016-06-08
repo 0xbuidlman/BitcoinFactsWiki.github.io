@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>X-btc</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+X-btc
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=X-btc&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>x-btc is a proposed URI scheme for Bitcoin, competing against the <a href="../URI_Scheme/">bitcoin URI scheme</a>. The first version of the specification was created by Zarutian, but the first version of this wiki page included modifications by theymos. The main design goal is to produce URIs that are concise enough to fit in a size-limited QR code, but clear enough to be easily human-readable.</p>
+
+<h2 id="Specification">Specification</h2>
+
+<pre>uri := schema (&quot;:&quot; item)+
+schema := [&quot;x-&quot;] &quot;btc&quot;
+item := (thing [(&quot;?&quot; label)+] &quot;;&quot;)+ [action]
+thing := address | private_key | public_key | raw_transaction | value | hash160
+    | ip | ip_comment | custom
+address := &quot;addr=&quot; bitcoin_address
+hash160 := &quot;hash=&quot; hash160
+ip := &quot;ip=&quot; ip_address
+ip_comment := &quot;ipmsg=&quot; ip_comment
+private_key := &quot;privkey=&quot; encoded_private_key
+public_key := &quot;pubkey=&quot; encoded_public_key
+raw_transaction := &quot;rawtxn=&quot; encoded_raw_transaction
+value := &quot;value=&quot; decimal
+action := &quot;send&quot; | &quot;store&quot;
+custom := &quot;x-&quot; customParam &quot;=&quot; customParamValue</pre>
+
+
+<p>Except where specified above, URIs may contain only alphanumeric characters (A-Za-z0-9), plus the special characters &quot;-_.~&quot; (double quotes not included). All other characters must be URI encoded per RFC 3986.</p>
+
+<p>Binary data should be specified in base64url. This is the same as normal base64, but + becomes -, / becomes _, and there is no padding.</p>
+
+<ul>
+<li>encoded_raw_transaction is a base64url encoded transaction in Bitcoin network format.</li>
+<li>encoded_private_key is a base64url encoded private key used by Bitcoin.</li>
+<li>encoded_public_key is a base64url encoded public key used by Bitcoin.</li>
+<li>hash160 is a Bitcoin hash160 public key hash. Bitcoin addresses can be losslessly converted to and from hash160s.</li>
+<li>address is a Bitcoin address, as used by Bitcoin.</li>
+<li>value is the number of bitcoins associated with the data. This MUST be specified in the same way as 0.3.x versions of Bitcoin: nValue / 100,000,000.</li>
+<li>label is a short string describing the previous &quot;thing&quot;.</li>
+<li>action is &quot;send&quot; when the user is expected to send bitcoins to the specified public key or address, and &quot;store&quot; when the user is expected to store or import the data.</li>
+</ul>
+
+
+<p>If two of the same type of parameter are given in one &quot;item&quot;, the Bitcoin client SHOULD give the user a choice of which value to actually use.</p>
+
+<h2 id="Examples">Examples</h2>
+
+<pre>x-btc:addr=1NXYoJ5xU91Jp83XfVMHwwTUyZFK64BoAD?theymos;value=50;send</pre>
+
+
+<p>Send 50 BTC to address 1NX... (label &quot;theymos&quot;).</p>
+
+<pre>x-btc:hash=7CGqAmLHqbgsQlKyugh-zgAVL9o?theymos;value=50;send</pre>
+
+
+<p>This is exactly the same as above.</p>
+
+<pre>x-btc:addr=1NXYoJ5xU91Jp83XfVMHwwTUyZFK64BoAD;value=50;value=0.01;send</pre>
+
+
+<p>Send 50 BTC OR 0.01 BTC to 1NX...</p>
+
+<pre>x-btc:addr=1NXYoJ5xU91Jp83XfVMHwwTUyZFK64BoAD?theymos;value=50;send:addr=
+1Gxy2mmsEdYYQ3Lve4kyNfvzHNfdvKP2fj?abc?def;value=100.2;send</pre>
+
+
+<p>Send 50 BTC to address 1NX... (label &quot;theymos&quot;) AND 100.20 BTC to address 1Gxy... (label &quot;abc&quot; OR &quot;def&quot;).</p>
+
+<pre>x-btc:addr=1NXYoJ5xU91Jp83XfVMHwwTUyZFK64BoAD?theymos;store</pre>
+
+
+<p>Store 1NXY... in your address book with the label &quot;theymos&quot;.</p>
+
+<pre>x-btc:pubkey=Ad0a...;send</pre>
+
+
+<p>Open a &quot;Send bitcoins&quot; dialog for the public key Ad0a... You need to fill in any value and label information.</p>
+
+<pre>x-btc:pubkey=Pm_W...;privkey=AJC86...;store</pre>
+
+
+<p>Add public key Pm_W... to your wallet and rescan the block chain for transactions to it. Any bitcoins gotten with this keypair SHOULD be immediately and automatically sent to a new, secret address.</p>
+
+<pre>x-btc:rawtxn=AeOc...;store</pre>
+
+
+<p>Act as though you received the transaction AeOc... from one of your network peers.</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2011-03-12T20:38:56Z">Sat 12 Mar 2011 08:38:56 PM Europe</time>
+<!-- Created <time datetime="2010-12-19T22:05:49Z" pubdate="pubdate">Sun 19 Dec 2010 10:05:49 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

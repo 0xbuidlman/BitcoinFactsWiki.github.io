@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Getwork</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Getwork
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>An RPC method used by a miner to get hashing work to try to solve.
+It has mostly been superceded by the newer <a href="../Getblocktemplate/">getblocktemplate</a> mining protocol, but the data format is still often used internal to some miner structures.</p>
+
+<h2 id="Protocol">Protocol</h2>
+
+<p>getwork is a JSON-RPC method sent over a HTTP transport.
+It accepts one optional parameter;
+if provided, this must be the &quot;data&quot; provided by a prior request modified to meet the server&#39;s proof-of-work requirements.</p>
+
+<p>getwork without arguments provides a block header for a miner to find a solution for:</p>
+
+<table>
+<thead>
+<tr>
+<th>Key </th>
+<th>Required </th>
+<th>Type </th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>data </td>
+<td></td>
+<td>String </td>
+<td>Pre-processed SHA-2 input chunks, in little-endian order, as a hexadecimal-encoded string</td>
+</tr>
+<tr>
+<td>target </td>
+<td></td>
+<td>String </td>
+<td>Proof-of-work hash target as a hexadecimal-encoded string</td>
+</tr>
+<tr>
+<td>algorithm </td>
+<td></td>
+<td>String </td>
+<td>Brief specification of proof-of-work algorithm. Not provided by bitcoind or most poolservers.</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>Because the data key has been preprocessed, if you have a generic SHA256 function you must first reverse the pre-processing.
+This is two steps:</p>
+
+<ul>
+<li>Because getwork provides the data in little endian, and SHA256 works in big endian, for every 32-bit chunk you need to swap the byte order</li>
+<li>Chop off the SHA-2 padding; for Bitcoin, you can just take the first 80 bytes, but otherwise you can find the correct length (in bits) as the last 64 bits of the (byteswapped) data</li>
+</ul>
+
+
+<p>So for example, if you receive this data:
+    000000020597ba1f0cd423b2a3abb0259a54ee5f783077a4ad45fb6200000218
+    000000008348d1339e6797e2b15e9a3f2fb7da08768e99f02727e4227e02903e
+    43a42b31511553101a051f3c0000000000000080000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000080020000
+You first byteswap each 32-bit chunk from little-endian to big-endian:
+    020000001fba9705b223d40c25b0aba35fee549aa477307862fb45ad18020000
+    0000000033d14883e297679e3f9a5eb108dab72ff0998e7622e427273e90027e
+    312ba443105315513c1f051a0000000080000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000280
+Then read the final 64 bits in big-endian - 0x0000000000000280 = 640 bits = 80 bytes - and chop off everything after that:
+    020000001fba9705b223d40c25b0aba35fee549aa477307862fb45ad18020000
+    0000000033d14883e297679e3f9a5eb108dab72ff0998e7622e427273e90027e
+    312ba443105315513c1f051a00000000</p>
+
+<p>Note that since the result you must provide to getwork submissions is in the same format as data, you must reverse this process when you make your submission.</p>
+
+<p>Many optimizations are possible with SHA256, so running a full SHA256 round is generally inadvisable.
+Most miners will precompute the SHA256 &quot;midstate&quot; from the first 512-bit chunk of data, and only repeat the 2nd SHA256 round with the final 512-bit chunk (which contains the nonce).</p>
+
+<p>The target is in standard SHA256 order (big endian), but note that Bitcoin target comparisons are done as 256-bit little endian.
+This means for pdifficulty 1, you want to check that the <em>last</em> 32 bits are zero.</p>
+
+<h2 id="Pseudocode">Pseudocode</h2>
+
+<p>(Just ignore the midstate until you understand the internals of SHA256.)</p>
+
+<p>calculate: hash = SHA256(SHA256(EndianFlipForEach32Bits(First80BytesOf(data))))</p>
+
+<p>If that meets the <a href="../Difficulty/">difficulty</a>, you win (generated a <a href="../Blocks/">block</a> or share)!</p>
+
+<p>If not, increment the <a href="../Nonce/">Nonce</a> that is a number stored in portion of the data that starts 608 bits in (bytes 76 to 79), and try again.</p>
+
+<p>If the incremented portion overflows, get new work (see also <span class="createlink"><a href="/ikiwiki.cgi?from=Getwork&amp;page=rollntime%20extension__124__&amp;do=create" rel="nofollow">?</a>rollntime extension|</span>).</p>
+
+<h2 id="Extensions">Extensions</h2>
+
+<p>When getting new work, miners should send a X-Mining-Extensions header with a space-delimited list of supported extensions:</p>
+
+<h3 id="hostlist">hostlist</h3>
+
+<p><a href="https://deepbit.net/failover.php">Original specification from Deepbit</a></p>
+
+<p>The server may include a X-Host-List header with a list of available servers formatted in JSON as an array of objects with server details.
+&quot;host&quot; specifies the server&#39;s hostname or IP address, &quot;port&quot; specifies a TCP port, and &quot;ttr&quot; is &quot;time to return&quot;.
+If you use server with non-zero ttr you should try to return to the server with 0 ttr after this number of minutes.</p>
+
+<p>Example:
+    X-Host-List: {}{}<a>(1)</a></p>
+
+<p>This string says that &quot;server.tld&quot; is the main server.
+When you detect connection problems, you need to try the next server - &quot;backup.tld&quot; for 20 minutes and then try to switch back to &quot;server.tld&quot;.
+If the main server is still offline you should continue to use &quot;backup.tld&quot; for another 20 minutes.</p>
+
+<p>Failover workflow:</p>
+
+<ol>
+<li>Choose the first working server while cycling from left to right</li>
+<li>if &quot;ttr&quot; of the server is greater than zero, go to 1) after this amount of minutes.</li>
+</ol>
+
+
+<h3 id="longpoll">longpoll</h3>
+
+<p><a href="https://deepbit.net/longpolling.php">Original specification from Deepbit</a></p>
+
+<p>If mining pool does supports Long Polling, it should include a X-Long-Polling header with a relative or absolute URI. The absolute URI may specify a different port than the original connection. Miner must start a request to long polling URI with GET method and same basic authorization as on main connection. This request is not answered by server until it wishes to expire current block data, and new data is ready. The answer is the same as getwork on the main connection. Upon receiving this answer, miner should drop current calculation in progress, discard its result, and start working on received data and make a new request to a long polling URI. There is a 60 second limit before new work should be requested (the normal way) regardless of response from longpoll (though this may be overridden by the <span class="createlink"><a href="/ikiwiki.cgi?from=Getwork&amp;page=rollntime%20extension%20below__124__&amp;do=create" rel="nofollow">?</a>rollntime extension below|</span>).</p>
+
+<h3 id="midstate">midstate</h3>
+
+<p>This should be advertised if the miner supports generating its own midstates. In this case, the pool may decide to omit the now-deprecated &quot;midstate&quot; and &quot;hash1&quot; fields in the work response.</p>
+
+<h3 id="noncerange">noncerange</h3>
+
+<p><a href="https://bitcointalk.org/index.php?topic=24336.0">noncerange discussion forum thread</a></p>
+
+<p>In addition to X-Mining-Extensions, the miner should also send X-Mining-Hashrate, with an integer value of expected hashrate measured in full hashes per second.
+The server may then add an additional field to the JSON response, &quot;noncerange&quot;, which contains two 32-bit integers specifying the starting and final nonce the miner is allowed to scan.
+While both values are given in big endian, miners should iterate over the range in their native 32-bit integer type (SHA256 works with 32-bit integers, not character data).
+The miner should implement rollntime by starting from the first nonce in the range every second.</p>
+
+<p>Example:
+    &quot;noncerange&quot;: &quot;000000001fffffff&quot;
+Response:
+    solution: &quot;...dddddd1f...&quot;</p>
+
+<h3 id="reject-reason">reject-reason</h3>
+
+<p>NOTE: Clients should not need to advertise this feature in X-Mining-Extensions.</p>
+
+<p>When a share is rejected, the server may include a X-Reject-Reason header indicating the reason why it was rejected.
+Values for this header are undefined.</p>
+
+<h3 id="rollntime">rollntime</h3>
+
+<p><a href="https://bitcointalk.org/index.php?topic=22561.0">rollntime expiration discussion forum thread</a></p>
+
+<p>Iff the getwork response includes a &quot;X-Roll-NTime&quot; header with any value other than &quot;N&quot; or the null string, the miner may (within reason) change the ntime field in addition to the nonce.
+The server may send a value of &quot;expire=&quot;, where  is an integer number of seconds it is willing to accept the other headers for.
+Note that if the &quot;X-Roll-NTime&quot; header is NOT present in a work response, that work may NOT be rolled, even if earlier work from the same server allowed it.
+Also note that the headers of a share submission should not influence the behaviour of work-- specifically, if a share submit does not have the header, it should not disable rollntime for the current work (which did).</p>
+
+<p>Due to network latency, <a>Luke-Jr</a> recommends the following design for miners:</p>
+
+<ol>
+<li>getwork, record  and &lt;time+getwork expire&gt; , and begin mining on it</li>
+<li>every second, update ntime and reset nonce to </li>
+<li>when a share is found, submit it. record the duration of the submit request.</li>
+<li>if a share submission fails due to a network error, save the share and retry it a second later the same as step 3; also immediately (regardless of how long the current work has been active) begin trying to get new work (which is treated the same as step 5+6 when done)</li>
+<li>when current time is past &lt;time@1+getwork expire&gt; minus  times 4, begin a request for new work</li>
+<li>when new work arrives, discard old work and begin using the new work.</li>
+</ol>
+
+
+<h3 id="stratum">stratum</h3>
+
+<p>The server may include a X-Stratum header containing URL to its Stratum interface. If this header is present, the Stratum-capable miner should switch to the specified URL immediately</p>
+
+<p>Example:
+    X-Stratum: stratum+tcp://example.com:3333</p>
+
+<p>Stratum+tcp indicates Stratum protocol with TCP transport. Theoretically pool can implement other transports as well, although at this date Stratum miners implement only TCP transport.</p>
+
+<h3 id="submitold">submitold</h3>
+
+<p>This feature should only be advertised with a longpoll request. If received with a regular request, it should be ignored.</p>
+
+<p>If supported, the server may include a &quot;submitold&quot; key in the JSON result. If this key is present and true, the miner should NOT discard the result of old work (default per longpoll specification), but instead submit them to the server. The miner should still stop working on the old work, and begin working on the new work as soon as it can without losing the result of the old work.</p>
+
+<h3 id="switchto">switchto</h3>
+
+<p><a href="https://deepbit.net/failover.php">Original specification from Deepbit</a></p>
+
+<p>The server may include a X-Switch-To header containing a single JSON object formatted in the same fashon as items in the <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=hostlist%20array%20extension__124__&amp;from=Getwork" rel="nofollow">?</a>hostlist array extension|</span>.
+If this header is present, the miner should switch to the specified server for at least ttr minutes after finishing current &quot;getwork&quot; and submitting its results.</p>
+
+<p>Example:
+    X-Switch-To: {&quot;host&quot;:&quot;temporary.tld&quot;,&quot;port&quot;:8332,&quot;ttr&quot;:10}</p>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../Getwork_support/">Getwork support</a></li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Coinbaser/">Coinbaser</a>
+
+<a href="../Getblocktemplate/">Getblocktemplate</a>
+
+<a href="../Getwork_support/">Getwork support</a>
+
+<a href="../Higher_difficulty_pooled_mining/">Higher difficulty pooled mining</a>
+
+<a href="../Stratum_mining_protocol/">Stratum mining protocol</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-04-01T03:00:57Z">Wed 01 Apr 2015 03:00:57 AM Europe</time>
+<!-- Created <time datetime="2011-06-07T22:30:05Z" pubdate="pubdate">Tue 07 Jun 2011 10:30:05 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

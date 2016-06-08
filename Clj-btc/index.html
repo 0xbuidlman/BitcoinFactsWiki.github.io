@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Clj-btc</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Clj-btc
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=Clj-btc" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>clj-btc provides Clojure bindings for <a href="../Bitcoind/">Bitcoin Core</a>&#39;s <a href="../Original_Bitcoin_client/API_Calls_list/">JSON-RPC</a> API.</p>
+
+<p>Example use from the REPL:</p>
+
+<p><source lang="clojure">
+user=&gt; (require &#39;<a href="clj-btc.core">:as btc</a>)
+nil
+user=&gt; (btc/getinfo)
+{&quot;timeoffset&quot; 0, &quot;protocolversion&quot; 70001, &quot;blocks&quot; 111908, &quot;errors&quot; &quot;&quot;,
+    &quot;testnet&quot; true, &quot;proxy&quot; &quot;&quot;, &quot;connections&quot; 4, &quot;version&quot; 80500,
+    &quot;keypoololdest&quot; 1380388750, &quot;paytxfee&quot; 0E-8M,
+    &quot;difficulty&quot; 4642.44443532M, &quot;keypoolsize&quot; 101, &quot;balance&quot; 0E-8M,
+    &quot;walletversion&quot; 60000}
+</source></p>
+
+<p>Sources can be found <a href="https://github.com/aviad/clj-btc">on GitHub</a>.</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Clojure/" rel="tag">Clojure</a>
+
+<a href="../tags/Software/" rel="tag">Software</a>
+
+</nav>
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2014-03-29T16:54:58Z">Sat 29 Mar 2014 04:54:58 PM Europe</time>
+<!-- Created <time datetime="2014-03-29T16:54:58Z" pubdate="pubdate">Sat 29 Mar 2014 04:54:58 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

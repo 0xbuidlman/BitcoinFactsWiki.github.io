@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Atomic cross-chain trading</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Atomic cross-chain trading
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=Atomic_cross-chain_trading" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>The problem of <strong>atomic cross-chain trading</strong> is one where (at least) two parties, Alice and Bob, own coins in separate cryptocurrencies, and want to exchange them without having to trust a third party (centralized exchange).</p>
+
+<p>A non-atomic trivial solution would have Alice send her Bitcoins to Bob, and then have Bob send another cryptocurrency to Alice - but Bob has the option of going back on his end of the bargain and simply not following through with the protocol, ending up with both Bitcoins and the altcoin.</p>
+
+<h2 id="Solution_using_revealing_secrets_of_contract">Solution using revealing secrets of contract</h2>
+
+<p>One solution is <a href="../Contracts/#Example_5:_Trading_across_chains">Contracts</a> and <a href="../NLockTime/">nLockTime</a>.</p>
+
+<h3 id="Algorithm">Algorithm</h3>
+
+<p>Here is one description of an algorithm that solves this problem, <a href="https://bitcointalk.org/index.php?topic=193281.msg2224949#msg2224949">credit goes to TierNolan</a> for this specific description (the algorithm was described in other terms by other people including <span class="createlink"><a href="/ikiwiki.cgi?page=Mike_Hearn&amp;do=create&amp;from=Atomic_cross-chain_trading" rel="nofollow">?</a>Mike Hearn</span> above).</p>
+
+<pre>
+ A picks a random number x
+ 
+ A creates TX1: &quot;Pay w BTC to  if (x for H(x) known and signed by B) or (signed by A &amp; B)&quot;
+ 
+ A creates TX2: &quot;Pay w BTC from TX1 to , locked 48 hours in the future, signed by A&quot;
+ 
+ A sends TX2 to B
+ 
+ B signs TX2 and returns to A
+ 
+ 1) A submits TX1 to the network
+ 
+ B creates TX3: &quot;Pay v alt-coins to  if (x for H(x) known and signed by A) or (signed by A &amp; B)&quot;
+ 
+ B creates TX4: &quot;Pay v alt-coins from TX3 to , locked 24 hours in the future, signed by B&quot;
+ 
+ B sends TX4 to A
+ 
+ A signs TX4 and sends back to B
+ 
+ 2) B submits TX3 to the network
+ 
+ 3) A spends TX3 giving x
+ 
+ 4) B spends TX1 using x
+ 
+ This is atomic (with timeout).  If the process is halted, it can be reversed no matter when it is stopped.
+ 
+ Before 1: Nothing public has been broadcast, so nothing happens
+ Between 1 &amp; 2: A can use refund transaction after 72 hours to get his money back
+ Between 2 &amp; 3: B can get refund after 24 hours.  A has 24 more hours to get his refund
+ After 3: Transaction is completed by 2
+ - A must spend his new coin within 24 hours or B can claim the refund and keep his coins
+ - B must spend his new coin within 72 hours or A can claim the refund and keep his coins
+ 
+ For safety, both should complete the process with lots of time until the deadlines.
+</pre>
+
+
+<h2 id="Solution_using_specialized_altchain">Solution using specialized altchain</h2>
+
+<p>The previously mentioned approach can be used directly to trade between bitcoin-derived chains without special support on the side of protocol. The obvious disadvantage is nLockTime - if counterparty does not go through the trade, our funds are locked and cannot used in another trade for the duration of timeout. Additionally, it depends on transaction replacement which may, or may not be considered standard under current bitcoin protocol rules.</p>
+
+<p>Another proposal of cross-chain p2ptrade is to use specialized altchain with properties for efficient operation of p2ptrade from bitcoin chain. Additionally, we use only single standard bitcoin transaction which looks exactly the same as normal payment (no nlocktime, no multisig, no special script).</p>
+
+<p>Assuming the altchain has actual economic value to support it, it can even serve as proxy for (relatively) efficient zero-trust p2p market between fe. BTC and LTC thanks to arbitraging market makers.</p>
+
+<h3 id="Algorithm">Algorithm</h3>
+
+<p>Alice=AltChain
+Bob=Bitcoin</p>
+
+<ul>
+<li>Bob create and sign the transaction as usual and compute its <b>txid</b>. He sends <b>txid</b> and the transaction body <b>with input scripts/signature blanked</b> to Alice.</li>
+<li>Alice computes hash of the blanked body, call it <b>blankhash</b>, and constructs transaction with special <b>bitcointxid(blankhash,txid)</b> opcode. Broadcasts the transaction to altchain.</li>
+<li>Bob waits for altchain tx to confirm and verify its outputs are as previously agreed - at that point he sends the &quot;uncensored&quot; Bitcoin tx to Alice who&#39;ll broadcast it. Alice is therefore credited the bitcoin funds, which in turn validate altchain transaction at the same time (this is the atomic point).</li>
+<li>Note that bob releases his tx only if he is sufficiently confident the altchain will not reorg its transactions, thus possibly double spend. This might imply that <em>many</em> confirmations in altchain should come first, however during that time each of them might decide to cancel the trade with no further consequences.</li>
+</ul>
+
+
+<h3 id="Opcodes_and_altchain_special_rules">Opcodes and altchain special rules</h3>
+
+<ul>
+<li><b>bitcointxid</b> evaluates to true if <b>txid</b> (and <b>blankhash</b> is equal to tx body) are seen confirmed in the bitcoin blockchain (altchain client must consult bitcoin for that) and it&#39;s outputs are spendable (ie verify it&#39;s standard tx).</li>
+<li>The transaction is constructed in such a way it is valid to be included in altchain even if there is no matching <b>txid/blankhash</b> in bitcoin</li>
+<li>Its outputs are not spendable and inputs are free to be spent by another tx (i know, ugly!) until bitcoin txid confirmed &quot;freezes&quot; the tx (at which point it consumes inputs, and it&#39;s outputs become spendable).</li>
+<li>Optionally there could be bitcoin block# parameter at which point the freeze occurs (effectively dictating number of confirms on bitcoin side).</li>
+<li>It is legal for inputs to be mentioned multiple times, first (in blockheight order) transaction which gets &quot;frozen&quot; wins and other same-input consumers become invalid.</li>
+</ul>
+
+
+<h2 id="Other_references">Other references</h2>
+
+<ul>
+<li><a href="https://bitcointalk.org/index.php?topic=91843.0">P2PTradeX: P2P Trading between cryptocurrencies</a></li>
+<li><a href="https://bitcointalk.org/index.php?topic=193281.0">Alt chains and atomic transfers</a></li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Contract/">Contract</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-03-26T06:49:52Z">Sat 26 Mar 2016 06:49:52 AM Europe</time>
+<!-- Created <time datetime="2013-05-21T08:23:33Z" pubdate="pubdate">Tue 21 May 2013 08:23:33 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

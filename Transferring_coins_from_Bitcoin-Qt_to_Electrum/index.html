@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Transferring coins from Bitcoin-Qt to Electrum</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Transferring coins from Bitcoin-Qt to Electrum
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Transferring_coins_from_Bitcoin-Qt_to_Electrum&amp;page=Talk&amp;do=create" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>This guide is intended for users of <a href="../Bitcoin_Core/">Bitcoin Core</a> who do not want to wait for their wallet to be synchronized with the network, which may take many hours or days depending on the hardware spec.</p>
+
+<p>It&#39;s a somewhat common situation that users don&#39;t open their wallet for months or years, after which they come back to find it will take them hours to have be able to use Bitcoin Core. Another example is where the block files on hard disk have become corrupted requiring parts of the <a href="../Blockchain/">blockchain</a> to be downloaded and verified again.</p>
+
+<p><strong>WARNING</strong></p>
+
+<p>Before reading this page, users should note that directly manipulating ECDSA <a href="../Private_keys/">private keys</a> is dangerous and can result in losing bitcoins (1.1) (1.2). This guide is for the impatient or time-stressed, it is recommended that users of <a href="../Bitcoin_Core/">Bitcoin Core</a> simply wait out the <a href="../Block_chain_download/">blockchain synchronization</a>. There are many benefits to running a <a href="../Full_node/">Full node</a> including trustlessness, security and privacy which lightweight wallets cannot yet match.</p>
+
+<h2 id="Obtain_new_Electrum_wallet">Obtain new Electrum wallet</h2>
+
+<p>Download <a href="../Electrum/">Electrum</a>, verify the signature to prove it was not modified in transit. Create a new normal wallet (not watch-only!). Write down the mnemonic recovery seed on paper.</p>
+
+<h2 id="Obtain_private_key.28s.29_from_Bitcoin-Qt">Obtain private key(s) from Bitcoin-Qt</h2>
+
+<p>Click Help -&gt; Debug. Click the Console tab. Use the <a href="../Original_Bitcoin_client/API_calls_list/">dumpprivkey</a> command to get the private key. Repeat for as many bitcoin addresses as have money in them.</p>
+
+<pre><code>dumpprivkey &lt;your bitcoin address&gt;
+</code></pre>
+
+<p>If your wallet is encrypted, use this command to decrypt it for 5 minutes:</p>
+
+<pre><code>walletpassphrase your-wallet-passphrase 300
+</code></pre>
+
+<p>After that try <em>dumpprivkey</em> again.</p>
+
+<h2 id="Sweep_private_keys_with_Electrum">Sweep private keys with Electrum</h2>
+
+<p>In the Electrum window, click Wallet -&gt; Private Keys -&gt; Sweep. Paste the private keys from Bitcoin-Qt here. Check the resulting transaction is okay and click Broadcast. Your funds will be swept from the addresses in Bitcoin Core and put in an Electrum wallet address.</p>
+
+<h2 id="References">References</h2>
+
+<p>1.1: <a href="https://bitcoin.stackexchange.com/questions/29948/why-doc-says-importing-private-keys-is-so-dangerous">Bitcoin StackExchange - Why doc says importing private keys is so dangerous?</a><br />
+1.2: <a href="https://bitcoin.stackexchange.com/questions/18619/why-so-many-warnings-about-importing-private-keys">Bitcoin StackExchange - Why so many warnings about importing private keys?</a></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Instructional/" rel="tag">Instructional</a>
+
+</nav>
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-02-10T15:43:20Z">Wed 10 Feb 2016 03:43:20 PM Europe</time>
+<!-- Created <time datetime="2015-09-27T01:05:50Z" pubdate="pubdate">Sun 27 Sep 2015 01:05:50 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

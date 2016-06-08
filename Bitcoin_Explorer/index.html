@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Bitcoin Explorer</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Bitcoin Explorer
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=Bitcoin_Explorer" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>Bitcoin Explorer (bx) is an advanced command line application that is included as part of <a href="../Libbitcoin_Explorer/">libbitcoin-explorer</a>. <a href="https://github.com/libbitcoin/libbitcoin-explorer/wiki">Extensive documentation</a> and <a href="https://github.com/libbitcoin/libbitcoin-explorer/wiki/Download-BX">signed binaries</a> for Linux, OSX and Windows are available on GitHub.</p>
+
+<h2 id="Examples">Examples</h2>
+
+<p>Generating a new bitcoin address:</p>
+
+<pre><code>$ bx seed  bx ec-new  bx ec-to-public  bx ec-to-address
+13ua8RRSxLpL5WL5cKUDepUCvJZgGWuKh7
+</code></pre>
+
+<p>Executing a blockchain query against <a href="../Libbitcoin_Server/">Libbitcoin Server</a> via <a href="http://zeromq.org">ZeroMQ</a>:</p>
+
+<pre><code>$ bx fetch-tx 4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b
+transaction
+{
+hash 4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b
+inputs
+{
+input
+{
+previous_output
+{
+hash 0000000000000000000000000000000000000000000000000000000000000000
+index 4294967295
+}
+script &quot; [(1)](04ffff001d0104455468652054696d65732030332f4a616e2f32303039204368616e63656c6c6f72206f6e206272696e6b206f66207365636f6e64206261696c6f757420666f722062616e6b73)&quot;
+sequence 4294967295
+}
+}
+lock_time 0
+outputs
+{
+output
+{
+address 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa
+script &quot; [(2)](04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f) checksig&quot;
+value 5000000000
+}
+}
+version 1
+}
+</code></pre>
+
+<p>Decoding Satoshi&#39;s words:</p>
+
+<pre><code>$ bx base16-decode 04ffff001d0104455468652054696d65732030332f4a616e2f32303039204368616e63656c6c6f72206f6e206272696e6b206f66207365636f6e64206261696c6f757420666f722062616e6b73 
+&yuml;&yuml;EThe Times 03/Jan/2009 Chancellor on brink of second bailout for banks
+</code></pre>
+
+<p>Posting a transaction directly to 10 nodes on the Bitcoin P2P network:</p>
+
+<pre><code>$ bx send-tx-p2p --nodes 10 0100000001b3807042c92f449bbf79b33ca59d7dfec7f4cc71096704a9c526dddf496ee0970100000069463044022039a36013301597daef41fbe593a02cc513d0b55527ec2df1050e2e8ff49c85c202204fcc407ce9b6f719ee7d009aeb8d8d21423f400a5b871394ca32e00c26b348dd2103c40cbd64c9c608df2c9730f49b0888c4db1c436e8b2b74aead6c6afbd10428c0ffffffff01905f0100000000001976a91418c0bd8d1818f1bf99cb1df2269c645318ef7b7388ac00000000
+Sent transaction at 2015-May-08 12:17:09.
+Sent transaction at 2015-May-08 12:17:09.
+Sent transaction at 2015-May-08 12:17:09.
+Sent transaction at 2015-May-08 12:17:12.
+Sent transaction at 2015-May-08 12:17:12.
+Sent transaction at 2015-May-08 12:17:15.
+Sent transaction at 2015-May-08 12:17:15.
+Sent transaction at 2015-May-08 12:17:19.
+Sent transaction at 2015-May-08 12:17:20.
+Sent transaction at 2015-May-08 12:17:20.
+</code></pre>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../Libbitcoin/">Libbitcoin</a></li>
+<li><a href="../Libbitcoin_Explorer/">libbitcoin-explorer</a></li>
+<li><a href="../SubvertX/">SubvertX</a></li>
+</ul>
+
+
+<h2 id="References">References</h2>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Clients/" rel="tag">Clients</a>
+
+<a href="../tags/Frontends/" rel="tag">Frontends</a>
+
+<a href="../tags/Open_Source/" rel="tag">Open Source</a>
+
+<a href="../tags/Software__8207____8206__/" rel="tag">Software‏‎</a>
+
+<a href="../tags/User_Interfaces/" rel="tag">User Interfaces</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Clients/">Clients</a>
+
+<a href="../Libbitcoin/">Libbitcoin</a>
+
+<a href="../Libbitcoin_Client/">Libbitcoin Client</a>
+
+<a href="../Libbitcoin_Explorer/">Libbitcoin Explorer</a>
+
+<a href="../Software/">Software</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-07-12T22:26:09Z">Sun 12 Jul 2015 10:26:09 PM Europe</time>
+<!-- Created <time datetime="2015-07-12T17:26:57Z" pubdate="pubdate">Sun 12 Jul 2015 05:26:57 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

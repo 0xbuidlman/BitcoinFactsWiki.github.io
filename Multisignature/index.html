@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Multisignature</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Multisignature
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Multisignature&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>Multisignature (multisig) refers to requiring more than one key to authorize a Bitcoin <a href="../Transaction/">transaction</a>.</p>
+
+<p>Consider the following scenario:</p><blockquote>Suppose I am working with a company that wants to accept Bitcoin for international trades.
+
+<p>The company, for security reasons, would not want a single one of its employees to have access to the company BTC wallet&#39;s password. Any transaction would have to meet the approval of more than one employee.</p>
+
+<p>Is this possible already? If not, how could it be implemented with public-key cryptography? (1.1)</p></blockquote>Multisig is the the solution to this.
+
+<h2 id="Implementations">Implementations</h2>
+
+<p>Shamir&#39;s <a href="https://en.wikipedia.org/wiki/Secret_sharing">Secret Sharing</a> Scheme (ssss) (2.1) is a general software implementation of multisig.</p>
+
+<p>Specific to Bitcoin, <span class="createlink"><a href="/ikiwiki.cgi?page=GreenAddress&amp;do=create&amp;from=Multisignature" rel="nofollow">?</a>GreenAddress.it</span>, for example, has 2-of-2 and 2-of-3 accounts (requiring at least two keys to authorize a transaction). <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Coinbase_%28business%29&amp;from=Multisignature" rel="nofollow">?</a>Coinbase</span> also offers 2-of-3 and 3-of-5 multisig, which they call <a href="https://support.coinbase.com/customer/portal/articles/1743782-what-is-the-multisig-vault-">Vault</a>.</p>
+
+<h2>Multisignature Transactionshttps://bitcoinarmory.com/faq/#q14</h2>
+
+<blockquote>Standard transactions on the Bitcoin network could be called &ldquo;single-signature transactions,&rdquo; because transfers require only one signature &mdash; from the owner of the private key associated with the Bitcoin address. However, the Bitcoin network supports much more complicated transactions that require the signatures of multiple people before the funds can be transferred. These are often referred to as M-of-N transactions. The idea is that Bitcoins become &ldquo;encumbered&rdquo; by providing addresses of multiple parties, thus requiring cooperation of those parties in order to do anything with them. Here are some examples:
+
+1-of-2: Husband and wife petty cash account &mdash; the signature of either spouse is sufficient to spend the funds.
+
+2-of-2: Husband and wife savings account &mdash; both signatures are required to spend the funds, preventing one spouse from spending the money without the approval of the other
+
+2-of-2: One wallet is on your primary computer, the other on your smartphone &mdash; the funds cannot be spent without a signature from both devices. Thus, an attacker must gain access to both devices in order to steal your funds (much more difficult than one device)
+
+2-of-3: Parents&rsquo; savings account for child &mdash; the kid can spend the money with the approval of either parent, and money cannot be taken away from the child unless both parents agree
+
+2-of-3: A board of three directors maintaining funds for their organization &mdash; those funds cannot be spent unless any two of those directors agrees. Bigger multi-signature transactions are possible for bigger organizations, such as 3-of-5, 5-of-9, etc.
+
+2-of-3: Buyer-seller escrow: buyer commits money into a 2-of-3 transaction with the seller and a third-party arbitrator. If transaction goes smoothly, then both buyer and seller sign the transaction to forward the money to the seller. If something goes wrong, they can sign a transaction to refund the buyer. If they cannot agree, they both appeal to the third-party who will arbitrate and provide a second signature to the party that it deems deserves it.</blockquote>
+
+
+<h2 id="Multisignature_Addresses">Multisignature Addresses</h2>
+
+<blockquote>A <a href="../Address/#Multi-signature_addresses">multi-signature address</a> is an address that is associated with more than one ECDSA private key. The simplest type is an m-of-n address - it is associated with n private keys, and sending bitcoins from this address requires signatures from at least m keys. A multi-signature transaction is one that sends funds from a multi-signature address. (4.1)</blockquote>
+
+
+<h3 id="Creating_a_Multisignature_Address">Creating a Multisignature Address</h3>
+
+<p>A 2of3 multisig address can be created by following these steps: (5.1)</p>
+
+<blockquote><ol><li>Gather (or generate) 3 bitcoin addresses, on whichever machines will be participating, using getnewaddress or getaccountaddress RPC commands (or copy and paste from the GUI).</li>
+<li>Get their public keys using the <tt>validateaddress</tt> <span class="createlink"><a href="/ikiwiki.cgi?page=API_reference_%2528JSON-RPC%2529&amp;do=create&amp;from=Multisignature" rel="nofollow">?</a>RPC</span> command 3 times.</li>
+<li>Then create a 2-of-3 multisig address using addmultisigaddress; e.g.<blockquote><code>bitcoind addmultisigaddress 2 &#39;[&quot;044322868cb17d64dcc22185ae2d4493111d73244c3668f8ac79ecc79c0ba8d30a6756d0fa20157 709af3281cc721c7f53321a8cabda29b77900b7e4fe0174b114&quot;,&quot;..second pubkey..&quot;,&quot;..third pubkey..&quot;]&#39;</code></blockquote></li></ol><tt>addmultisigaddress</tt> returns the multisignature address. Be a little careful, the public keys are raw hexadecimal and don&#39;t contain checksums like bitcoin addresses do. You can then send funds into that 2-of-3 transaction using the normal sendtoaddress/sendmany RPC commands, or the GUI (or anything that&#39;s been updated to recognize multisig addresses). (5.2)</blockquote>
+
+
+<h2 id="History_of_Multisignature">History of Multisignature</h2>
+
+<p>Multisignature has been used for thousands of years to protect the security of crypts holding the most precious relics of saints. The superior of a monastery would give monks only partial keys for gaining access to the precious relics. Thus, no single monk could gain access to and possibly steal the relics. (6.1)</p>
+
+<h2 id="Multisignature_Wallets">Multisignature Wallets</h2>
+
+<p>A number of companies have developed multisig wallets: (7.1)</p>
+
+<ul>
+<li><a href="../Armory/">Armory</a></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Copay&amp;do=create&amp;from=Multisignature" rel="nofollow">?</a>Copay</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Bitgo&amp;do=create&amp;from=Multisignature" rel="nofollow">?</a>Bitgo</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Blocktrail&amp;do=create&amp;from=Multisignature" rel="nofollow">?</a>Blocktrail</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Greenaddress&amp;from=Multisignature" rel="nofollow">?</a>Greenaddress</span></li>
+<li><a href="../Coinbase/">Coinbase</a></li>
+<li><a href="../Electrum/">Electrum</a></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Multisignature&amp;page=Xapo&amp;do=create" rel="nofollow">?</a>Xapo</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Coinkite&amp;from=Multisignature" rel="nofollow">?</a>Coinkite</span></li>
+</ul>
+
+
+<h2 id="References">References</h2>
+
+<p>1.1: https://bitcointalk.org/index.php?topic=507297.msg5594085<br />
+2.1: https://point-at-infinity.org/ssss/<br />
+4.1: https://bitcoin.stackexchange.com/a/3729/4334<br />
+5.1: https://bitcoin.stackexchange.com/a/10593/4334<br />
+5.2: https://bitcointalk.org/index.php?topic=82213.msg906833#msg906833<br />
+6.1: <a href="https://www.youtube.com/watch?v=YcmWQe29zro#t=10m27s">Monks at Mt. Athos continue to use &quot;hard&quot; &quot;multisignature&quot; security today.</a><br />
+7.1: https://www.reddit.com/r/Bitcoin/comments/4eabpi/multisig_wallets_review_coinkite_alternatives_and/</p>
+
+<ul>
+<li><a href="https://bitcoinmagazine.com/11108/multisig-future-bitcoin/">How To Create A Bitcoin Multisig Wallet</a></li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Address/">Address</a>
+
+<a href="../BIP_0011/">BIP 0011</a>
+
+<a href="../Full_Reserve_Banking/">Full Reserve Banking</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-04-19T19:10:49Z">Tue 19 Apr 2016 07:10:49 PM Europe</time>
+<!-- Created <time datetime="2015-03-08T03:20:06Z" pubdate="pubdate">Sun 08 Mar 2015 03:20:06 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

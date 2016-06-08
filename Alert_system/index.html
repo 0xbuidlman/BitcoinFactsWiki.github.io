@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Alert system</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Alert system
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>Bitcoin versions 0.3.10 and later have an <strong>alert system</strong> which allows messages about critical network problems to be broadcast to all clients. When an alert is in effect, the message it contains will appear in the status bar of all clients and in the &quot;errors&quot; field of RPC <em>getinfo</em>. Any script registered with the <code>-alertnotify</code> command-line option will be notified.</p>
+
+<h3 id="Alert_message">Alert message</h3>
+
+<p>Alerts are broadcast using the same <a href="../Network/">TCP relay system</a> as <em>block</em> and <em>tx</em> messages. They are not encoded in a special transaction. Unlike block and tx relaying, alerts are sent at the start of every new connection for as long as the alert is in effect. This ensures that everyone receives the alert.</p>
+
+<p>Alerts contain this information:</p>
+
+<ul>
+<li>How long to relay the alert.</li>
+<li>How long to consider the alert valid.</li>
+<li>An alert ID number.</li>
+<li>A list of alerts that should be canceled upon receipt of this alert.</li>
+<li>Exactly which versions of Bitcoin are affected by the alert. Unaffected versions still relay the alert for the benefit of older versions.</li>
+<li>Alert priority.</li>
+<li>The alert text.</li>
+</ul>
+
+
+<p>Only alerts that are signed by a specific ECDSA public key are considered valid. The known private key holders are <a href="../Satoshi_Nakamoto/">Satoshi Nakamoto</a>, <a>Gavin Andresen</a> and <a>theymos</a>. There are other people able to issue alerts in the event of the incapacitation of the aforementioned. (2.1)</p>
+
+<h3 id="Safe_mode">Safe mode</h3>
+
+<p>Until version 0.3.20, Bitcoin went into safe mode when a valid alert was received. In safe mode, all RPC commands that send BTC or get info about received BTC return an error. Current Bitcoin versions no longer go into safe mode in response to alerts, though Bitcoin <em>will</em> still go into safe mode when it detects on its own that something is seriously wrong with the network.</p>
+
+<p>Even though Bitcoin no longer automatically disables RPC when an alert is live, it is wise for Bitcoin sites to shut down when an alert has been issued. To detect an active alert, poll the &quot;errors&quot; field of <em>getinfo</em>.</p>
+
+<p>To test safe mode, run Bitcoin with the -testsafemode switch. To override a real safe mode event, run Bitcoin with the -disablesafemode switch.</p>
+
+<h2 id="History">History</h2>
+
+<p>The alert system was hastily implemented by <a href="../Satoshi_Nakamoto/">Satoshi Nakamoto</a> after the <a href="../Value_overflow_incident/">value overflow incident</a> on August 15, 2010. Satoshi never actually used this system; it remained dormant until the <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=February_20%2C_2012_protocol_change&amp;from=Alert_system" rel="nofollow">?</a>February 20, 2012 protocol change</span>, for which an alert was issued on February 18. (4.1)</p>
+
+<h3 id="Past_alerts">Past alerts</h3>
+
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Sent date</th>
+<th>Expires (UTC)</th>
+<th>Versions</th>
+<th>Priority</th>
+<th>Message</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1010</td>
+<td>Feb 18, 2012</td>
+<td>Feb 21 02:47:15</td>
+<td>All</td>
+<td>100</td>
+<td>See bitcoin.org/feb20 if you have trouble connecting after 20 February</td>
+</tr>
+<tr>
+<td>1011</td>
+<td>Mar 16, 2012</td>
+<td>cancelled May 15, 2012</td>
+<td>0.5 - 0.5.3</td>
+<td>5000</td>
+<td>URGENT: security fix for Bitcoin-Qt on Windows: http://bitcoin.org/critfix</td>
+</tr>
+<tr>
+<td>1012</td>
+<td>Mar 16, 2012</td>
+<td>cancelled May 15, 2012</td>
+<td>6.0</td>
+<td>5000</td>
+<td>URGENT: security fix for Bitcoin-Qt on Windows: http://bitcoin.org/critfix</td>
+</tr>
+<tr>
+<td>1013</td>
+<td>Mar 16, 2012</td>
+<td>cancelled May 15, 2012</td>
+<td>5.99</td>
+<td>5000</td>
+<td>URGENT: security fix for Bitcoin-Qt on Windows: http://bitcoin.org/critfix</td>
+</tr>
+<tr>
+<td>1015</td>
+<td>May 15, 2012</td>
+<td>May 16, 2013</td>
+<td>0.1 - 0.4.5</td>
+<td>5000</td>
+<td>URGENT: upgrade required, see http://bitcoin.org/dos for details</td>
+</tr>
+<tr>
+<td>1016</td>
+<td>May 15, 2012</td>
+<td>May 16, 2013</td>
+<td>0.4.99 - 0.5.4</td>
+<td>5000</td>
+<td>URGENT: upgrade required, see http://bitcoin.org/dos for details</td>
+</tr>
+<tr>
+<td>1020</td>
+<td>May 15, 2012</td>
+<td>May 16, 2013</td>
+<td>0.6.0</td>
+<td>5000</td>
+<td>URGENT: upgrade required, see http://bitcoin.org/dos for details</td>
+</tr>
+<tr>
+<td>1032</td>
+<td>March 12, 2013</td>
+<td>March 13, 2013</td>
+<td>0.8.0</td>
+<td>5000</td>
+<td>URGENT: chain fork, stop mining on version 0.8</td>
+</tr>
+<tr>
+<td>1033</td>
+<td>March 19, 2013</td>
+<td>March 20, 2013</td>
+<td>0.1 - 0.7.2</td>
+<td>10</td>
+<td>See http://bitcoin.org/may15.html for an important message</td>
+</tr>
+<tr>
+<td>1034</td>
+<td>May 9, 2013</td>
+<td>June 8, 2013</td>
+<td>0.1 - 0.7.2</td>
+<td>10</td>
+<td>Action required: see http://bitcoin.org/may15.html for more information</td>
+</tr>
+<tr>
+<td>1040</td>
+<td>April 11, 2014</td>
+<td>cancelled</td>
+<td>0.9.0</td>
+<td>5000</td>
+<td>URGENT: Upgrade required: see https://www.bitcoin.org/heartbleed/</td>
+</tr>
+<tr>
+<td>1041</td>
+<td>April 11, 2014</td>
+<td>April 11, 2015</td>
+<td>0.9.0</td>
+<td>5000</td>
+<td>URGENT: Upgrade required: see https://www.bitcoin.org/heartbleed</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2 id="See_Also">See Also</h2>
+
+<h2 id="References">References</h2>
+
+<p>2.1: http://www.reddit.com/r/Bitcoin/comments/2dz9ri/why_in_the_world_does_theymos_have_the_private/cjuu360<br />
+4.1: <a href="https://bitcoin.org/en/alert/2012-02-18-protocol-change">February 20, 2012 Protocol Changes</a>  at bitcoin.org</p>
+
+<h2 id="External_links">External links</h2>
+
+<p>https://bitcoin.org/en/alerts</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+<a href="../tags/Vocabulary/" rel="tag">Vocabulary</a>
+
+</nav>
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-08-17T15:57:32Z">Mon 17 Aug 2015 03:57:32 PM Europe</time>
+<!-- Created <time datetime="2011-09-20T07:24:07Z" pubdate="pubdate">Tue 20 Sep 2011 07:24:07 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

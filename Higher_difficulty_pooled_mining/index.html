@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Higher difficulty pooled mining</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Higher difficulty pooled mining
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Higher_difficulty_pooled_mining" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p><strong>Higher difficulty pooled mining</strong> refers to using targets greater than difficulty 1 for pool shares. With the advent of ASIC mining, many hashrates may be sufficiently high that difficulty 1 creates too much traffic for share submissions, and is expected to become necessary in the near future.</p>
+
+<h2 id="Concept">Concept</h2>
+
+<p>With rapidly-increasing hashing speeds, miners are rather wasteful in terms of bandwidth. Each share requires submission to the server, which must handle shares from all miners. This can be overloading, and is suboptimal.</p>
+
+<p>Higher difficulty pooled mining saves bandwidth and does not affect the expected return; however, volatility is increased. For powerful miners, volatility should be low even with a higher difficulty, and the bandwidth savings can pay off.</p>
+
+<p>Pools can allow miners to request their own difficulty level using the &quot;target&quot; key specified in <a href="../BIP_0023/#Basic_Pool_Extensions">BIP 23&#39;s basic pool extensions</a>.  No pool or pool software supports this extension yet; however, <span class="createlink"><a href="/ikiwiki.cgi?page=Eloipool&amp;do=create&amp;from=Higher_difficulty_pooled_mining" rel="nofollow">?</a>Eloipool</span> (maintained by the <span class="createlink"><a href="/ikiwiki.cgi?from=Higher_difficulty_pooled_mining&amp;do=create&amp;page=Eligius" rel="nofollow">?</a>Eligius</span> pool) plans to offer this functionality in the near future.</p>
+
+<h2 id="Technical_details">Technical details</h2>
+
+<p>Communication can be done, as with classical pools, with the <a href="../Getwork/">getwork</a> protocol (though some mining software implements this improperly).
+However, the <a href="../Getwork/">getwork</a> protocol itself cannot scale to faster hashrates.
+To take full advantage of faster miners, <a href="../BIP_0022/">BIP 22</a> and <a href="../BIP_0023/">BIP 23</a> are needed.</p>
+
+<h2 id="History">History</h2>
+
+<p>The first Bitcoin pool to use higher difficulty pooled mining was <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=BitPenny&amp;from=Higher_difficulty_pooled_mining" rel="nofollow">?</a>BitPenny</span>, which uses a fixed difficulty of 8.</p>
+
+<h2 id="Support">Support</h2>
+
+<h3 id="Pools">Pools</h3>
+
+<blockquote><p>*Main article: <span class="createlink"><a href="/ikiwiki.cgi?from=Higher_difficulty_pooled_mining&amp;page=Comparison_of_mining_pools&amp;do=create" rel="nofollow">?</a>Comparison of mining pools</span>
+Only a few pools make use of higher difficulties at this time.</p></blockquote>
+
+<h3 id="Software">Software</h3>
+
+<blockquote><p><em>Main article: <a href="../Getwork_support/">Getwork support</a></em></p></blockquote>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Mining/" rel="tag">Mining</a>
+
+</nav>
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2012-08-31T03:17:23Z">Fri 31 Aug 2012 03:17:23 AM Europe</time>
+<!-- Created <time datetime="2012-08-31T01:45:45Z" pubdate="pubdate">Fri 31 Aug 2012 01:45:45 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

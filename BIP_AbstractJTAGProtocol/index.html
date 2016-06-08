@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>BIP AbstractJTAGProtocol</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+BIP AbstractJTAGProtocol
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=BIP_AbstractJTAGProtocol" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<pre>
+  BIP: ?
+  Title: Abstract JTAG Protocol
+  Author: Luke Dashjr 
+  Status: Draft
+  Type: Standards Track
+  Created: 14-07-2012
+</pre>
+
+
+<h2 id="Abstract">Abstract</h2>
+
+<h2 id="Specification">Specification</h2>
+
+<p>This protocol is designed to be spoken only over a reliable (including error correction) lower-level protocol, such as USB-Serial or USB-CDC, to a local device.</p>
+
+<h3 id="Packet_Format">Packet Format</h3>
+
+<ul>
+<li>4 bytes: magic: always <tt>fd414a50</tt></li>
+<li>1 byte: packet length/type</li>
+<li>N bytes: packet data</li>
+<li>2 bytes: packet data <a href="http://en.wikipedia.org/wiki/BSD_checksum">BSD &quot;sum1&quot; checksum</a></li>
+</ul>
+
+
+<p>Packet length/types:</p>
+
+<ul>
+<li><tt>00</tt> -- Abort</li>
+<li><tt>01</tt> to <tt>ef</tt> -- Data packet length (1 to 239 bytes)</li>
+<li><tt>f0</tt> to <tt>fc</tt> -- Reserved</li>
+<li><tt>fd</tt> -- Bad packet (command aborted)</li>
+<li><tt>fe</tt> -- ACK</li>
+<li><tt>ff</tt> -- End of command</li>
+</ul>
+
+
+<p>ACK should be sent in response to each 239-byte packet. Bulk data transfers, such as bitstream uploads, should wait until ACK is received before sending more packets.</p>
+
+<p>Checksum must include the complete packet up until the checksum itself; this is not used to prevent corruption (USB already guarantees that), but rather to avoid acting when something foreign sends stuff (possibly intermixed with a real AJP packet). If the checksum does not match, the device should send a &quot;<tt>fd</tt>&quot; packet back and ignore the content.</p>
+
+<p>Note that while Abort packets abort the entire command, but do not guarantee it had no effect.</p>
+
+<p>Anything up to the initial magic is ignored.</p>
+
+<h3 id="Command_Format">Command Format</h3>
+
+<ul>
+<li>1 byte: request id</li>
+<li>1 byte: command id
+
+<ul>
+<li><tt>Cx</tt> -- JTAG interface commands</li>
+<li><tt>Dx</tt> -- Replies to JTAG interface commands</li>
+<li><tt>Ex</tt> -- JAP Controller commands</li>
+<li><tt>Fx</tt> -- Replies to JAP Controller commands</li>
+</ul>
+</li>
+<li>1 byte: device number (ignored for some commands)
+
+<ul>
+<li><tt>00</tt> is the controller</li>
+<li><tt>01</tt> to <tt>fe</tt> are JTAG devices</li>
+<li><tt>ff</tt> for &quot;all JTAG devices&quot;</li>
+</ul>
+</li>
+<li>1 byte: status (should always be <tt>00</tt> for requests)
+
+<ul>
+<li><tt>00</tt> -- success</li>
+<li><tt>80</tt> -- failure</li>
+</ul>
+</li>
+<li>N bytes: data</li>
+</ul>
+
+
+<p>Commands less than 4 bytes should be ignored.
+Additional data beyond what is expected should be ignored.</p>
+
+<h3 id="Commands">Commands</h3>
+
+<h4><tt>c0</tt> -- clock</h4>
+
+<p>Request Data:</p>
+
+<ul>
+<li>1 byte: bit field (bitwise OR&#39;d)
+
+<ul>
+<li><tt>10</tt> -- return TDI status</li>
+<li><tt>01</tt> to <tt>03</tt> -- number of clocks to ignore at the end</li>
+</ul>
+</li>
+<li><p>N bytes: two bits per clock</p>
+
+<ul>
+<li>1 bit: TMS high</li>
+<li>1 bit: TDO high
+Reply Data (only if reading):</li>
+</ul>
+</li>
+<li><p>N bytes: one bit per clock</p>
+
+<ul>
+<li>1 bit: TDI high</li>
+</ul>
+</li>
+</ul>
+
+
+<h4><tt>c1</tt> -- read/write register</h4>
+
+<p>Note that data is written/read in big endian bit order. This means that the first bit written/read is <tt>80</tt>, then <tt>40</tt>, and so on. If you are not using a multiple of 8 bits, this is still the case; for example, if you read 7 bits all high, you will get <tt>fe</tt>, <em>not</em> <tt>7f</tt>.</p>
+
+<p>Request Data:</p>
+
+<ul>
+<li>1 byte: bit values (bitwise or&#39;d)
+
+<ul>
+<li>Mode:
+
+<ul>
+<li><tt>00</tt> -- Continue already-started r/w</li>
+<li><tt>80</tt> -- Start r/w of DR register</li>
+<li><tt>40</tt> -- Start r/w of IR register</li>
+</ul>
+</li>
+<li><tt>20</tt> -- Finish r/w</li>
+<li><tt>10</tt> -- Read+Write (default is Write only)</li>
+<li><tt>01</tt> to <tt>07</tt> -- Don&#39;t do last N bits of data</li>
+</ul>
+</li>
+<li><p>N bytes: data to write
+Reply Data (may be parallel with request):</p></li>
+<li><p>N bytes: data read (only if Read+Write set in request)</p></li>
+</ul>
+
+
+<h4><tt>c2</tt> -- reset</h4>
+
+<p>(No Request or Reply Data)</p>
+
+<h4><tt>c3</tt> -- run</h4>
+
+<p>Request Data:</p>
+
+<ul>
+<li>1 byte: number of iterations to run</li>
+</ul>
+
+
+<h4><tt>e0</tt> -- ping</h4>
+
+<p>Device number ignored.
+Replies with same data as request</p>
+
+<h4><tt>e1</tt> -- get device count</h4>
+
+<p>Device number ignored.
+May be required before device access.</p>
+
+<p>Reply Data:</p>
+
+<ul>
+<li>1 byte: number of devices</li>
+<li>N bytes:
+
+<ul>
+<li>1 byte: device id number</li>
+</ul>
+</li>
+</ul>
+
+
+<h4><tt>e2</tt> -- hardware version</h4>
+
+<p>Note: Only expected to work for controller</p>
+
+<p>Reply Data:</p>
+
+<ul>
+<li>4 bytes: hardware version (big endian)</li>
+<li>2 bytes: hardware vendor id authority
+
+<ul>
+<li><tt>0000</tt> -- USB</li>
+<li><tt>ffff</tt> -- Ad-hoc</li>
+</ul>
+</li>
+<li>1 byte: length of hardware vendor id</li>
+<li>N bytes: hardware vendor id (binary)</li>
+<li>1 byte: length of hardware device id</li>
+<li>N bytes: hardware device id (binary)</li>
+<li>1 byte: length of hardware serial number</li>
+<li>N bytes: hardware serial number (UTF-8)</li>
+<li>1 byte: length of human-readable hardware model</li>
+<li>N bytes: human-readable hardware model/version string (UTF-8)</li>
+</ul>
+
+
+<h4><tt>e3</tt> -- software version</h4>
+
+<p>Note: Only expected to work for controller</p>
+
+<p>Reply Data:</p>
+
+<ul>
+<li>4 bytes: software version (big endian)
+
+<ul>
+<li><tt>ffffffff</tt> -- Unknown</li>
+</ul>
+</li>
+<li>1 byte: length of software-specific unique identifier (git commit?)</li>
+<li>N bytes: software-specific unique identifier</li>
+<li>1 byte: length of human-readable software name</li>
+<li>N bytes: human-readable hardware model/version string (UTF-8)</li>
+<li>2 byte: number of AJP features supported</li>
+</ul>
+
+
+<h4><tt>e4</tt> -- device capabilities</h4>
+
+<p>Reply Data:</p>
+
+<ul>
+<li>2*N bytes: supported capabilities
+
+<ul>
+<li><tt>c000</tt> -- JTAG protocol commands</li>
+<li><tt>e50x</tt> -- watch/poll command, with up to X concurrent watches</li>
+</ul>
+</li>
+</ul>
+
+
+<h4><tt>e5</tt> -- watch/poll</h4>
+
+<p>Request Data:</p>
+
+<ul>
+<li>1 byte: how long to watch, in 1/0x10000th of a day (about 1.32 seconds)
+
+<ul>
+<li><tt>00</tt> -- cancel watch</li>
+<li><tt>ff</tt> -- never expire</li>
+</ul>
+</li>
+<li>2 bytes: how often to poll, in 1/0x1000000th of a day (about 0.005 seconds)
+
+<ul>
+<li><tt>0000</tt> -- constantly poll</li>
+<li><tt>2d83</tt> -- about once a minute</li>
+</ul>
+</li>
+<li><p>N bytes: packets to send
+Reply (immediately for all, and whenever results change individually):</p></li>
+<li><p>Same as if the packets were received directly</p></li>
+</ul>
+
+
+<h2 id="Examples">Examples</h2>
+
+<h4 id="Reset_the_command_queue">Reset the command queue</h4>
+
+<p>To reset the command queue, send 243 zero bytes followed by the Abort packet (<tt>fd414a50 00 7052</tt>); this will pad-out any &quot;open&quot; packet, and abort any open command.</p>
+
+<p>It is also advisable to cancel any watch active: <tt>fd414a50 05 00e50000 00 5b9f</tt></p>
+
+<h2 id="Motivation">Motivation</h2>
+
+<h2 id="Rationale">Rationale</h2>
+
+<h2 id="Backwards_Compatibility">Backwards Compatibility</h2>
+
+<h2 id="Reference_Implementation">Reference Implementation</h2>
+
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2012-08-04T21:03:13Z">Sat 04 Aug 2012 09:03:13 PM Europe</time>
+<!-- Created <time datetime="2012-07-14T21:23:17Z" pubdate="pubdate">Sat 14 Jul 2012 09:23:17 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

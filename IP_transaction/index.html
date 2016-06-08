@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>IP transaction</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+IP transaction
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=IP_transaction&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>Sending bitcoins to an IP address was a convenient way of sending bitcoins to a Bitcoin address along with additional information.</p>
+
+<ul>
+<li>You contact the IP address to find out if they&#39;re actually running Bitcoin and accepting IP transactions. If not, no transaction occurs.</li>
+<li>Your additional information (&quot;from&quot;, &quot;message&quot;, etc.) is exchanged with the server.</li>
+<li>The server generates a brand new Bitcoin address and sends it to you.</li>
+<li>You send coins to this <a href="../Address/">address</a> in the normal way</li>
+</ul>
+
+
+<p>Unfortunately, the implementation provided no authentication, so any &quot;man in the middle&quot; could have intercepted your bitcoins during the transaction. When they see that you&#39;re sending a Bitcoin payment by IP address, they pretend to be the actual destination and send back <em>their</em> Bitcoin address. You end up sending bitcoins to the wrong person. It&#39;s therefore no longer a good idea to send bitcoins in this way, <em>especially</em> if you&#39;re using a proxy.</p>
+
+<h2 id="Status">Status</h2>
+
+<p>This feature has been removed from Bitcoin Core as-of v0.8.0 (2.1)</p>
+
+<h2 id="References">References</h2>
+
+<p>2.1: <a href="http://bitcointalk.org/index.php?topic=9334.0">Remove send to IP address and IP transactions support</a></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+</nav>
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2014-11-12T01:19:01Z">Wed 12 Nov 2014 01:19:01 AM Europe</time>
+<!-- Created <time datetime="2010-12-19T20:56:25Z" pubdate="pubdate">Sun 19 Dec 2010 08:56:25 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

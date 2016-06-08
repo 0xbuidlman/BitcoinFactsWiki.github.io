@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>talk</title>
+
+<link rel="stylesheet" href="../../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../../">bitcoin</a>/ 
+
+<a href="../">BIP 0015</a>/ 
+
+</span>
+<span class="title">
+talk
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<h2 id="Thoughts">Thoughts</h2>
+
+<p>I think anything outside the blockchain is an additional security vulnerability.</p>
+
+<h3 id="My_concept">My concept</h3>
+
+<p>Send 0.005 BTCs to 10 consecutive coinbase addresses in one trasaction (concept copied from http://vermorel.com/process/CreateJournalEntryComment?moduleId=5042156&amp;entryId=14193327&amp;finalize=true ). Coins sent from address you want to use and include in script hex encoded address in any format - e.g. MyName or me@company.com then a OP_DROP in the script (as per &quot;bob&quot; in (98<em>256</em>256+111<em>256</em>256+98=6451042) http://blockexplorer.com/testnet/tx/9b8cf14991f5b401d4356bbf2e11f5f3bb5221bbd947b8be4cf600f5492f974d ).
+This would be called an &quot;Address Initiation&quot; transaction.</p>
+
+<h4 id="Initially">Initially</h4>
+
+<p>Clients would when they see an Address Initiation transaction store name/address pair locally. Could then translate names into addresses to send BTCs. Ordered nature of blockchain would ensure you can check your address is valid before telling anyone to use it.</p>
+
+<h4 id="Once_large_scale_and_implemented_network_wide">Once large scale and implemented network wide</h4>
+
+<p>Clients send directly to nice addresses and network can lookup real address to receive when trying to spend.</p>
+
+<h4 id="Advantages">Advantages</h4>
+
+<ul>
+<li>There is a cost of creating an address so less spam addresses.</li>
+<li>Cost is paid to miners who secure the network.</li>
+<li>Does not require blockchain fork.</li>
+<li>Any address format possible.</li>
+<li>Now people can speculate on Addresses too! (or is that a disadvantage?).</li>
+<li>As secure as Bitcoin.</li>
+</ul>
+
+
+<h4 id="Disadvantages">Disadvantages</h4>
+
+<ul>
+<li>A number of client changes needed to make user friendly.</li>
+<li>Does not seem elegant.</li>
+<li>Storage bloat (although would not be a problem for a long time).</li>
+<li>More prone to typos (phelix)
+<a>Nibor</a> 00:11 27 December 2011</li>
+</ul>
+
+
+<h2 id="Namecoin_aliases">Namecoin aliases</h2>
+
+<p>Aliases are stored in the namecoin blockchain, see :</p>
+
+<p>http://dot-bit.org/Namespace:Aliases</p>
+
+<h3 id="Advantages">Advantages</h3>
+
+<ul>
+<li>Fast &amp; easy to add into bitcoin : need an rpc request &amp; json parsing</li>
+<li>Benefits from all the bitcoin advantages</li>
+<li>Secure : no external server/entity to trust</li>
+<li>High availability : available even when offline</li>
+<li>Easy to create &amp; update an alias (possible offline too)</li>
+<li>Namecoin Alias banks possible, like bitcoin banks</li>
+</ul>
+
+
+<h3 id="Disadvantages">Disadvantages</h3>
+
+<ul>
+<li>Need to run another software</li>
+<li>Need to get some namecoins (or use a bank)</li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../">BIP 0015</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2012-05-27T13:13:35Z">Sun 27 May 2012 01:13:35 PM Europe</time>
+<!-- Created <time datetime="2011-12-27T00:11:21Z" pubdate="pubdate">Tue 27 Dec 2011 12:11:21 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

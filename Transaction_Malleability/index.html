@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Transaction Malleability</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Transaction Malleability
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=Transaction_Malleability" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>While <a href="../Transaction/">transaction</a>s are signed, the signature does not currently cover all the data in a transaction that is hashed to create the transaction hash. Thus, while uncommon, it is possible for a node on the network to change a transaction you send in such a way that the hash is invalidated. Note that this just changes the hash; the output of the transaction remains the same and the bitcoins will go to their intended recipient. However this does mean that, for instance, it is not safe to accept a chain of unconfirmed transactions under any circumstance because the later transactions will depend on the hashes of the previous transactions, and those hashes can be changed until they are confirmed in a block (and potentially even after a confirmation if the block chain is reorganized). In addition, clients must always actively scan for transactions to them; assuming a txout exists because the client created it previously is unsafe.</p>
+
+<h2 id="Signature_Malleability">Signature Malleability</h2>
+
+<p>The first form of malleability is in the signatures themselves. Each signature has exactly one DER-encoded ASN.1 octet representation, but OpenSSL does not enforce this, and as long as a signature isn&#39;t horribly malformed, it will be accepted. (2.1) In addition for every ECDSA signature (r,s), the signature (r, -s (mod N)) is a valid signature of the same message. (2.2)</p>
+
+<p>As of block 363724 (2.3), the <a href="https://github.com/bitcoin/bips/blob/master/bip-0066.mediawiki">BIP66 soft fork</a> has made it mandatory for all new transactions in the block chain to strictly follow the DER-encoded ASN.1 standard.
+Further efforts are still under way to close other possible malleability within DER signatures.</p>
+
+<p>Signatures can still be changed by anyone who has access to the corresponding private keys.</p>
+
+<h2 id="scriptSig_Malleability">scriptSig Malleability</h2>
+
+<p>The <a href="../OP_CHECKSIG/">signature algorithm</a> used in Bitcoin does not sign any of the scriptSig to create the signature. While signing the whole scriptSig would be impossible - the signature would be signing itself - this does mean that additional data can be added such that it will be pushed on the stack prior to the required signatures and public keys. Similarly OP_DROP can be added to leave the stack exactly as before prior to scriptPubKey execution.</p>
+
+<p>Preventing scriptSig malleability is being considered as well. Currently transactions with anything other than data push operations in their scriptSig are considered non-standard and are not relayed, and eventually this rule may extend to enforcing that the stack have exactly one item after execution. However doing that may interfere with later extensions to Bitcoin.</p>
+
+<h2 id="References">References</h2>
+
+<p>2.1: https://bitcointalk.org/index.php?topic=8392.msg122410#msg122410<br />
+2.2: https://bitcointalk.org/index.php?topic=8392.msg1245898#msg1245898<br />
+2.3: <a href="http://bitcoin.stackexchange.com/a/38438/21052">When did BIP66 switch from activation to enforcement?</a> , answer by StephenM347, 6 July 2015, Bitcoin.StackExchange</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Developer/" rel="tag">Developer</a>
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Best_Practices/">Best Practices</a>
+
+<a href="../Funding_network_security/">Funding network security</a>
+
+<a href="../Transaction/">Transaction</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-08-18T22:30:47Z">Tue 18 Aug 2015 10:30:47 PM Europe</time>
+<!-- Created <time datetime="2013-01-21T02:48:23Z" pubdate="pubdate">Mon 21 Jan 2013 02:48:23 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

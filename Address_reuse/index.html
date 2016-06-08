@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Address reuse</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Address reuse
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p><strong>Address reuse</strong> refers to the use of the same <a href="../Address/">address</a> for multiple <a href="../Transactions/">transactions</a>. It is an unintended practice, abusing the privacy and security of the participants of the transactions as well as future holders of their value. It also only functions by accident, not by design, so cannot be depended on to work reliably.</p>
+
+<h2 id="Problems">Problems</h2>
+
+<h3 id="Privacy">Privacy</h3>
+
+<p>Address reuse harms the privacy of not only yourself, but also others - including many not related to the transaction.
+In some cases, these risks are serious enough that they are likely in violation of reasonable consumer protection laws.</p>
+
+<p>When addresses are re-used, they allow others to much more easily and reliably determine that the address being reused is yours. Every time the re-used address&#39;s private key signs a fresh transaction, whoever receives it can use the histories of that address to discover information about you, and everyone who is interested in discovering the identity of the address&#39;s owner has one more target they can try to contact to discover who you are.</p>
+
+<p>The relationship graph in a re-used address is powerfully-linked in that <strong>all</strong> of the inputs to that address are necessarily joined (via the spending authority of your private key) to all of its outputs.</p>
+
+<p>There has been significant research into the area of what researchers are calling &#39;identity collapse&#39;, which is what happens when more than one Bitcoin address is strongly-linked via the Bitcoin transaction graph to another. Re-using addresses makes their job trivial. There are publically-known databases that exist, right now, that have not only collapsed millions of Bitcoin addresses, but used publically-available information to <strong>link</strong> those collapsed identities to individuals, and these databases are being actively maintained.</p>
+
+<p>While you may be okay with some random European researcher bound by his ethics board to conceal your identity from the public at-large, it is very possible that people who accept money from you may not be aware of your decision: thus, via your privacy-decreasing action, people further on the address signing chain could thus be putting <strong>you</strong> at risk if they spend their bitcoin on something that catches the attention of law enforcement.</p>
+
+<p>Additionally, in the event that you knowingly make this choice (which you are doing, now that you&#39;ve read this,) the transaction histories that you are responsible for linking in the event you are a retailer of some sort could put the privacy of your customers at risk because now your well-known singular address(es) which can be strongly linked to your corporate identity can be assumed to be economic activity interacting with your corporate identity.</p>
+
+<p>See also: <a href="http://www.bitcoinnotbombs.com/innovations-that-enhance-bitcoin-anonymity/">Innovations that Enhance Bitcoin Anonymity</a></p>
+
+<h4 id="Worked_Example_1">Worked Example 1</h4>
+
+<ul>
+<li>You save in bitcoin, using a  <a href="../Paper_Wallet/">single-address paper wallet</a>.</li>
+<li>All your bitcoin savings to this same address, let&#39;s say it contains $1 million worth.</li>
+<li>You buy a small amount of bitcoins to add to your savings, depositing in the paper wallet.</li>
+<li>The person who sold you the bitcoins follows their trail on the blockchain and finds your paper wallet containing $1 million.</li>
+<li>He mentions it to someone in a cafe or bar.</li>
+<li>Word gets around. A burglar raids your home. Kidnappers capture your children and know exactly how much to demand in ransom.</li>
+</ul>
+
+
+<h4 id="Worked_Example_2">Worked Example 2</h4>
+
+<ul>
+<li>You use a single Bitcoin address for all your earning and spending. Anyone you trade with can see a complete history of your finances.</li>
+<li>Your landlord can see your salary, when he raises the rent he knows exactly how much to ask for.</li>
+<li>Your shopkeeper can see your spending. Gossip gets around of how much you spend on pornography and how little on church donations.</li>
+<li>Your employer can see your spending. When you pay labour union dues or donate to wikileaks or another non-profit, your boss knows who not to trust.</li>
+</ul>
+
+
+<h3 id="Security">Security</h3>
+
+<p>Bitcoin does not, at a low level, have any concept of addresses, only individual coins.
+Address reuse, at this layer, requires producing multiple digital signatures when you spend bitcoins.
+Multiple situations have been found where more than one digital signature can be used to calculate the private key needed to spend bitcoins.
+Even if you spend all the bitcoins claimed by this private key at once, it is still possible to double-spend them in theft before they confirm.
+While the known situations for finding the private key from signatures have been fixed, it is not prudent to assume there aren&#39;t more such situations yet unknown.</p>
+
+<p>In the case of spending all the TXOs in a single transaction, there is an additional risk if someone is actively monitoring the network for vulnerable transactions.
+Upon receiving such a transaction, they can split up their double spends such that there is only one ECDSA verification per transaction (making a single transaction for each TXO).
+This will cause the attacker&#39;s transactions to relay across the rest of the nodes <em>faster</em> than the legitimate one, increasing success of a double spend.</p>
+
+<h4 id="Known_attacks">Known attacks</h4>
+
+<ul>
+<li>Same K in multiple signatures, see; <a href="http://www.nilsschneider.net/2013/01/28/recovering-bitcoin-private-keys.html">Recovering Bitcoin private keys using weak signatures from the blockchain</a>.</li>
+<li><a href="https://eprint.iacr.org/2014/140.pdf">Timing sidechannel</a></li>
+</ul>
+
+
+<h3 id="Accidental_loss">Accidental loss</h3>
+
+<p>In Bitcoin abstraction, an address is an invoice for a specific payment.
+Once that payment is made, the receiving party has no reason to retain the data for the address (technical details simplified) and may discard it.
+Even if someone does not choose to discard that data, it may have since been lost in an accident or compromised.
+In any of these situations, any future payments to the same address would go in to a &quot;black hole&quot;, and be forever lost through no fault of the recipient.</p>
+
+<h3 id="Confusion">Confusion</h3>
+
+<p>Users who see addresses reused may incorrectly be led to believe they function similarly to wallets or bank accounts.
+Often this is manifested in people talking about nonsense like &quot;<a href="../Address/#Address_balances">address balance</a>&quot;, &quot;wallet address&quot;, &quot;<a href="../From_address/">from address</a>&quot;, and similar <a href="../Address/#Misconceptions">misconceptions</a> that don&#39;t actually exist in Bitcoin.</p>
+
+<h3 id="High_Fees">High Fees</h3>
+
+<p>A single invoice payment using P2PKH can be redeemed and spent with a predictable fee because the transaction should have a predictable size. Software that determines payment and available funds based on &quot;address balance&quot; can cause loss through high fees. If you are paid to an address in many small increments, you will pay a much higher transaction fee when redeeming those payments. It is much more useful for a client to display transaction outputs spendable than address balances for this reason.</p>
+
+<h2 id="Notable_offenders">Notable offenders</h2>
+
+<p>Some notable Bitcoin software and services encourage or require address reuse:</p>
+
+<ul>
+<li>Many bitcoin mining pools (especially <span class="createlink"><a href="/ikiwiki.cgi?from=Address_reuse&amp;do=create&amp;page=Eligius" rel="nofollow">?</a>Eligius</span>)</li>
+<li>Electrum displays addresses in a way that encourages confusion and address reuse and misuse.</li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Address/">Address</a>
+
+<a href="../Best_Practices/">Best Practices</a>
+
+<a href="../Brainwallet/">Brainwallet</a>
+
+<a href="../Paper_wallet/">Paper wallet</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-01-29T14:21:55Z">Fri 29 Jan 2016 02:21:55 PM Europe</time>
+<!-- Created <time datetime="2014-07-20T23:57:31Z" pubdate="pubdate">Sun 20 Jul 2014 11:57:31 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

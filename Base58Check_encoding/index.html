@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Base58Check encoding</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Base58Check encoding
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Base58Check_encoding" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>A modified Base 58 <a href="http://en.wikipedia.org/wiki/Binary-to-text_encoding">binary-to-text encoding</a> known as <strong>Base58Check</strong> is used for encoding <a href="../Bitcoin_address/">Bitcoin addresses</a>.</p>
+
+<p>More generically, Base58Check encoding is used for encoding byte arrays in Bitcoin into human-typable strings.</p>
+
+<h2 id="Background">Background</h2>
+
+<p>The original Bitcoin client source code explains the reasoning behind base58 encoding:</p>
+
+<p>base58.h:
+    // Why base-58 instead of standard base-64 encoding?
+    // - Don&#39;t want 0OIl characters that look the same in some fonts and
+    //      could be used to create visually identical looking account numbers.
+    // - A string with non-alphanumeric characters is not as easily accepted as an account number.
+    // - E-mail usually won&#39;t line-break if there&#39;s no punctuation to break at.
+    // - Doubleclicking selects the whole number as one word if it&#39;s all alphanumeric.</p>
+
+<h2 id="Features_of_Base58Check">Features of Base58Check</h2>
+
+<p>Base58Check has the following features:</p>
+
+<ul>
+<li>An arbitrarily sized payload.</li>
+<li>A set of 58 alphanumeric symbols consisting of easily distinguished uppercase and lowercase letters (0OIl are not used)</li>
+<li>One byte of version/application information.  Bitcoin addresses use 0x00 for this byte (future ones may use 0x05).</li>
+<li>Four bytes (32 bits) of SHA256-based error checking code.  This code can be used to automatically detect and possibly correct typographical errors.</li>
+<li>An extra step for preservation of leading zeroes in the data.</li>
+</ul>
+
+
+<h2 id="Creating_a_Base58Check_string">Creating a Base58Check string</h2>
+
+<p>A Base58Check string is created from a version/application byte and payload as follows.</p>
+
+<ol>
+<li>Take the version byte and payload bytes, and concatenate them together (bytewise).</li>
+<li>Take the first four bytes of SHA256(SHA256(results of step 1))</li>
+<li>Concatenate the results of step 1 and the results of step 2 together (bytewise).</li>
+<li>Treating the results of step 3 - a series of bytes - as a single big-endian bignumber, convert to base-58 using normal mathematical steps (bignumber division) and the base-58 alphabet described below.  The result should be normalized to not have any leading base-58 zeroes (character &#39;1&#39;).</li>
+<li>The leading character &#39;1&#39;, which has a value of zero in base58, is reserved for representing an entire leading zero <strong>byte</strong>, as when it is in a leading position, has no value as a base-58 symbol.  There can be one or more leading &#39;1&#39;s when necessary to represent one or more leading zero bytes.  Count the number of leading zero bytes that were the result of step 3 (for old Bitcoin addresses, there will always be at least one for the version/application byte; for new addresses, there will never be any).  Each leading zero byte shall be represented by its own character &#39;1&#39; in the final result.</li>
+<li>Concatenate the 1&#39;s from step 5 with the results of step 4.  <strong>This is the Base58Check result.</strong>
+A more detailed example is provided on the page describing the  <a href="../Technical_background_of_version_1_Bitcoin_addresses/#How_to_create_Bitcoin_Address">technical background</a> of the bitcoin address.</li>
+</ol>
+
+
+<h2 id="Encoding_a_Bitcoin_address">Encoding a Bitcoin address</h2>
+
+<p>Bitcoin addresses are implemented using the Base58Check encoding of the hash of either:</p>
+
+<ul>
+<li>Pay-to-script-hash (p2sh): payload is <a href="../RIPEMD160/">RIPEMD160</a>(<span class="createlink"><a href="/ikiwiki.cgi?from=Base58Check_encoding&amp;do=create&amp;page=SHA256" rel="nofollow">?</a>SHA256</span>(redeemScript the wallet knows how to spend)); version 0x05 (these addresses begin with the digit &#39;3&#39;)</li>
+<li>Pay-to-pubkey-hash (p2pkh): payload is <a href="../RIPEMD160/">RIPEMD160</a>(<span class="createlink"><a href="/ikiwiki.cgi?from=Base58Check_encoding&amp;page=SHA256&amp;do=create" rel="nofollow">?</a>SHA256</span>(ECDSA public key the wallet knows the private key for)); version 0x00 (these addresses begin with the digit &#39;1&#39;)</li>
+</ul>
+
+
+<p>The resulting hash in both of these cases is always exactly 20 bytes.
+These are big-endian (most significant byte first).  (Beware of <span class="createlink"><a href="/ikiwiki.cgi?from=Base58Check_encoding&amp;page=bignumber&amp;do=create" rel="nofollow">?</a>bignumber</span> implementations that clip leading 0x00 bytes, or prepend extra 0x00 bytes to indicate sign - your code must handle these cases properly or else you may generate valid-looking addresses which can be sent to, but cannot be spent from - which would lead to the permanent loss of coins.)</p>
+
+<h2 id="Encoding_a_private_key">Encoding a private key</h2>
+
+<p>Base58Check encoding is also used for encoding <a href="../Private_key/">ECDSA private keys</a> in the <a href="../Wallet_import_format/">wallet import format</a>.
+This is formed exactly the same as a Bitcoin address, except that 0x80 is used for the version/application byte, and the payload is 32 bytes instead of 20 (a private key in Bitcoin is a single 32-byte unsigned big-endian integer).
+For private keys associated with an uncompressed public key, such encodings will always yield a 51-character string that starts with &#39;5&#39;, or more specifically, either &#39;5H&#39;, &#39;5J&#39;, or &#39;5K&#39;.</p>
+
+<h2 id="Base58_symbol_chart">Base58 symbol chart</h2>
+
+<p>The Base58 symbol chart used in Bitcoin is specific to the Bitcoin project and is not intended to be the same as any other Base58 implementation used outside the context of Bitcoin.</p>
+
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Character</th>
+<th>Value</th>
+<th>Character</th>
+<th>Value</th>
+<th>Character</th>
+<th>Value</th>
+<th>Character</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>4</td>
+</tr>
+<tr>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+<td>6</td>
+<td>7</td>
+<td>7</td>
+<td>8</td>
+</tr>
+<tr>
+<td>8</td>
+<td>9</td>
+<td>9</td>
+<td>A</td>
+<td>10</td>
+<td>B</td>
+<td>11</td>
+<td>C</td>
+</tr>
+<tr>
+<td>12</td>
+<td>D</td>
+<td>13</td>
+<td>E</td>
+<td>14</td>
+<td>F</td>
+<td>15</td>
+<td>G</td>
+</tr>
+<tr>
+<td>16</td>
+<td>H</td>
+<td>17</td>
+<td>J</td>
+<td>18</td>
+<td>K</td>
+<td>19</td>
+<td>L</td>
+</tr>
+<tr>
+<td>20</td>
+<td>M</td>
+<td>21</td>
+<td>N</td>
+<td>22</td>
+<td>P</td>
+<td>23</td>
+<td>Q</td>
+</tr>
+<tr>
+<td>24</td>
+<td>R</td>
+<td>25</td>
+<td>S</td>
+<td>26</td>
+<td>T</td>
+<td>27</td>
+<td>U</td>
+</tr>
+<tr>
+<td>28</td>
+<td>V</td>
+<td>29</td>
+<td>W</td>
+<td>30</td>
+<td>X</td>
+<td>31</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>32</td>
+<td>Z</td>
+<td>33</td>
+<td>a</td>
+<td>34</td>
+<td>b</td>
+<td>35</td>
+<td>c</td>
+</tr>
+<tr>
+<td>36</td>
+<td>d</td>
+<td>37</td>
+<td>e</td>
+<td>38</td>
+<td>f</td>
+<td>39</td>
+<td>g</td>
+</tr>
+<tr>
+<td>40</td>
+<td>h</td>
+<td>41</td>
+<td>i</td>
+<td>42</td>
+<td>j</td>
+<td>43</td>
+<td>k</td>
+</tr>
+<tr>
+<td>44</td>
+<td>m</td>
+<td>45</td>
+<td>n</td>
+<td>46</td>
+<td>o</td>
+<td>47</td>
+<td>p</td>
+</tr>
+<tr>
+<td>48</td>
+<td>q</td>
+<td>49</td>
+<td>r</td>
+<td>50</td>
+<td>s</td>
+<td>51</td>
+<td>t</td>
+</tr>
+<tr>
+<td>52</td>
+<td>u</td>
+<td>53</td>
+<td>v</td>
+<td>54</td>
+<td>w</td>
+<td>55</td>
+<td>x</td>
+</tr>
+<tr>
+<td>56</td>
+<td>y</td>
+<td>57</td>
+<td>z</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+
+<p>The algorithm for encoding address_byte_string (consisting of 1-byte_version + hash_or_other_data + 4-byte_check_code) is</p>
+
+<pre><code>code_string = &quot;123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz&quot;
+x = convert_bytes_to_big_integer(hash_result)
+
+output_string = &quot;&quot;
+
+while(x &gt; 0) 
+{
+(x, remainder) = divide(x, 58)
+output_string.append(code_string&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Base58Check_encoding&amp;amp;do=create&amp;amp;page=remainder&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;remainder&lt;/span&gt;)
+}
+
+repeat(number_of_leading_zero_bytes_in_hash)
+{
+output_string.append(code_string&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=0&amp;amp;from=Base58Check_encoding&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;0&lt;/span&gt;);
+}
+
+output_string.reverse();
+</code></pre>
+
+<h2 id="Version_bytes">Version bytes</h2>
+
+<p>Here are some common version bytes:</p>
+
+<table>
+<thead>
+<tr>
+<th>Decimal version</th>
+<th>Leading symbol</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>Bitcoin pubkey hash</td>
+</tr>
+<tr>
+<td>5</td>
+<td>3</td>
+<td>Bitcoin script hash</td>
+</tr>
+<tr>
+<td>21</td>
+<td>4</td>
+<td>Bitcoin (compact) public key (proposed)</td>
+</tr>
+<tr>
+<td>52</td>
+<td>M or N</td>
+<td>Namecoin pubkey hash</td>
+</tr>
+<tr>
+<td>128</td>
+<td>5</td>
+<td>Private key</td>
+</tr>
+<tr>
+<td>111</td>
+<td>m or n</td>
+<td>Bitcoin testnet pubkey hash</td>
+</tr>
+<tr>
+<td>196</td>
+<td>2</td>
+<td>Bitcoin testnet script hash</td>
+</tr>
+</tbody>
+</table>
+
+
+<p><a href="../List_of_address_prefixes/">List of address prefixes</a> is a more complete list.</p>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="http://lenschulwitz.com/base58">Online Base58 Decoder, Encoder, and Validator</a></li>
+</ul>
+
+
+<h2 id="Source_code">Source code</h2>
+
+<ul>
+<li><a href="https://github.com/bitcoin/bitcoin/blob/master/src/base58.cpp">&quot;Satoshi&quot; C++ codebase (decode and encode, no external libraries needed)</a></li>
+<li><a href="https://github.com/luke-jr/libbase58">libbase58 C code (decode and encode, no external libraries needed)</a></li>
+<li><a href="http://lenschulwitz.com/b58/base58perl.txt">Base58 Decode, Encode, and Validate in Perl</a></li>
+</ul>
+
+
+<p><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=es%3ACodificaci%C3%B3n%20Base58Check&amp;from=Base58Check_encoding" rel="nofollow">?</a>es:Codificaci&oacute;n Base58Check</span></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Bitcoin_Address_Utility/">Bitcoin Address Utility</a>
+
+<a href="../List_of_address_prefixes/">List of address prefixes</a>
+
+<a href="../Technical_background_of_version_1_Bitcoin_addresses/">Technical background of version 1 Bitcoin addresses</a>
+
+<a href="../Wallet_import_format/">Wallet import format</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-07-03T13:59:18Z">Fri 03 Jul 2015 01:59:18 PM Europe</time>
+<!-- Created <time datetime="2011-09-20T03:15:44Z" pubdate="pubdate">Tue 20 Sep 2011 03:15:44 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

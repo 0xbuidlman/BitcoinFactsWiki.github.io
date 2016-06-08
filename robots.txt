@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /ikiwiki
+Disallow: /recentchanges
+Disallow: /sandbox
+Disallow: /shortcuts
+Disallow: /sidebar
+Disallow: /smileys
+Disallow: /templates

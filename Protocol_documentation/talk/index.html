@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>talk</title>
+
+<link rel="stylesheet" href="../../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../../">bitcoin</a>/ 
+
+<a href="../">Protocol documentation</a>/ 
+
+</span>
+<span class="title">
+talk
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<h1 id="What_is_77x.3F_Header_size_wrong.3F">What is &quot;77x&quot;? Header size wrong?</h1>
+
+<p>The description for the headers command says &quot;77x?&quot; as the size for the block_headers[] returned.  However, the description of the block_header structure is 81 bytes (4+32+32+4+4+4+1).  What exactly is returned by the headers command? -- <a>AndyParkins</a></p>
+
+<h1 id="Version_in_getblocks.3F">Version in getblocks?</h1>
+
+<p>Apparently the official client sends the protocol version in getblocks messages, (possibly even in getheaders). This seems to me to be just weird --<a>Bluecmd</a> 14:57, 6 June 2011 (GMT)</p>
+
+<h1 id="Separate_page_for_hexdumps.3F">Separate page for hexdumps?</h1>
+
+<p>Does anyone else think it may be a good idea to put the hexdumps on a separate page?  It&#39;d be nice to have this page just describe the protocol, but at the same time, be able to have examples of each of the different messages and objects.  On that node, would it also be helpful if I were to do a hexdump example of all of the different commands/structures? --<a>Andrew12</a> 23:26, 9 June 2011 (GMT)</p>
+
+<blockquote><p>I think that a page devoted solely to hexdumps wouldn&#39;t be a bad idea, especially if there would be multiple variants per each example and some of them would be explained step-by-step. This page needs cleanup.
+--<a>ThePiachu</a> 14:06, 2 October 2011 (GMT)</p></blockquote>
+
+<h1 id="Proposing_additional_protocol_messages">Proposing additional protocol messages</h1>
+
+<p>According to the Bitcoin paper in order to do the simplified verification the client needs to store all headers of the entire chain but needs data only for those blocks that contain transactions of interest.</p>
+
+<p>For this I propose the following new message types:</p>
+
+<ul>
+<li><p><strong>setfilter</strong> this message contains a list of bitcoin addresses. After receiving this message on a connection the client will stop broadcasting any inv messages for transactions which don&#39;t have a matching address in its inputs or outputs. inv for new blocks will not be filtered.</p></li>
+<li><p><strong>getblocksfiltered</strong> this message works exactly like getblocks but it will be answered with a filtered list of only those blocks that contain transactions with unspent outputs matching the filter list.</p></li>
+</ul>
+
+
+<p>and the following new inventory type for getdata</p>
+
+<ul>
+<li><strong>MSG_BLOCK_PRUNED</strong> this will be answered like a MSG_BLOCK but all transactions not matching the filter list and transactions that are already spent will be stripped from the block before transmitting it to the client.</li>
+</ul>
+
+
+<p>When a client requests such filtering then all new blocks will still be advertised like normal but the client will have the opportunity to request only the absolute minimum necessary data to perform the simplified verification as outlined in the paper and new transactions will only be sent to it if they match the filter list. This should save a LOT of bandwidth.
+<a>Prof7bit</a> 21:03, 24 June 2011 (GMT)</p>
+
+<h2 id="Errors.3F">Errors?</h2>
+
+<p>https://en.bitcoin.it/wiki/Protocol_specification#version</p>
+
+<p>Under version message there is the field version which has the type of int32_t. Shouldn&#39;t it be uint32_t? Same with the start_height.
+--<a>ThePiachu</a> 18:04, 30 September 2011 (GMT)</p>
+
+<p>The modern example (protocol 60002) of the version message appears to have an incorrect checksum. When running the same data through a checksum I get 3B 64 8D 5A. Here&#39;s the output of the whole message in the same blocks as in the page:</p>
+
+<pre>
+F9 BE B4 D9
+76 65 72 73 69 6F 6E 00 00 00 00 00
+64 00 00 00
+3B 64 8D 5A
+62 EA 00 00
+01 00 00 00 00 00 00 00
+11 B2 D0 50 00 00 00 00
+01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 FF FF 00 00 00 00 00 00
+01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 FF FF 00 00 00 00 00 00
+3B 2E B3 5D 8C E6 17 65
+0F 2F 53 61 74 6F 73 68 69 3A 30 2E 37 2E 32 2F
+C0 3E 03 00
+</pre>
+
+
+<p>--<a>papercrane</a> 12:29, 7 February 2013 (PST)</p>
+
+<p>https://en.bitcoin.it/wiki/Protocol_specification#Network_address</p>
+
+<p>The hexdump of the network address doesn&#39;t seem to have the time field.
+--<a>ThePiachu</a> 18:04, 30 September 2011 (GMT)</p>
+
+<blockquote><p>Are you looking at the network address in a version packet? Are you using an up-to-date Bitcoin client? --<a>Atheros</a> 22:33, 2 October 2011 (GMT)</p></blockquote>
+
+<p>https://en.bitcoin.it/wiki/Protocol_specification#getblocks</p>
+
+<p>Shouldn&#39;t the field size of block locator hashes be 32x? ?
+--<a>ThePiachu</a> 21:35, 1 October 2011 (GMT)</p>
+
+<p>https://en.bitcoin.it/wiki/Protocol_specification#getheaders</p>
+
+<p>Shouldn&#39;t the field size of hash_start be 32 ?
+--<a>ThePiachu</a> 21:35, 1 October 2011 (GMT)</p>
+
+<p>https://en.bitcoin.it/wiki/Protocol_specification#headers</p>
+
+<p>I think the Field Size of Block Headers is wrong (77x? rather than 81x?).
+--<a>ThePiachu</a> 18:45, 7 October 2011 (GMT)</p>
+
+<h2 id="Missing.3F">Missing?</h2>
+
+<p>The nonce in the version message is created when the local node is created, not when connection is established. I still have to confirm this in a real example before correcting it in the wiki.
+<a>Jdnavarro</a> (<span class="createlink"><a href="/ikiwiki.cgi?page=User_talk%3AJdnavarro&amp;do=create&amp;from=Protocol_documentation%2Ftalk" rel="nofollow">?</a>talk</span>) 16:15, 12 September 2012 (GMT)</p>
+
+<p>It seems that the magic bytes for the testnet in version 0.7.0 is 0x0709110B. Am I missing something?
+<a>Jdnavarro</a> (<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=User_talk%3AJdnavarro&amp;from=Protocol_documentation%2Ftalk" rel="nofollow">?</a>talk</span>) 12:28, 23 September 2012 (GMT)</p>
+
+<p>When a <strong>getdata</strong> message with multiple blocks is sent (i.e. initial block download), the remote node, after sending all the requested block messages, it sends an <strong>inv</strong> message with its top block.
+<a>Jdnavarro</a> (<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=User_talk%3AJdnavarro&amp;from=Protocol_documentation%2Ftalk" rel="nofollow">?</a>talk</span>) 16:08, 8 October 2012 (GMT)</p>
+
+<p>The maximum size for a Block or a Transaction is 1MB. The overall message size is 32MB, which I think is deliberately redundant because it shouldn&#39;t be possible to generate a message of such size with the other limits. Should this be part of the protocol?
+<a>Jdnavarro</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Protocol_documentation%2Ftalk&amp;page=User_talk%3AJdnavarro&amp;do=create" rel="nofollow">?</a>talk</span>) 18:20, 15 October 2012 (GMT)</p>
+
+<h2 id="txn_count">txn_count</h2>
+
+<p>In <a href="../../Header/#Block_Headers">Header</a>, it says txn_count is always zero. Why is this? --<a>Rebroad</a> (<span class="createlink"><a href="/ikiwiki.cgi?page=User_talk%3ARebroad&amp;do=create&amp;from=Protocol_documentation%2Ftalk" rel="nofollow">?</a>talk</span>) 03:32, 10 September 2014 (UTC)</p>
+
+<blockquote><p> IIRC, it&#39;s because the txn_count is the number of transactions <em>actually</em> being sent - which in the header request is zero because you&#39;re only getting the headers. --<a>Luke-jr</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Protocol_documentation%2Ftalk&amp;page=User_talk%3ALuke-jr&amp;do=create" rel="nofollow">?</a>talk</span>) 05:23, 10 September 2014 (UTC)</p></blockquote>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../">Protocol documentation</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2014-09-10T05:23:30Z">Wed 10 Sep 2014 05:23:30 AM Europe</time>
+<!-- Created <time datetime="2011-01-13T18:01:43Z" pubdate="pubdate">Thu 13 Jan 2011 06:01:43 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

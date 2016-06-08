@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Brainwallet</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Brainwallet
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Brainwallet&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>A <strong>brainwallet</strong> refers to the concept of storing Bitcoins in one&#39;s own mind by memorization of a passphrase.  As long as the passphrase is not recorded anywhere, the Bitcoins can be thought of as existing nowhere except in the mind of the holder.  If a brainwallet is forgotten or the person dies or is permanently incapacitated, the Bitcoins are lost forever.</p>
+
+<p>Early brainwallets were created simply by coming up with a passphrase. The phrase is turned into a 256-bit <a href="../Private_key/">private key</a> with a hashing or key derivation algorithm (example: SHA256).  That private key is then used to compute a Bitcoin address, or a deterministic sequence of addresses. <strong>WARNING - This method was found to be very insecure. Do not use it. Humans are not a good source of entropy.</strong> Use the below worked example.</p>
+
+<h2 id="Creating_a_Brainwallet">Creating a Brainwallet</h2>
+
+<p>A much safer way of storing money in your brain is to have software generate the cryptographic entropy and then memorize it. For example wallets like <a href="../Electrum/">Electrum</a>, <a href="../Armory/">Armory</a> and <span class="createlink"><a href="/ikiwiki.cgi?from=Brainwallet&amp;do=create&amp;page=Mycelium" rel="nofollow">?</a>Mycelium</span> create backup mnemonic words seeds. Using techniques like memory pegging allow them to be memorized and recalled easily. Using a deterministic wallet with multiple addresses also stops the problems associated with <a href="../Address_reuse/">address reuse</a>.</p>
+
+<h3 id="Worked_Example">Worked Example</h3>
+
+<ol>
+<li>On a computer with no malware, run <a href="../Electrum/">Electrum</a> and generate the 13-word recovery seed.</li>
+<li>Memorize the seed using http://en.wikipedia.org/wiki/Mnemonic_peg_system</li>
+<li>When spending or saving, restore the wallet from memory using the seed.</li>
+<li>Use the master public key to create an online watch-only wallet, where you can send to but not spend.</li>
+<li>Spend from the wallet in the manner of <a href="../Cold_storage/">deep cold storage</a>. Transferring the unsigned transaction to the cold storage computer, signing it and broadcasting to the network.</li>
+</ol>
+
+
+<h4 id="Example_Mnemonic_Peg">Example Mnemonic Peg</h4>
+
+<p>To memorize a mnemonic seed with this method you must invent a story which hits the words as &quot;keynotes&quot;. Try to make it like a fairy tale story, use imagery. Make it somehow striking and emotionally resonant. When remembering you just remember the key words, not all the other words - the other can be remembered more as images and thoughts (which are hard to write down)</p>
+
+<p>Let&#39;s say we have this seed:</p>
+
+<pre><code>witch collapse practice feed shame open despair creek road again ice least
+</code></pre>
+
+<p>You&#39;d imagine walking through a building familiar to you, maybe your own home or workplace or school.</p>
+
+<ul>
+<li>You imagine looking in the first room and seeing your mother dressed as a <strong>witch</strong>, playing the jenga boardgame until the tower <strong>collapses</strong>.</li>
+<li>You walk to the next room and see your father <strong>practising</strong> with a longbow, he shoots a chicken to <strong>feeds</strong> himself.</li>
+<li>In the next room you see your brother naked in <strong>shame</strong> attempting to cover himself, he&#39;s looking through a window thats <strong>open</strong> and flapping in the wind.</li>
+<li>Now you reach the kitchen, girlfriend is looking at Picasso&#39;s <a href="https://en.wikipedia.org/wiki/Guernica_%28Picasso%29">Guernica</a> on the wall. She is in <strong>despair</strong> from it. Next to it is a television playing the show Dawson&#39;s <strong>Creek</strong>.</li>
+<li>Next you&#39;re in the garage, your childhood friend is working on his car. He plans to go on a <strong>road</strong> trip for the 5th time this month, he&#39;s going <strong>again</strong>.</li>
+<li>Finally to go outside to the garden. It&#39;s early spring and the ground is covered in melting <strong>ice</strong>. Two of your other friends are there, one friend has a huge basket of apples, the other has a smaller basket but you&#39;re holding only some apples. You&#39;ve got the <strong>least</strong> apples.</li>
+</ul>
+
+
+<p>Repeat this story in your head several times over a short period - the first few days. It will sink in, deep, after that. You&#39;ll only have to revisit it very occasionally. After a while you can ignore it for months and it&#39;ll still come back, not that I&#39;d recommend relying on that.</p>
+
+<h2 id="Possible_Dangers">Possible Dangers</h2>
+
+<h3 id="Low_Entropy_from_Human-Generated_Passphrases">Low Entropy from Human-Generated Passphrases</h3>
+
+<p>Practically everyone who knows about or cares loudly yells at people DO NOT USE BRAINWALLETS.  We&#39;ve seen pretty concrete evidence that users are resistant to good advice in this space, and they are shocked when their favorite quotation is cracked and they lose their coins (But it was 60 characters long! I even added a special character! how is this possible?!),  the existing sites promoting this stuff won&#39;t use a KDF stronger than SHA256*1 because &quot;users are stupid if they use weak passwords&quot;.</p>
+
+<p>*Brainwallets.</p>
+
+<p>FOR GODS SAKE. DON&#39;T DO IT.  YOU MAY THINK YOU ARE SMART ENOUGH. SO DID EVERYONE ELSE WHO GOT ROBBED. HUMANS ARE NOT A GOOD SOURCE OF ENTROPY.</p>
+
+<p>YOU HAVE A SCHEME?  Pfft. THE SPACE OF ALL SCHEMES YOU&#39;RE LIKELY TO HAVE PROBABLY ONLY HAS A FEW BITS OF ENTROPY. RANDOM PHRASE IN A BOOK? THERE ARE ONLY ABOUT 30 BITS OF SENTENCE SELECTION IN A LIBRARY.</p>
+
+<p>OH NO. YOU ARE NOT LISTENING TO ME, ARE YOU?</p>
+
+<p>OH CRAP. YOU THINK THAT &quot;EIGHT CHARACTERS AND ONE FROM EACH CHARACTER CLASS&quot; APPLIES HERE??  WEBSITE SECURITY MIGHT HAVE TO DEAL WITH 1000 ATTEMPTS PER SECOND, BUT SOME DUDE WITH A FPGA FARM IS PROBABLY PRECOMPUTING A BILLION BRAINWALLETS PER SECOND. JUST STOP.</p>
+
+<p>NOOOOOOOOOOOO.</p>
+
+<p>Well, now that you have no more Bitcoin I guess we don&#39;t have to worry about you using a brainwallet.</p>
+
+<p>Cheers.*  (6.1)</p>
+
+<h4 id="Ryan_Castellucci_DEFCON_Talk">Ryan Castellucci DEFCON Talk</h4>
+
+<p>Ryan Castellucci gave a talk at DEFCON23 about cracking brainwallet passphrases. Although brainwallet passphrases were being exploited for years by this point, the talk helped bring the issues to more popular consciousness. (7.1) (7.2) (7.3)</p>
+
+<h3 id="Falleable_Memory">Falleable Memory</h3>
+
+<p>Human memory can be far more falleable than we normally expect. So if you&#39;re only storage is memory you may find that it just vanished one day. Keeping a copy stored on paper somewhere could be a useful backup, depending on circumstances.</p>
+
+<h2 id="References">References</h2>
+
+<p>
+
+6.1: <a href="https://bitcointalk.org/index.php?topic=311000.msg3345309#msg3345309">Re: hardening brain-wallets with a useful blind proof of work</a><br />
+7.1: <a href="https://rya.nc/cracking_cryptocurrency_brainwallets.pdf">Ryan Castellucci DEFCON Talk</a><br />
+7.2: <a href="https://www.reddit.com/r/Bitcoin/comments/3g9f1s/why_im_releasing_a_brainwallet_cracker_at_defcon/">Reddit thread on Ryan&#39;s talk</a><br />
+7.3: <a href="https://www.youtube.com/watch?v=foil0hzl4Pg">a video of Ryan&#39;s talk</a></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../July_2015_flood_attack/">July 2015 flood attack</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-09-01T14:04:33Z">Tue 01 Sep 2015 02:04:33 PM Europe</time>
+<!-- Created <time datetime="2012-01-30T06:13:27Z" pubdate="pubdate">Mon 30 Jan 2012 06:13:27 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

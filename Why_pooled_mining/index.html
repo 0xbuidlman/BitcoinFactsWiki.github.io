@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Why pooled mining</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Why pooled mining
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>This page is an analysis of the costs/benefits of pooled mining.</p>
+
+<p>Some people say that no matter what, over the long run mining solo will provide the same return as mining in a pool.  This is not true.  Reality is subtly different from this:  In reality, while competent solo mining has an equal <em>average</em> return to competent, cheater-less, fee-less pooled mining the distribution of rewards is very different: Solo mining has higher odds of small or no payout at all, but also higher odds of large payout. The bitcoin system is not stationary, so you can&#39;t be promised to average out over time, but this doesn&#39;t change that your expected return (an average against alternative yous) is the same either way.</p>
+
+<p>However, even though the combination of good and bad luck results in the same &quot;average&quot; most people value very low returns disproportionally less: Most are willing to lose most of the chance of enormous returns in exchange for getting rid of most of the chance of no returns.</p>
+
+<p>Let&#39;s start with the current conditions...</p>
+
+<table>
+<tr><th>Current Difficulty</th><td><code>D = 567358.224571</code></td></tr>
+<tr><th>Typical mining-rig speed</th><td><code>R<sub>typ</sub> = 500 MHash/s</code></td></tr>
+<tr><th>Probability of generating within fourteen days</th><td><code>P<sub>single-hash</sub> = 0.0000000000000004104346850315179415225053105586994206532
+<br />P<sub>single-second</sub> = 1-(P&#39;<sub>single-hash</sub> ^ R<sub>typ</sub>)
+<br /><span>P<sub>single-second</sub> </span>= 0.0000002052173214586726479267
+<br />P<sub>single-day</sub> = 1-(P&#39;<sub>single-hash</sub> ^ (R<sub>typ</sub> * 3600 s/h * 24 h/day)
+<br /><span>P<sub>single-day</sub> </span>= 0.0175745130737448462862083548
+<br />P<sub>fourteen-days</sub> = 1-(P&#39;<sub>single-day</sub> ^ (R<sub>typ</sub> * ... * 14 day)
+<br /><span>P<sub>fourteen-days</sub> </span>= 0.2198202190871503615128815272
+<br /><span>P<sub>fourteen-days</sub> </span>= <strong>21.98%</strong></code></td></tr>
+<tr><th>Average time to generate</th><td>56 days, 9 hours, 47 minutes</td></tr>
+</table>
+
+
+<p><strike>difficulty of 76193.9710474, and a hash rate of 1000 Khps (a run of the mill single core cpu). The probability to generate a block under these conditions in the course of 14 days (the target time between difficulty adjustments), is 0.00368942702934, and the &#39;average time&#39; to generate a block is 10 years, 19 weeks, 4 days, 14 hours, 56 minutes, and 53 seconds.</strike></p>
+
+<p>Now let&#39;s assume that difficulty grows at 10% per period - that means that the average time between difficulty adjustments will be about 13 days. So we&#39;re looking at a base probability of 0.00342634853731. Further, the probability to generate a block in 13 days will also keep decreasing by about 10%, with every 10% rise in difficulty.</p>
+
+<p>So now, let&#39;s find what our cumulative probability will be to generate a block. As a rough approximation, our cumulative probability of generating a block under these conditions, after N difficulty periods, would be sum(probability for individual periods). Actually the approximation will be higher than actual probability, since they&#39;re not really additive - though the addition is a pretty good approximation when the probabilities are so low. So, designating p = 0.00342634853731, our cumulative probability approximation will be about:
+    p + .9p + .9<sup>2</sup> p + .9<sup>3</sup> p ....
+which at infinity sums to 10p. Thus, under these conditions, the upper bound (remember that summing probabilities produces a higher value than the proper multiplicative cumulative probability) is going to be 0.0342634853731. so /at infinity/, your probability of generating a block is only 3.4% or so. And conversely, your probability of /never generating a block even after millions of years/ is about 96+ percent.</p>
+
+<p>Now, let&#39;s consider a pooled mining setup. In a fixed-payout mining pool, you get paid for each difficulty-1 share you generate. The probability to generate at least 1 share at difficulty 1, at 1000 khps in 13 days is so close to 1 that my calculator rounds it to 1. :) So with a pool, you have virtually 100% certainty that you will generate at least one share. You will in fact on average generate about 20 shares per day, or 260 shares in the 13 day period. A pool would pay out approximately 0.000656219899 BTC per share, so over the 13 day period you can expect to generate about 0.17 BTC.</p>
+
+<p>So now you have to ask yourself one question (punk), do you want .17 btc with (almost) certainty, (with that amount decreasing by about 9% per period, under our assumptions of 10% difficulty growth per period), or would you like a 96+ percent chance of /never seeing a dime, ever/? And this is a question that every person would answer differently, depending on his risk preference.</p>
+
+<p>Even with losses on pooled mining due to network latency, and pool fees, it is not irrational to choose pooled mining over solo mining, if the ratio of hashrate to difficulty (and difficulty growth) is low enough.</p>
+
+<p>TODO: write in the details of calculating the probabilities, make some pretty charts?, calculate out the hash rate at which you have 25,50,75 percent chance of never generating a block solo under various assumptions.</p>
+
+<h2 id="Alternative_Perspective">Alternative Perspective</h2>
+
+<p>Mathematically the profit is the same for these conditions:</p>
+
+<ul>
+<li>chance to make 10,000$ is 0.01%</li>
+<li>chance to make 1$ is 100%</li>
+</ul>
+
+
+<h3 id="What_are_the_chances_to_not_ever_get_a_block.3F">What are the chances to not ever get a block?</h3>
+
+<p>While a mathematician toying around with bitCoin mining might be fine with knowing it is mathematically fine to not see a BTC forever as the lucky case of getting 50 at a time will totally balance the odds of not finding it, others, especially those who want to get their hands on first bitCoins, might have a different feeling about it.</p>
+
+<p>So what are the odds of never finding a BTC?</p>
+
+<h4 id="How_BitCoin_Works_.2F_Simplifications">How BitCoin Works / Simplifications</h4>
+
+<p>The bitCoin block chain readjusts its <a href="../Difficulty/">difficulty</a> every 2016 blocks trying to make the next 2016 blocks be processed in 10 minutes each given an average performance of the past 2016 blocks.
+This process brings in some unsteadiness but to be conform with above equations time frame, we also look at periods of 2016 blocks but take difficulty only into consideration to determine the time frame for 2016 blocks and look at bitCoin as a lottery.</p>
+
+<h4 id="The_Maths">The Maths</h4>
+
+<ul>
+<li><a href="../Genesis_block/">block 0</a> was created January 3rd 2009</li>
+<li><a href="http://blockexplorer.com/b/20160">block 2160</a> was created <strong>July 25th 2009</strong></li>
+<li>block 0 to 2160 took 202 days at difficulty 1.</li>
+<li>202 days / 20160 blocks = 14 minutes / block</li>
+<li>hashrate = difficulty * 2**32 / time</li>
+<li>The Average hashing speed back then was (2<strong>32 / 14 minutes) </strong>5Mh/s**</li>
+<li>Today is June 24th 2011</li>
+<li>Since block 20160 there have been <a href="http://blockexplorer.com/b/133056">133056</a> - 20160 = 112896 blocks in 689 days.</li>
+<li>There were <strong>163</strong> blocks created per day.</li>
+<li>Net performance increase was on average <strong>i=0.00013 per block</strong> using this formula: ((1+i)**112896=(11Th/s)/(5Mh/s))</li>
+</ul>
+
+
+<h4 id="Assumptions">Assumptions</h4>
+
+<ul>
+<li>500Mh/s</li>
+<li>total net performance of 11Th/s</li>
+<li>total net performance increase of i=0.013% per block over a long time</li>
+<li>163 blocks per day over a long time</li>
+</ul>
+
+
+<h4 id="Results_for_not_finding_a_single_block_in_10_years">Results for not finding a single block in 10 years</h4>
+
+<ul>
+<li>For each block odds are o(#block)=1-500M/(11T*(1+i)**#block)</li>
+<li><p>For all blocks odds are the product of o(0) to o(3600<em>163)
+Until someone brings up the analytic solution to this product, here is a code snipped to calculate it:
+  private double calculate() {
+  double odds = 1.0d;
+  for (int i = 0; i &lt; 3600 * 163; i++) {
+  if (i % (360 * 163) == 0)
+  Log.d(&quot;&quot;, Double.toString(odds));
+  odds </em>= odds(i);
+  }
+  return odds;
+  }</p>
+
+<p>  private double odds(int i) {
+  return 1.0d - 5E8 / (11E12 * Math.pow(1.00013d, i));
+  }
+Probability for finding no block at all after n years are:</p></li>
+</ul>
+
+
+<p>|time|cumulative probability of not finding a single block
+|1 month|84.83%
+|3 months|74.25%
+|6 months|71.04%
+|1 year|70.50%
+|2 - 10 years|70.49%</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Mining/" rel="tag">Mining</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Pool_vs._solo_mining/">Pool vs. solo mining</a>
+
+<a href="../Pool_vs._solo_mining/talk/">Pool vs. solo mining/talk</a>
+
+<a href="../Pooled_mining/">Pooled mining</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2012-12-10T02:46:49Z">Mon 10 Dec 2012 02:46:49 AM Europe</time>
+<!-- Created <time datetime="2011-03-22T23:02:50Z" pubdate="pubdate">Tue 22 Mar 2011 11:02:50 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

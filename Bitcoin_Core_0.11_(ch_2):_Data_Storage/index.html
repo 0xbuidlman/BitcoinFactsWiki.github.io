@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Bitcoin Core 0.11 (ch 2): Data Storage</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Bitcoin Core 0.11 (ch 2): Data Storage
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=Bitcoin_Core_0.11_%28ch_2%29%3A_Data_Storage" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>This page describes how &amp; where Bitcoin Core stores blockchain data.</p>
+
+<h2 id="Overview">Overview</h2>
+
+<p>There are basically four pieces of data that are maintained:</p>
+
+<blockquote><p> <strong>blocks/blk*.dat:</strong> the actual Bitcoin blocks, in network format, dumped in raw on disk. They are only needed for rescanning missing transactions in a wallet, reorganizing to a different part of the chain, and serving the block data to other nodes that are synchronizing.</p>
+
+<p> <strong>blocks/index/*:</strong> this is a LevelDB database that contains metadata about all known blocks, and where to find them on disk. Without this, finding a block would be very slow.</p>
+
+<p> <strong>chainstate/*:</strong> this is a LevelDB database with a compact representation of all currently unspent transaction outputs and some metadata about the transactions they are from. The data here is necessary for validating new incoming blocks and transactions. It can theoretically be rebuilt from the block data (see the -reindex command line option), but this takes a rather long time. Without it, you could still theoretically do validation indeed, but it would mean a full scan through the blocks (7 GB as of may 2013) for every output being spent.</p>
+
+<p> <strong>blocks/rev*.dat:</strong> these contain &quot;undo&quot; data. You can see blocks as &#39;patches&#39; to the chain state (they consume some unspent outputs, and produce new ones), and see the undo data as reverse patches. They are necessary for rolling back the chainstate, which is necessary in case of reorganisations.</p></blockquote>
+
+<p>Note that the LevelDB&#39;s are redundant in the sense that they can be rebuilt from the block data. But validation and other operations would become intolerably slow without them.</p>
+
+<p>See here:  <a href="http://bitcoin.stackexchange.com/questions/11104/what-is-the-database-for?rq=1">StackExchange post by Pieter Wuille (2013)</a></p>
+
+<h2 id="Raw_Block_data_.28blk.2A.dat.29">Raw Block data (blk*.dat)</h2>
+
+<p>Block files store the raw blocks as they were received over the network.</p>
+
+<p>Block files are about 128 MB, allocated in 16 MB chunks to prevent excessive fragmentation.  As of October 2015, the block chain is stored in about 365 block files, for a total of about 45 GB.</p>
+
+<p>Each block file (blk1234.dat) has a corresponding undo file (rev1234.dat) which contains the data necessary to remove blocks from the blockchain in the event of a reorganization (fork).</p>
+
+<p>Info about the block files is stored in the block index (the LevelDB) in two places:</p>
+
+<ul>
+<li><p>General info about the files themselves is held in the &quot;f&quot; records in the block index LevelDB (meaning keys &quot;fxxxx&quot;, where &quot;xxxx&quot; is the 4 digit file number), including:</p>
+
+<ul>
+<li>Number of blocks stored in the file</li>
+<li>File size (and the corresponding undo file size)</li>
+<li>Lowest and highest block in the file</li>
+<li>Timestamps - earlier and latest blocks in the file</li>
+</ul>
+</li>
+<li><p>Info about where to find a particular block on disk is in the &quot;b&quot; (&quot;b&quot; = block) record:</p>
+
+<ul>
+<li>Each block contains a pointer to the block is on disk (a file number and an offset)</li>
+</ul>
+</li>
+</ul>
+
+
+<p><strong>Accessing the block data files from the code</strong></p>
+
+<p>The block files are accessed through:</p>
+
+<p>1) DiskBlockPos: a struct that is simply a pointer to a block&#39;s location on disk (a file number and an offset.)</p>
+
+<p>2) <em>vInfoBlockFiles</em>: a vector of BlockFileInfo objects.  This variable is used to perform such tasks as:</p>
+
+<ul>
+<li>Determine whether new blocks can fit into the current file or a new file needs to be created</li>
+<li>Calculate the total disk usage by block &amp; undo files</li>
+<li>Iterate through the block files and find ones that can be pruned</li>
+</ul>
+
+
+<p>Blocks are written to disk as soon as they are received, in AcceptBlock.  (The actual disk write operation is in WriteBlockToDisk <u></u><span class="createlink"><a href="/ikiwiki.cgi?from=Bitcoin_Core_0.11_%28ch_2%29%3A_Data_Storage&amp;page=main.cpp%3A1164&amp;do=create" rel="nofollow">?</a>main.cpp:1164</span>).  Note that there is some overlap of the code that accesses block files with the code that accesses and writes to the coins database (/chainstate).  There is a complex system of when to flush state to disk.  None of this code affects block files, which are simply written to disk when received.  Once they have been received and stored, the block files are only needed for serving blocks to other nodes.</p>
+
+<p><strong>More info about block files</strong></p>
+
+<p>See here: <a href="https://github.com/sipa/bitcoin/commit/5382bcf8cd23c36a435c29080770a79b5e28af42">the commit that puts multiple blocks in a block file (2012)</a></p>
+
+<h2 id="Block_index_.28leveldb.29">Block index (leveldb)</h2>
+
+<p>The block index holds metadata about all known blocks, including where the block is stored on disk.</p>
+
+<p>Note that the set of &quot;known blocks&quot; is a superset of the longest chain, because it includes blocks that were received and processed but are not part of the active chain - for example, orphaned blocks that were detached from the active chain in a small reorganization.</p>
+
+<p><strong>Terminology</strong></p>
+
+<p>The terminology can be a little confusing here, because while people normally think of the &quot;blockchain&quot; as being synonymous with the active chain (an uninterrupted, linear chain of X blocks starting with the genesis block and continuing to the current tip), there are some places in the code where &quot;blockchain&quot; refers to the active chain plus the numerous, mostly short forks off the chain that our node happens to know about.</p>
+
+<p>a) Block Tree</p>
+
+<p>A better term for the set of known blocks stored on disk is &quot;block tree,&quot; as this term contemplates a tree structure with numerous branches (albeit small ones) from the main chain.  Indeed, the block index LevelDB is accessed through the &quot;CBlockTreeDB&quot; wrapper class, defined in <u>src/txdb.h</u>.  Note that it&#39;s perfectly fine, indeed it is expected, that different nodes would have slightly different block trees;  what matters is that they agree on the active chain.</p>
+
+<p><strong>Key-value pairs</strong></p>
+
+<p>Inside the actual LevelDB, the used key/value pairs are:</p>
+
+<pre><code>&#39;b&#39; + 32-byte block hash -&gt; block index record. Each record stores:
+* The block header
+* The height.
+* The number of transactions.
+* To what extent this block is validated.
+* In which file, and where in that file, the block data is stored.
+* In which file, and where in that file, the undo data is stored.
+
+&#39;f&#39; + 4-byte file number -&gt; file information record. Each record stores:
+* The number of blocks stored in the block file with that number.
+* The size of the block file with that number ($DATADIR/blocks/blkNNNNN.dat).
+* The size of the undo file with that number ($DATADIR/blocks/revNNNNN.dat).
+* The lowest and highest height of blocks stored in the block file with that number.
+* The lowest and highest timestamp of blocks stored in the block file with that number.
+
+&#39;l&#39; -&gt; 4-byte file number: the last block file number used.
+
+&#39;R&#39; -&gt; 1-byte boolean (&#39;1&#39; if true): whether we&#39;re in the process of reindexing.
+
+&#39;F&#39; + 1-byte flag name length + flag name string -&gt; 1 byte boolean (&#39;1&#39; if true, &#39;0&#39; if false): various flags that can be on or off. Currently defined flags include:
+* &#39;txindex&#39;: Whether the transaction index is enabled.
+
+&#39;t&#39; + 32-byte transaction hash -&gt; transaction index record. These are optional and only exist if &#39;txindex&#39; is enabled (see above). Each record stores:
+* Which block file number the transaction is stored in.
+* Which offset into that file the block the transaction is part of is stored at.
+* The offset from the start of that block to the position where that transaction itself is stored.
+</code></pre>
+
+<p>See here: <a href="http://bitcoin.stackexchange.com/questions/28168/what-are-the-keys-used-in-the-blockchain-leveldb-ie-what-are-the-keyvalue-pair">StackExchange post by Pieter Wuille (2014)</a></p>
+
+<p><strong>Data Access Layer</strong></p>
+
+<p>The database is accessed through CBlockTreeDB wrapper class.  See <u>txdb.h</u>.</p>
+
+<p>The wrapper is instantiated in a global variable called pblocktree, defined in <u>main.cpp.</u></p>
+
+<p><em>CBlockIndex</em></p>
+
+<p>Blocks stored in the database are represented in memory as CBlockIndex objects.  An object of this type is first created after the <em>header</em> is received;  the code does not wait to receive the full block.  When headers are received over the network, they are streamed into a vector of CBlockHeaders, which are then checked. Each header that checks out causes a new CBlockIndex to be created, which is stored to the database.</p>
+
+<p><em>CBlock / CBlockHeader</em></p>
+
+<p>Note that these objects have little to do with the /blocks LevelDB.  A CBlock holds the full set of transactions in the block, the data for which is stored in two places - in full, in raw format, in the blk???.dat files, and in pruned format in the UTXO database.  The block index database cares not for such details, since it holds only the metadata for the block.</p>
+
+<p><em>Loading the block database into memory</em></p>
+
+<p>The entire database is loaded into memory on startup.  See LoadBlockIndexGuts (<u>txdb.cpp</u>).  This only takes a few seconds.</p>
+
+<p>The blocks (&#39;b&#39; keys) are loaded into the global &quot;mapBlockIndex&quot; variable.  &quot;mapBlockIndex&quot; is an unordered_map that holds CBlockIndex for each block in the entire block tree; not just the active chain.</p>
+
+<p>mapBlockIndex is described in more detail in Chapter 6 - The Blockchain.</p>
+
+<p>The block file metadata (&#39;f&#39; keys) is loaded into vInfoBlockFiles.</p>
+
+<h2 id="The_UTXO_set_.28chainstate_leveldb.29">The UTXO set (chainstate leveldb)</h2>
+
+<p>The UTXO database was introduced in 2012 in <a href="https://github.com/bitcoin/bitcoin/pull/1677">pull request #1677 - &quot;Ultraprune.&quot;</a></p>
+
+<p>The idea behind &quot;Ultraprune&quot; is to reduce the size of (prune) the set of past transactions, keeping only those parts of past transactions that are necessary to validate later transactions.</p>
+
+<p>Say you have a transaction T1 which takes two inputs and sends to 3 outputs: O1,O2,O3.  Two of those outputs (O1, O2) have been used as inputs in a later transaction, T2.   Once T2 has been mined, T1 only has one item of interest (O3).  There&#39;s no reason to keep T1 around in its entirety.  Instead, a slimmed-down version of T1 will suffice, consisting only of O3 (locking script and amount) and certain basic information about T1 (height, whether it is a coinbase, etc.)</p>
+
+<p>The description of ultraprune is on the specific &quot;ultraprune&quot; commit within the pull:</p>
+
+<blockquote><hr />
+
+<p> This switches bitcoin&#39;s transaction/block verification logic to use a &quot;coin database&quot;, which contains all unredeemed transaction output scripts, amounts and heights.</p>
+
+<p> The name ultraprune comes from the fact that instead of a full transaction index, we only (need to) keep an index with unspent outputs. For now, the blocks themselves are kept as usual, although they are only necessary for serving, rescanning and reorganizing.</p>
+
+<p> The basic data structures are CCoins (representing the coins of a single transaction), and CCoinsView (representing a state of the coins database).  There are several implementations for CCoinsView. A dummy, one backed by the coins database (coins.dat), one backed by the memory pool, and one that adds a cache on top of it. FetchInputs, ConnectInputs, ConnectBlock, DisconnectBlock, ... now operate on a generic CCoinsView.</p>
+
+<p> The block switching logic now builds a single cached CCoinsView with changes to be committed to the database before any changes are made. This means no uncommitted changes are ever read from the database, and should ease the transition to another database layer which does not support transactions (but does support atomic writes), like LevelDB.</p>
+
+<p> For the getrawtransaction() RPC call, access to a txid-to-disk index would be preferable. As this index is not necessary or even useful for any other part of the implementation, it is not provided. Instead, getrawtransaction() uses the coin database to find the block height, and then scans that block to find the requested transaction. This is slow, but should suffice for debug purposes.</p>
+
+<hr /></blockquote>
+
+<p>See:  <a href="https://github.com/sipa/bitcoin/commit/450cbb0944cd20a06ce806e6679a1f4c83c50db2">Ultraprune - July 2012</a></p>
+
+<p><strong>Terminology</strong></p>
+
+<p>&quot;UTXO (Unspent Transaction Out):&quot;  An output from a transaction.  This is colloquially referred to as a &quot;coin.&quot;  For this reason, the UTXO db is sometimes referred to as the &quot;coins database.&quot;</p>
+
+<p>&quot;UTXO set / coins database / chainstate database:&quot;  These terms are more or less synonymous and are used interchangeably.</p>
+
+<p>&quot;Provably Unspendable:&quot;  A coin is provably unspendable if its scriptPubKey cannot be satisfied - for example, an OP_RETURN.  A provably unspendable coin can be eliminated from the utxo database regardless of its amount.</p>
+
+<p><strong>Key-value pairs</strong></p>
+
+<p>The records in the chainstate levelDB are:</p>
+
+<pre><code>&#39;c&#39; + 32-byte transaction hash -&gt; unspent transaction output record for that transaction. These records are only present for transactions that have at least one unspent output left. Each record stores:
+* The version of the transaction.
+* Whether the transaction was a coinbase or not.
+* Which height block contains the transaction.
+* Which outputs of that transaction are unspent.
+* The scriptPubKey and amount for those unspent outputs.&lt;br&gt;&lt;br&gt;
+&#39;B&#39; -&gt; 32-byte block hash: the block hash up to which the database represents the unspent transaction outputs.
+</code></pre>
+
+<p>See here: <a href="http://bitcoin.stackexchange.com/questions/28168/what-are-the-keys-used-in-the-blockchain-leveldb-ie-what-are-the-keyvalue-pair">StackExchange post by Pieter Wuille (2014)</a></p>
+
+<p><strong>Data Access Layer and Caching</strong></p>
+
+<p>Access to the UTXO database is considerably more complex than the block index.   This is because its performance is critical to the overall performance of the Bitcoin system.  The block index is not so critical to performance because there are only a few hundred thousand blocks and a node running on decent hardware can retrieve and scroll through them in a few seconds (and does not need to do so very often.)  On the other hand, there are millions of coins in the UTXO database and they must be checked and modified for each input of each transaction going into the mempool or included in a block.</p>
+
+<p>As sipa said in the ultraprune commit:</p>
+
+<blockquote><p> The basic data structures are CCoins (representing the coins of a single transaction), and CCoinsView (representing a state of the coins database).  There are several implementations for CCoinsView. A dummy, one backed by the coins database (coins.dat), one backed by the memory pool, and one that adds a cache on top of it.</p></blockquote>
+
+<p>This is not stated as clearly as it might have been, however; at least, not for the current state of the code.</p>
+
+<p>In 0.11, the instantiations of the CoinsView are:</p>
+
+<ul>
+<li>dummy</li>
+<li>database</li>
+<li>pCoinsTip (a cache backed by the database)</li>
+<li>&quot;validation cache&quot; (used when  backed by pCoinsTip, in use when connecting a block)</li>
+</ul>
+
+
+<p>Separate from that chain of caches is the memory pool&#39;s CoinsView, which is backed by the database.</p>
+
+<p>The <i>class diagram</i> (data types) for the views is:</p>
+
+<pre><code>CCoinsView (abstract class)
+/            \
+ViewDB          ViewBacked 
+(database)          /      \
+ViewMempool   ViewCache
+</code></pre>
+
+<p>Each class has one key characteristic:</p>
+
+<ul>
+<li>View is the base class, declaring methods for verifying that coins exist (HaveCoins), retrieving coins (GetCoins), etc.</li>
+<li>ViewDB has code to interact with the LevelDB.</li>
+<li>ViewBacked has a pointer to another View;  thus it is &quot;backed&quot; by another view (version) of the UTXO set.</li>
+<li>ViewCache has a cache (a map of CCoins).</li>
+<li>ViewMempool associates a mempool with a view.</li>
+</ul>
+
+
+<p>Those are the defined classes; whereas the <i>object diagram</i> is:</p>
+
+<pre><code>Database       
+/       \
+MemPool     Blockchain cache (pcoinsTip) 
+View/Cache            \
+Validation cache
+</code></pre>
+
+<p>Here is a table summarizing the instantiations of Views:</p>
+
+<table>
+<thead>
+<tr>
+<th>Object </th>
+<th>Type </th>
+<th>Backed By? </th>
+<th>Description / Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DB view </td>
+<td>ViewDB </td>
+<td>n/a </td>
+<td>Represents the UTXO set according to the /chainstate LevelDB.  Retrieves coins and flushes changes to the LevelDB.<br />Creation in code (instantiation):  see <u>init.cpp:1131</u></td>
+</tr>
+<tr>
+<td>pCoinsTip<br />(blockchain cache) </td>
+<td>ViewCache </td>
+<td>DB view </td>
+<td>Holds the UTXO set corresponding to the active chain&#39;s tip.  Retrieves/flushes to the database view.<br />Creation in code:  see <u>init.cpp:1133</u></td>
+</tr>
+<tr>
+<td>Validation cache </td>
+<td>ViewCache </td>
+<td>pCoinsTip </td>
+<td>This cache&#39;s lifetime is within ConnectTip (or DisconnectTip).<br />Its purpose is to keep track of modifications to the UTXO set while processing a block.<br />If the block validates, the cache is flushed to pcoinsTip.<br />If the block fails, the cache is discarded. <br />Creation in code:  see <u>main.cpp:2231</u>:  CCoinsViewCache view(pcoinsTip);</td>
+</tr>
+<tr>
+<td>Mempool view </td>
+<td>ViewMemPool </td>
+<td>pCoinsTip </td>
+<td>This object brings the mempool into view, meaning it can see both a UTXO set and the mempool.<br />Its purpose is to enable validation of chains of transactions, a.k.a. &quot;zero-confirmation&quot; transactions.  (If chains of transactions weren&#39;t permitted, the mempool could simply validate against pcoinsTip.)<br />Thus, when queried, it can check if a given input can be found either in the mempool (i.e., &quot;zero-conf&quot;) or in the blockchain&#39;s utxo set (&quot;confirmed.&quot;)<br />Note that this object is not a cache; rather, it is a view that is used by the object below, which does contain a cache.  <br />Creation in code: Its lifetime is that of AcceptToMemoryPool in <u>main.cpp</u>.</td>
+</tr>
+<tr>
+<td>Mempool cache </td>
+<td>ViewCache </td>
+<td>Mempool view </td>
+<td>The cache for the mempool.  It contains a cache and sets its backend to be the mempool view.<br />Creation in code: Its lifetime is also that of AcceptToMemoryPool in <u>main.cpp</u>.</td>
+</tr>
+</tbody>
+</table>
+
+
+<p><em>Loading the UTXO set</em></p>
+
+<p>Access to the coins database is initialized in <u>init.cpp</u>: 1131-1133:</p>
+
+<pre><code>pcoinsdbview = new CCoinsViewDB(nCoinDBCache, false, fReindex);
+pcoinscatcher = new CCoinsViewErrorCatcher(pcoinsdbview);
+pcoinsTip = new CCoinsViewCache(pcoinscatcher);
+</code></pre>
+
+<p>The code starts by initializing a CoinsViewDB, which is equipped with methods to load coins from the LevelDB. <br />
+The error catcher is a little hack that can be ignored. <br />
+Next, the code initalizes pCoinsTip, which is the cache representing the state of the active chain, and is backed by the database view. <br /></p>
+
+<p><em>Cache vs. Database</em></p>
+
+<p>The FetchCoins function in coins.cpp demonstrates how the code uses the cache vs. the database:
+    1   CCoinsMap::iterator it = cacheCoins.find(txid);
+    2   if (it != cacheCoins.end())
+    3     return it;
+    4   CCoins tmp;
+    5   if (!base-&gt;GetCoins(txid, tmp))
+    6     return cacheCoins.end();
+    7   CCoinsMap::iterator ret = cacheCoins.insert(std::make_pair(txid, CCoinsCacheEntry())).first;</p>
+
+<p>First, the code searches the cache for the coins for a given transaction id. (line 1)<br />
+If found, it returns the &quot;fetched&quot; coins. (lines 2-3) <br />
+If not, it searches the database. (line 5) <br />
+If found in the database, it updates the cache. (line 7) <br />
+<br />
+Note:  if the cache&#39;s backend is another cache, then the term &quot;database&quot; really means &quot;parent cache.&quot;
+<br />
+<br /></p>
+
+<p><em>Flushing the Validation Cache to the Blockchain Cache</em></p>
+
+<p>The validation cache is flushed to the blockchain cache after connecting a block, just before it goes out of scope.  The scope is captured in ConnectTip, and specifically, in the code block <u>main.cpp</u>:2231-2243.  In that code block, there is a call to ConnectBlock, during which the code stores the new coins in the validation cache.  (Specifically, see UpdateCoins() in <u>main.cpp</u>.)  At the end of the code block, the validation cache is flushed.  Since its &quot;parent view&quot; is also a cache (pcoinsTip, the &quot;blockchain cache&quot;) the code will call the parent&#39;s ViewCache::BatchWrite, which swaps the updated coin entries into its own cache.  (Polymorphism in action: Later, when the the blockchain cache flushes to the database view, the code will run CoinsViewDB::BatchWrite, the last line of which writes to the LevelDB.)</p>
+
+<p>In summary, usage of the validation cache is straightforward: it is instantiated, used, flushed, and goes out of scope in the aforementioned code block.</p>
+
+<p><em>Flushing the Blockchain Cache to the Database</em></p>
+
+<p>Flushing the validate cache was simple because the code only shuffled items between two caches in memory (of which no one is aware outside of the caching code.)  Flushing the blockchain cache to the database is a bit more complicated.  At the lowest level, the mechanics of flushing the blockchain cache (pcoinsTip) is the same as the validation cache:  the Flush() method calls BatchWrite on its backend (the &quot;base&quot; pointer), and in this case that means BatchWrite on the database view.  Up a level, Flush() is called from FlushStateToDisk (FSTD) - <u>main.cpp</u>:2098.  FlushStateToDisk is invoked at a few different points, with a given <em>mode</em>:</p>
+
+<table>
+<thead>
+<tr>
+<th>Flush Mode </th>
+<th>Description </th>
+<th>When called</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IF_NEEDED </td>
+<td>Flush only if the cache is over its size limit. </td>
+<td>Right after connecting (or disconnecting) a block and flushing the validation cache.<br />See ConnectTip / DisconnectTip.</td>
+</tr>
+<tr>
+<td>ALWAYS </td>
+<td>Flush cache. </td>
+<td>During initialization only.</td>
+</tr>
+<tr>
+<td>PERIODIC </td>
+<td>Here, the code considers other data points to decide whether to flush.<br />Is the code <em>almost</em>over its size limit?<br />Has it been a long time since the cache was flushed?<br />If so, then proceed.</td>
+<td>At end of ActivateBestChain()<br />(Code comment: &quot;write changes periodically to disk, after relay&quot;).</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>The idea is to flush the block cache frequently (to avoid having to download a large number of blocks if the program crashes), but the coins cache infrequently (in order to maximize the benefit from the coins cache.)</p>
+
+<p>Specifically, the block cache is guaranteed to be flushed once an hour, whereas the coins cache once per day.  (See here:  <a href="https://github.com/bitcoin/bitcoin/pull/6102#issuecomment-98847663">Sipa comment on PR 6102</a>)</p>
+
+<p>The FlushStateToDisk code is well-commented so for more info, the curious reader can check <u>main.cpp</u>.</p>
+
+<h2 id="Raw_undo_data_.28rev.2A.dat.29">Raw undo data (rev*.dat)</h2>
+
+<p>The undo data contains the information that is necessary to disconnect or &quot;roll back&quot; a block: specifically, the coins that were spent by the block in question.</p>
+
+<p>So, the data being written is essentially a set of CTxOut objects.  (A CTxOut is simply an amount and a script - see <u>primitives/transaction.h</u>:107-108).</p>
+
+<p>The matter is complicated slightly by the fact that if the coin is the last one being spent by its transaction, the undo data needs to store the transaction&#39;s metadata (the txn&#39;s block height, whether it&#39;s a coinbase, and its version.) So, if you have a transaction T with outputs O1,O2,O3 spent in that order, for O1 and O2 all that will be written to the undo file is the amount and the script.  For 03, the undo file will have the amount, the script, plus T&#39;s height and version, and whether T is a coinbase.</p>
+
+<p>The undo data is written to the raw file with the following code:
+    fileout &lt;&lt; blockundo; (main.cpp:1567 <span class="createlink"><a href="/ikiwiki.cgi?from=Bitcoin_Core_0.11_%28ch_2%29%3A_Data_Storage&amp;do=create&amp;page=UndoWriteToDisk" rel="nofollow">?</a>UndoWriteToDisk</span>)</p>
+
+<p>This line of code calls the serialization function on the CBlockUndo - which is basically just a vector of coins (CTxOuts.)  Finally, a checksum is written to the undo file. The checksum  is used during initialization to verify that any undo data being checked is intact.  See <a href="https://github.com/bitcoin/bitcoin/pull/2145">Pull 2145</a></p>
+
+<p>The undo data is used when disconnecting a block.  The DisconnectBlock() code is discussed further down this wiki page in The Blockchain: Reorganizations.</p>
+
+<h2 id="Use_of_LevelDB">Use of LevelDB</h2>
+
+<p>LevelDB is a key-value store that was introduced to store the block index and UTXO set (chainstate) in 2012 as part of the complex &quot;Ultraprune&quot; pull (PR 1677).  See here: <a href="https://github.com/bitcoin/bitcoin/pull/1677/commits">the 27 commits on Ultraprune</a>.</p>
+
+<p>On the subject of why LevelDB is used, core developer Greg Maxwell stated the following to the <a href="http://bitcoin-development.narkive.com/XAPoxKZU/patch-switching-bitcoin-core-to-sqlite-db">bitcoin-dev mailing list in October 2015</a>:</p>
+
+<blockquote><p> I think people are falling into a trap of thinking &quot;It&#39;s a , I know a  for that!&quot;; but the application and needs are very specialized here. . . It just so happens that on the back of the very bitcoin specific cryptographic consensus algorithim there was a slot where a pre-existing high performance key-value store fit; and so we&#39;re using one and saving ourselves some effort...</p></blockquote>
+
+<p>One might ask whether different nodes could use different databases - as long as they retrieve the same data, what&#39;s the difference? The issue here is &quot;bug-for-bug compatibility&quot; - if one database has a bug that causes records to not be returned under certain circumstances, then all other nodes bst have the same bug, else the network could fork as a result.</p>
+
+<p>Greg Maxwell stated the following in <a href="http://bitcoin-development.narkive.com/XAPoxKZU/patch-switching-bitcoin-core-to-sqlite-db">the same thread referenced above (in response to a proposal to switch to using sqlite)</a>:</p>
+
+<blockquote><p> ...<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=D&amp;from=Bitcoin_Core_0.11_%28ch_2%29%3A_Data_Storage" rel="nofollow">?</a>D</span>atabases sometimes have errors which cause them to fail to return records, or to return stale data. And if those exist consistency must be maintained; and &quot;fixing&quot; the bug can cause a divergence in consensus state that could open users up to theft.</p>
+
+<p> Case in point, prior to leveldb&#39;s use in Bitcoin Core it had a bug that, under rare conditions, could cause it to consistently return not found on records that were really there. . . Leveldb fixed this serious bug in a minor update.  But deploying a fix like this in an uncontrolled manner in the bitcoin network would potentially cause a fork in the consensus state; so any such fix would need to be rolled out in an orderly manner.</p></blockquote>
+
+<h2 id="See_also">See also</h2>
+
+<p><a href="https://en.bitcoin.it/wiki/Bitcoin_Core_0.11_(ch_1">Bitcoin Core 0.11 (Ch 1): Overview</a>:<em>Overview)
+<br />
+<a href="https://en.bitcoin.it/wiki/Bitcoin_Core_0.11_(ch_3">Bitcoin Core 0.11 (Ch 3): Initialization and Startup</a>:</em>Initialization_and_Startup)
+<br />
+<a href="https://en.bitcoin.it/wiki/Bitcoin_Core_0.11_(ch_4">Bitcoin Core 0.11 (Ch 4): P2P Network</a>:<em>P2P_Network)
+<br />
+<a href="https://en.bitcoin.it/wiki/Bitcoin_Core_0.11_(ch_5">Bitcoin Core 0.11 (Ch 5): Initial Block Download</a>:</em>Initial_Block_Download)
+<br />
+<a href="https://en.bitcoin.it/wiki/Bitcoin_Core_0.11_(ch_6">Bitcoin Core 0.11 (Ch 6): The Blockchain</a>:_The_Blockchain)</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Developer/" rel="tag">Developer</a>
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+</nav>
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-01-21T20:30:42Z">Thu 21 Jan 2016 08:30:42 PM Europe</time>
+<!-- Created <time datetime="2016-01-13T21:00:20Z" pubdate="pubdate">Wed 13 Jan 2016 09:00:20 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Setting up a secure ecommerce site</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Setting up a secure ecommerce site
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Setting_up_a_secure_ecommerce_site" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>Upload a large collection of public addresses to your server, and go through them for orders. Don&#39;t host a bitcoind controlled wallet on your server, as that just creates a reason to attack your server. It also just becomes a potential attack vector if you set it up to respond to api requests.</p>
+
+<p>You can use blockexplorer&#39;s api to check the balance on an address and mark it as complete and do whatever you do with your goods for paid orders. Don&#39;t recycle public addresses, just make more.</p>
+
+<p>Using this fork of pywallet:
+https://github.com/RobKohr/pywallet</p>
+
+<p>that imports a list of private keys in a text file (option importprivkeyfile). I open a csv in excel that I created from copying a bunch of addresses from http://www.bitaddress.org. The private addresses column I save to one text file, and import it into my wallet using pywallet. The public addresses I import into a database for the server. I use mongodb, but really any database works. Here is the basic table format for the table address_pool:</p>
+
+<p>  public_address - varchar
+  used - boolean, default false</p>
+
+<p>When I create an order, I grab a public address where used is false, and update that row to set used = true. I stick that public address in my order table with the users order info, and then show them the public address to pay to.</p>
+
+<p>Nice, simple, and secure, and doesn&#39;t require any outside payment processer looking to skim a profit off of my sales.</p>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../Securing_online_services/">Securing online services</a></li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Instructional/" rel="tag">Instructional</a>
+
+</nav>
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2012-08-28T12:30:46Z">Tue 28 Aug 2012 12:30:46 PM Europe</time>
+<!-- Created <time datetime="2011-12-12T12:07:16Z" pubdate="pubdate">Mon 12 Dec 2011 12:07:16 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Libbitcoin Protocol</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Libbitcoin Protocol
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Libbitcoin_Protocol&amp;page=Talk&amp;do=create" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>The <a href="https://github.com/libbitcoin/libbitcoin-protocol">libbitcoin-protocol</a> library is experimental and not currently used by any other <a href="../Libbitcoin/">Libbitcoin</a> library. The library defines a privacy-centric blockchain query language based on a simple and formally-defined messaging interface for the purpose of communicating with a <a href="../Thin_Client_Security/#Full_Node_vs._SPV">full chain or SPV</a> blockchain server. The design is independent of network topology and supports in-process as well as wide area messaging.</p>
+
+<h2 id="Status">Status</h2>
+
+<p>An <a href="https://github.com/libbitcoin/libbitcoin-protocol/tree/master/proto/bitcoin/protocol">interface definition</a> based on <a href="https://developers.google.com/protocol-buffers/">Protocol Buffers</a> has been published along with <a href="https://github.com/libbitcoin/libbitcoin-protocol/tree/master/include/bitcoin">C++</a>, <a href="https://github.com/libbitcoin/libbitcoin-protocol/tree/master/java/libbitcoin/protocol">Java</a> and <a href="https://github.com/libbitcoin/libbitcoin-protocol/tree/master/python/bitcoin/protocol">Python</a> marshalling libraries. The library is integrated with the <a href="../Libbitcoin_Build/">Libbitcoin Build</a> system (2.1), with regular build and test execution, including a moderate level of unit test coverage (2.2).</p>
+
+<h2 id="Privacy_First">Privacy First</h2>
+
+<p>The focus of the protocol is not the wire encoding, but the messaging semantics (3.1). The central tenet of the library is that the level of privacy in making queries must be controllable by the caller over public networks. As such all queries are prefix filtered on a bit-wise basis with the depth of the filter controlled by the caller.</p>
+
+<h2 id="Objectives">Objectives</h2>
+
+<ul>
+<li>The server should not be required to maintain any session state.</li>
+<li>The client should not be required to provide any identifying information.</li>
+<li>The protocol should allow client privacy, leaving trade-offs between privacy and performance to the caller.</li>
+<li>The protocol should be extensible while allowing backward and forward compatibility without version negotiation.</li>
+<li>The protocol should be defined in a formal interface definition language (IDL).</li>
+<li>The IDL should provide tooling for generation of client-server stubs in C/C++.</li>
+<li>The IDL tooling should implement marshalling in C/C++.</li>
+</ul>
+
+
+<h2 id="Dependencies">Dependencies</h2>
+
+<ul>
+<li><a href="https://developers.google.com/protocol-buffers">protobuf 2.6</a></li>
+<li><a href="http://www.boost.org/doc/libs/1_55_0/libs/test/doc/html/index.html">boost test</a> (tests only)</li>
+</ul>
+
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../Libbitcoin/">Libbitcoin</a></li>
+</ul>
+
+
+<h2 id="References">References</h2>
+
+<p>2.1: <a href="https://travis-ci.org/libbitcoin/libbitcoin-protocol">Libbitcoin Protocol Travis-CI Report</a><br />
+2.2: <a href="https://coveralls.io/r/libbitcoin/libbitcoin-protocol">Libbitcoin Protocol Coveralls Report</a><br />
+3.1: <a href="https://github.com/libbitcoin/libbitcoin-protocol#wire-encoding">Libbitcoin Protocol Wire Encoding Statement</a></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Open_Source/" rel="tag">Open Source</a>
+
+<a href="../tags/Software__8207____8206__/" rel="tag">Software‏‎</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Libbitcoin/">Libbitcoin</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-07-12T22:01:17Z">Sun 12 Jul 2015 10:01:17 PM Europe</time>
+<!-- Created <time datetime="2015-05-13T21:30:03Z" pubdate="pubdate">Wed 13 May 2015 09:30:03 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

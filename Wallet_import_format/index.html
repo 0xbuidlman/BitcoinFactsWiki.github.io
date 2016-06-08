@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Wallet import format</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Wallet import format
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Wallet_import_format&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>Wallet Import Format (WIF, also known as Wallet Export Format) is a way of encoding a private ECDSA key so as to make it easier to copy.</p>
+
+<p>A testing suite is available for encoding and decoding of WIF at:</p>
+
+<p>http://gobittest.appspot.com/PrivateKey</p>
+
+<h2 id="Private_key_to_WIF">Private key to WIF</h2>
+
+<p>1 - Take a private key
+    0C28FCA386C7A227600B2FE50B7CAE11EC86D3BF1FBE471BE89827E19D72AA1D
+2 - Add a 0x80 byte in front of it for mainnet addresses or 0xef for testnet addresses. Also add a 0x01 byte at the end if the private key will correspond to a compressed public key
+    800C28FCA386C7A227600B2FE50B7CAE11EC86D3BF1FBE471BE89827E19D72AA1D
+3 - Perform SHA-256 hash on the extended key
+    8147786C4D15106333BF278D71DADAF1079EF2D2440A4DDE37D747DED5403592
+4 - Perform SHA-256 hash on result of SHA-256 hash
+    507A5B8DFED0FC6FE8801743720CEDEC06AA5C6FCA72B07C49964492FB98A714
+5 - Take the first 4 bytes of the second SHA-256 hash, this is the checksum
+    507A5B8D
+6 - Add the 4 checksum bytes from point 5 at the end of the extended key from point 2
+    800C28FCA386C7A227600B2FE50B7CAE11EC86D3BF1FBE471BE89827E19D72AA1D507A5B8D
+7 - Convert the result from a byte string into a base58 string using <a href="../Base58Check_encoding/">Base58Check encoding</a>. This is the Wallet Import Format
+    5HueCGU8rMjxEXxiPuD5BDku4MkFqeZyd4dZ1jvhTVqvbTLvyTJ</p>
+
+<h2 id="WIF_to_private_key">WIF to private key</h2>
+
+<p>1 - Take a Wallet Import Format string
+    5HueCGU8rMjxEXxiPuD5BDku4MkFqeZyd4dZ1jvhTVqvbTLvyTJ
+2 - Convert it to a byte string using <a href="../Base58Check_encoding/">Base58Check encoding</a>
+    800C28FCA386C7A227600B2FE50B7CAE11EC86D3BF1FBE471BE89827E19D72AA1D507A5B8D
+3 - Drop the last 4 checksum bytes from the byte string
+    800C28FCA386C7A227600B2FE50B7CAE11EC86D3BF1FBE471BE89827E19D72AA1D
+4 - Drop the first byte (it should be 0x80). If the private key corresponded to a compressed public key, also drop the last byte (it should be 0x01). If it corresponded to a compressed public key, the WIF string will have started with K or L instead of 5 (or c instead of 9 on testnet). This is the private key.
+    0C28FCA386C7A227600B2FE50B7CAE11EC86D3BF1FBE471BE89827E19D72AA1D</p>
+
+<h2 id="WIF_checksum_checking">WIF checksum checking</h2>
+
+<p>1 - Take the Wallet Import Format string
+    5HueCGU8rMjxEXxiPuD5BDku4MkFqeZyd4dZ1jvhTVqvbTLvyTJ
+2 - Convert it to a byte string using <a href="../Base58Check_encoding/">Base58Check encoding</a>
+    800C28FCA386C7A227600B2FE50B7CAE11EC86D3BF1FBE471BE89827E19D72AA1D507A5B8D
+3 - Drop the last 4 checksum bytes from the byte string
+    800C28FCA386C7A227600B2FE50B7CAE11EC86D3BF1FBE471BE89827E19D72AA1D
+3 - Perform SHA-256 hash on the shortened string
+    8147786C4D15106333BF278D71DADAF1079EF2D2440A4DDE37D747DED5403592
+4 - Perform SHA-256 hash on result of SHA-256 hash
+    507A5B8DFED0FC6FE8801743720CEDEC06AA5C6FCA72B07C49964492FB98A714
+5 - Take the first 4 bytes of the second SHA-256 hash, this is the checksum
+    507A5B8D
+6 - Make sure it is the same, as the last 4 bytes from point 2
+    507A5B8D
+7 - If they are, and the byte string from point 2 starts with 0x80 (0xef for testnet addresses), then there is no error.</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Base58Check_encoding/">Base58Check encoding</a>
+
+<a href="../List_of_address_prefixes/">List of address prefixes</a>
+
+<a href="../Private_key/">Private key</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-08-17T16:07:45Z">Mon 17 Aug 2015 04:07:45 PM Europe</time>
+<!-- Created <time datetime="2012-01-10T10:25:42Z" pubdate="pubdate">Tue 10 Jan 2012 10:25:42 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

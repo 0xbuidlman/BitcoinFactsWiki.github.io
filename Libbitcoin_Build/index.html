@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Libbitcoin Build</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Libbitcoin Build
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Libbitcoin_Build&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>The <a href="https://github.com/libbitcoin/libbitcoin-build">libbitcoin-build</a> repository is used by <a href="../Libbitcoin/">Libbitcoin</a> maintainers to generate <a href="http://en.wikipedia.org/wiki/GNU_build_system">Autotols</a> and other build artifacts from declarative sources. The purpose of the library is to maintain build quality and consistency across the Libbitcoin repositories without unnecessarily restricting contributions.</p>
+
+<h2 id="Generated_Artifacts">Generated Artifacts</h2>
+
+<pre><code>.travis.yml
+autogen.sh
+configure.ac
+install.sh
+&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=library&amp;amp;from=Libbitcoin_Build&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;library&lt;/span&gt;.pc.in
+&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=library&amp;amp;do=create&amp;amp;from=Libbitcoin_Build&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;library&lt;/span&gt;_test_runner.sh
+Makefile.am
+include/bitcoin/&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Libbitcoin_Build&amp;amp;do=create&amp;amp;page=library&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;library&lt;/span&gt;.hpp
+include/bitcoin/&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Libbitcoin_Build&amp;amp;do=create&amp;amp;page=library&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;library&lt;/span&gt;/version.hpp
+</code></pre>
+
+<h2 id="Design_Overview">Design Overview</h2>
+
+<p>The Libbitcoin build system uses <a href="https://github.com/imatix/gsl">GSL</a> for generation of build artifacts from a declarative XML model of each repository (3.1). The system also enumerates source files within each repository in order to generate a master <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=library&amp;from=Libbitcoin_Build" rel="nofollow">?</a>library</span>.hpp and Makefile.am. Visual Studio projects and solutions are not currently generated (3.2). Scripts invoking <a href="http://www.swig.org">SWIG</a> are used to generate source code for Java and Python bindings (3.3).</p>
+
+<h2 id="Change_Control_Process">Change Control Process</h2>
+
+<p>Maintainers generate and push resulting artifacts to each of the other repositories so that contributors have familiar context. Contributors to a given repository can edit the generated artifacts and later maintainers can determine whether to retain changes by incorporating them into the model. This allows less experienced contributors to introduce changes for review without introducing fragility into user-facing build, install and packaging processes.</p>
+
+<h2 id="Example_Repository_Model">Example Repository Model</h2>
+
+<pre><code>&lt;repository name=&quot;libbitcoin-consensus&quot; version=&quot;1.1.0&quot; email=&quot;eric@voskuil.org&quot; &gt;
+
+&lt;package library=&quot;bitcoin-consensus&quot; description=&quot;Libbitcoin Consensus Library&quot; url=&quot;https://github.com/libbitcoin/libbitcoin-consensus&quot; /&gt;
+
+&lt;configure&gt;
+&lt;option type=&quot;with&quot; name=&quot;pkgconfigdir&quot; default=&quot;${libdir}/pkgconfig&quot; example=&quot;=DIR&quot; unprefixed=&quot;true&quot; substitute=&quot;true&quot; description=&quot;Path to pkgconfig directory.&quot; /&gt;
+&lt;option type=&quot;with&quot; name=&quot;tests&quot; default=&quot;yes&quot; conditional=&quot;true&quot; description=&quot;Compile with unit tests.&quot; /&gt;
+&lt;option type=&quot;with&quot; name=&quot;openssl&quot; default=&quot;yes&quot; description=&quot;Require OpenSSL dependency.&quot; /&gt;
+&lt;option type=&quot;with&quot; name=&quot;secp256k1&quot; default=&quot;no&quot; define=&quot;USE_SECP256K1&quot; conditional=&quot;true&quot; description=&quot;Compile with secp256k1 instead of OpenSSL.&quot; /&gt;
+&lt;option type=&quot;with&quot; name=&quot;java&quot; default=&quot;no&quot; conditional=&quot;true&quot; description=&quot;Compile the Java bindings.&quot; /&gt;
+&lt;option type=&quot;with&quot; name=&quot;python&quot; default=&quot;no&quot; conditional=&quot;true&quot; description=&quot;Compile the Python bindings.&quot; /&gt;
+&lt;option type=&quot;enable&quot; name=&quot;ndebug&quot; default=&quot;yes&quot; define=&quot;NDEBUG&quot; description=&quot;Compile without debug assertions.&quot; /&gt;
+&lt;option type=&quot;enable&quot; name=&quot;shared&quot; default=&quot;yes&quot; define=&quot;BOOST_TEST_DYN_LINK&quot; inherited=&quot;true&quot; description=&quot;Required for dynamically linking boost test.&quot; /&gt;
+
+&lt;dependency name=&quot;boost&quot; compiler=&quot;gcc&quot; version=&quot;1.55.0&quot; option=&quot;tests&quot; /&gt;
+&lt;dependency name=&quot;boost&quot; compiler=&quot;clang&quot; version=&quot;1.54.0&quot; option=&quot;tests&quot; /&gt;
+&lt;dependency name=&quot;boost_unit_test_framework&quot; option=&quot;tests&quot; /&gt;
+&lt;dependency name=&quot;crypto&quot; version=&quot;1.0.1&quot; option=&quot;openssl&quot; /&gt;
+&lt;dependency name=&quot;secp256k1&quot; version=&quot;0.0.1&quot; option=&quot;secp256k1&quot; /&gt;
+&lt;dependency name=&quot;java&quot; option=&quot;java&quot; /&gt;
+&lt;dependency name=&quot;python&quot; version=&quot;2.7&quot; option=&quot;python&quot; /&gt;
+
+&lt;flag name=&quot;Wall&quot; comment=&quot;Warn on all stuff.&quot; context=&quot;c&quot; /&gt;
+&lt;flag name=&quot;Wextra&quot; comment=&quot;Warn on extra stuff.&quot; context=&quot;c&quot; /&gt;
+&lt;flag name=&quot;Wpedantic&quot; alternate=&quot;pedantic&quot; comment=&quot;Be really annoying.&quot; context=&quot;c&quot; /&gt;
+&lt;flag name=&quot;Wno-missing-braces&quot; comment=&quot;Conform to style.&quot; context=&quot;c++&quot; /&gt;
+&lt;flag name=&quot;Wno-mismatched-tags&quot; compiler=&quot;clang&quot; comment=&quot;Conflict in stdlib under clang.&quot; context=&quot;c++&quot; /&gt;
+&lt;flag name=&quot;Wno-deprecated-register&quot; compiler=&quot;clang&quot; comment=&quot;Clean up boost 1.54 headers.&quot; context=&quot;c++&quot; /&gt;
+&lt;flag name=&quot;Wno-deprecated-declarations&quot; comment=&quot;Clean up consensus warnings from boost 1.55 and OpenSSL headers.&quot; context=&quot;c++&quot; /&gt;
+&lt;flag name=&quot;fstack-protector&quot; comment=&quot;Protect stack.&quot; context=&quot;link&quot; /&gt;
+&lt;flag name=&quot;fstack-protector-all&quot; comment=&quot;Protect stack comprehensively.&quot; context=&quot;link&quot; /&gt;
+&lt;flag name=&quot;fvisibility-hidden&quot; compiler=&quot;gcc&quot; comment=&quot;Hide internal functions from external libs.&quot; context=&quot;c++&quot; /&gt;
+&lt;flag name=&quot;fvisibility-inlines-hidden&quot; compiler=&quot;gcc&quot; comment=&quot;Hide inlines from external libs.&quot; context=&quot;c++&quot; /&gt;
+&lt;/configure&gt;
+
+&lt;make&gt;
+&lt;product prefix=&quot;pkgconfig&quot; &gt;
+&lt;file path=&quot;libbitcoin-consensus.pc&quot; /&gt;
+&lt;/product&gt;
+&lt;product prefix=&quot;doc&quot; &gt;
+&lt;file path=&quot;AUTHORS&quot; /&gt;
+&lt;file path=&quot;COPYING&quot; /&gt;
+&lt;file path=&quot;ChangeLog&quot; /&gt;
+&lt;file path=&quot;INSTALL&quot; /&gt;
+&lt;file path=&quot;NEWS&quot; /&gt;
+&lt;file path=&quot;README&quot; /&gt;
+&lt;/product&gt;
+&lt;product prefix=&quot;lib&quot; path=&quot;src&quot; name=&quot;bitcoin-consensus&quot; uuid=&quot;6c521d95-00ce-4120-97d1-430e2870d738&quot; &gt;
+&lt;library name=&quot;crypto&quot; /&gt;
+&lt;library name=&quot;secp256k1&quot; /&gt;
+&lt;headers path=&quot;include&quot; /&gt;
+&lt;headers path=&quot;src&quot; /&gt;
+&lt;sources path=&quot;src&quot; /&gt;
+&lt;/product&gt;
+&lt;product prefix=&quot;bin&quot; path=&quot;test&quot; name=&quot;libbitcoin_consensus_test&quot; test=&quot;true&quot; option=&quot;tests&quot; uuid=&quot;d282ef8c-6217-483c-ac47-864b2fba50fd&quot; &gt;
+&lt;runner random=&quot;true&quot; /&gt;
+&lt;library name=&quot;bitcoin-consensus&quot; /&gt;
+&lt;library name=&quot;boost&quot; /&gt;
+&lt;library name=&quot;boost_unit_test_framework&quot; /&gt;
+&lt;headers path=&quot;include&quot; /&gt;
+&lt;headers path=&quot;src&quot; /&gt;
+&lt;sources path=&quot;test&quot; /&gt;
+&lt;/product&gt;
+&lt;product prefix=&quot;include&quot; container=&quot;bitcoin&quot; &gt;
+&lt;files path=&quot;include/bitcoin&quot; /&gt;
+&lt;/product&gt;
+&lt;product prefix=&quot;lib&quot; path=&quot;bindings/java/wrap&quot; name=&quot;bitcoin-consensus-jni&quot; option=&quot;java&quot; &gt;
+&lt;library name=&quot;bitcoin-consensus&quot; /&gt;
+&lt;library name=&quot;java&quot; /&gt;
+&lt;headers path=&quot;include&quot; /&gt;
+&lt;sources path=&quot;bindings/java/wrap&quot; /&gt;
+&lt;/product&gt;
+&lt;product prefix=&quot;javaexec&quot; distribute=&quot;true&quot; install=&quot;false&quot; option=&quot;java&quot; &gt;
+&lt;files path=&quot;bindings/java/proxy/org/libbitcoin/consensus&quot; /&gt;
+&lt;/product&gt;
+&lt;product prefix=&quot;jarexec&quot; distribute=&quot;false&quot; install=&quot;true&quot; option=&quot;java&quot; &gt;
+&lt;file path=&quot;org.libbitcoin.consensus-${VERSION}.jar&quot; /&gt;
+&lt;/product&gt;
+&lt;product prefix=&quot;pkgpyexec&quot; path=&quot;bindings/python/wrap&quot; name=&quot;_bitcoin-consensus&quot; unprefixed=&quot;true&quot; option=&quot;python&quot; &gt;
+&lt;library name=&quot;bitcoin-consensus&quot; /&gt;
+&lt;library name=&quot;python&quot; /&gt;
+&lt;headers path=&quot;include&quot; /&gt;
+&lt;sources path=&quot;bindings/python/wrap&quot; /&gt;
+&lt;/product&gt;
+&lt;product prefix=&quot;pkgpython&quot; option=&quot;python&quot; &gt;
+&lt;files path=&quot;bindings/python/proxy&quot; /&gt;
+&lt;/product&gt;
+&lt;/make&gt;
+
+&lt;install&gt;
+&lt;!-- Boost.system is necessary for detection, which is only required for test. --&gt;
+&lt;build name=&quot;boost&quot; version=&quot;1.55.0&quot; parallel=&quot;true&quot; compiler=&quot;gcc&quot; &gt;
+&lt;option value=&quot;--with-system&quot; /&gt;
+&lt;option value=&quot;--with-test&quot; /&gt;
+&lt;/build&gt;
+&lt;build name=&quot;boost&quot; version=&quot;1.54.0&quot; parallel=&quot;true&quot; compiler=&quot;clang&quot; &gt;
+&lt;option value=&quot;--with-system&quot; /&gt;
+&lt;option value=&quot;--with-test&quot; /&gt;
+&lt;/build&gt;
+&lt;build name=&quot;secp256k1&quot; github=&quot;libbitcoin&quot; repository=&quot;secp256k1&quot; branch=&quot;version3&quot; parallel=&quot;true&quot; &gt;
+&lt;option value=&quot;--disable-tests&quot; /&gt;
+&lt;option value=&quot;--disable-bignum&quot; /&gt;
+&lt;/build&gt;
+&lt;build name=&quot;bitcoin-consensus&quot; github=&quot;libbitcoin&quot; repository=&quot;libbitcoin-consensus&quot; branch=&quot;version1&quot; parallel=&quot;true&quot; &gt;
+&lt;option value=&quot;${with_boost}&quot; /&gt;
+&lt;option value=&quot;${with_pkgconfigdir}&quot; /&gt;
+&lt;/build&gt;
+&lt;/install&gt;
+
+&lt;matrix&gt;
+&lt;job system=&quot;osx&quot; compiler=&quot;clang&quot; link=&quot;static&quot; &gt;
+&lt;get name=&quot;swig&quot; /&gt;
+&lt;option value=&quot;--without-openssl&quot; /&gt;
+&lt;option value=&quot;--with-secp256k1&quot; /&gt;
+&lt;option value=&quot;--with-java&quot; /&gt;
+&lt;option value=&quot;--disable-shared&quot; /&gt;
+&lt;option value=&quot;--build-boost&quot; /&gt;
+&lt;option value=&quot;--prefix=$HOME/my-prefix&quot; /&gt;
+&lt;/job&gt;
+&lt;job system=&quot;linux&quot; compiler=&quot;clang&quot; link=&quot;static&quot; &gt;
+&lt;get name=&quot;swig&quot; /&gt;
+&lt;option value=&quot;--with-python&quot; /&gt;
+&lt;option value=&quot;--disable-shared&quot; /&gt;
+&lt;option value=&quot;--build-boost&quot; /&gt;
+&lt;option value=&quot;--prefix=$HOME/my-prefix&quot; /&gt;
+&lt;option value=&quot;CXXFLAGS=&#39;-Os -stdlib=libstdc++&#39;&quot; /&gt;
+&lt;option value=&quot;LDLIBS=&#39;-lstdc++&#39;&quot; /&gt;
+&lt;/job&gt;
+&lt;job system=&quot;linux&quot; compiler=&quot;gcc&quot; link=&quot;static&quot; coverage=&quot;true&quot; &gt;
+&lt;option value=&quot;--build-boost&quot; /&gt;
+&lt;option value=&quot;--disable-shared&quot; /&gt;
+&lt;option value=&quot;--prefix=$HOME/my-prefix&quot; /&gt;
+&lt;option value=&quot;--build-dir=my-build&quot; /&gt;
+&lt;option value=&quot;CXXFLAGS=&#39;-g -O0 -static --coverage&#39;&quot; /&gt;      
+&lt;/job&gt;
+&lt;job system=&quot;linux&quot; compiler=&quot;gcc&quot; link=&quot;static&quot; coverage=&quot;true&quot; &gt;
+&lt;get name=&quot;swig&quot; /&gt;
+&lt;option value=&quot;--with-java&quot; /&gt;
+&lt;option value=&quot;--without-openssl&quot; /&gt;
+&lt;option value=&quot;--with-secp256k1&quot; /&gt;
+&lt;option value=&quot;--disable-shared&quot; /&gt;
+&lt;option value=&quot;--build-boost&quot; /&gt;
+&lt;option value=&quot;--prefix=$HOME/my-prefix&quot; /&gt;
+&lt;option value=&quot;--build-dir=my-build&quot; /&gt;
+&lt;option value=&quot;CXXFLAGS=&#39;-g -O0 -static --coverage&#39;&quot; /&gt;   
+&lt;/job&gt;
+&lt;job system=&quot;osx&quot; compiler=&quot;clang&quot; link=&quot;dynamic&quot; &gt;
+&lt;!--&lt;get name=&quot;boost&quot; /&gt;--&gt;
+&lt;get name=&quot;swig&quot; /&gt;
+&lt;option value=&quot;--with-python&quot; /&gt;
+&lt;option value=&quot;--without-openssl&quot; /&gt;
+&lt;option value=&quot;--with-secp256k1&quot; /&gt;
+&lt;/job&gt;
+&lt;job system=&quot;linux&quot; compiler=&quot;clang&quot; link=&quot;dynamic&quot; sudo=&quot;true&quot; &gt;
+&lt;get name=&quot;boost1.54&quot; /&gt;
+&lt;option value=&quot;--without-openssl&quot; /&gt;
+&lt;option value=&quot;--with-secp256k1&quot; /&gt;
+&lt;option value=&quot;--disable-ndebug&quot; /&gt;
+&lt;option value=&quot;--disable-static&quot; /&gt;
+&lt;option value=&quot;CXXFLAGS=&#39;-Os -stdlib=libstdc++&#39;&quot; /&gt;
+&lt;option value=&quot;LDLIBS=&#39;-lstdc++&#39;&quot; /&gt;
+&lt;/job&gt;
+&lt;job system=&quot;linux&quot; compiler=&quot;gcc&quot; link=&quot;dynamic&quot; sudo=&quot;true&quot; &gt;
+&lt;get name=&quot;swig&quot; /&gt;
+&lt;get name=&quot;libssl-dev&quot; /&gt;
+&lt;option value=&quot;--with-java&quot; /&gt;
+&lt;option value=&quot;--with-python&quot; /&gt;
+&lt;option value=&quot;--disable-static&quot; /&gt;
+&lt;option value=&quot;--build-boost&quot; /&gt;
+&lt;option value=&quot;CXXFLAGS=&#39;-Os -s&#39;&quot; /&gt;
+&lt;/job&gt;
+&lt;/matrix&gt;
+
+&lt;/repository&gt;
+</code></pre>
+
+<h2 id="Dependencies">Dependencies</h2>
+
+<ul>
+<li><a href="https://github.com/imatix/gsl">GSL/4.1 - Universal Code Generator</a></li>
+<li><a href="http://www.swig.org">SWIG - Simplified Wrapper and Interface Generator</a></li>
+</ul>
+
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../Libbitcoin/">Libbitcoin</a></li>
+</ul>
+
+
+<h2 id="References">References</h2>
+
+<p>3.1: <a href="https://github.com/libbitcoin/libbitcoin-build/blob/master/generate.xml">Libbitcoin Declarative Build Model</a><br />
+3.2: <a href="https://github.com/libbitcoin/libbitcoin-build/blob/master/README.md">Libbitcoin Build README.md</a><br />
+3.3: <a href="https://github.com/libbitcoin/libbitcoin-build/blob/master/templates/gsl.bindings.sh">SWIG Binding Generation Script Generator</a></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Libbitcoin/">Libbitcoin</a>
+
+<a href="../Libbitcoin_Common/">Libbitcoin Common</a>
+
+<a href="../Libbitcoin_Protocol/">Libbitcoin Protocol</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-07-12T21:43:31Z">Sun 12 Jul 2015 09:43:31 PM Europe</time>
+<!-- Created <time datetime="2015-05-13T21:29:13Z" pubdate="pubdate">Wed 13 May 2015 09:29:13 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

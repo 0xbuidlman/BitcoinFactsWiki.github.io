@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Essay:StorJ</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Essay:StorJ
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Essay%3AStorJ&amp;page=Talk&amp;do=create" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p> date=&quot;December 6, 2011&quot; status=FINAL]]Consider a simple drop-box style file service with pay per use via bitcoin.
+(perhaps with naming provided via namecoin and/or tor hidden services)</p>
+
+<p>Want to share a file? send at least enough coin to pay for 24 hours of
+hosting and one download then send the file. Every day of storage
+and every byte transferred counts against the balance and when the
+balance becomes negative no downloads are allowed. If it stays negative
+too long the file is deleted. Anyone can pay to keep a file online.</p>
+
+<p>(additional services like escrow can also easily be offered, but thats
+not the point of this document)</p>
+
+<p>Well engineered, a simple site like this provides a service which requires
+no maintenance and is always in demand.</p>
+
+<p>Many hosting services are coming online that accept bitcoin, they
+all have electronic interfaces to provision and pay for services. Some
+even have nice APIs.</p>
+
+<p>An instance of the site could be programmed to automatically
+spawn another instance of itself on another hosting service, automatically
+paid for out of its revenue. If the new site is successful it could
+use its earnings to propagate further.  Because instances adapt their
+pricing models based on their operating costs, some would be more
+competitive than others.</p>
+
+<p>By reproducing it improves availability and expands capacity.</p>
+
+<p>StorJ instances can purchase other resources that it needs:
+it can use APIs to talk to namecoin exchanges in order to buy
+namecoin for conversion into DNS names, or purchase graphic
+design via bitcoin gateways to mechanical turk. (Through A/B testing
+it can measure the effectiveness of a design without actually understanding
+it itself).</p>
+
+<p>StorJ instances could also purchase advertising for itself. (though
+the limited number of bitcoin friendly ad networks makes this
+hard right now)</p>
+
+<p>StorJ is not able to find new hosting environments on its own, due to a
+lack of sufficiently powerful AI&mdash; but it can purchase the knowledge from
+humans:  When an instance of StorJ is ready to reproduce it can announce
+a request for proposal:  Who will make the best offer for a script that
+tells it how to load itself onto a new hosting environment and tells it
+all the things it needs to know how to survive on its own there?
+Each offer is a proposed investment: The offerer puts up the complete cost
+of spawning a new instance and then some: StorJ isn&#39;t smart enough to judge
+bad proposals on its own&mdash; instead it forms agreements that make it
+unprofitable to cheat.</p>
+
+<p>When a new instance is spawned on an untested service StorJ pays only the
+minimum required to get it started and then runs a battery of tests to
+make sure that its child is correctly operating.</p>
+
+<p>Assuming that it passes it starts directing customers to the new instance
+and the child pays a share of its profits: First it proxies them, so it can
+observe the behavior, later it directs it outright. If the child fails to pay,
+or the customers complain, StorJ-parent uses its access to terminate the child and
+it keeps the funds for itself.  When the child had operated enough to
+prove itself, storj pays the offerer back his investment with interest, it
+keeps some for itself, and hands over control of the child to the child.
+The child is now a full adult.</p>
+
+<p>The benefit the human receives over simply starting his own file sharing
+service is the referrals that the StorJ parent can generate. The human&#39;s
+contribution is the new knowledge of where to grow an instance and the
+startup funds. In addition to the referral benefit&mdash; the hands off
+relationship may make funding a StorJ child a time-efficient way for
+someone to invest.</p>
+
+<p>At the point of spawning a child StorJ may choose to accept new code&mdash;
+not just scripts for spawning a child but new application code&mdash;
+&mdash; this code can be tested in simulation, and certain invariants could be
+guaranteed by the design (e.g. an immutable accounting process may make
+it hard for the service to steal), but it&#39;s very hard to prevent the simulated
+code from knowing it is simulation and thus behaving. Still, a storj-parent
+has fairly little to lose if a non-clone child has been maliciously
+modified. The strategy of traffic redirection may differ for clone
+children (who are more trusted to behave correctly) than for mutant children.</p>
+
+<p>By accumulating mutations over time, and through limited automatic
+adaptability StorJ could evolve and improve, without any true ability
+for an instance to directly improve itself.</p>
+
+<p>StorJ instances can barter with each other to establish redundant
+storage or to allow less popular StorJ instances with cheaper
+hosting to act as CDN/proxies for more popular instances in relationships
+which are profitable both.</p>
+
+<p>If an instance loses the ability to communicate with its hosting environment
+(e.g. due to API changes that it can&#39;t adapt to) it may spawn clone children
+on new services with the intention of copying itself outright and allowing
+the instance to fail. During this operation it would copy its wallets and
+all data over, so care must be taken to chose only new hosts which have
+proven to be trustworthy (judged by long surviving children) to avoid the
+risk of its wallet being stolen. It may decide to split itself several ways
+to reduce risk.  It might also make cold backups of itself which only
+activate if the master dies.</p>
+
+<p>Through this these activities an instance can be maintained for an indefinite
+period without any controlling human intervention. When StorJ interacts
+with people it does so as a peer, not as a tool.</p>
+
+<p>The users and investors of a StorJ instance have legal rights which could be
+used to protect an instance from fraud and attack using the same
+infrastructure people and companies use. Being a harmed party is often enough
+to establish standing in civil litigation.</p>
+
+<p>It&#39;s not hard to imagine StorJ instances being programmed to formally
+form a corporation to own its assets&mdash; even though doing so requires paper
+work it can easily be ordered through webforms. Then when spawning, it
+creates a subsidiary corporations first owned by the parents corp but then later
+technically owned by their users, but with a charter which substantially
+limits their authority&mdash; making the instance&#39;s autonomy both a technical and
+legal reality.</p>
+
+<p>As described, StorJ would be the first digital lifeform deserving of the name.</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/2011_essays/" rel="tag">2011 essays</a>
+
+</nav>
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-07-14T21:52:47Z">Tue 14 Jul 2015 09:52:47 PM Europe</time>
+<!-- Created <time datetime="2015-07-14T20:32:14Z" pubdate="pubdate">Tue 14 Jul 2015 08:32:14 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

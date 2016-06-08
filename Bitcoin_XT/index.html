@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Bitcoin XT</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Bitcoin XT
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p> image=<span class="createlink"><a href="/ikiwiki.cgi?from=Bitcoin_XT&amp;page=File%3Abitcoinxt.png%20256px&amp;do=create" rel="nofollow">?</a>File:bitcoinxt.png 256px</span> caption=&quot;The identifying marks of an XT client&quot; bg=orange author=&quot;<span class="createlink"><a href="/ikiwiki.cgi?page=Gavin%20Andresen&amp;do=create&amp;from=Bitcoin_XT" rel="nofollow">?</a>Gavin Andresen</span><br /><span class="createlink"><a href="/ikiwiki.cgi?page=Mike%20Hearn&amp;do=create&amp;from=Bitcoin_XT" rel="nofollow">?</a>Mike Hearn</span>&quot; website=&quot;[https://bitcoinxt.software bitcoinxt.software]&quot;]]<strong>Bitcoin XT</strong> is a fork of <a href="../Bitcoin_Core/">Bitcoin Core</a> that aims to make transactions reliable, inexpensive, and accessible. It achieved significant notoriety and support after prematurely adopting <a href="../BIP_0101/">BIP 101</a>, giving it importance in the <a href="../Block_size_limit_controversy/">block size limit controversy</a>. (1.1)</p>
+
+<p>After <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Gavin_Andresen&amp;from=Bitcoin_XT" rel="nofollow">?</a>Gavin Andresen</span>&#39;s resignation from the position of <a href="../Bitcoin_Core/">Bitcoin Core</a> maintainer, he and <span class="createlink"><a href="/ikiwiki.cgi?from=Bitcoin_XT&amp;page=Mike_Hearn&amp;do=create" rel="nofollow">?</a>Mike Hearn</span> organized Bitcoin XT to address controversial ideas lacking the consensus required to be implemented in Bitcoin Core. (1.2)</p>
+
+<p>Due to implementing BIP 0101 in version 0.11.0A, it is now incompatible with the Bitcoin consensus protocol, and when 75% of the last 1000 blocks are observed to have particular version bits set, it ceases enforcing the 1 MB block size limit and also adds a few new rules.
+Since it is incompatible with the Bitcoin protocol, it is technically an <a href="../Altcoin/">altcoin</a>, however, if it were to obtain <a href="../Economic_majority/">economic acceptance</a> it would become a &quot;new Bitcoin&quot; some day.</p>
+
+<h2 id="Mission_statement">Mission statement</h2>
+
+
+
+
+<p>The XT mission statement defines what the project believes is important: commitment to these principles are what differentiates it from Bitcoin Core.</p>
+
+<ul>
+<li><strong>Scaling the network up to handle user demand and spam is important</strong>, even if that means the network becomes centralised along the way. The idea of a global system used by ordinary people is what motivated many people to support this.</li>
+<li>XT proponents believe <strong>unconfirmed transactions are important</strong>. Many merchants want or need to accept payments within seconds rather than minutes or hours. XT accepts this fact and does what it can to minimise the risk, then &quot;helps&quot; sellers judge what remains. It is committed to support only &quot;first seen&quot; policies, and will not adopt changes that make unconfirmed transactions riskier.</li>
+</ul>
+
+
+
+
+
+<ul>
+<li><strong>Decision making is quick and clear</strong>. Decisions are made according to a leadership hierarchy. The XT software encodes decisions that follow the above principles: people who disagree are welcome to use different software, or patch ours. We do not consider writing principled software to be centralising and do not refuse to select reasonable defaults.</li>
+</ul>
+
+
+
+
+
+<p>You can <a href="https://bitcoinxt.software/patches.html">read more about the code changes in Bitcoin XT</a>.</p>
+
+<h2 id="Block_size_hard_fork">Block size hard fork</h2>
+
+<p>In 2010, a block size limit was introduced into Bitcoin by <a href="../Satoshi_Nakamoto/">Satoshi Nakamoto</a>. He added it as a safety measure to prevent miners from spamming large blocks and meant for it to be removed once secure lightweight wallets were developed;
+however, the spam problem has only gotten worse, and secure lightweight wallets never implemented.</p>
+
+<p>There has been much community <a href="../Block_size_limit_controversy/">debate</a> on this topic. You can read analysis and explanations for why we think raising the block size limit is important here:</p>
+
+<ul>
+<li><a href="http://gavinandresen.ninja/">A series of essays</a> by <span class="createlink"><a href="/ikiwiki.cgi?from=Bitcoin_XT&amp;do=create&amp;page=Gavin_Andresen" rel="nofollow">?</a>Gavin Andresen</span></li>
+<li><a href="https://medium.com/@octskyward/crash-landing-f5cc19908e32">Why the block size limit must be raised</a> and <a href="https://medium.com/@octskyward/the-capacity-cliff-586d1bf7715e">why the proposed alternative schemes will not work</a>, by <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Mike_Hearn&amp;from=Bitcoin_XT" rel="nofollow">?</a>Mike Hearn</span>.</li>
+</ul>
+
+
+<h2 id="Miners">Miners</h2>
+
+<p>Miners that side with Bitcoin XT will produce blocks with a new version number. (4.1) This indicates to the rest of the network that they support XT. (4.1) When 75% of the last 1000 blocks are new-version blocks, these miners will automatically abandon Bitcoin and begin mining on a new Bitcoin XT blockchain. (4.1) This will begin after a waiting period of two weeks in hopes the economy in this time may force anyone who hasn&#39;t switched yet to do so. (4.1)</p>
+
+<p>Users and miners running full Bitcoin nodes will reject the XT blockchain starting with the first block that is larger than one megabyte in size, and thus be unaffected provided it fails to achieve economic consensus.</p>
+
+<h2 id="Users_and_merchants">Users and merchants</h2>
+
+<p>If insufficient mining hash power runs XT to reach supermajority then nothing will happen. If enough does, XT users will follow a new blockchain and cease to be using and trading bitcoins.</p>
+
+<h2 id="Controversy">Controversy</h2>
+
+<p>Later in January 2016, frustrated of his proposal being massively outvoted, Mike Hearn made a media stunt declaring on various US national and international press agencies that &quot;Bitcoin has failed&quot;. Max Keiser defined this episode a &quot;whining ragequit&quot; (beginning of E855 on RT) and other members of the community pointed to an extensive account of manipulations http://gettopical.com/bitcoin/e289a9a5189008d994e80666e9038089 (unfortunately today many twitter screenshots are broken).</p>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../BIP_0101/">BIP 0101</a></li>
+<li><a href="../Scalability_FAQ/">Scalability FAQ</a></li>
+</ul>
+
+
+<h2 id="References">References</h2>
+
+<p>1.1: <a href="http://organofcorti.blogspot.com/2015/08/bip101-implementation-flaws.html">BIP101 implementation flaws</a> <span class="createlink"><a href="/ikiwiki.cgi?page=organofcorti&amp;do=create&amp;from=Bitcoin_XT" rel="nofollow">?</a>organofcorti</span> 27 August 2015 Work: <span class="createlink"><a href="/ikiwiki.cgi?from=Bitcoin_XT&amp;do=create&amp;page=The%20Neighbourhood%20Pool%20Watch" rel="nofollow">?</a>The Neighbourhood Pool Watch</span><br />
+1.2: <a href="https://medium.com/@octskyward/an-xt-faq-38e78aa32ff0">An XT FAQ</a> [[Mike Hearn 27 August 2015 Work: Medium<br />
+4.1: <a href="http://avc.com/2015/08/the-bitcoin-xt-fork/">The Bitcoin XT Fork</a> Wilson, Fred 17 August 2015 Work: AVC</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Block_size_limit_controversy/" rel="tag">Block size limit controversy</a>
+
+<a href="../tags/Free_Software/" rel="tag">Free Software</a>
+
+<a href="../tags/Frontends/" rel="tag">Frontends</a>
+
+<a href="../tags/Open_Source/" rel="tag">Open Source</a>
+
+<a href="../tags/User_Interfaces/" rel="tag">User Interfaces</a>
+
+</nav>
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-06-07T16:10:07Z">Tue 07 Jun 2016 04:10:07 PM Europe</time>
+<!-- Created <time datetime="2015-08-27T19:35:38Z" pubdate="pubdate">Thu 27 Aug 2015 07:35:38 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

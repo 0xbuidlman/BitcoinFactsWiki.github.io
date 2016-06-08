@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Bitcoin Core 0.11 (ch 4): P2P Network</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Bitcoin Core 0.11 (ch 4): P2P Network
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Bitcoin_Core_0.11_%28ch_4%29%3A_P2P_Network" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>Bitcoin is a peer-to-peer network, so Bitcoin Core has code to discover peers and manage those connections.</p>
+
+<p>Most of the network-handling code is in <u>net.h/cpp</u>.</p>
+
+<h2 id="Data_structures_to_manage_peers">Data structures to manage peers</h2>
+
+<p>At any given time, the node is connected with a set of other nodes, i.e. peers.  By default the code connects to 8 outbound peers (nodes that our node goes out and finds) and allows up to 125 inbound peers (nodes that find us through the network).</p>
+
+<p>The global variable vNodes (<u>net.h</u>) holds the set of peers.  The variable is protected by cs_vNodes.</p>
+
+<p>Each peer is represented by a CNode.</p>
+
+<p>The CNode contains dozens of attributes, most of which have to do with low-level plumbing (sockets, byte streams, etc.)</p>
+
+<p>Some of the key attributes of a CNode include:</p>
+
+<p><strong>CNode</strong></p>
+
+<table>
+<thead>
+<tr>
+<th>Attribute </th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>nServices </td>
+<td>Commonly referred to as &quot;the service bits.&quot;<br />This is a bitmap of what services the peer provides.<br />As of 0.11 this is still just binary:  either the node is NODE_NETWORK (it is a full node and does everything) or not (it is SPV).<br />In future versions, these bits will convey more precise information about what the node can and can&#39;t do. For example, with Block Pruning a node may be able to serve recent blocks (say, the last week or two worth of blocks), but not the entire blockchain.</td>
+</tr>
+<tr>
+<td>fClient </td>
+<td>Whether this peer is a SPV node.  (Here, the term &quot;client&quot; means &quot;merely SPV, not a full node.&quot;)</td>
+</tr>
+<tr>
+<td>fOneShot </td>
+<td></td>
+</tr>
+<tr>
+<td>fInbound </td>
+<td>Whether this node is &quot;inbound&quot; or &quot;outbound.&quot; Common sense suggests that a node that we discovered through the network (an outbound node) is less likely to attack us than a node that found us.<br />So, for example, when the code looks for a peer to request historical blocks from, it prefers an outbound node, if possible.</td>
+</tr>
+<tr>
+<td>fWhiteListed </td>
+<td>A whitelisted node is not subject to being banned for bad behaviour.</td>
+</tr>
+<tr>
+<td>setInventoryKnown </td>
+<td></td>
+</tr>
+<tr>
+<td>vSendMsg </td>
+<td>Messages that we&#39;ve queued up to send to the peer.<br />This is type since we are going to send it over the network.</td>
+</tr>
+<tr>
+<td>vRecvMsg </td>
+<td>Messages that we&#39;ve received from the peer.<br />This is type because as soon as the data is received, it is deserialized and packed into a more useful format (an object).</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2 id="Peer_discovery_.26amp.3B_connectivity">Peer discovery &amp; connectivity</h2>
+
+<h3 id="Address_manager">Address manager</h3>
+
+<p>IP addresses of the node&#39;s peers are managed by the address manager (see <u>addrman.h</u>).</p>
+
+<p>The code comment explains the address manager (edited here for conciseness):</p>
+
+<pre><code>Design goals:
+* Keep the address tables in-memory, and asynchronously dump the entire table to peers.dat.
+* Make sure no (localized) attacker can fill the entire table with his nodes/addresses.&lt;br&gt;&lt;br&gt;To that end: 
+* Addresses are organized into buckets.
+* Addresses that have not yet been tried go into 1024 &quot;new&quot; buckets.
+* Addresses of nodes that are known to be accessible go into 256 &quot;tried&quot; buckets.
+* Bucket selection is based on cryptographic hashing, using a randomly-generated 256-bit key, which should not be observable by adversaries.
+* Several indexes are kept for high performance. Defining DEBUG_ADDRMAN will introduce frequent (and expensive) consistency checks for the entire data structure.
+</code></pre>
+
+<p><em>Timestamps</em></p>
+
+<p>The address manager also keeps track of when each peer was last heard from.  Timestamps are only updated on an address and saved to the database when the timestamp is over 20 minutes old.  By understanding the role of timestamps, it will become more clear why timestamps are kept the way they are for each of the different ways an address is discovered.</p>
+
+<h3 id="Peer_discovery">Peer discovery</h3>
+
+<p>The program discovers the IP address and port of nodes in several different ways:</p>
+
+<ul>
+<li>Address database (peers.dat)</li>
+<li>User-specified (-addnode and -connect)</li>
+<li>DNS seeding</li>
+<li>Hard-coded seeds</li>
+<li>From other peers (&quot;getaddr&quot; and &quot;addr&quot; messages)</li>
+</ul>
+
+
+<p><strong>1) Address database (peers.dat)</strong></p>
+
+<p>Nodes store addresses in a database (peers.dat) which is read on startup, and loaded into the address manager.</p>
+
+<p>This method does not work the first time the program is run, since it does not already know about any other nodes on the bitcoin network.</p>
+
+<p>For details on when/how the code stores to the database, see the section above on the address manager.</p>
+
+<p><strong>2) User-specified on the command line</strong></p>
+
+<p>The user can specify nodes to connect to on the command line with -addnode  or -connect .</p>
+
+<p>Notes on user-specified IP addresses:</p>
+
+<ul>
+<li>Multiple nodes may be specified.</li>
+<li>Addresses are initially given a zero timestamp, therefore they are not advertised in response to a &quot;getaddr&quot; request.</li>
+<li>With -connect, the IP addresses will not be added to peers.dat and only the provided addresses will be used.</li>
+<li>With -addnode, the provided addresses will be used as a starting point, but the node will soon learn other peers.</li>
+</ul>
+
+
+<p><strong>3) DNS seeding</strong></p>
+
+<p>DNS seeding is only used if the peers.dat database is empty (as it would be when initiallly running the program) and the user has not specified any nodes with -addnode or -connect.</p>
+
+<p>In this case, the node can issue DNS requests to discover IP addresses of other peers.</p>
+
+<p>As of 0.11, there are six DNS servers hard-coded into the program -  see chainparams.cpp.</p>
+
+<p>A DNS reply can contain multiple IP addresses for a requested name.</p>
+
+<p>Addresses discovered via DNS are initially given a zero timestamp, to avoid being advertised in response to a &quot;getaddr&quot; request.</p>
+
+<p><strong>4) Hard-coded nodes (last resort)</strong></p>
+
+<p>If DNS seeding fails, the client contains hard coded IP addresses that represent bitcoin nodes.  See:  <u>chainparamsseeds.h</u></p>
+
+<p>These addresses are only used as a last resort, and a log message will be printed:  &quot;Adding fixed seed nodes as DNS doesn&#39;t seem to be available.&quot;   (<u>net.cpp</u>)</p>
+
+<p>The idea is to move away from seed nodes as soon as possible, to avoid overloading those nodes.</p>
+
+<p>Once the local node has enough addresses (presumably learned from the seed nodes), the connection thread will close any seed node connections.</p>
+
+<p>Like the DNS seed addresses, the hard-coded seed addresses are also given a zero timestamp to avoid being advertised in response to a &quot;getaddr&quot; request.</p>
+
+<p><strong>5) From other nodes (&quot;getaddr&quot; and &quot;addr&quot; messages)</strong></p>
+
+<p>Nodes exchange IP addresses with other nodes via the &quot;getaddr&quot; and &quot;addr&quot; messages.<br /></p>
+
+<p>Usually, an addr&quot; message is sent in response to a &quot;getaddr&quot;.</p>
+
+<p>However, the &quot;addr&quot; message may also arrive unsolicited, because nodes advertise addresses gratuitously when they:</p>
+
+<ul>
+<li>Relay addresses (see below)</li>
+<li>Advertise their own address periodically.  (Every 24 hours, the node advertises its own address to all connected nodes.)</li>
+<li>When a connection is made (in response to an initial &quot;version&quot; message)</li>
+</ul>
+
+
+<p>When does a node send a &quot;getaddr&quot; message?</p>
+
+<ul>
+<li>In response to a &quot;version&quot; message from an outbound node, if we don&#39;t yet have 1000 addresses.</li>
+</ul>
+
+
+<p>Receiving an &quot;addr&quot; message:</p>
+
+<ul>
+<li>If the sending node is an old version and we have 1000 addresses already, it is ignored.</li>
+<li>If the sending node is a current version and is attempting to send us more than 1000 addresses, the peer is punished for misbehaving.</li>
+<li>If the address has been seen in the last 24 hours and the timestamp is currently over 60 minutes old, then it is updated to 60 minutes ago.</li>
+<li>If the address has NOT been seen in the last 24 hours, and the timestamp is currently over 24 hours old, then it is updated to 24 hours ago.</li>
+</ul>
+
+
+<p>Responding to a &quot;getaddr&quot; message:</p>
+
+<ul>
+<li>The node figures out how many addresses it has that have a timestamp in the last 3 hours.</li>
+<li>It sends those addresses, but if there are more than 2500 addresses, it randomly selects 2500.</li>
+<li>It clears the list of the addresses we think the remote node has, which will trigger a refresh of sends to nodes. See SendMessages.</li>
+</ul>
+
+
+<p><em>Address Relay</em></p>
+
+<p>Once added, the newly received IP addresses may be relayed to other nodes if the following conditions are met:</p>
+
+<ul>
+<li>The address timestamp is recent (within 10 minutes of the current time)</li>
+<li>The &quot;addr&quot; message contained 10 addresses or less</li>
+<li>fGetAddr=false for the sending peer. (See the code for details.)</li>
+<li>The address must be routable.</li>
+<li><p>Code:
+  if (addr.nTime &gt; nSince &amp;&amp; !pfrom-&gt;fGetAddr &amp;&amp; vAddr.size() &lt;= 10 &amp;&amp; addr.IsRoutable())</p></li>
+<li><p>If this test is passed, then the code&#39;s next step is (see main.cpp for details):
+  // Use deterministic randomness to send to the same nodes for 24 hours at a time so the addrKnowns of the chosen nodes prevent repeats.</p></li>
+</ul>
+
+
+<h3 id="Peer_connectivity">Peer connectivity</h3>
+
+<p>The connection thread (ThreadOpenConnections) chooses among the available addresses and makes connections, and disconnects nodes when appropriate.</p>
+
+<p><strong>Use of CSemaphore for outbound connections</strong></p>
+
+<p>The code uses a semaphore to manage the number of outbound connections (usually 8).</p>
+
+<p>Most of the code dealing with the semaphore is in <u>net.cpp</u>.</p>
+
+<p>When a connection is opened, the semaphore grant is passed to the CNode data structure.  This allows the socket thread to release the semaphore when the time comes, with:
+    pnode-&gt;grantOutbound.Release()  // see net.cpp</p>
+
+<p>The code CSemaphore grant(*semOutbound) will wait until there is a connection available.</p>
+
+<p><strong>Inbound connections: accepting and disconnecting</strong></p>
+
+<p>Inbound connections can be up to 125 total.</p>
+
+<p>ThreadSocketHandler has the code that accepts inbound connections.</p>
+
+<p>The socket thread loop:</p>
+
+<ul>
+<li>1) Disconnects sockets that have the fDisconnect flag set on them (and have empty buffers)</li>
+<li>2) Prepares all sockets for &quot;select&quot;</li>
+<li>3) Calls &quot;select&quot;, which is a system call which waits for activity on a set of sockets.</li>
+</ul>
+
+
+<p>When the select() call returns, the node accepts any new connections, receives and sends on any ready sockets, and marks any inactive sockets to be disconnected (whether inbound or outbound).</p>
+
+<p>Sockets are disconnected if:
+    * they are 60 seconds old and have not sent or received data.
+    * they have not sent or received data in the last 20 minutes (TIMEOUT_INTERVAL = 20*60) (or 90 minutes if peer is an old version)
+    * the socket overfills the buffer (see CNode::ReceiveMsgBytes- &quot;Oversized message from peer=%i, disconnecting\n&quot; in <u>net.cpp</u>)</p>
+
+<h2 id="Sockets_.26amp.3B_Messages">Sockets &amp; Messages</h2>
+
+<p><strong>Socket Thread</strong></p>
+
+<p>The socket thread operates at the TCP layer.</p>
+
+<p>It goes through an endless loop, reading and writing the sockets. (see <u>net.cpp</u>).</p>
+
+<p>Its loop involves three basic activities:</p>
+
+<p>1) Administrative work:  disconnecting unused sockets, checking which sockets have data, adding sockets for new connections.</p>
+
+<p>2) Receiving data:  It reads the sockets that have data using the recv() system call and places that data into the peer&#39;s queue of CNetMessages.  A CNetMessage organizes the data into two data streams - the message header and the message data (vRecv).  The socket thread reads the buffer until it has processed all the messages from this particular peer.</p>
+
+<p>3) Sending data:  The message thread queued up messages-to-be-sent as vSendMsg objects, so the socket thread deserializes these objects and sends them using send(). (send() is a syscall and any incompatibilities across different operating systems are handled in the <u>compat.h</u> file.)</p>
+
+<p><strong>Message Thread</strong></p>
+
+<p>This is the program&#39;s main thread.</p>
+
+<p>It operates primarily at the &quot;business logic&quot; level - validating transactions, managing the blockchain, etc.</p>
+
+<p>In a sense, all of the node&#39;s activities take the form of processing an inbound message or preparing an outbound message.</p>
+
+<p>Like the socket thread, this thread consists of a while(true) loop, processing inbound messages and queuing up outbound messages.  Once the program&#39;s initialization is complete, this loop (see <u>net.cpp</u>:ThreadMessageHandler) is the program&#39;s high-level point of control.</p>
+
+<p>The loop uses signals to notify <u>main.cpp</u> that there are messages waiting to be processed.  The signal is picked up by ProcessMessages().</p>
+
+<p>The use of signals has nothing to do with multi-threading;  the signal is sent and picked up in the same thread.  The use of signals was introduced in version 0.9 for the purpose of decoupling <u>net.cpp</u> from <u>main.cpp</u>.   In version 0.8, the loop simply called the ProcessMessages() function.  By changing to signals, the <u>net.cpp</u> code no longer needs to be aware of the processing code.  Removing that dependency allows the code to avoid circular includes (since <u>main.cpp</u> requires knowledge of <u>net.h</u>.</p>
+
+<p>The pull request introducing signals is <a href="https://github.com/bitcoin/bitcoin/pull/2154">PR 2154.</a></p>
+
+<p>The commit removing the &quot;main.h&quot; dependency is <a href="https://github.com/CodeShark/bitcoin/commit/6e68524e95da2bedc21b1d95c4a206b902ab7c22">here</a>.</p>
+
+<p><strong>ProcessMessages (<u>main.cpp</u>)</strong></p>
+
+<p>ProcessMessages() is the entry point in <u>main.cpp</u> for almost all of the code that processes and validates transactions and blocks, etc.</p>
+
+<p>It attempts to find a message start signature in the vRecv stream. If it finds a message start, it deletes everything prior to the start. Then it reads the header, extracts the message type, and calls ProcessMessage on the message.</p>
+
+<p>ProcessMessage() is basically a large &quot;switch&quot; which takes action based on what type of message it is dealing with.</p>
+
+<p>Often, in the course of processing a message, the code will push messages to the outbound queue.  For example, when processing an incoming &quot;getdata&quot; message, the node pushes the outbound data into the queue.</p>
+
+<p><strong>SendMessages (<u>main.cpp</u>)</strong></p>
+
+<p>SendMessages() creates messages and queues them up in the peer&#39;s vSendMsg queue (a double-ended queue, or &quot;deque&quot; in C++).  The vSendMsg objects are basically just serialized data.</p>
+
+<p>SendMessages goes through various data structures looking for work to do.  When it produces a message it calls the CNode-&gt;PushMessage, which queues the outbound data.  (Note that there are many other places in the code that produce messages and call CNode-&gt;PushMessage;  SendMessages() doesn&#39;t have any kind of exclusive license on placing messages in the outbound queue.)</p>
+
+<p>Once the data is queued up by PushMessage, it sits and waits for the socket thread to come along.</p>
+
+<p>The socket thread and the message thread use a peer-specific lock (node-&gt;cs_vSend) to coordinate access to the socket.</p>
+
+<h2 id="Locks">Locks</h2>
+
+<p>The main locks associated with the P2P aspect of the code are:</p>
+
+<ul>
+<li>cs_vNodes controls access to the CNode objects.</li>
+<li>cs_vSend controls access to the node&#39;s send buffer.</li>
+<li>cs_vRecvMsg controls access to the node&#39;s receiving buffer.</li>
+<li>cs_inventory</li>
+</ul>
+
+
+<h2 id="Denial-of-Service_Prevention">Denial-of-Service Prevention</h2>
+
+<p>DoS prevention is implemented by keeping track of misbehaving peers, and if they misbehave, banning them.</p>
+
+<p>The DoS prevention framework was introduced in 2011, in Pull 517.</p>
+
+<p>As summarized there:</p>
+
+<blockquote>
+-----
+The big idea: if a peer is sending you obviously wrong information, punish it by maybe dropping your connection to it, and ban it&#39;s IP address so it cannot immediately re-connect.
+<br /><br />The probability of dropping the connection, and the length of the ban, depend on how wrong, and how potentially wasteful/damaging, the peer is. So sending an extra &#39;version&#39; message is a minor transgression that is usually tolerated, sending an more than MAX_BLOCK_SIZE block is a major transgression.
+<br /><br />Detailed how-it-works, using &quot;I got a version message I wasn&#39;t expecting&quot; as the specific example:
+<br /><br />Getting a version message from a peer increases that peer&#39;s &#39;misbehaving&#39; score by 10, and (assuming that is the peer&#39;s first bad behavior) gives it a 10% of being disconnected. If it is disconnected, then that peer&#39;s IP address is banned from connecting for a couple of hours. If it is not disconnected, then nothing happens unless the peer misbehaves again; if it does, then its chances of being disconnected go up, and the length of time it will be banned increases.
+<br /><br />Misbehavior/ban information is stored only in memory, and information about misbehaving peers is never broadcast. Also, peers that are disconnected/banned are just dropped, there is no warning or reason sent. 
+<br />
+<br />
+    --Gavin Andresen
+<br />
+-----
+</blockquote>
+
+
+<p>Source:  https://github.com/bitcoin/bitcoin/pull/517</p>
+
+<p><strong>Banned nodes</strong></p>
+
+<p>The set of banned nodes is in setBanned in <u>net.cpp</u>.</p>
+
+<p>By default, a node is banned for 24 hours, though this can be configured with -bantime option.</p>
+
+<h2 id="See_also">See also</h2>
+
+<p><a href="https://en.bitcoin.it/wiki/Bitcoin_Core_0.11_(ch_1">Bitcoin Core 0.11 (Ch 1): Overview</a>:<em>Overview)
+<br />
+<a href="https://en.bitcoin.it/wiki/Bitcoin_Core_0.11_(ch_2">Bitcoin Core 0.11 (Ch 2): Data Storage</a>:</em>Data_Storage)
+<br />
+<a href="https://en.bitcoin.it/wiki/Bitcoin_Core_0.11_(ch_3">Bitcoin Core 0.11 (Ch 3): Initialization and Startup</a>:<em>Initialization_and_Startup)
+<br />
+<a href="https://en.bitcoin.it/wiki/Bitcoin_Core_0.11_(ch_5">Bitcoin Core 0.11 (Ch 5): Initial Block Download</a>:</em>Initial_Block_Download)
+<br />
+<a href="https://en.bitcoin.it/wiki/Bitcoin_Core_0.11_(ch_6">Bitcoin Core 0.11 (Ch 6): The Blockchain</a>:_The_Blockchain)</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Developer/" rel="tag">Developer</a>
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+</nav>
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-01-21T20:29:18Z">Thu 21 Jan 2016 08:29:18 PM Europe</time>
+<!-- Created <time datetime="2016-01-21T19:59:10Z" pubdate="pubdate">Thu 21 Jan 2016 07:59:10 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

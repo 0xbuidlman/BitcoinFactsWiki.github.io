@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Off-Chain Betting</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Off-Chain Betting
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Off-Chain_Betting" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>This work builds on the scheme for <a>off-chain payments with two-phase commit</a>.</p>
+
+<h2 id="Example">Example</h2>
+
+<p>Alice and Bob would like to make a bet about whether a bitcoin is worth more or less than $500 in two weeks.  Carole commits to announcing the result of the event:  she signs and publishes a statement that if a bitcoin is worth at least $500 in two weeks, she&#39;ll reveal the preimage to Hash<sub>A</sub> and if it&#39;s worth less than $500 in two weeks, she&#39;ll reveal the preimage to Hash<sub>B</sub>.</p>
+
+<p>Alice and Bob create a &quot;bet channel&quot; output together:  let&#39;s say each contributes .5 BTC to the output, which must be signed by both Alice and Bob to be spent.  The refund transaction, signed by both of them, has an nLockTime of one year in the future.</p>
+
+<p>Alice would like to bet .1 BTC that a bitcoin will be worth at least $500, and Bob would like to bet .1 BTC that a bitcoin will be worth less than $500 in 2 weeks.  Alice and Bob sign two versions of a transaction with nLockTime earlier (say, by a day) than the most recent bet (or the refund transaction, if there&#39;s no bets on this channel) with outputs as follows:</p>
+
+<p>Version I.
+    1. .6 BTC to SHA256 Hash<sub>A</sub> EQUALVERIFY Pubkey<sub>Alice</sub> CHECKSIG
+    2. .4 BTC to SHA256 Hash<sub>A</sub> EQUALVERIFY Pubkey<sub>Bob</sub> CHECKSIG</p>
+
+<p>Version II.
+    1. .4 BTC to SHA256 Hash<sub>B</sub> EQUALVERIFY Pubkey<sub>Alice</sub> CHECKSIG
+    2. .6 BTC to SHA256 Hash<sub>B</sub> EQUALVERIFY Pubkey<sub>Bob</sub> CHECKSIG</p>
+
+<p>If a bitcoin is worth at least $500 in two weeks, Carole reveals the preimage to Hash<sub>A</sub>.  The only transaction version from which it&#39;s possible for Alice and Bob to get their money back is I.  If a bitcoin is worth less than $500, the opposite is true.</p>
+
+<p>If Alice wins the bet, Bob&#39;s only choice is to concede.  If Bob were to try to publish transaction version II, he won&#39;t be able to redeem his output as he doesn&#39;t know the preimage to Hash<sub>B</sub>.  Cheating by Carole is easily proven publicly by publishing the preimages of both Hash<sub>A</sub> and Hash<sub>B</sub>.</p>
+
+<p>After the winning preimage is published, the channel can be reused for another bet.</p>
+
+<p>There are multiple variations on this theme:  for example, you can make do with only one transaction, you can have bets with more than two outcomes, etc.  You can also adjust the amount of the bet as time goes on, as long as you&#39;re betting on the same event and in the same direction, in the same way as you can adjust payment channel allocations back and forth.</p>
+
+<p>This construct can be used for bets on any subject providing there&#39;s an oracle or arbitrator willing to perform Carole&#39;s job.  The oracle would need to publish all events it&#39;s willing to adjudicate, and upon the event&#39;s conclusion, to reveal the preimage corresponding with the event&#39;s outcome.</p>
+
+<p>In a friend-to-friend network, it becomes possible to hedge exchange risk (or any other risk).  As an example, Overstock.com would like to hedge the risk that Bitcoin prices will go down before they can pay their suppliers for merchandise.  Overstock would offer several counterparties similar bets based on Coindesk&#39;s price index.</p>
+
+<p>Coindesk could publish on their website or via an API, daily, signed sets of preimages for future announcements.  For example, they publish a set of preimages for two weeks in advance:</p>
+
+<ul>
+<li>If a bitcoin is worth between $0 and $100, reveal the preimage to Hash<sub>A</sub></li>
+<li>If a bitcoin is worth between $100 and $200, reveal the preimage to Hash<sub>B</sub></li>
+<li>If a bitcoin is worth between $200 and $300, reveal the preimage to Hash<sub>C</sub></li>
+<li>And so on</li>
+</ul>
+
+
+<p>Overstock would make bets with its counterparties similar to above that the price will be lower (like being long a binary put option or short a binary call option).  Its counterparties, each with its own internal order book, could then hedge that risk with other counterparties, which maybe would like to get money if bitcoin prices go up (like being short a binary put option or long a binary call option).  The end result is a distributed derivatives market based on Coindesk&#39;s price index.  Competing price indexes such as the Winkdex could also be used.</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2014-02-25T21:19:27Z">Tue 25 Feb 2014 09:19:27 PM Europe</time>
+<!-- Created <time datetime="2014-02-25T21:19:27Z" pubdate="pubdate">Tue 25 Feb 2014 09:19:27 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

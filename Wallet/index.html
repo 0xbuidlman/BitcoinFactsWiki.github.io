@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Wallet</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Wallet
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>A Bitcoin <strong>wallet</strong> is a collection of private keys but may also refer to <a href="../Clients/">client software</a> used to manage those keys and to make transactions on the Bitcoin network.</p>
+
+<p>This page covers various wallet formats in use.</p>
+
+<h3><a href="../Bitcoin_Core/">Bitcoin Core</a></h3>
+
+<p>The original Bitcoin client stores private key information in a file named <strong>wallet.dat</strong> following the so called <a href="https://bitcointalk.org/index.php?topic=4448.0">&quot;bitkeys&quot;</a> format.</p>
+
+<p>It contains:</p>
+
+<ul>
+<li>keypairs for each of your <a href="../Address/">addresses</a></li>
+<li>transactions done from/to your addresses</li>
+<li>user preferences</li>
+<li>default key</li>
+<li>reserve keys</li>
+<li><a href="../Accounts_explained/">accounts</a></li>
+<li>a version number</li>
+<li><a href="../Key_pool/">Key pool</a></li>
+<li>Since 0.3.21: information about the current best chain, to be able to rescan automatically when restoring from a backup.</li>
+</ul>
+
+
+<p>The wallet.dat file is located in the <a href="../Data_directory/">Bitcoin data directory</a>.</p>
+
+<p>It is intended that a wallet file be used on only one installation of Bitcoin at a time.  Attempting to clone a wallet file for use on multiple computers will result in &quot;weird behavior&quot; (2.1).</p>
+
+<p>The format of this file is Berkeley DB.  Tools that can manipulate wallet files include <a href="../Pywallet/">pywallet</a>.</p>
+
+<h3><a href="../Armory/">Armory</a></h3>
+
+<p>The Armory client uses a custom <a href="../Deterministic_wallet/">Deterministic wallet</a> format <a href="https://www.bitcoinarmory.com/wallet-format/">described here</a> and runs on top of <a href="../Bitcoin_Core/">Bitcoin Core</a>.</p>
+
+<h3><span class="createlink"><a href="/ikiwiki.cgi?from=Wallet&amp;page=Blockchain.info&amp;do=create" rel="nofollow">?</a>Blockchain.info</span></h3>
+
+<p>Blockchain.info offers a <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Browser-based_wallet&amp;from=Wallet" rel="nofollow">?</a>hybrid eWallet</span> called &quot;My Wallet&quot;.  It use a plain text <a href="https://blockchain.info/wallet/wallet-format">JSON wallet format</a>. Private keys Keys are stored in base58.</p>
+
+<h3><a href="../Multibit/">Multibit</a></h3>
+
+<p>Multibit HD (the current version) uses a <a href="../BIP_0032/">BIP 0032</a> (type 2) <a href="../Deterministic_wallet/">Deterministic wallet</a> with the <a href="https://www.multibit.org/en/help/hd0.1/files.html">format described here</a>.  The &quot;Classic&quot; version used the bitcoinj <a href="https://github.com/google/protobuf">protobuf</a> wallet file.</p>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../Securing_your_wallet/">Securing your wallet</a></li>
+<li><a href="../EWallet/">EWallet</a></li>
+<li><a href="../Deterministic_Wallet/">Deterministic Wallet</a></li>
+<li><a href="https://bitcoin.org/en/choose-your-wallet">Choose your wallet</a></li>
+</ul>
+
+
+<h2 id="References">References</h2>
+
+<p>2.1: <a href="http://forum.bitcoin.org/index.php?topic=5324.msg77896#msg77896">Multiple instance of bitcoin with the same wallet</a></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Bitcoin/">Bitcoin</a>
+
+<a href="../Clearing_Up_Misconceptions_About_Full_Nodes/">Clearing Up Misconceptions About Full Nodes</a>
+
+<a href="../Data_directory/">Data directory</a>
+
+<a href="../Hardware_wallet/">Hardware wallet</a>
+
+<a href="../Help:Installing_Bitcoin_Core/">Help:Installing Bitcoin Core</a>
+
+<a href="../Help:Introduction/">Help:Introduction</a>
+
+<a href="../How_to_set_up_a_secure_offline_savings_wallet/">How to set up a secure offline savings wallet</a>
+
+<a href="../Key_pool/">Key pool</a>
+
+<a href="../Securing_Your_Computer/">Securing Your Computer</a>
+
+<a href="../Technical_background_of_version_1_Bitcoin_addresses/">Technical background of version 1 Bitcoin addresses</a>
+
+
+<span class="popup">...
+<span class="balloon">
+
+<a href="../Wallet_encryption/">Wallet encryption</a>
+
+<a href="../Ways_to_store_Bitcoins/">Ways to store Bitcoins</a>
+
+<a href="../Weaknesses/">Weaknesses</a>
+
+</span>
+</span>
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-04-08T13:53:56Z">Fri 08 Apr 2016 01:53:56 PM Europe</time>
+<!-- Created <time datetime="2011-01-21T09:57:12Z" pubdate="pubdate">Fri 21 Jan 2011 09:57:12 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

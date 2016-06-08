@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>talk</title>
+
+<link rel="stylesheet" href="../../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../../">bitcoin</a>/ 
+
+<a href="../">Mining pool reward FAQ</a>/ 
+
+</span>
+<span class="title">
+talk
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<h2 id="Content_dispute">Content dispute</h2>
+
+<p>I think this revision by holy-fire is the best.
+https://en.bitcoin.it/w/index.php?title=Mining_pool_reward_FAQ&amp;oldid=8977</p>
+
+<p>all it needs is a citation to the whitepaper describing the pool hopping attack
+and also a citation to the closing of bitpenny, which is strongly suspected, on statistical grounds, by that pool&#39;s operator, of being due to griefing (real-block withholding).</p>
+
+<p>Subject to further user comments, i plan to revert the page to this revision. --<a>Nanotube</a> 20:25, 26 May 2011 (GMT)</p>
+
+<ul>
+<li>That revision contains FUD about pool-hopping on share-based pools (it is not an attack, and is not cheating). The only time pool-hopping creates unfair rewards is when score-based pools are involved. It also discounts as a myth, the fact that share-based pools are disadvantageous to intermittent miners. --<a>Luke-jr</a> 20:32, 26 May 2011 (GMT)</li>
+</ul>
+
+
+<blockquote><p> Regarding share-based pools. If I understand it correctly, they are not disadvantageous to intermittent miners. It is just as likely that the miner will mine during the last part of a round, finding more valuable shares, than they are to mine during the beginning, when they&#39;re worth less. Thus, a miner who only mines for half an hour a day may find newer shares one day and earn half a bitcoin, while on other he may find older shares, and only earn 1/10 Bitcoins. --<span><font color="#FF6600"><tt><big><u>****</u></big></tt></font><a>Firestorm</a></span> 13:34, 27 May 2011 (GMT)</p></blockquote>
+
+<h2 id="Pool-hopping">Pool-hopping</h2>
+
+<p>I strongly object to having Pool-Hopping included in this article. It&#39;s a way of cheating the system. It&#39;s a system that increases how much you make at the expense of others who are earning it in a more fair way. If pool-hopping can directly cause a system to FAIL, it should NOT be advertised as a good way to earn more bitcoins --<span><font color="#FF6600"><tt><big><u>****</u></big></tt></font><a>Firestorm</a></span> 23:10, 26 May 2011 (GMT)</p>
+
+<pre><code>* It is just as much &quot;at the expense of others&quot; as is BFI_INT, GPUs, or any other improvement in efficiency. Pool-hopping cannot cause a system to fail, and is not being advertised as good. The language is intentionally neutral, while giving all the facts. --[Luke-jr](User:Luke-jr) 23:21, 26 May 2011 (GMT)
+</code></pre>
+
+<blockquote><p> It directly states that pools can be brought to a standstill using this. Anything that results in pools blacklisting them is not something to be advertised. I feel that it would be like going onto a gaming Wiki and linking to all the hacks and exploits in the game --<span><font color="#FF6600"><tt><big><u><em><em><em><em></em></em></em></em></u></big></tt></font><a>Firestorm</a></span> 23:30, 26 May 2011 (GMT)
+First I&#39;d like to clarify that Luke&#39;s points about &quot;score-based could lead to reverse pool-hopping&quot; and &quot;score-based penalized intermittance&quot; are both wrong (as I&#39;ve also tries to explain <a href="http://forum.bitcoin.org/index.php?topic=10038.msg145296#msg145296">here</a>). As for the first, my method was specifically calibrated to be immune to any round-age hopping, whether forward and reverse (and slush&#39;s method is somewhat subject to forward hopping, but not reverse). And disconnecting from a score-based pool has no effect on already submitted shares.
+Luke does bring up an interesting point. If there were only proportional pools, and solo would be impractical, and everybody would pool-hop, then it will reach the point that everyone mines for the youngest-round pool at each point, so it would even out while giving more power to the smaller pools. However:
+Solo mining will exist, and will give a nice payout bonus over the hashrate ratio for those who can mine solo;
+Score-based pools will exist, and they&#39;ll be the target once all proportional pools reach 43.5%, so proportional pools will eventually freeze and never receive a share again.
+With BFI_INT, we need to adopt it for security reasons, because an attacker on the network will* use it and gain an advantage on the honest network if we don&#39;t. With pool hopping, we don&#39;t need to adopt it because it can&#39;t be used by an attacker for an advantage.
+So I don&#39;t think this is really a sustainable solution. <a>Holy-Fire</a> 04:15, 27 May 2011 (GMT)
+And, if this wiki page is to remain, we need to sort this out and include all relevant information. It would be silly to even mention reward systems at all without specifying their advantages and disadvantages (and it would be silly to have a reward FAQ without explaining reward systems). <a>Holy-Fire</a> 04:17, 27 May 2011 (GMT)</p></blockquote>
+
+<pre><code>* I admit the geometric method does seem to prevent pool hopping *to an extent*, but also makes the pool operator vulnerable to a similar attack as the PPS model. While it is *possible* that an intermittent miner *might* even out on a score-based system, he is still penalized when he would join during the early stages of a block. If he know he&#39;ll only be able to mine for an hour, why would he join a pool knowing that he&#39;s unlikely to be rewarded for it? This is effectively inverse pool hopping. But would you say miners have an obligation to stick to a single pool, and never mine on others or solo-mine? That is, IMO, ridiculous without a clearly well-defined rule by the pool on *when* it is acceptable to hop/leave.
+* With solo mining comes a greater risk than in a pool, so hopping to solo-mining is a fair risk/gain tradeoff.
+* Your second point more or less admits that score-based pools in fact &quot;attacking&quot; share-based pools in practice.
+* BFI_INT adoption is not needed any more or less than pool hopping on share-based pools.
+* I agree that it isn&#39;t sustainable in the long-run, but it is a legitimate strategy, and within the rights of miners to practice. If pools don&#39;t like it (as they shouldn&#39;t), it is also reasonable for them to make a rule restricting hopping and/or switch to another scoring method. Complaining about &quot;cheating&quot; when there is no rule won&#39;t get anywhere.
+* --[Luke-jr](User:Luke-jr) 16:16, 27 May 2011 (GMT)
+</code></pre>
+
+<blockquote><p>I continued this <a href="http://forum.bitcoin.org/index.php?topic=10038.msg148710#msg148710">on the forums</a>. <a>Holy-Fire</a> 19:57, 28 May 2011 (GMT)</p></blockquote>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../">Mining pool reward FAQ</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2011-05-28T19:57:18Z">Sat 28 May 2011 07:57:18 PM Europe</time>
+<!-- Created <time datetime="2011-05-26T20:25:32Z" pubdate="pubdate">Thu 26 May 2011 08:25:32 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

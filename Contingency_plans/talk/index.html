@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>talk</title>
+
+<link rel="stylesheet" href="../../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../../">bitcoin</a>/ 
+
+<a href="../">Contingency plans</a>/ 
+
+</span>
+<span class="title">
+talk
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>The use of the words &quot;must stop mining&quot; might be more effective stating that continuing to mine may yield coins that will never confirm and adding to the troubled block chain may make it more difficult to reverse once a fix becomes available. - <a>Sgornick</a> 19:24, 4 September 2011 (GMT)</p>
+
+<blockquote><h2>I&#39;ll add something like that when I next work on this. (This text is very unfinished: I have done absolutely no editing, and I plan to add more contingencies.) <a>theymos</a> 08:43, 5 September 2011 (GMT)</h2>
+
+<p>&quot;ECDSA is broken:
+Situation: an attacker can sign for a public key that he does not own the private key for in only a few days of work. &quot;</p></blockquote>
+
+<p>I can see that the alert system would be compromised, but how could an attacker spend money that is not his? He would not have a public key until a transaction is transmitted. It would then be a race to crack it <strong>and then</strong> get it to miners before the existing transaction, no? The ability to spend money due to ECDSA&#39;s failure would only be a problem if a valid signature can be found within seconds of learning of a public key or signature I think. Still worth mentioning though.
+--<a>Atheros</a> 21:20, 17 November 2011 (GMT)</p>
+
+<blockquote><p>Most people reuse addresses at least a few times, I think. I&#39;d guess that 25-50% of unspent transactions would be vulnerable to a slower ECDSA attack. Might be something to mention in the article, though. <a>theymos</a> 03:43, 18 November 2011 (GMT)
+Oh Yes, I had forgotten that people reuse addresses. --<a>Atheros</a> 08:18, 18 November 2011 (GMT)</p></blockquote>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../">Contingency plans</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2011-11-18T08:18:31Z">Fri 18 Nov 2011 08:18:31 AM Europe</time>
+<!-- Created <time datetime="2011-09-04T19:24:27Z" pubdate="pubdate">Sun 04 Sep 2011 07:24:27 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

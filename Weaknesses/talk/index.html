@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>talk</title>
+
+<link rel="stylesheet" href="../../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../../">bitcoin</a>/ 
+
+<a href="../">Weaknesses</a>/ 
+
+</span>
+<span class="title">
+talk
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<h2 id="Wallet_Vulnerable_To_Loss">Wallet Vulnerable To Loss</h2>
+
+<p>I don&#39;t know if the vulnerable to loss from no backup is something that should fall under the category of being a &quot;Bitcoin weakness&quot;.  - <a>Sgornick</a> 05:36, 18 June 2011 (GMT)</p>
+
+<p>If a computer problem such as a disk crash occurs or for whatever reason there is no longer access to the wallet, and backups are either unavailable or not current enough, loss of coins can result.  Though backups are recommended, the client itself does not manage backups.</p>
+
+<h2 id="Illegal_Content_In_the_Blockchain">Illegal Content In the Blockchain</h2>
+
+<p>This following appears to be speculation as to how a resolution to the problem might be arrived at.  That has been moved here as speculation of potential solutions doesn&#39;t go in the Weaknesses article. - <a>Sgornick</a> (<span class="createlink"><a href="/ikiwiki.cgi?page=User_talk%3ASgornick&amp;do=create&amp;from=Weaknesses%2Ftalk" rel="nofollow">?</a>talk</span>) 06:39, 29 September 2012 (GMT)</p>
+
+<p>Unspent transactions can be safely forgotten if more than half of all users are forgetting those transactions. If a miner neglects to forget an unspent transaction and is in the minority, its blocks will be rejected by the majority if those transactions are subsequently spent. Probably users will not want to coordinate enough to forget illegal transactions, as it would require a high degree of centralization. Miners can safely refuse to accept illegal transactions, which may be enough to avoid legal problems, but this is basically impractical due to illegal content being extremely complex to detect.Transaction data can also be deleted with minimal risk if it can be proven that data will never be used. For example, if the standard template for a tx output is used, the only place you can put arbitrary data is the pubkey hash. If you set this to, say, English text or part of a JPEG, that tx output can be deleted because the chances of anyone finding a public key that hashes to that specific bit of meaningful data is very remote. However, someone could still encrypt the data so miners cannot detect it, and this carries the same liability for miners who neglect to drop it.</p>
+
+<h2 id="Pools">Pools</h2>
+
+<p>On the forum I have been discussing threats from pools and I would like to see those presented here. Sorry for not being bold enough to just add it. I just registered in the wiki so maybe it can be found elsewhere. My addition would be in the context of the 50%-attack a subsection on feasibility of obtaining the necessary computational power (20.000 PCs with several high end video cards each ...) and the ways to get that computational power for a small budget via a pool.</p>
+
+<p>Imagine the following scenario:</p>
+
+<ul>
+<li>Pool (E)vil registers as a miner with Pool (G)ood.</li>
+<li>G assigns work to E as to any other miner.</li>
+<li>E assigns it on to its miners.</li>
+<li>The miners provide proof of work and found blocks.</li>
+<li>E hands on the proof of work part to G but not the found blocks.</li>
+<li>Other miners at G still find some blocks.</li>
+<li>G distributes the reward among all according to their proof of work.
+This way G will be less profitable and even compensates part of E&#39;s effort to attack them.
+This way E could stay the biggest <s>shark in the pool</s> pool in the network once it got there by dedicating some miners to each pool with a potential to compete.
+With the biggest pool at more than 50% we are back at above described problem of one player being able to control what gets in to the chain and what not.</li>
+</ul>
+
+
+<h2 id="Spamming_transactions">Spamming transactions</h2>
+
+<p>The maximum size of a block is stated as being 1MB.  The current bitcoin.org client tops out a 0.5 MB, but that could be increased to 1 MB without requiring a hard fork, if I remember correctly.</p>
+
+<p>Also, the part that reads &quot;but Bitcoin fees will always be low because raising fees above 0.01 BTC per KB would require spending transaction fees&quot; is unclear to me.   That likely is referring to the old min fee (0.01, now 0.0005), but what does the spending transaction fees mean?</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../">Weaknesses</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2013-04-07T11:28:16Z">Sun 07 Apr 2013 11:28:16 AM Europe</time>
+<!-- Created <time datetime="2011-06-18T05:36:21Z" pubdate="pubdate">Sat 18 Jun 2011 05:36:21 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

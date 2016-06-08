@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>talk</title>
+
+<link rel="stylesheet" href="../../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../../">bitcoin</a>/ 
+
+<a href="../">Thin Client Security</a>/ 
+
+</span>
+<span class="title">
+talk
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>Lapp0, please stop deleting my content, which has been on this wiki page for over three years now.  If you think it&#39;s suddenly no longer true, discuss here first.  In particular, you wrote:</p>
+
+<pre><code>Transactions don&#39;t become more valid with more block preceding it&#39;s proof.
+</code></pre>
+
+<p>Chains become more trustworthy as they become (difficultywise-)longer.  This is the most basic principle of blockchain consensus.</p>
+
+<p>I have to keep putting that &quot;(difficultywise-)&quot; in there so pedantic people don&#39;t pounce on me... a 100,000-block chain all at difficulty=1 is &quot;difficultywise-shorter&quot; than a 100-block chain at current difficulty levels (or a one-block chain for that matter).  It&#39;s not the number of blocks, but their total difficulty.</p>
+
+<p>You also wrote:</p>
+
+<pre><code>The vagueness of what Full-chain is should be elaborated on probably explaining it uses SPV proofs
+</code></pre>
+
+<p>No, full-chain clients such as the Satoshi client do not use SPV in any way, shape, or form.  A full-chain client is a client that implements the main algorithm outlined in Satoshi&#39;s whitepaper.</p>
+
+<p><a>Eldentyrell</a> (<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=User_talk%3AEldentyrell&amp;from=Thin_Client_Security%2Ftalk" rel="nofollow">?</a>talk</span>) 03:05, 26 February 2015 (UTC)</p>
+
+<blockquote><p>This page looks very confused/wrong in many respects. I&#39;m not sure how it can be fixed easily, since it is unclear what exactly it intends to say.
+* Generally &quot;thin clients&quot; do not include pruned full nodes, which have processed every block, but afterward discarded (and no longer store) them.
+* Even thin clients generally verify block heights as well as depth.
+* Thin clients never (neither for height nor depth) check blocks are valid (&quot;well-formed&quot;?). This is the fundamental difference between full nodes vs thin clients.
+* Transaction validity is independent of its inclusion in any blockchain.
+--<a>Luke-jr</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Thin_Client_Security%2Ftalk&amp;page=User_talk%3ALuke-jr&amp;do=create" rel="nofollow">?</a>talk</span>) 07:58, 26 February 2015 (UTC)</p>
+
+<p>Luke, thanks for your thoughts.  Regarding your points,</p>
+
+<ul>
+<li>Good point, I have partitioned &quot;full-chain&quot; into two separate subtypes (those which do and those which don&#39;t retain blocks after validating)</li>
+<li>SPV clients do not verify block height.  I can take the existing 345308-block bitcoin blockchain, append a single block that re-spends coins I sent two years ago, and use that 345309-block chain to fool an SPV client.  By wasting hashpower whose market value is as most one block reward I can fool an SPV client with it, since it will appear to be the difficultywise-longest chain by one block.  I cannot fool the Satoshi client this way even with the hashpower of the entire network at my disposal.</li>
+<li>True.  I think you may have hastily misread &quot;transaction validity&quot; as &quot;block validity&quot;.</li>
+<li>True.  I think you may have hastily misread &quot;transaction validity&quot; as &quot;block validity&quot;.</li>
+</ul>
+
+
+<p>Thanks again!</p>
+
+<p><a>Eldentyrell</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Thin_Client_Security%2Ftalk&amp;do=create&amp;page=User_talk%3AEldentyrell" rel="nofollow">?</a>talk</span>) 23:14, 26 February 2015 (UTC)</p>
+
+<ul>
+<li>Since this article deals with security, I do not think the distinction between pruned vs non-pruned is relevant - both nodes have equal security implications.</li>
+<li>SPV nodes are aware that your invalid 345309th block has a height higher than any other chain, and thus verify the block height before considering that chain ::;&quot;best&quot;. They do not, as you mention, validate the contents of any of those blocks, and can be fooled this way, but that is unrelated to the block&#39;s height.</li>
+<li>I was referring to the statement that &quot;the validity of a transaction is determined by its height&quot;, which is simply not true. A transaction is valid before and even if it is never mined.
+--<a>Luke-jr</a> (<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=User_talk%3ALuke-jr&amp;from=Thin_Client_Security%2Ftalk" rel="nofollow">?</a>talk</span>) 01:42, 27 February 2015 (UTC)</li>
+</ul>
+
+
+<p>;<em> Ok
+;</em> Ah, now I see why we disagree: I don&#39;t consider the last block of an ill-formed chain of 345309 blocks to be &quot;of height 345309&quot;.</p>
+
+<p>Is there a term other than &quot;height X&quot; you would recommend in order to describe the property of being the Xth block of a completely well-formed blockchain that obeys all the block validation rules (particularly no double-spends)?  This is the property that SPV clients are not able to check.  If there is a better name for this property I&#39;ll rewrite that section to use it.</p>
+
+<p>I think the other issue here is my use of the term &quot;valid transaction&quot;.  I&#39;ve been using that to describe a transaction that has been accepted by the network and that clients can safely assume is irreversible.  I guess that term is sort of ambiguous; I can see how it could also be used to describe mempool transactions that aren&#39;t yet part of any block but could legitimately be included in the next one.  What is the generally-accepted adjective for in-the-chain-and-safe-to-assume-is-totally-irreversible?  I&#39;ve substituted &quot;accepted transaction&quot; in the article where that was the intended meaning, but if there&#39;s a more widely-used phrase let me know.  I also made a second edit to separate out &quot;acceptance&quot; from &quot;degree of irreversibility&quot; since &quot;degree of irreversibility&quot; is always measured the same way by all kinds of clients (number of confirmations, i.e. depth).</p>
+
+<p><a>Eldentyrell</a> (<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=User_talk%3AEldentyrell&amp;from=Thin_Client_Security%2Ftalk" rel="nofollow">?</a>talk</span>) 06:02, 28 February 2015 (UTC)</p>
+
+<p>I&#39;ve always considered &quot;the Nth block of a blockchain&quot; to be an independent property from the validity of the blockchain. I&#39;m not aware of any common term for this, but &quot;height N&quot; isn&#39;t generally used in that sense (although in most cases it&#39;s implied that one is talking about a valid blockchain, regardless of the height property). As for contrasting with SPV, I would suggest &quot;fully-validat{ed,ing}&quot; or &quot;full node&quot;.</p>
+
+<p>When a user assumes a transaction is confirmed/irreversible is a subjective matter, and may be before the block is mined if they trust the sender or it&#39;s of low value, or long afterward if they don&#39;t trust the mining ecosystem&#39;s balance or the value is such that they need more security. So I think the term you want there is &quot;confirmed&quot;, but it&#39;s not a universally objective attribute.</p>
+
+<p>--<a>Luke-jr</a> (<span class="createlink"><a href="/ikiwiki.cgi?page=User_talk%3ALuke-jr&amp;do=create&amp;from=Thin_Client_Security%2Ftalk" rel="nofollow">?</a>talk</span>) 07:07, 28 February 2015 (UTC)</p>
+
+<p>Full-chain is not well defined and isn&#39;t common terminology. If you are saying the Satoshi client is full-chain, then you probably mean full node. &quot;full network node&quot; or &quot;full node&quot; is common terminology and is used in the original Bitcoin whitepaper.</p>
+
+<p>Your definition of transaction validity isn&#39;t common and is even incompatible with the Bitcoin whitepaper.</p>
+
+<p>You added &quot;A full-chain client trusts the <a href="../../Protocol_rules/#Blocks_well-formed">difficultywise-longest</a> block chain it can find.&quot; which is only true for SPV clients, so you can see why I would be confused as to what this poorly defined &quot;full-chain&quot; client does.</p>
+
+<p>I don&#39;t think the bitcoin wiki is an appropriate place to redefine terminology.</p>
+
+<p>Finally, I am not deleting your content, I am deleting the wikis content because it is wrong. Please stop blindly reverting my edits, you removing spelling corrections indicates that you don&#39;t care about the accuracy of the wiki as much as maximizing the amount of text written by you on the wiki.
+--<a>Lapp0</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Thin_Client_Security%2Ftalk&amp;do=create&amp;page=User_talk%3ALapp0" rel="nofollow">?</a>talk</span>)</p></blockquote>
+
+<h2 id="Major_Restructuring">Major Restructuring</h2>
+
+<p>This page was riddled with incorrect uses of words and the creation of new terminology. This leaves the reader confused or mislead. I have restructured this page and attempted to remove most of the inaccurate parts. It&#39;s not that I &quot;think it&#39;s suddenly no longer true&quot;, I know that it hasn&#39;t been true for three years and no one has caught it until now.</p>
+
+<p>--<a>Lapp0</a> (<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=User_talk%3ALapp0&amp;from=Thin_Client_Security%2Ftalk" rel="nofollow">?</a>talk</span>)</p>
+
+<blockquote><p>If you continue to add nonsense to the article and don&#39;t discuss it here (especially when you add 2000+ characters of incorrect information where the note implies it is a minor edit), I will continue to revert. --<a>Lapp0</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Thin_Client_Security%2Ftalk&amp;do=create&amp;page=User_talk%3ALapp0" rel="nofollow">?</a>talk</span>)</p></blockquote>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../">Thin Client Security</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-02-28T18:17:20Z">Sat 28 Feb 2015 06:17:20 PM Europe</time>
+<!-- Created <time datetime="2015-02-26T03:05:29Z" pubdate="pubdate">Thu 26 Feb 2015 03:05:29 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

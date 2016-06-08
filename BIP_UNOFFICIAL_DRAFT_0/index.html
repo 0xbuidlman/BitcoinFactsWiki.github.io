@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>BIP UNOFFICIAL DRAFT 0</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+BIP UNOFFICIAL DRAFT 0
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<pre>
+  BIP: 17
+  Title: OP_NO_SKIP
+  Author: Ben Reeves 
+  Status: Rejected
+  Type: Standards Track
+  Created: 14-01-2012
+</pre>
+
+
+<h2 id="Abstract">Abstract</h2>
+
+<p>This BIP describes a new op code (&quot;OP_NO_SKIP&quot;) and a new type of standard transaction.</p>
+
+<h2 id="Motivation">Motivation</h2>
+
+<p>The purpose of this propose is to provide pay to script functionality without making a standard templates a mandatory part of the scripting language.</p>
+
+<p>Quote BIP_0016:</p>
+
+<p>The purpose of pay-to-script-hash is to move the responsibility for supplying the conditions to redeem a transaction from the sender of the funds to the redeemer.</p>
+
+<p>The benefit is allowing a sender to fund any arbitrary transaction, no matter how complicated, using a fixed-length 20-byte hash that is short enough to scan from a QR code or easily copied and pasted.</p>
+
+<h2 id="Specification">Specification</h2>
+
+<p>OP_NOP1 will be redefined as OP_NO_SKIP and will behave as follows:</p>
+
+<ul>
+<li>OP_NO_SKIP remains a null op on its own.</li>
+<li>Any &quot;push data&quot; operation immediately following an OP_NO_SKIP will push the data onto the stack as normal but will not advance the instruction pointer i.e. the data will be pushed onto the stack and executed after.</li>
+</ul>
+
+
+<p>Additionally a new standard scriptPubKey will be defined:</p>
+
+<pre><code>OP_CHECKMULTISIGVERIFY OP_HASH160 &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=BIP_UNOFFICIAL_DRAFT_0&amp;amp;page=20-byte-hash-value&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;20-byte-hash-value&lt;/span&gt; OP_EQUAL
+</code></pre>
+
+<p>Redeemed by a new standard scriptSig (M-of-N)</p>
+
+<pre><code>OP_0  &lt;sig&gt; OP_NO_SKIP &lt;OP_SWAP {1 &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=BIP_UNOFFICIAL_DRAFT_0&amp;amp;do=create&amp;amp;page=pubkey1&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;pubkey1&lt;/span&gt; &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=pubkey2&amp;amp;from=BIP_UNOFFICIAL_DRAFT_0&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;pubkey2&lt;/span&gt; 2} &gt;
+</code></pre>
+
+<h2 id="Example_Execution">Example Execution</h2>
+
+<p>Basic example:</p>
+
+<table>
+<thead>
+<tr>
+<th>Stack </th>
+<th>Code</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>OP_NO_SKIP OP_PUSHDATA1 1 OP_1NEGATE OP_ADD</td>
+</tr>
+<tr>
+<td></td>
+<td>OP_PUSHDATA1 1 OP_1NEGATE  OP_ADD</td>
+</tr>
+<tr>
+<td>79 </td>
+<td>OP_1NEGATE OP_ADD</td>
+</tr>
+<tr>
+<td>79 -1 </td>
+<td>OP_ADD</td>
+</tr>
+<tr>
+<td>78 </td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+
+<p>Pay to script example:</p>
+
+<table>
+<thead>
+<tr>
+<th>Stack </th>
+<th>Code</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>32 OP_NO_SKIP 22 <a href="/ikiwiki.cgi?from=BIP_UNOFFICIAL_DRAFT_0&amp;page=pubkey&amp;do=create" rel="nofollow">?</a>pubkey2&gt; OP_CHECKMULTISIGVERIFY OP_HASH160 20 OP_EQUAL</td>
+</tr>
+<tr>
+<td></td>
+<td>OP_NO_SKIP 22 <a href="/ikiwiki.cgi?from=BIP_UNOFFICIAL_DRAFT_0&amp;do=create&amp;page=pubkey" rel="nofollow">?</a>pubkey2&gt; OP_CHECKMULTISIGVERIFY  OP_HASH160 20 OP_EQUAL</td>
+</tr>
+<tr>
+<td></td>
+<td>22 <a href="/ikiwiki.cgi?from=BIP_UNOFFICIAL_DRAFT_0&amp;do=create&amp;page=pubkey" rel="nofollow">?</a>pubkey2&gt; OP_CHECKMULTISIGVERIFY OP_HASH160 20 OP_EQUAL</td>
+</tr>
+<tr>
+<td><a href="/ikiwiki.cgi?from=BIP_UNOFFICIAL_DRAFT_0&amp;do=create&amp;page=pubkey" rel="nofollow">?</a>pubkey2&gt; </td>
+<td>OP_SWAP 1 <span class="createlink"><a href="/ikiwiki.cgi?page=pubkey&amp;do=create&amp;from=BIP_UNOFFICIAL_DRAFT_0" rel="nofollow">?</a>pubkey</span>2 OP_CHECKMULTISIGVERIFY OP_HASH160 20 OP_EQUAL</td>
+</tr>
+<tr>
+<td><a href="/ikiwiki.cgi?from=BIP_UNOFFICIAL_DRAFT_0&amp;do=create&amp;page=pubkey" rel="nofollow">?</a>pubkey2&gt; </td>
+<td>1 <span class="createlink"><a href="/ikiwiki.cgi?from=BIP_UNOFFICIAL_DRAFT_0&amp;page=pubkey&amp;do=create" rel="nofollow">?</a>pubkey</span>2 OP_CHECKMULTISIGVERIFY OP_HASH160 20 OP_EQUAL</td>
+</tr>
+<tr>
+<td><a href="/ikiwiki.cgi?do=create&amp;page=pubkey&amp;from=BIP_UNOFFICIAL_DRAFT_0" rel="nofollow">?</a>pubkey2&gt; </td>
+<td>OP_HASH160 20 OP_EQUAL</td>
+</tr>
+<tr>
+<td></td>
+<td>20 OP_EQUAL</td>
+</tr>
+<tr>
+<td></td>
+<td>OP_EQUAL</td>
+</tr>
+<tr>
+<td>1 </td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+
+<h2 id="Rationale">Rationale</h2>
+
+<p>This BIP replaces BIP 12 (&quot;OP_EVAL&quot;) and BIP 16, (&quot;/P2SH/&quot;).</p>
+
+<p>The rationale for pay to script functionality has been discussed in the other proposals, the general consensus is this functionality is desired and should be implemented ASAP.</p>
+
+<p>A number of potential issues have been found with the proposals thus far:</p>
+
+<ul>
+<li>CHV requires the scriptPubKey interacts with data from scriptSig which has not been push onto the stack</li>
+<li>OP_EVAL essentially makes the scripting language turing complete, something which Satoshi deliberately avoided during its design.</li>
+<li>P2SH requires that standard templates become a mandatory part of the scripting language, meaning they can never be fully depreciated in future.</li>
+</ul>
+
+
+<p>OP_NO_SKIP is designed to be a simple compromise that enables pay to script functionality without giving the language any extra expressive powers or violating the rules of a simple stack based language.</p>
+
+<h2 id="Backwards_Compatibility">Backwards Compatibility</h2>
+
+<p>These transactions are non-standard to old implementations, which will (typically) not relay them or include them in blocks.</p>
+
+<p>Old implementations will push the script onto the stack and verify it&#39;s hash value matches, but will do no other validation. New client will push the script on to the stack AND execute it.</p>
+
+<p>Avoiding a block-chain split by malicious pay-to-script transactions requires careful handling of one case:</p>
+
+<ul>
+<li>A pay-to-script-hash transaction that is invalid for new clients/miners but valid for old clients/miners.</li>
+</ul>
+
+
+<p>To gracefully upgrade and ensure no long-lasting block-chain split occurs, more than 50% of miners must support full validation of the new transaction type and must switch from the old validation rules to the new rules at the same time.</p>
+
+<p>To judge whether or not more than 50% of hashing power supports this BIP, miners are asked to upgrade their software and put the string &quot;/OPNOSKIP/&quot; in the input of the coinbase transaction for blocks that they create.</p>
+
+<p>On February 1, 2012, the block-chain will be examined to determine the number of blocks supporting pay-to-script-hash for the previous 7 days. If 550 or more contain &quot;/OPNOSKIP/&quot; in their coinbase, then all blocks with timestamps after 15 Feb 2012, 00:00:00 GMT shall have their pay-to-script-hash transactions fully validated. Approximately 1,000 blocks are created in a week; 550 should, therefore, be approximately 55% of the network supporting the new feature.</p>
+
+<p>If a majority of hashing power does not support the new validation rules, then rollout will be postponed (or rejected if it becomes clear that a majority will never be achieved).</p>
+
+<h2 id="Reference_Implementation">Reference Implementation</h2>
+
+<p>https://github.com/zootreeves/bitcoin/commits/master</p>
+
+<h2 id="Reason_for_Rejection">Reason for Rejection</h2>
+
+<p>Any miner can easily confiscate transactions by replacing the legitmate signature script:</p>
+
+<pre><code>OP_0  &lt;sig&gt; OP_NO_SKIP &lt;OP_SWAP {1 &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=pubkey1&amp;amp;from=BIP_UNOFFICIAL_DRAFT_0&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;pubkey1&lt;/span&gt; &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=BIP_UNOFFICIAL_DRAFT_0&amp;amp;do=create&amp;amp;page=pubkey2&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;pubkey2&lt;/span&gt; 2} &gt;
+</code></pre>
+
+<p>with</p>
+
+<pre><code>&lt;OP_SWAP {1 &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=pubkey1&amp;amp;from=BIP_UNOFFICIAL_DRAFT_0&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;pubkey1&lt;/span&gt; &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=BIP_UNOFFICIAL_DRAFT_0&amp;amp;page=pubkey2&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;pubkey2&lt;/span&gt; 2} &gt; OP_0 &lt;miner&#39;s_sig&gt; OP_1 &lt;miner&#39;s_pubkey&gt; OP_1
+</code></pre>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li>https://bitcointalk.org/index.php?topic=46538</li>
+<li>The <a href="../BIP_0013/">Address format for Pay to Script Hash BIP</a></li>
+<li>M-of-N Multisignature Transactions <a href="../BIP_0011/">BIP 11</a></li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/BIP/" rel="tag">BIP</a>
+
+</nav>
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2012-01-29T18:16:41Z">Sun 29 Jan 2012 06:16:41 PM Europe</time>
+<!-- Created <time datetime="2012-01-14T23:50:02Z" pubdate="pubdate">Sat 14 Jan 2012 11:50:02 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

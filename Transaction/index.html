@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Transaction</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Transaction
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p><a href="../TxBinaryMap.png"><img class="right" height="52" src="./120x120-TxBinaryMap.png" title="Byte-map of Transaction with each type of TxIn and TxOut" width="119" /></a>
+A <strong>transaction</strong> is a transfer of Bitcoin value that is broadcast to the <a href="../Network/">network</a> and collected into <a href="../Block/">blocks</a>. A transaction typically references previous transaction outputs as new transaction inputs and dedicates all input Bitcoin values to new outputs. Transactions are not encrypted, so it is possible to browse and view every transaction ever collected into a block.</p>
+
+<p>Standard transaction outputs nominate <a href="../Address/">addresses</a>, and the redemption of any future inputs requires a relevant signature.</p>
+
+<p>All transactions are visible in the <a href="../Block_chain/">block chain</a>, and can be viewed with a hex editor. A <a href="../Block_chain_browser/">block chain browser</a> is a site where every transaction included within the block chain can be viewed in human-readable terms.  This is useful for seeing the technical details of transactions in action and for verifying payments.</p>
+
+<h3 id="general_format_of_a_Bitcoin_transaction_.28inside_a_block.29">general format of a Bitcoin transaction (inside a block)</h3>
+
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+<th>Size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Version no</td>
+<td>currently 1</td>
+<td>4 bytes</td>
+</tr>
+<tr>
+<td>In-counter</td>
+<td>positive integer <a href="../Protocol_specification/#Variable_length_integer">VI = VarInt</a></td>
+<td>1 - 9 bytes</td>
+</tr>
+<tr>
+<td>list of inputs</td>
+<td><a href="./#general_format_.28inside_a_block.29_of_each_input_of_a_transaction_-_Txin">the first input of the first transaction is also called &quot;coinbase&quot; (its content was ignored in earlier versions)</a></td>
+<td>-many inputs</td>
+</tr>
+<tr>
+<td>Out-counter</td>
+<td>positive integer <a href="../Protocol_specification/#Variable_length_integer">VI = VarInt</a></td>
+<td>1 - 9 bytes</td>
+</tr>
+<tr>
+<td>list of outputs</td>
+<td><a href="./#general_format_.28inside_a_block.29_of_each_output_of_a_transaction_-_Txout">the outputs of the first transaction spend the mined bitcoins for the block</a></td>
+<td>-many outputs</td>
+</tr>
+<tr>
+<td>lock_time</td>
+<td>if non-zero and sequence numbers are &lt; 0xFFFFFFFF: block height or timestamp when transaction is final</td>
+<td>4 bytes</td>
+</tr>
+</tbody>
+</table>
+
+
+<h3 id="Principle_example_of_a_Bitcoin_transaction_with_1_input_and_1_output_only">Principle example of a Bitcoin transaction with 1 input and 1 output only</h3>
+
+<h4 id="Data">Data</h4>
+
+<pre>Input:
+Previous tx: f5d8ee39a430901c91a5917b9f2dc19d6d1a0e9cea205b009ca73dd04470b9a6
+Index: 0
+scriptSig: 304502206e21798a42fae0e854281abd38bacd1aeed3ee3738d9e1446618c4571d10
+90db022100e2ac980643b0b82c0e88ffdfec6b64e3e6ba35e7ba5fdd7d5d6cc8d25c6b241501
+
+Output:
+Value: 5000000000
+scriptPubKey: OP_DUP OP_HASH160 404371705fa9bd789a2fcd52d2c580b65d35549d
+OP_EQUALVERIFY OP_CHECKSIG</pre>
+
+
+<h4 id="Explanation">Explanation</h4>
+
+<p>The input in this transaction imports 50 BTC from output #0 in transaction f5d8... Then the output sends 50 BTC to a Bitcoin address (expressed here in hexadecimal 4043... instead of the normal base58). When the recipient wants to spend this money, he will reference output #0 of this transaction in an input of his own transaction.</p>
+
+<h5 id="Input">Input</h5>
+
+<p>An <strong>input</strong> is a reference to an output from a previous transaction. Multiple inputs are often listed in a transaction. All of the new transaction&#39;s input values (that is, the total coin value of the previous outputs referenced by the new transaction&#39;s inputs) are added up, and the total (less any transaction fee) is completely used by the outputs of the new transaction. <strong>Previous tx</strong> is a <a href="../Hash/">hash</a> of a previous transaction. <strong>Index</strong> is the specific output in the referenced transaction. <strong>ScriptSig</strong> is the first half of a <a href="../Script/">script</a> (discussed in more detail later).</p>
+
+<p>The script contains two components, a signature and a public key. The public key must match the hash given in the script of the redeemed output. The public key is used to verify the redeemers signature, which is the second component. More precisely, the second component is an <a href="../ECDSA/">ECDSA</a> signature over a hash of a simplified version of the transaction. It, combined with the public key, proves the transaction was created by the real owner of the address in question. Various flags define how the transaction is simplified and can be used to create different types of payment.</p>
+
+<h5 id="Output">Output</h5>
+
+<p>An <strong>output</strong> contains instructions for sending bitcoins. <strong>Value</strong> is the number of Satoshi (1 BTC = 100,000,000 Satoshi) that this output will be worth when claimed. <strong>ScriptPubKey</strong> is the second half of a script (discussed later). There can be more than one output, and they share the combined value of the inputs. Because each output from one transaction can only ever be referenced once by an input of a subsequent transaction, the entire combined input value needs to be sent in an output if you don&#39;t want to lose it. If the input is worth 50 BTC but you only want to send 25 BTC, Bitcoin will create two outputs worth 25 BTC: one to the destination, and one back to you (known as &quot;<a href="../Change/">change</a>&quot;, though you send it to yourself). Any input bitcoins not redeemed in an output is considered a <a href="../Transaction_Fee/">transaction fee</a>; whoever generates the block will get it.
+<a href="../Transaction.png"><img class="img" height="100" src="./120x120-Transaction.png" title="A sends 100 BTC to C and C generates 50 BTC. C sends 101 BTC to D, and he needs to send himself some change. D sends the 101 BTC to someone else, but they haven&#39;t redeemed it yet. Only D&#39;s output and C&#39;s change are capable of being spent in the current state." width="120" /></a></p>
+
+<h5 id="Verification">Verification</h5>
+
+<p>To verify that inputs are authorized to collect the values of referenced outputs, Bitcoin uses a custom Forth-like <a href="../Script/">scripting</a> system. The input&#39;s scriptSig and the <em>referenced</em> output&#39;s scriptPubKey are evaluated (in that order), with scriptPubKey using the values left on the stack by scriptSig. The input is authorized if scriptPubKey returns true. Through the scripting system, the sender can create very complex conditions that people have to meet in order to claim the output&#39;s value. For example, it&#39;s possible to create an output that can be claimed by anyone without any authorization. It&#39;s also possible to require that an input be signed by ten different keys, or be redeemable with a password instead of a key.</p>
+
+<h3 id="Types_of_Transaction">Types of Transaction</h3>
+
+<p>Bitcoin currently creates two different scriptSig/scriptPubKey pairs. These are described below.</p>
+
+<p>It is possible to design more complex types of transactions, and link them together into cryptographically enforced agreements. These are known as <a href="../Contracts/">Contracts</a>.</p>
+
+<h4 id="Pay-to-PubkeyHash">Pay-to-PubkeyHash</h4>
+
+<pre><code>scriptPubKey: OP_DUP OP_HASH160 &lt;pubKeyHash&gt; OP_EQUALVERIFY OP_CHECKSIG
+scriptSig: &lt;sig&gt; &lt;pubKey&gt;
+</code></pre>
+
+<p>A Bitcoin <a href="../Address/">address</a> is only a hash, so the sender can&#39;t provide a full public key in scriptPubKey. When redeeming coins that have been sent to a Bitcoin address, the recipient provides both the signature and the public key. The script verifies that the provided public key does hash to the hash in scriptPubKey, and then it also checks the signature against the public key.</p>
+
+<p>Checking process:</p>
+
+<table>
+<thead>
+<tr>
+<th>Stack </th>
+<th>Script </th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Empty.</td>
+<td>OP_DUP OP_HASH160 OP_EQUALVERIFY OP_CHECKSIG </td>
+<td>scriptSig and scriptPubKey are combined.</td>
+</tr>
+<tr>
+<td></td>
+<td>OP_DUP OP_HASH160 OP_EQUALVERIFY OP_CHECKSIG </td>
+<td>Constants are added to the stack.</td>
+</tr>
+<tr>
+<td></td>
+<td>OP_HASH160 OP_EQUALVERIFY OP_CHECKSIG </td>
+<td>Top stack item is duplicated.</td>
+</tr>
+<tr>
+<td></td>
+<td>OP_EQUALVERIFY OP_CHECKSIG</td>
+<td>Top stack item is hashed.</td>
+</tr>
+<tr>
+<td></td>
+<td>OP_EQUALVERIFY OP_CHECKSIG</td>
+<td>Constant added.</td>
+</tr>
+<tr>
+<td></td>
+<td>OP_CHECKSIG</td>
+<td>Equality is checked between the top two stack items.</td>
+</tr>
+<tr>
+<td>true</td>
+<td>Empty.</td>
+<td>Signature is checked for top two stack items.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h4 id="Pay-to-Script-Hash">Pay-to-Script-Hash</h4>
+
+<pre><code>scriptPubKey: OP_HASH160 &lt;scriptHash&gt; OP_EQUAL 
+scriptSig: ..signatures... &lt;serialized script&gt;
+
+m-of-n multi-signature transaction:
+scriptSig: 0 &lt;sig1&gt; ... &lt;script&gt;
+script: OP_m &lt;pubKey1&gt; ... OP_n OP_CHECKMULTISIG
+</code></pre>
+
+<p>P2SH addresses were created with the motivation of moving &quot;the responsibility for supplying the conditions to redeem a transaction from the sender of the funds to the redeemer. They allow the sender to fund an arbitrary transaction, no matter how complicated, using a 20-byte hash&quot;<a href="https://github.com/bitcoin/bips/blob/master/bip-0016.mediawiki#motivation">1</a>. Pay-to-Pubkey-hash addresses are similarly a 20-byte hash of the public key.</p>
+
+<p>Pay-to-script-hash provides a means for complicated transactions, unlike the Pay-to-pubkey-hash, which has a specific definition for scriptPubKey, and scriptSig. The specification places no limitations on the script, and hence absolutely any contract can be funded using these addresses.</p>
+
+<p>The scriptPubKey in the funding transaction is script which ensures that the script supplied in the redeeming transaction hashes to the script used to create the address.</p>
+
+<p>In the scriptSig above, &#39;signatures&#39; refers to any script which is sufficient to satisfy the following serialized script.</p>
+
+<p>Checking process:</p>
+
+<table>
+<thead>
+<tr>
+<th>Stack </th>
+<th>Script </th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Empty.</td>
+<td>0   OP_2    OP_3 OP_CHECKMULTISIG </td>
+<td>Only the scriptSig is used.</td>
+</tr>
+<tr>
+<td>0   OP_2    OP_3 </td>
+<td>OP_CHECKMULTISIG </td>
+<td>Constants are added to the stack.</td>
+</tr>
+<tr>
+<td>true</td>
+<td>Empty</td>
+<td>Signatures validated in the order of the keys in the script.</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>See also <a href="../BIP_0016/">BIP 0016</a></p>
+
+<h4 id="Generation">Generation</h4>
+
+<p>Generations have a single input, and this input has a &quot;<a href="../Coinbase/">coinbase</a>&quot; parameter instead of a scriptSig. The data in &quot;coinbase&quot; can be anything; it isn&#39;t used. Bitcoin puts the current compact-format <a href="../Target/">target</a> and the arbitrary-precision &quot;extraNonce&quot; number there, which increments every time the Nonce field in the <a href="../Block_hashing_algorithm/">block header</a> overflows. Outputs can be anything, but Bitcoin creates one exactly like an IP address transaction.
+The extranonce contributes to enlarge the domain for the proof of work function. Miners can easily modify nonce (4byte), timestamp and extranonce (2 to 100bytes).</p>
+
+<h3 id="general_format_.28inside_a_block.29_of_each_input_of_a_transaction_-_Txin">general format (inside a block) of each input of a transaction - Txin</h3>
+
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+<th>Size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Previous Transaction hash </td>
+<td>doubled <a>SHA256</a>-<a href="../Hash/">hashed</a>of a (previous) to-be-used transaction</td>
+<td>32 bytes</td>
+</tr>
+<tr>
+<td>Previous Txout-index</td>
+<td>non negative integer indexing an output of the to-be-used transaction</td>
+<td>4 bytes</td>
+</tr>
+<tr>
+<td>Txin-script length</td>
+<td>non negative integer <a href="../Protocol_specification/#Variable_length_integer">VI = VarInt</a></td>
+<td>1 - 9 bytes</td>
+</tr>
+<tr>
+<td>Txin-script / scriptSig</td>
+<td><a href="../Script/">Script</a></td>
+<td>-many bytes</td>
+</tr>
+<tr>
+<td>sequence_no</td>
+<td>normally 0xFFFFFFFF; irrelevant unless transaction&#39;s lock_time is &gt; 0</td>
+<td>4 bytes</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>The input sufficiently describes where and how to get the bitcoin amout to be redeemed.
+If it is the (only) input of the first transaction of a block, it is called the generation transaction input and its content completely ignored. (Historically the Previous Transaction hash is 0 and the Previous Txout-index is -1.)</p>
+
+<h3 id="general_format_.28inside_a_block.29_of_each_output_of_a_transaction_-_Txout">general format (inside a block) of each output of a transaction - Txout</h3>
+
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+<th>Size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>value</td>
+<td>non negative integer giving the number of <a href="../FAQ/#What_do_I_call_the_various_denominations_of_bitcoins.3F">Satoshis(BTC/10<sup>8</sup>)</a>to be transfered</td>
+<td>8 bytes</td>
+</tr>
+<tr>
+<td>Txout-script length</td>
+<td>non negative integer</td>
+<td>1 - 9 bytes <a href="../Protocol_specification/#Variable_length_integer">VI = VarInt</a></td>
+</tr>
+<tr>
+<td>Txout-script / scriptPubKey</td>
+<td><a href="../Script/">Script</a></td>
+<td>-many bytes</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>The output sets the conditions to release this bitcoin amount later. The sum of the output values of the first transaction is the value of the mined bitcoins for the block plus possible transactions fees of the other transactions in the block.</p>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../Script/">Script</a></li>
+<li><a href="../Protocol_rules/#tx_messages">Protocol rules - &quot;tx&quot; messages</a></li>
+<li><a href="../Protocol_documentation/#Transaction_Verification">Protocol documentation - Transaction Verification</a></li>
+<li><a href="../Raw_Transactions/">Raw Transactions</a></li>
+<li><a href="../Transaction_Malleability/">Transaction Malleability</a></li>
+<li><a href="https://coinb.in/#newTransaction">coinb.in&#39;s</a> raw transaction tool</li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+<a href="../tags/Vocabulary/" rel="tag">Vocabulary</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../2009/">2009</a>
+
+<a href="../Address/">Address</a>
+
+<a href="../Block_chain/">Block chain</a>
+
+<a href="../Block_chain_browser/">Block chain browser</a>
+
+<a href="../Coinbase/">Coinbase</a>
+
+<a href="../Contract/">Contract</a>
+
+<a href="../Controlled_supply/">Controlled supply</a>
+
+<a href="../Empty_block/">Empty block</a>
+
+<a href="../How_bitcoin_works/">How bitcoin works</a>
+
+<a href="../July_2015_flood_attack/">July 2015 flood attack</a>
+
+
+<span class="popup">...
+<span class="balloon">
+
+<a href="../List_of_address_prefixes/">List of address prefixes</a>
+
+<a href="../Multisignature/">Multisignature</a>
+
+<a href="../Protocol_rules/">Protocol rules</a>
+
+<a href="../Transaction_Malleability/">Transaction Malleability</a>
+
+<a href="../">index</a>
+
+</span>
+</span>
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-06-07T14:24:02Z">Tue 07 Jun 2016 02:24:02 PM Europe</time>
+<!-- Created <time datetime="2010-12-19T21:58:10Z" pubdate="pubdate">Sun 19 Dec 2010 09:58:10 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

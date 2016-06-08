@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>talk</title>
+
+<link rel="stylesheet" href="../../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../../">bitcoin</a>/ 
+
+<a href="../">Block</a>/ 
+
+</span>
+<span class="title">
+talk
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<h2 id="Proposed_FAQ_question_and_answer">Proposed FAQ question and answer</h2>
+
+<h4 id="Won.27t_the_reward_be_too_small.3F">Won&#39;t the reward be too small?</h4>
+
+<p>As the reward shrinks, it may become unprofitable for anyone to create a new block, but as indicated above, the difficulty of the math problem is adjusted every two weeks in order to maintain the rate at which blocks are created.  Since it takes about four years to generate the 210,000 blocks and their corresponding bitcoin rewards, it is virtually impossible to ever get to 21 million.  At any point in time, it will take about four years to get <strong>halfway</strong> from the number of bitcoin currently in existence to the 21 million count.  It&#39;s an unreachable goal, barring a kind of catastrophically destructive cooperation between all bitcoin miners that is untenable.</p>
+
+<p>Only, I don&#39;t know if my understanding is correct. <a>Dscotese</a> 19:04, 29 May 2012 (GMT)</p>
+
+<h2 id="Each_block_contains_all_recent_transactions.2C_a_nonce_.28random_number.29.2C_and_the_hash_of_the_previous_block.">Each block contains all recent transactions, a nonce (random number), and the hash of the previous block.</h2>
+
+<p>The nonce is a seed that starts at zero and is incremented until the block hashes below the target.
+Hence, it should not be called &quot;random&quot;.</p>
+
+<h2 id="What_if_I.27m_1.25_towards_calculating_a_block_and....3F">What if I&#39;m 1% towards calculating a block and...?</h2>
+
+<p>&quot;There&#39;s no such thing as being 1% towards solving a block. You don&#39;t make progress towards solving it.&quot;</p>
+
+<p>Is this true?  I don&#39;t know if there&#39;s a nonce which will solve any given block, but for a block that is solvable, it&#39;s possible to be 1% of the way towards finding it.  Supposing it takes 10 million attempts to &#39;solve&#39; a block, then after 100,000 attempts you could say you were 1% towards solving it.  You&#39;re certainly closer to solving it than you were before those 100,000 failed attempts, aren&#39;t you? <a>Dooglus</a> 05:05, 15 January 2011 (GMT)</p>
+
+<blockquote><p>No one can know how many tries it will take to solve the block. After the fact you might say that at some point you had finished 1% of the necessary calculation for that block, but this was not really &quot;progress&quot;.</p>
+
+<p>If you go back in time after completing a block and don&#39;t generate for one of the days that you did originally, then you could actually end up getting the block <em>sooner</em>, as the work required is random. <a>theymos</a> 11:06, 15 January 2011 (GMT)</p></blockquote>
+
+<p>Probabilistically speaking, one can make a &quot;best guess&quot; for how long it will take to solve a block. A problem with probabilistic estimation, for example, is that it may say it will take 10 hours to solve the block, with a standard deviation of 15 hours. How much more work do you have when you&#39;ve worked on it for 10 hours? The answer is that you have ~10 hours more work :).</p>
+
+<p>But assuming all incorrect hashes are exhausted first, the maximal number of tries needed to solve the block is ~2<sup>256</sup>. So, there exists an upper limit (albeit, it is an obscenely large one!) on the amount of work you can do. Progress is made, just very slowly. --<a>Dlo</a> 20:28, 11 April 2011 (GMT)</p>
+
+<blockquote><p>That&#39;s not the maximum. You can&#39;t predict the hash outcome, so you could try forever and still get values above the target. You&#39;d get repeat hash values from the same input. <a>theymos</a> 03:47, 18 April 2011 (GMT)
+I can predict the hash outcome by calculating SHA-256 with my mighty x86 processor. :) IMO &quot;predicting&quot; is irrelevant here. Dlo is assuming that the hash function is injective, therefore the number of incomes (giving outcome above the target) &lt;= 2<sup>256</sup>. But the hash function is not injective (by the cardinality argument: the set of incomes is infinite and the set of outcomes is finite). --<a>Shrewdwatson</a> 13:49, 23 April 2011 (GMT)</p></blockquote>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../">Block</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2014-08-15T00:32:27Z">Fri 15 Aug 2014 12:32:27 AM Europe</time>
+<!-- Created <time datetime="2011-01-15T05:05:40Z" pubdate="pubdate">Sat 15 Jan 2011 05:05:40 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

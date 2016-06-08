@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>How to set up a secure offline savings wallet</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+How to set up a secure offline savings wallet
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<h2 id="Why_Set_up_an_Offline_Savings_Wallet.3F">Why Set up an Offline Savings Wallet?</h2>
+
+<p>Modern operating systems are getting more and more complex. The flip side of all this complexity is that they generally have a large <a href="http://en.wikipedia.org/wiki/Attack_surface">attack surface</a> and constantly leak information without the user&rsquo;s knowledge or consent.  No matter how many precautions you take, your <a href="../Wallet/">wallet</a>s will never be 100% safe on a computer that is connected to the internet.
+Because bitcoins are stored directly on your computer and because they are real money, the motivation for sophisticated and targeted attacks against your system is higher than in the pre-bitcoin era, when only large organizations normally had to worry about such attacks.</p>
+
+<p>The bitcoin ecosystem is still very young and unfortunately not many user friendly and highly secure wallets have been developed yet.
+Today these two ways are best to secure your bitcoins against theft:</p>
+
+<ol>
+<li><p>using a <a href="../Hardware_wallet/">hardware wallet</a> such as <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=TREZOR&amp;from=How_to_set_up_a_secure_offline_savings_wallet" rel="nofollow">?</a>TREZOR</span> that has basically two functions - it keeps your bitcoins in an offline storage and when connected to a computer, it enables a highly secure way of spending as well (immune to viruses, hackers and keyloggers).</p></li>
+<li><p>creating an offline <a href="../Cold_storage/">cold storage</a> which is useful for storing bitcoins, but has its limitations and security risks when you decide to spend the coins</p></li>
+</ol>
+
+
+<p>This guide will instruct you on how to create an offline wallet, a wallet that never even touches the internet in its plaintext form. This security measure is also referred to as being an air gap.  For all practical purposes, this wallet is safe from all online threats, such as viruses and hackers. It is however still exposed to offline threats, such as <a href="http://en.wikipedia.org/wiki/Hardware_keylogger">hardware keyloggers</a>, extortion, or people looking over your shoulder.</p>
+
+<p>The below procedure may seem tedious, but remember that security almost always comes at the cost of convenience.  When you deposit money at a bank, you let them worry about security.  Bitcoins, however, are stored on <strong>your</strong> computer and that means <strong>you</strong> are fully responsible for securing them.</p>
+
+<h2 id="How_to_Deposit_Funds">How to Deposit Funds</h2>
+
+<ol>
+<li>Sign up for a few different cloud drive accounts such as Dropbox or Google drive.</li>
+<li>Create a strong and unique passphrase offline (manually).  This passphrase should be TRUELY random. <a href="http://world.std.com/~reinhold/diceware.html">Diceware</a> is a good way of generating the passphrase.  It should be at least 12 words long.</li>
+<li>Never use this passphrase elsewhere, especially not on the web.</li>
+<li><strong>Do not forget this passphrase</strong>. Recite it several times a day.  It is easy to overestimate your ability to remember a passphrase several months in the future. To be on the safe side, write it down and store the piece of paper in a safe deposit box.</li>
+<li>Download <a href="https://bitcoin.org/en/download">Bitcoin-Core Linux binary</a> and save it on a USB drive.</li>
+<li><strong>Verify</strong> the software&#39;s release signatures from an alternative device and internet connection (eg. your smartphone). This makes sure you are not using a malicious program that poses as the bona fide bitcoin-core client.</li>
+<li>Shut down your computer, and boot <a href="http://www.ubuntu.com/">Ubuntu</a> (or Linux distribution of you choice) from a <a href="http://www.ubuntu.com/download/ubuntu/download">liveCD</a>. This will not affect your current operating system.</li>
+<li><strong>Disconnect machine from the internet</strong>. Unplug any network cables and disable wireless. Verify that wireless is disabled in the icon on the upper right corner (Ubuntu).  Double check that machine is disconnected by opening the web browser.</li>
+<li>Run bitcoin while disconnected to the internet. The client will show 0 connections and 0 blocks, but it will still generate a wallet.dat file and a bitcoin address.</li>
+<li>Encrypt your wallet using the strong and unique password from step 2 above. (Bitcoin Client &gt; Settings &gt; Encrypt wallet)</li>
+<li>Copy wallet.dat (found in hidden folder .bitcoin in your home directory) to USB drive.</li>
+<li>Save bitcoin address to a text file and copy it to USB drive.</li>
+<li>Shut down system and turn off computer.  Before switching your computer on again, remove all power sources for about 1 minute. Physically remove battery from laptop.</li>
+<li>Backup encrypted wallet.dat file in several places:</li>
+<li>*Send it to your 5 best friends by email attachment and ask them to save it for you.</li>
+<li>*Save it on your cloud drive accounts created in step 1.</li>
+<li>*Save it on several USB drives and CDs and store them in different geographic locations.</li>
+<li>Send bitcoins to the address saved on the USB drive.  Double check in the <span class="createlink"><a href="/ikiwiki.cgi?from=How_to_set_up_a_secure_offline_savings_wallet&amp;do=create&amp;page=Bitcoin_Block_Explorer" rel="nofollow">?</a>block explorer</span> that they have been sent or you can add Watch Bitcoin Address in <a href="https://blockchain.info/wallet/">BlockChain Wallet</a>.</li>
+</ol>
+
+
+<h2 id="How_to_Retrieve_Funds">How to Retrieve Funds</h2>
+
+<ol>
+<li>Boot from Ubuntu liveCD, as in step 5 above.</li>
+<li>Insert USB drive.</li>
+<li>Run bitcoin client and close it again.</li>
+<li>Replace wallet.dat in ~/.bitcoin directory with wallet.dat from USB drive.</li>
+<li>Connect to the internet.</li>
+<li>Restart bitcoin client.</li>
+<li>Wait for blocks to download (optional).</li>
+<li>Send bitcoins.</li>
+</ol>
+
+
+<h2 id="How_to_Setup_Watch_Bitcoin_Address">How to Setup Watch Bitcoin Address</h2>
+
+<p>Watch Bitcoin address is a way for you to check your cold storage balance online without exposing your private key.</p>
+
+<ol>
+<li>Create an wallet account at https://blockchain.info/wallet/</li>
+<li>Go to import/export.</li>
+<li>At &quot;Add Watch Only Bitcoin Address&quot;, add your bitcoin address.</li>
+<li>Wait for the balance to synch.</li>
+<li>You can also download the mobile version at <a href="https://play.google.com/store/apps/details?id=piuk.blockchain.android">Google Play</a>, <a href="https://itunes.apple.com/us/app/blockchain-bitcoin-wallet/id493253309?mt=8">Apple Store</a></li>
+</ol>
+
+
+<h2 id="Notes">Notes</h2>
+
+<ul>
+<li><p>This procedure is only secure if you perform steps 1-15 in this <strong>exact order</strong>.</p></li>
+<li><p>If you&#39;re a non-technical user that can&#39;t perform the steps above, use an <a href="../Paper_wallet/">in-browser paper wallet generator</a> to create paper wallets (read below for more caveats and info).</p></li>
+<li><p>Perform one or two trial runs of the above procedure with a few bitcents, and make sure that you know how to successfully retrieve them, before making a bulk transfer.</p></li>
+<li><p>Every time you retrieve bitcoins from your savings wallet, create a fresh savings wallet by repeating the above procedure, and send all your remaining savings balance there.</p></li>
+<li><p>There is more than one way to do it. Similar procedures have been suggested on the forums <a href="http://forum.bitcoin.org/index.php?topic=17240.0">here</a> and <a href="http://forum.bitcoin.org/?topic=5194.0">here</a>.</p></li>
+<li><p>Beware that even savings wallets have limited lifetimes. New, backwards incompatible versions of bitcoin might come out in future, <a href="http://en.wikipedia.org/wiki/Advanced_Encryption_Standard">AES</a> might be broken, <a href="http://en.wikipedia.org/wiki/Bit_rot">bit rot</a> might destroy your wallets, etc. Pay attention to updates in the Bitcoin world and update to fresh savings wallets every couple of years, or as needed.</p></li>
+<li><p>See <a href="../How_to_import_private_keys/">How to import private keys</a> for an alternative way of retrieve your coins.</p></li>
+</ul>
+
+
+<h2 id="Alternatives">Alternatives</h2>
+
+<p><em><em>**<a href="../Paper_wallet/">Paper wallets</a> can also be used to create offline bitcoin savings accounts. While paper wallets are much easier to generate, they are not generally encrypted which means you cannot guard against accidental loss by distributing copies to online services and friends. Instead, paper wallets must be kept safe like jewels or cash. Looking forward, support for <a href="../BIP_0038/">BIP-38</a> encryption is growing fast and it is expected that paper wallet generators will soon include options for generating </em>encrypted paper wallets</em> that can be duplicated and widely distributed for safekeeping.</p>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../Cold_storage/">Cold storage</a></li>
+<li><a href="http://codinginmysleep.com/bitcoin-cold-storage-in-plain-english">Bitcoin Cold Storage In Plain English</a> by David Perry</li>
+<li><a href="https://www.youtube.com/watch?v=DQumISxkJsQ">Electrum offline transactions tutorial</a></li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Instructional/" rel="tag">Instructional</a>
+
+<a href="../tags/Security/" rel="tag">Security</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Cold_storage/">Cold storage</a>
+
+<a href="../Myths/">Myths</a>
+
+<a href="../Securing_your_wallet/">Securing your wallet</a>
+
+<a href="../Wallet_Security_Dos_and_Donts_(general)/">Wallet Security Dos and Donts (general)</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-11-04T00:40:46Z">Wed 04 Nov 2015 12:40:46 AM Europe</time>
+<!-- Created <time datetime="2011-06-29T13:18:02Z" pubdate="pubdate">Wed 29 Jun 2011 01:18:02 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

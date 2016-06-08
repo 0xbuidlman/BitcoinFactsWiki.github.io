@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>talk</title>
+
+<link rel="stylesheet" href="../../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../../">bitcoin</a>/ 
+
+<a href="../">Proof of blockchain fair sharing</a>/ 
+
+</span>
+<span class="title">
+talk
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<h2 id="Work-fee-since-checkpoint_as_chain_weight_metric">Work-fee-since-checkpoint as chain weight metric</h2>
+
+<p>How about the following implementation.  Everything stays the same as current Bitcoin except the definition of best chain.  Instead of total chain work as defined by</p>
+
+<pre><code>SUM(difficulty&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=i&amp;amp;do=create&amp;amp;from=Proof_of_blockchain_fair_sharing%2Ftalk&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;i&lt;/span&gt;)
+</code></pre>
+
+<p>over all blocks <em>i</em> in the chain, we define chain weight as <em>work-fee since checkpoint</em>:</p>
+
+<pre><code>SUM(fee&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=j&amp;amp;do=create&amp;amp;from=Proof_of_blockchain_fair_sharing%2Ftalk&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;j&lt;/span&gt;*difficulty&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Proof_of_blockchain_fair_sharing%2Ftalk&amp;amp;page=i&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;i&lt;/span&gt;)
+</code></pre>
+
+<p>Here, <em>j</em> ranges over all fee-bearing transactions in a given branch <strong>since the last checkpoint,</strong> and <em>i</em> ranges over all valid blocks that contain transaction <em>j,</em> directly or through an ancestor, <strong>including orphaned blocks.</strong>  Checkpoints may be specified by administrative fiat, by a central authority (as currently), or by one of the proposed proof-of-stake checkpointing schemes, so long as one can disregard questionable checkpoints when one notices an attack in progress.</p>
+
+<p>Network disagreement over checkpoints and varying knowledge of orphaned blocks will eventually work itself out, I think, faster and more automatically than under current conditions (which rely on manual intervention to develop and patch the block-acceptance algorithm in reaction to attacks).  Note that even the original client allows some ambiguity in best-chain selection: when blocks of equal chain-work compete, it prefers the first received.  The new formula yields practically the same result in the absence of 51% attacks and network partitions.  Each new block adds weight in proportion to its difficulty.  The fee component usually affects only contests between blocks of equal height, in which case it rewards transaction inclusion.</p>
+
+<p>For simplicity, assume that we have abolished the block-size limit.  A typical chain under 90% attack will have a side chain about every ninth block.  Side chains occasionally grow longer than one block, but typically, the <em>first</em> block in a side chain contains all the excluded transactions from previous side chains since the attack began.  Eventually, each such first block will outweigh nine (or any number) of the attacker&#39;s blocks.  Excluded transactions will have multiple confirmations with increasing frequency.  Only during periods of high attacker luck will they revert to unconfirmed, and such events will occur with decreasing frequency over time.  Merchants might reasonably begin to count orphaned blocks as contributing something to the number of transaction confirmations.</p>
+
+<p>How soon will one honest block weigh the same as nine of the attacker&#39;s blocks?  It depends on the checkpoint freshness and the proportion of transaction fees excluded by the attacker.  In the happy case where the last checkpoint immediately precedes the attack, my calculations show an approximate upper bound of</p>
+
+<pre><code>2 * (A/H)^3 * (I/E)
+</code></pre>
+
+<p>blocks, where <em>A</em> is the attacker strength, <em>H</em> is the honest network strength, <em>I</em> is the average fees <em>included</em> by the attacker, per block, and <em>E</em> is the average available new transaction fees <em>excluded</em> (foregone) by the attacker, per block.  For example, an attacker with 90% trying to exclude 40% of transactions (weighted by fee) can succeed for</p>
+
+<pre><code>2 * (0.9/0.1)^3 * (0.6/0.4) =~ 2200 blocks
+</code></pre>
+
+<p>A 70% attacker can exclude 10% of transaction fees for</p>
+
+<pre><code>2 * (0.7/0.3)^3 * (0.9/0.1) =~ 230 blocks
+</code></pre>
+
+<p>The more draconian the attacker, the shorter the attack.  An attacker with 90% who tries to exclude 90% of transaction fees will fail after</p>
+
+<pre><code>2 * (0.9/0.1)^3 * (0.1/0.9) =~ 162 blocks
+</code></pre>
+
+<p>In simulated attacks, the time is less; my calculations are rough.  If the checkpoint is far in the past, it takes longer, but the eventual result is the same: the honest network creates ever-longer side chains.  Indeed, if the checkpoint is well placed and</p>
+
+<pre><code>A*I &lt; H * (I+E)
+</code></pre>
+
+<p>the attacker&#39;s advantage is nullified, and the honest network wins without intervention.  Otherwise, the lead keeps going back and forth, with ever longer honest branches, until the honest participants agree on a checkpoint that decides the contest in their favour.</p>
+
+<p>Corollaries:</p>
+
+<ul>
+<li>Orphaned block hashes are no longer wasted but protect the network.</li>
+<li>Transaction fees protect the network in a new, more direct way.</li>
+<li>Good citizens may be able to fight an attack by submitting fee-bearing transactions that the attacker would exclude, increasing <em>E.</em></li>
+<li>Conversely, an attacker submitting self-transactions to increase <em>I</em> would put those fees at risk of capture by the (eventually victorious) honest network.</li>
+<li>Keeping up-to-date on checkpoints protects users by speeding up the resolution of this kind of attack.</li>
+<li>Intuitively, the chain weight formula rewards <strong>confirmation of fee-bearing transactions</strong> as opposed to simply &quot;work&quot;.</li>
+<li>This change does not affect block acceptance criteria, so it is arguably not a hard fork or a mandatory upgrade.  However, it works best with unlimited block size, at least as regards fee-bearing transactions.</li>
+<li>This formula works best when transaction fees dominate block-generation rewards.  The attacker keeps its generated coins even after giving up.  Thus, block-generation rewards still encourage miners to join the attack.</li>
+</ul>
+
+
+<p>Here is the C program I used to simluate attacks:</p>
+
+<pre><code>&lt;nowiki&gt;// Public domain.
+</code></pre>
+
+<h1>include &lt;stdio.h&gt;</h1>
+
+<h1>include &lt;stdlib.h&gt;</h1>
+
+<p>static int
+usage ()
+{
+  printf (&quot;Usage: wfscp [ATTACKER_SHARE [INCLUSION_RATE [TX_PER_BLOCK [CP_AGE [BLOCKS_PER_ITER [ITERS [RANDOM_SEED]]]]]]]\n&quot;);
+  printf (&quot;Simulate work-fee-since-checkpoint under attack by an entity\n&quot;);
+  printf (&quot;controlling ATTACKER_SHARE%% (between 0 and 100) of hash power\n&quot;);
+  printf (&quot;and seeking to include only INCLUSION_RATE%% (0 to 100) of\n&quot;);
+  printf (&quot;transactions (weighted by fee).\n&quot;);
+  printf (&quot;Run ITERS simulations, each lasting BLOCKS_PER_ITER blocks.\n&quot;);
+  printf (&quot;TX_PER_BLOCK is the rate of fee-bearing transactions per block, pre-attack.\n&quot;);
+  printf (&quot;CP_AGE is the difference in height between the last pre-attack\n&quot;);
+  printf (&quot;block and the last checkpoint.\n&quot;);
+  printf (&quot;The integer RANDOM_SEED initializes the random number stream.\n&quot;);
+  printf (&quot;For simplicity, all transactions are assumed to carry a fee of 1 unit.\n&quot;);
+  printf (&quot;For simplicity, difficulty is assumed constant.\n&quot;);
+  return 0;
+}</p>
+
+<p>static void
+wfscp (double attacker_share, double inclusion_rate, double avg_tx_per_block,
+       unsigned int checkpoint_age, unsigned int blocks_per_iter,
+       unsigned int iters)
+{
+  unsigned int iter = 0;
+  double sum_reorgs = 0.0;
+  unsigned int count_honest_ahead = 0;
+  double sum_honest_lead = 0.0;
+  double sum_max_lead = 0.0;</p>
+
+<p>  printf (&quot;attacker share: %f%%\n&quot;, 100.0 * attacker_share);
+  printf (&quot;attacker transaction inclusion rate: %f%%\n&quot;, 100.0 * inclusion_rate);
+  printf (&quot;average fee-bearing transactions per block: %f\n&quot;, avg_tx_per_block);
+  printf (&quot;checkpoint age in blocks: %u\n&quot;, checkpoint_age);
+  printf (&quot;blocks per run: %u\n&quot;, blocks_per_iter);</p>
+
+<p>  for (;; iter++)
+    {
+      unsigned int attacker_blocks = 0, honest_blocks = 0;
+      double attacker_weight = checkpoint_age * (checkpoint_age + 1) * avg_tx_per_block / 2;
+      double honest_weight = attacker_weight;
+      double excluded_weight = 0.0;
+      double included_tx = checkpoint_age * avg_tx_per_block, excluded_tx = 0.0;
+      unsigned int honest_lead = 0;
+      unsigned int max_lead = 0;
+      unsigned int reorgs = 0;</p>
+
+<pre><code>  if (iter &gt; 0)
+    {
+      printf (&quot;\r%u run avg: %.3f reorgs, honest lead %.3f, max lead %.3f, honest %.1f%%   &quot;,
+              iter, sum_reorgs / iter, sum_honest_lead / iter,
+              sum_max_lead / iter, count_honest_ahead * 100.0 / iter);
+      fflush (stdout);
+    }
+  if (iter &gt;= iters)
+    {
+      break;
+    }
+
+  for (; attacker_blocks + honest_blocks &lt; blocks_per_iter;)
+    {
+      double r = drand48 () * (avg_tx_per_block + 1.0);
+
+      if (r &lt; attacker_share)
+        {
+          // Attacker extends the last attacker block.
+          attacker_blocks++;
+
+          // New weight is the parent block&#39;s weight
+          // (attacker_weight) plus SUM(fee[j]) over included
+          // transactions.  Difficulty assumed constant 1.0.
+          attacker_weight += included_tx;
+
+          if (honest_lead &gt; 0 &amp;&amp; attacker_weight &gt; honest_weight)
+            {
+              reorgs++;
+              honest_lead = 0;
+            }
+        }
+      else if (r &lt; 1.0)
+        {
+          // Honest miner extends the best block.
+          honest_blocks++;
+
+          if (honest_lead == 0)
+            {
+              // Extending attacker&#39;s block.
+              // New weight is the parent block&#39;s value (attacker_weight)
+              // plus one for each time an excluded fee has occurred in
+              // an orphaned, honest block (excluded_weight),
+              // plus the sum of current fees (included_tx + excluded_tx).
+              honest_weight = attacker_weight + excluded_weight
+                + included_tx + excluded_tx;
+            }
+          else
+            {
+              // Extending an honest block.
+              // Weight adds just current fees.
+              honest_weight += included_tx + excluded_tx;
+            }
+
+          excluded_weight += excluded_tx;
+          honest_lead += 1;
+          if (honest_lead &gt; max_lead)
+            {
+              max_lead = honest_lead;
+            }
+        }
+      else if (r &lt; inclusion_rate * avg_tx_per_block + 1.0)
+        {
+          included_tx += 1.0;
+        }
+      else
+        {
+          excluded_tx += 1.0;
+        }
+    }
+  sum_reorgs += reorgs;
+  count_honest_ahead += (honest_lead &gt; 0 ? 1 : 0);
+  sum_honest_lead += honest_lead;
+  sum_max_lead += max_lead;
+}
+</code></pre>
+
+<p>  printf (&quot;\n&quot;);
+}</p>
+
+<p>int
+main (int argc, char** argv)
+{
+  double attacker_share = 0.7;
+  double inclusion_rate = 0.5;
+  double avg_tx_per_block = 200.0;
+  unsigned int checkpoint_age = 0;
+  unsigned int blocks_per_iter = 1000;
+  unsigned int iters = 1000;</p>
+
+<p>  if (argc &gt; 1 &amp;&amp; argv[1][0]) attacker_share = atof (argv[1]) / 100.0;
+  if (attacker_share == 0.0) return usage ();
+  if (argc &gt; 2 &amp;&amp; argv[2][0]) inclusion_rate = atof (argv[2]) / 100.0;
+  if (argc &gt; 3 &amp;&amp; argv[3][0]) avg_tx_per_block = atof (argv[3]);
+  if (argc &gt; 4 &amp;&amp; argv[4][0]) checkpoint_age = atoi (argv[4]);
+  if (argc &gt; 5 &amp;&amp; argv[5][0]) blocks_per_iter = atoi (argv[5]);
+  if (argc &gt; 6 &amp;&amp; argv[6][0]) iters = atoi (argv[6]);
+  if (argc &gt; 7 &amp;&amp; argv[7][0]) srand48 (atol (argv[7]));</p>
+
+<p>  wfscp (attacker_share, inclusion_rate, avg_tx_per_block, checkpoint_age,
+         blocks_per_iter, iters);</p>
+
+<p>  return 0;
+}
+</p>
+
+<p>Here is an example run where the attacker generates 90% of blocks and seeks to exclude 40% of transactions (inclusion rate 60%).  A checkpoint occurs (or is placed during the attack) at the start of the attack.  The simulation lasts 2200 blocks and repeats 1000 times:</p>
+
+<pre><code>$ ./wfscp 90 60 100 0 2200 1000 0
+attacker share: 90.000000%
+attacker transaction inclusion rate: 60.000000%
+average fee-bearing transactions per block: 100.000000
+checkpoint age in blocks: 0
+blocks per run: 2200
+1000 run avg: 49.980 reorgs, honest lead 5.608, max lead 15.016, honest 89.6%
+</code></pre>
+
+<p>The result: The attacker caused a reorg (sending all disapproved transactions back to the memory pool) on average 50 times in 2200 blocks.  At the end of those 2200 blocks, on average there were 5.6 honest blocks at the end of the longest chain.  In 89.6% of the runs, the 2200th block was honest.  Based on the simulation, one expects to see a longest string of 15.0 honest blocks somewhere among the 2200 blocks.  Running to 10 thousand blocks, we get:</p>
+
+<pre><code>$ ./wfscp 90 60 100 0 10000 1000 0
+...same as above...
+blocks per run: 10000
+1000 run avg: 82.755 reorgs, honest lead 21.567, max lead 50.008, honest 97.3%
+</code></pre>
+
+<p>Here, our 90% attacker has to wait up to 50 blocks between times when it has the lead.  The last 7800 blocks see only about 33 reorgs, compared to 50 in the first 2200.  Of course, 90% is a pretty strong operation, and 60% compliance with the Gum Mint&#39;s registration requirement seems rather high.  If the attack had only 70% power and 20% compliance, it would satisfy the constraint mentioned above, namely:</p>
+
+<pre><code>A   * I   &lt; H   * (I+E)
+0.7 * 0.2 &lt; 0.3 * 1
+</code></pre>
+
+<p>After just 100 blocks, it would be essentially over:</p>
+
+<pre><code>./wfscp 70 20 100 0 100 1000 0
+attacker share: 70.000000%
+attacker transaction inclusion rate: 20.000000%
+average fee-bearing transactions per block: 100.000000
+checkpoint age in blocks: 0
+blocks per run: 100
+1000 run avg: 0.898 reorgs, honest lead 27.927, max lead 28.004, honest 100.0%
+</code></pre>
+
+<p>Note here that the theoretical maxium (average) honest lead is 30 (30% power over 100 blocks) and so 27.9 indicates very few honest blocks lost in the attack.  On the other hand, if we start with a month-old (4400-block) checkpoint, recovery is slower, but still well in hand by 10 thousand blocks:</p>
+
+<pre><code>./wfscp 70 20 100 4400 10000 1000 0
+attacker share: 70.000000%
+attacker transaction inclusion rate: 20.000000%
+average fee-bearing transactions per block: 100.000000
+checkpoint age in blocks: 4400
+blocks per run: 10000
+1000 run avg: 67.015 reorgs, honest lead 1026.510, max lead 1205.691, honest 100.0%
+</code></pre>
+
+<p>Until now, I have ignored difficulty adjustments.  To the extent that changing difficulty affects these scenarios, it will permit relatively faster extension of honest branches, since the honest network has less hashing power than the attacker.  This benefit is limited, but not entirely negated, by the weighting of difficulty in the chain-selection formula.</p>
+
+<p><a>JohnTobey253</a> (<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=User_talk%3AJohnTobey253&amp;from=Proof_of_blockchain_fair_sharing%2Ftalk" rel="nofollow">?</a>talk</span>) 23:38, 2 May 2013 (GMT)</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../">Proof of blockchain fair sharing</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2013-05-06T18:19:27Z">Mon 06 May 2013 06:19:27 PM Europe</time>
+<!-- Created <time datetime="2013-05-02T17:52:48Z" pubdate="pubdate">Thu 02 May 2013 05:52:48 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

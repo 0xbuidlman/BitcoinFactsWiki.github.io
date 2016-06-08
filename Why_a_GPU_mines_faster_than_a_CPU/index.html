@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Why a GPU mines faster than a CPU</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Why a GPU mines faster than a CPU
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Why_a_GPU_mines_faster_than_a_CPU&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>Some Bitcoin users might wonder why there is a huge disparity between the mining output of a CPU versus a GPU.</p>
+
+<p>First, just to clarify, the CPU, or <em>central processing unit</em>, is the part of the computer that performs the will of the software loaded on the computer.  It&#39;s the main executive for the entire machine.  It is the master that tells all the parts of the computer what to do - in accordance with the program code of the software, and, hopefully, the will of the user.</p>
+
+<p>Most computers have multi-core CPUs nowadays (which is almost the same thing as having multiple CPU&#39;s in a single physical package)., and some computers even have multiple CPUs.</p>
+
+<p>The CPU is usually a removable component that plugs into the computer&#39;s main circuit board, or <em>motherboard</em> and sits underneath a large, metallic heat sink which usually has a fan, a few are cooled by water.</p>
+
+<p>The GPU, or <em>graphics processing unit</em>, is a part of the video rendering system of a computer. The typical function of a GPU is to assist with the rendering of 3D graphics and visual effects so that the CPU doesn&#39;t have to.</p>
+
+<p>Servers usually have very limited or no GPU facilities as they are mostly managed over a text-based remote interface. Most mainstream computers have much slower but less power consuming and cheaper IGPs (Integrated Graphics Processor), which are GPUs as well but integrated directly into the chipset and soldered onto the motherboard, rather than separate, more powerful but power consuming AGP or PCIe cards with GPUs, but separate GPUs. Powerful GPUs are needed mostly for graphic intensive tasks such as gaming or video editing. For example, the translucent windows in Windows 7, or technologies like Mac OS X&#39;s Quartz, which powers the Aqua desktop and its beautiful, water-like graphical effects and animations such as bulging the Dock in a smooth animation when the mouse is moved to the lower edge of the screen  or &quot;sucking&quot; windows into the Dock when they are minimized - these are powered by GPUs.</p>
+
+<p>A GPU is like a CPU, but there are important internal differences that make them suited toward their special tasks.  These are the differences that make Bitcoin mining far more favorable on a GPU.</p>
+
+<h2 id="Short_Answer">Short Answer</h2>
+
+<p>A  CPU core can execute <strong>4</strong> 32-bit instructions per clock (using a 128-bit SSE instruction) or <strong>8</strong> via AVX (256-Bit), whereas a GPU like the Radeon HD 5970 can execute <strong>3200</strong> 32-bit instructions per clock (using its 3200 ALUs or shaders). This is a difference of <strong>800 (or 400 in case of AVX) times more instructions per clock</strong>. As of 2011, the fastest CPUs have up to 6, 8, or 12 cores and a somewhat higher frequency clock (2000-3000 MHz vs. 725 MHz for the Radeon HD 5970), but one HD5970 is still more than five times faster than four 12-core CPUs at 2.3GHz (which would also set you back about $4700 rather than $350 for the HD5970).</p>
+
+<h2 id="A_CPU_is_an_executive">A CPU is an executive</h2>
+
+<p>A CPU is designed primarily to be an executive and make decisions, as directed by the software.  For example, if you type a document and save it, it is the CPU&#39;s job to turn your document into the appropriate file type and direct the hard disk to write it as a file.  CPU&#39;s can also do all kinds of math, as inside every CPU is one or more &quot;Arithmetic/Logic Units&quot; (ALU&#39;s).  CPU&#39;s are also highly capable of following instructions of the &quot;if this, do that, otherwise do something else&quot;.  A large bulk of the structures inside a CPU are concerned with making sure that the CPU is ready to deal with having to switch to a different task on a moment&#39;s notice when needed.</p>
+
+<p>CPU&#39;s also have to deal with quite a few other things which add complexity, including:</p>
+
+<ul>
+<li>enforcing privilege levels and the boundaries between user programs and the operating system</li>
+<li>creating the illusion of &quot;virtual memory&quot; to programs</li>
+<li>for the most popular processors, being backwards compatible with legacy code</li>
+</ul>
+
+
+<h2 id="A_GPU_is_a_laborer">A GPU is a laborer</h2>
+
+<p>A GPU is very different.  Yes, a GPU can do math, and can also do &quot;this&quot; and &quot;that&quot; based on specific conditions.  However, GPU&#39;s have been designed so they are very good at doing video processing, and less executive work.</p>
+
+<p>Video processing is a lot of repetitive work, since it is constantly being told to do the same thing to large groups of pixels on the screen.  In order to make this run efficiency, video processors are far heavier on the ability to do repetitive work, than the ability to rapidly switch tasks.</p>
+
+<p>GPU&#39;s have large numbers of ALU&#39;s, more so than CPU&#39;s.  As a result, they can do large amounts of bulky mathematical labor in a greater quantity than CPU&#39;s.</p>
+
+<h2 id="Analogy">Analogy</h2>
+
+<p>One way to visualize it is a CPU works like a small group of very smart people who can quickly do any task given to them.  A GPU is a large group of relatively dumb people who aren&#39;t individually very fast or smart, but who can be trained to do repetitive tasks, and collectively can be more productive just due to the sheer number of people.</p>
+
+<p>It&#39;s not that a CPU is fat, spoiled, or lazy.  Both CPUs and GPUs are creations made from billions of microscopic transistors crammed on a small piece of silicon.  On silicon chips, size is expensive.  The structures that make CPUs good at what they do take up lots of space.  When those structures are omitted, that leaves plenty of room for many &quot;dumb&quot; ALU&#39;s, which individually are very small.</p>
+
+<p>The ALUs of a GPU are partitioned into groups, and each group of ALUs shares management, so members of the group cannot be made to work on separate tasks.  They can either all work on nearly identical variations of one single task, in perfect sync with one another, or nothing at all.  Trying different hashes repeatedly - the process behind Bitcoin mining - is a very repetitive task suitable for a GPU, with each attempt varying only by the changing of one number (called a &quot;nonce&quot;) in the data being hashed.</p>
+
+<p>The ATI Radeon 5970 is a popular video card for Bitcoin mining and, to date, offers the best known performance of any video card for this purpose.</p>
+
+<p>This particular card has 3,200 &quot;Stream Processors&quot;, which can be thought of as 3,200 very dumb execution units that can be trained to all do the same repetitive task, just so long as they don&#39;t have to make any decisions that interrupts their flow. Those execution units are contained in blocks. The 5970 uses a VLIW-5 architecture, which means the 3,200 Stream Processors are actually 640 &quot;Cores,&quot; Each able to process 5 instruction per clock cycle. Nvidia would call these cores &quot;Cuda Cores&quot;, but as mentioned in this article, they are not VLIW, meaning they cannot do as much work per cycle. This is why comparing graphics cards by core count alone is not an accurate method of determining performance, and this is also why nVidia lags so far behind ATI in SHA-256 hashing.</p>
+
+<p>Since ALU&#39;s are what do all the work of Bitcoin mining, the number of available ALU&#39;s has a direct effect on the hash output.  Compare that to a 4-core CPU that can switch tasks on a dime, but has ALU&#39;s in some small multiple of four, if not just four ALU&#39;s alone.  Trying a single SHA256 hash in the context of Bitcoin mining requires around 1,000 simple mathematical steps that must be performed entirely by ALU&#39;s.</p>
+
+<p>That, in a nutshell, is why GPU&#39;s can mine Bitcoins so much faster than CPU&#39;s.  Bitcoin mining requires no decision making - it is repetitive mathematical work for a computer.  The only decision making that must be made in Bitcoin mining is, &quot;do I have a valid block&quot; or &quot;do I not&quot;.  That&#39;s an excellent workload to run on a GPU.</p>
+
+<h2 id="Why_are_AMD_GPUs_faster_than_Nvidia_GPUs.3F">Why are AMD GPUs faster than Nvidia GPUs?</h2>
+
+<p>Firstly, AMD designs GPUs with many simple ALUs/shaders (VLIW design) that run at a relatively low frequency clock (typically 1120-3200 ALUs at 625-900 MHz), whereas Nvidia&#39;s microarchitecture consists of fewer more complex ALUs and tries to compensate with a higher shader clock (typically 448-1024 ALUs at 1150-1544 MHz). Because of this VLIW vs. non-VLIW difference, Nvidia uses up more square millimeters of die space per ALU, hence can pack fewer of them per chip, and they hit the frequency wall sooner than AMD which prevents them from increasing the clock high enough to match or surpass AMD&#39;s performance. This translates to a raw ALU performance advantage for AMD:</p>
+
+<ul>
+<li>AMD Radeon HD 6990: 3072 ALUs x 830 MHz = 2550 billion 32-bit instruction per second</li>
+<li>Nvidia GTX 590: 1024 ALUs x 1214 MHz = 1243 billion 32-bit instruction per second
+This approximate <strong>2x-3x</strong> performance difference exists across the entire range of AMD and Nvidia GPUs. It is very visible in all ALU-bound GPGPU workloads such as Bitcoin, password bruteforcers, etc.</li>
+</ul>
+
+
+<p>Secondly, another difference favoring Bitcoin mining on AMD GPUs instead of Nvidia&#39;s is that the mining algorithm is based on SHA-256, which makes heavy use of the 32-bit integer right rotate operation. This operation can be implemented as a single hardware instruction on AMD GPUs (BIT_ALIGN_INT), but requires three separate hardware instructions to be emulated on Nvidia GPUs (2 shifts + 1 add). This alone gives AMD another <strong>1.7x</strong> performance advantage (~1900 instructions instead of ~3250 to execute the SHA-256 compression function).</p>
+
+<p>Combined together, these 2 factors make AMD GPUs overall <strong>3x-5x</strong> faster when mining Bitcoins.</p>
+
+<h2 id="NVIDIA_Releases_NEW_Generations_of_GPU_Cards">NVIDIA Releases NEW Generations of GPU Cards</h2>
+
+<p>NVIDIA&#39;s new flagship card &quot;GeForce GTX 690&quot; is now beefier than it&#39;s younger sibling - GTX 590. EVGA has also decided to use the same chipset on its flagship card &quot;EVGA GeForce GTX 690 Signature&quot;. But what are the comparitive figures for the AMD and new NVIDIA GPU&#39;s ?
+See Some Performance Specs Below:</p>
+
+<h2 id="GeForce_GTX_690_.284.2C096MB.29.3A">GeForce GTX 690 (4,096MB):</h2>
+
+<p>GPU Clock (MHz) 915 (1,019),<br />
+GFLOPS 5,621 Single Precision,<br />
+Double Precision Figures unavailable,
+ALU&#39;s 3072 (manufacturer refer to this as CUDA Cores)</p>
+
+<h2 id="AMD_Radeon_HD_6990.3A">AMD Radeon HD 6990:</h2>
+
+<p>830MHz Engine Clock,
+5,100 GFLOPs Single Precision ,
+1,270 GFLOPs Double Precision,
+ALU&#39;s 3072</p>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../Mining_Hardware_Comparison/">Mining hardware comparison</a></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=tags%2FMiners&amp;from=Why_a_GPU_mines_faster_than_a_CPU" rel="nofollow">?</a>Miners</span></li>
+<li><a href="../tags/Pool_Operators/">Pool Operators</a></li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Mining/" rel="tag">Mining</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../ASIC/">ASIC</a>
+
+<a href="../Mining/">Mining</a>
+
+<a href="../Pooled_mining/">Pooled mining</a>
+
+<a href="../tags/Pool_Operators/">tags/Pool Operators</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2013-01-08T16:05:27Z">Tue 08 Jan 2013 04:05:27 PM Europe</time>
+<!-- Created <time datetime="2011-02-24T03:14:20Z" pubdate="pubdate">Thu 24 Feb 2011 03:14:20 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

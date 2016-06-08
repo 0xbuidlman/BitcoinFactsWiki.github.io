@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>M of 2 DRAFT</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+M of 2 DRAFT
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<pre>
+  BIP: Unassigned
+  Title: M-of-2 scriptPubKey
+  Author: Ben Reeves 
+  Status: Draft
+  Type: Unassigned
+  Created: 15-01-2012
+</pre>
+
+
+<h2 id="Abstract">Abstract</h2>
+
+<p>This BIP describes a new standard type of scriptPubKey designed to allow immediate use of split key wallets.</p>
+
+<h2 id="Motivation">Motivation</h2>
+
+<p>The purpose of this proposal is to provide split key wallet functionality without requiring changes to block validation rules or risking a fork in the blockchain.</p>
+
+<h2 id="Specification">Specification</h2>
+
+<p>A new standard scriptPubKey will be defined:</p>
+
+<pre><code>OP_2OVER OP_2OVER OP_ADD OP_HASH256 OP_ADD OP_HASH256 OP_ADD OP_RIPEMD160 &lt;scriptHash&gt; OP_EQUALVERIFY OP_CHECKMULTISIG
+</code></pre>
+
+<p>Redeemed by a new standard scriptSig</p>
+
+<pre><code>OP_0  &lt;sig&gt; 1 &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=M_of_2_DRAFT&amp;amp;page=pubkey&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;pubkey&lt;/span&gt; &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=pubkey&amp;amp;do=create&amp;amp;from=M_of_2_DRAFT&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;pubkey&lt;/span&gt; 2
+</code></pre>
+
+<p>This proposal only supports A + B or A or B split key transactions.</p>
+
+<h2 id="Use_Cases">Use Cases</h2>
+
+<ul>
+<li><p>Split key wallets</p></li>
+<li><p>Escrow Services - The author does not believe that (A + B) or C scripts are required for escrow transactions. Both parties must trust the holder of C anyway so that party can instead hold both A and B. The holders of A and B can either reach an agreement themselves or party C can act as the final arbitrator using A and B together.</p></li>
+</ul>
+
+
+<h2 id="Example_Execution">Example Execution</h2>
+
+<table>
+<thead>
+<tr>
+<th>Stack </th>
+<th>Code</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>1 <span class="createlink"><a href="/ikiwiki.cgi?from=M_of_2_DRAFT&amp;do=create&amp;page=pubkey1" rel="nofollow">?</a>pubkey1</span><span class="createlink"><a href="/ikiwiki.cgi?from=M_of_2_DRAFT&amp;page=pubkey2&amp;do=create" rel="nofollow">?</a>pubkey2</span>2 OP_2OVER OP_2OVER OP_HASH256 OP_ADD OP_HASH256 OP_ADD OP_RIPEMD160 OP_EQUALVERIFY OP_CHECKMULTISIG</td>
+</tr>
+<tr>
+<td>1 <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=pubkey1&amp;from=M_of_2_DRAFT" rel="nofollow">?</a>pubkey1</span><span class="createlink"><a href="/ikiwiki.cgi?from=M_of_2_DRAFT&amp;do=create&amp;page=pubkey2" rel="nofollow">?</a>pubkey2</span>2 </td>
+<td>OP_2OVER OP_2OVER OP_HASH256 OP_ADD OP_HASH256 OP_ADD OP_RIPEMD160 OP_EQUALVERIFY OP_CHECKMULTISIG</td>
+</tr>
+<tr>
+<td>1 <span class="createlink"><a href="/ikiwiki.cgi?page=pubkey1&amp;do=create&amp;from=M_of_2_DRAFT" rel="nofollow">?</a>pubkey1</span><span class="createlink"><a href="/ikiwiki.cgi?from=M_of_2_DRAFT&amp;page=pubkey2&amp;do=create" rel="nofollow">?</a>pubkey2</span>2 1 <span class="createlink"><a href="/ikiwiki.cgi?from=M_of_2_DRAFT&amp;do=create&amp;page=pubkey1" rel="nofollow">?</a>pubkey1</span></td>
+<td>OP_2OVER OP_HASH256 OP_ADD OP_HASH256 OP_ADD OP_RIPEMD160 OP_EQUALVERIFY OP_CHECKMULTISIG</td>
+</tr>
+<tr>
+<td>1 <span class="createlink"><a href="/ikiwiki.cgi?page=pubkey1&amp;do=create&amp;from=M_of_2_DRAFT" rel="nofollow">?</a>pubkey1</span><span class="createlink"><a href="/ikiwiki.cgi?from=M_of_2_DRAFT&amp;page=pubkey2&amp;do=create" rel="nofollow">?</a>pubkey2</span>2 1 <span class="createlink"><a href="/ikiwiki.cgi?from=M_of_2_DRAFT&amp;do=create&amp;page=pubkey1" rel="nofollow">?</a>pubkey1</span><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=pubkey2&amp;from=M_of_2_DRAFT" rel="nofollow">?</a>pubkey2</span>2 </td>
+<td>OP_ADD OP_HASH256 OP_ADD OP_HASH256 OP_ADD OP_RIPEMD160 OP_EQUALVERIFY OP_CHECKMULTISIG</td>
+</tr>
+<tr>
+<td>1 <span class="createlink"><a href="/ikiwiki.cgi?from=M_of_2_DRAFT&amp;do=create&amp;page=pubkey1" rel="nofollow">?</a>pubkey1</span><span class="createlink"><a href="/ikiwiki.cgi?page=pubkey2&amp;do=create&amp;from=M_of_2_DRAFT" rel="nofollow">?</a>pubkey2</span>2 1 <span class="createlink"><a href="/ikiwiki.cgi?from=M_of_2_DRAFT&amp;do=create&amp;page=pubkey1" rel="nofollow">?</a>pubkey1</span></td>
+<td>OP_HASH256 OP_ADD OP_HASH256 OP_ADD OP_RIPEMD160 OP_EQUALVERIFY OP_CHECKMULTISIG</td>
+</tr>
+<tr>
+<td>1 <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=pubkey1&amp;from=M_of_2_DRAFT" rel="nofollow">?</a>pubkey1</span><span class="createlink"><a href="/ikiwiki.cgi?from=M_of_2_DRAFT&amp;page=pubkey2&amp;do=create" rel="nofollow">?</a>pubkey2</span>2 1 <span class="createlink"><a href="/ikiwiki.cgi?from=M_of_2_DRAFT&amp;do=create&amp;page=pubkey1" rel="nofollow">?</a>pubkey1</span></td>
+<td>OP_ADD OP_HASH256 OP_ADD OP_RIPEMD160 OP_EQUALVERIFY OP_CHECKMULTISIG</td>
+</tr>
+<tr>
+<td>1 <span class="createlink"><a href="/ikiwiki.cgi?from=M_of_2_DRAFT&amp;do=create&amp;page=pubkey1" rel="nofollow">?</a>pubkey1</span><span class="createlink"><a href="/ikiwiki.cgi?from=M_of_2_DRAFT&amp;page=pubkey2&amp;do=create" rel="nofollow">?</a>pubkey2</span>2 1  </td>
+<td>OP_HASH256 OP_ADD  OP_RIPEMD160 OP_EQUALVERIFY OP_CHECKMULTISIG</td>
+</tr>
+<tr>
+<td>1 <span class="createlink"><a href="/ikiwiki.cgi?page=pubkey1&amp;do=create&amp;from=M_of_2_DRAFT" rel="nofollow">?</a>pubkey1</span><span class="createlink"><a href="/ikiwiki.cgi?from=M_of_2_DRAFT&amp;page=pubkey2&amp;do=create" rel="nofollow">?</a>pubkey2</span>2 1  </td>
+<td>OP_ADD  OP_RIPEMD160 OP_EQUALVERIFY OP_CHECKMULTISIG</td>
+</tr>
+<tr>
+<td>1 <span class="createlink"><a href="/ikiwiki.cgi?from=M_of_2_DRAFT&amp;page=pubkey1&amp;do=create" rel="nofollow">?</a>pubkey1</span><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=pubkey2&amp;from=M_of_2_DRAFT" rel="nofollow">?</a>pubkey2</span>2 </td>
+<td>OP_RIPEMD160 OP_EQUALVERIFY OP_CHECKMULTISIG</td>
+</tr>
+<tr>
+<td>1 <span class="createlink"><a href="/ikiwiki.cgi?from=M_of_2_DRAFT&amp;do=create&amp;page=pubkey1" rel="nofollow">?</a>pubkey1</span><span class="createlink"><a href="/ikiwiki.cgi?page=pubkey2&amp;do=create&amp;from=M_of_2_DRAFT" rel="nofollow">?</a>pubkey2</span>2 </td>
+<td>OP_EQUALVERIFY OP_CHECKMULTISIG</td>
+</tr>
+<tr>
+<td>1 <span class="createlink"><a href="/ikiwiki.cgi?page=pubkey1&amp;do=create&amp;from=M_of_2_DRAFT" rel="nofollow">?</a>pubkey1</span><span class="createlink"><a href="/ikiwiki.cgi?page=pubkey2&amp;do=create&amp;from=M_of_2_DRAFT" rel="nofollow">?</a>pubkey2</span>2 </td>
+<td>OP_CHECKMULTISIG</td>
+</tr>
+<tr>
+<td>1 </td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+
+<p>Where scriptHash must be constructed in the following manor:</p>
+
+<p>scriptHash = RIPMED160(M + SH256(SHA256(pubKey2 + 2) + pubKey1));</p>
+
+<p>(+ means addition not concatenation)</p>
+
+<h2 id="Security">Security</h2>
+
+<p>Although it may appear insecure totalling the sum of the public keys the author does not believe this to be the case.</p>
+
+<p>You could deduce the target value by looking at the the sum of M + pubKey1 + pubKey2 + N  from a previous transaction.</p>
+
+<pre>
+uint256 target = Previously Redeemed M+P1+P2+N 
+uint256 myKeyA = SHA256();
+uint256 myBogusKeyB = 0;
+int n = 2;
+int m = 1;
+</pre>
+
+
+<p>Initially it might seem that you could use an A or B where B is a invalid key:</p>
+
+<pre>
+while(m + myKeyA + myBogusKeyB + n != target) {
+  ++myBogusKeyB;
+}</pre>
+
+
+<p>However the additional SHA256 operations prevent you from doing this:</p>
+
+<pre>
+myKeyA = SHA256(myKeyA);
+while(m + myKeyA + SHA256(myBogusKeyB + n) != target) {
+  ++myBogusKeyB;
+}</pre>
+
+
+<p>Resulting in equal brute force time.</p>
+
+<p>What does affect security is ability to adjust M (either 1 or 2) without needing to generate a new SHA256 pair. This effectively halves the key space to 2<sup>255</sup> keys however it is still far far out of the realm of brute force possibility. Regardless use of a 20 byte hash limits the key space to 2<sup>160</sup> so it actually has no effect on security at all.</p>
+
+<h2 id="Rationale">Rationale</h2>
+
+<p>This BIP replaces BIP 16, (&quot;/P2SH/&quot;).</p>
+
+<p>There is a general consensus that multi signature transactions need to be implemented ASAP without requiring the use extremely long &quot;script addresses&quot;. A number of potential issues have been found with the proposals thus far:</p>
+
+<ul>
+<li>CHV requires the scriptPubKey interacts with data from scriptSig which has not been push onto the stack</li>
+<li>OP_EVAL essentially makes the scripting language turing complete, something which Satoshi deliberately avoided during its design.</li>
+<li>P2SH requires that standard templates become a mandatory part of the scripting language, meaning they can never be fully depreciated in future.</li>
+</ul>
+
+
+<p>All of the these solutions risk a fork in the blockchain and require at least 50% miners approval. This proposal requires no changes to the block validation rules and can be implemented immediately. However it only allows for the most common use cases of pay to script transactions and has limited flexibility. Additionally the resulting scriptPubKey is 6 bytes larger than the standard &quot;pay to address&quot; scriptPubKey in common use.</p>
+
+<h2 id="Backwards_Compatibility">Backwards Compatibility</h2>
+
+<p>Old clients will not relay transactions using the new template, however they will preform the same validation as new clients.</p>
+
+<h2 id="M-of-3">M-of-3</h2>
+
+<p>The following is not part of the specification for this proposal but it is worth mentioning that using the same technique you can support both M-of-2 and M-of-3 transactions.</p>
+
+<pre><code>OP_2OVER OP_2OVER OP_DUP 3 OP_EQUAL OP_IF 8 OP_PICK OP_ADD OP_HASH256 OP_ENDIF OP_ADD OP_HASH256 OP_ADD OP_HASH256 OP_ADD OP_RIPEMD160 &lt;scriptHash&gt; OP_EQUALVERIFY OP_CHECKMULTISIG
+</code></pre>
+
+<p>However this requires 14 bytes of additional op codes.</p>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li>The <a href="../BIP_0013/">Address format for Pay to Script Hash BIP</a></li>
+<li>M-of-N Multisignature Transactions <a href="../BIP_0011/">BIP 11</a></li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/BIP/" rel="tag">BIP</a>
+
+</nav>
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2012-01-29T18:17:42Z">Sun 29 Jan 2012 06:17:42 PM Europe</time>
+<!-- Created <time datetime="2012-01-15T14:39:32Z" pubdate="pubdate">Sun 15 Jan 2012 02:39:32 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

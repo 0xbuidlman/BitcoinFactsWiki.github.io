@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Data directory</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Data directory
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=Data_directory" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>The data directory is the location where Bitcoin&#39;s data files are stored, including the <a href="../Wallet/">wallet</a> data file.</p>
+
+<h2 id="Default_Location">Default Location</h2>
+
+<h3 id="Windows">Windows</h3>
+
+<p>Go to Start -&gt; Run (or press WinKey+R) and run this:</p>
+
+<pre><code>%APPDATA%\Bitcoin
+</code></pre>
+
+<p>Bitcoin&#39;s data folder will open. For most users, this is the following locations:</p>
+
+<pre><code>C:\Documents and Settings\YourUserName\Application data\Bitcoin (XP)
+
+C:\Users\YourUserName\Appdata\Roaming\Bitcoin (Vista and 7)
+</code></pre>
+
+<p>&quot;AppData&quot; and &quot;Application data&quot; are hidden by default.</p>
+
+<p>You can also store Bitcoin data files in any other drive or folder.</p>
+
+<p>If you have already downloaded the data then you will have to move the data to the new folder.
+If you want to store them in D:\BitcoinData then click on &quot;Properties&quot; of a shortcut to bitcoin-qt.exe and
+add -datadir=D:\BitcoinData at the end as an example:</p>
+
+<pre><code>&quot;C:\Program Files (x86)\Bitcoin\bitcoin-qt.exe&quot; -datadir=d:\BitcoinData
+</code></pre>
+
+<p>Start Bitcoin, now you will see all the files are created in the new data directory.</p>
+
+<h3 id="Linux">Linux</h3>
+
+<p>By default Bitcoin will put its data here:</p>
+
+<pre><code>~/.bitcoin/
+</code></pre>
+
+<p>You need to do a &quot;ls -a&quot; to see directories that start with a dot.</p>
+
+<p>If that&#39;s not it, you can do a search like this:</p>
+
+<pre><code>find / -name wallet.dat -print 2&gt;/dev/null
+</code></pre>
+
+<h3 id="Mac">Mac</h3>
+
+<p>By default Bitcoin will put its data here:</p>
+
+<pre><code>~/Library/Application Support/Bitcoin/
+</code></pre>
+
+<h2 id="Directory_Contents">Directory Contents</h2>
+
+<h3 id="Files">Files</h3>
+
+<ul>
+<li>.lock
+
+<ul>
+<li>BDB lock file</li>
+</ul>
+</li>
+<li>bitcoin.conf <span class="createlink"><a href="/ikiwiki.cgi?from=Data_directory&amp;page=optional&amp;do=create" rel="nofollow">?</a>optional</span>
+
+<ul>
+<li>Contains <a href="../Running_Bitcoin/#Bitcoin.conf_Configuration_File">configuration options</a>.</li>
+</ul>
+</li>
+<li>blk<em>xxxx</em>.dat <a href="Versions">prior to v0.8.0</a>
+
+<ul>
+<li>Contains concatenated raw blocks.  Stored are actual Bitcoin blocks, in network format, dumped to disk raw.</li>
+</ul>
+</li>
+<li>blkindex.dat <a href="Versions">prior to v0.8.0</a>
+
+<ul>
+<li>Indexing information used with blk<em>xxxx</em>.dat</li>
+</ul>
+</li>
+<li>__db.<em>xxx</em>
+
+<ul>
+<li>Used by BDB</li>
+</ul>
+</li>
+<li>db.log</li>
+<li>debug.log
+
+<ul>
+<li>Bitcoin&#39;s verbose log file. Automatically trimmed from time to time.</li>
+</ul>
+</li>
+<li>wallet.dat
+
+<ul>
+<li>Storage for keys, transactions, metadata, and options. <span>Please be sure to make backups of this file.  It contains the keys necessary for spending your bitcoins.</span></li>
+</ul>
+</li>
+<li>addr.dat <a href="Versions">prior to v0.7.0</a>
+
+<ul>
+<li>Storage for ip addresses to make a reconnect easier</li>
+</ul>
+</li>
+<li>peers.dat <a href="Versions">v0.7.0 and later</a>
+
+<ul>
+<li>Storage for peer information to make a reconnect easier.  This file uses a bitcoin-specific file format, unrelated to any database system (7.1).</li>
+</ul>
+</li>
+<li>fee_estimates.dat <a href="Versions">v0.10.0 and later</a>
+
+<ul>
+<li>Statistics used to estimate fees and priorities. Saved just before program shutdown, and read in at startup.
+The data, index and log files are used by Oracle <a href="http://en.wikipedia.org/wiki/Berkeley_DB">Berkeley DB</a>, the embedded key/value data store that Bitcoin uses.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3 id="database_subdirectory">database subdirectory</h3>
+
+<p>Contains BDB journaling files</p>
+
+<h3 id="testnet3_subdirectory">testnet3 subdirectory</h3>
+
+<p>Contains testnet versions of these files (if running with -testnet)</p>
+
+<h3 id="blocks_subdirectory">blocks subdirectory</h3>
+
+<p><a href="v0.8">and above</a> Contains blockchain data.</p>
+
+<ul>
+<li><p>blk*.dat</p>
+
+<ul>
+<li>Stored are actual Bitcoin blocks, in network format, dumped to disk raw.  They are only needed for re-scanning missing transactions in a wallet, reorganizing to a different part of the chain, and serving the block data to other nodes that are synchronizing.</li>
+</ul>
+</li>
+<li><p>blocks/index subdirectory</p>
+
+<ul>
+<li><a href="v0.8">and above</a> A LevelDB database that contains metadata about all known blocks, and where to find them on disk. Without this, finding a block would be very slow.</li>
+</ul>
+</li>
+</ul>
+
+
+<h3 id="chainstate_subdirectory">chainstate subdirectory</h3>
+
+<p><a href="v0.8">and above</a> A LevelDB database with a compact representation of all currently unspent transaction outputs and some metadata about the transactions they are from. The data here is necessary for validating new incoming blocks and transactions. It can theoretically be rebuilt from the block data (see the -reindex command line option), but this takes a rather long time. Without it, you could still theoretically do validation indeed, but it would mean a full scan through the blocks (7 GB as of may 2013) for every output being spent.</p>
+
+<h3 id="locks_subdirectory">locks subdirectory</h3>
+
+<p><a href="v0.8">and above</a> Contains &quot;undo&quot; data.</p>
+
+<ul>
+<li>rev*.dat
+You can see blocks as &#39;patches&#39; to the chain state (they consume some unspent outputs, and produce new ones), and see the undo data as reverse patches. They are necessary for rolling back the chainstate, which is necessary in case of reorganizations.</li>
+</ul>
+
+
+<h3 id="Bootstrapping_the_blockchain_from_a_snapshot_distributed_through_BitTorrent">Bootstrapping the blockchain from a snapshot distributed through BitTorrent</h3>
+
+<p>There is a <a href="https://bitcoin.org/bin/block-chain/">torrent file that gets updated</a> every few months that enables a much faster download of the blockchain. Once downloaded, the bootstrap.dat file can be placed in the root of the data directory, and Bitcoin Core 0.7.1 and above will automatically import it. <strong>NOTE:</strong> As of Bitcoin Core version 0.10.0 and later, the blockchain bootstrap
+torrent is <em>slower</em> than a direct download using the bitcoin P2P protocol &amp; client. (13.1)</p>
+
+<h3 id="Personally_identifiable_data_.5Bv0.8_and_above.5D">Personally identifiable data [v0.8 and above]</h3>
+
+<p>This section may be of use to you if you wish to send a friend the blockchain, avoiding them a hefty download.</p>
+
+<ul>
+<li>wallet.dat
+
+<ul>
+<li>Contains addresses and transactions linked to them. <span>Please be sure to make backups of this file.  It contains the keys necessary for spending your bitcoins.</span> You should not transfer this file to any third party or they may be able to access your bitcoins.</li>
+</ul>
+</li>
+<li>db.log
+
+<ul>
+<li>May contain information pertaining to your wallet. It may be safely deleted.</li>
+</ul>
+</li>
+<li>debug.log
+
+<ul>
+<li>May contain IP addresses and transaction ID&#39;s. It may be safely deleted.</li>
+</ul>
+</li>
+<li>database/ folder
+
+<ul>
+<li>This should only exist when bitcoin-qt is currently running. It contains information (BDB state) relating to your wallet.</li>
+</ul>
+</li>
+<li>peers.dat
+
+<ul>
+<li>Unknown whether this contains personally identifiable data. It may be safely deleted.</li>
+</ul>
+</li>
+</ul>
+
+
+<p>Other files and folders (blocks, blocks/index, chainstate) may be safely transferred/archived as they contain information pertaining only to the public blockchain.</p>
+
+<h2 id="Transferability">Transferability</h2>
+
+<p>The database files in the &quot;blocks&quot; and &quot;chainstate&quot; directories are cross-platform, and can be copied between different installations. These files, known collectively as a node&#39;s &quot;block database&quot;, represent all of the information downloaded by a node during the syncing process. In other words, if you copy installation A&#39;s block database into installation B, installation B will then have the same syncing percentage as installation A. This is usually <em>far</em> faster than doing the normal initial sync over again. However, when you copy someone&#39;s database in this way, you are trusting them <strong>absolutely</strong>. Bitcoin Core treats its block database files as 100% accurate and trustworthy, whereas during the normal initial sync it treats each block offered by a peer as invalid until proven otherwise. If an attacker is able to modify your block database files, then they can do all sorts of evil things which could cause you to lose bitcoins. Therefore, you should only copy block databases from Bitcoin installations under your personal control, and only over a secure connection.</p>
+
+<p>Each node has a unique block database, and all of the files are highly connected. So if you copy just a few files from one installation&#39;s &quot;blocks&quot; or &quot;chainstate&quot; directories into another installation, this will almost certainly cause the second node to crash or get stuck at some random point in the future. If you want to copy a block database from one installation to another, you have to delete the old database and copy <em>all</em> of the files at once. Both nodes have to be shut down while copying.</p>
+
+<p>Only the file with the highest number in the &quot;blocks&quot; directory is ever written to. The earlier files will never change. Also, when these blk<em>.dat files are accessed, they are usually accessed in a highly sequential manner. Therefore, it&#39;s possible to symlink the &quot;blocks&quot; directory or some subset of the blk</em>.dat files individually onto a magnetic storage drive without much loss in performance, and if two installations start out with identical block databases (due to the copying described previously), subsequent runs of rsync will be very efficient.</p>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../Running_Bitcoin/">Running Bitcoin</a></li>
+<li><a href="../Securing_your_wallet/">Securing your wallet</a></li>
+<li><a href="http://bitcoin.stackexchange.com/a/11108/153">What is the database for?</a> Question on Bitcoin Stack Exchange</li>
+</ul>
+
+
+<h2 id="References">References</h2>
+
+<p>7.1: <a href="http://bitcointalk.org/index.php?topic=119525.msg1287284#msg1287284">Ultraprune merged in mainline</a><br />
+13.1: <a href="https://bitcoin.org/bin/block-chain/README.txt">README.txt for bootstrap.dat.torrent</a></p>
+
+<p><span class="createlink"><a href="/ikiwiki.cgi?page=es%3ADirectorio%20de%20datos&amp;do=create&amp;from=Data_directory" rel="nofollow">?</a>es:Directorio de datos</span></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Backingup_your_wallet/">Backingup your wallet</a>
+
+<a href="../Bitcoind/">Bitcoind</a>
+
+<a href="../Clearing_Up_Misconceptions_About_Full_Nodes/">Clearing Up Misconceptions About Full Nodes</a>
+
+<a href="../Running_Bitcoin/">Running Bitcoin</a>
+
+<a href="../Securing_your_wallet/">Securing your wallet</a>
+
+<a href="../Wallet/">Wallet</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-05-17T03:44:55Z">Tue 17 May 2016 03:44:55 AM Europe</time>
+<!-- Created <time datetime="2011-01-30T04:37:51Z" pubdate="pubdate">Sun 30 Jan 2011 04:37:51 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Change</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Change
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Change&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>When the output of a transaction is used as the input of another transaction, it must be spent in its entirety. Sometimes the coin value of the output is higher than what the user wishes to pay. In this case, the client generates a new Bitcoin address, and sends the difference back to this address. This is known as <span class="selflink">change</span>.</p>
+
+<p>Say you want to buy a candy bar ($1) from a store.  You open your wallet (fiat wallet) and inside there is a single $20 bill.  What is the min amount you can pay?  It isn&#39;t $1; you can&#39;t rip up 1/20th of the bill and give it to the cashier.  You need to pay $20 and since you only owe $1, the cashier gives you back $19.   Now in fiat nobody except the central bank can make new bills so bills are in fixed denominations and thus your fiat transaction may look something like the following.</p>
+
+<ul>
+<li><p>Inputs:</p>
+
+<ul>
+<li>$20 bill</li>
+</ul>
+</li>
+<li><p>Outputs:</p>
+
+<ul>
+<li>$1 bill to cashier</li>
+<li>$10 bill to you</li>
+<li>$5 bill to you</li>
+<li>$1 bill to you</li>
+<li>$1 bill to you</li>
+<li>$1 bill to you</li>
+<li>$1 bill to you</li>
+</ul>
+</li>
+</ul>
+
+
+<p>We do it everyday so it becomes instinctive but if you break it down that is what is happening. Now lets imagine for a second that some system existed which allowed the cashier (or anyone) to securely destroy any authentic fiat money (bills) and print replacements in arbitrary amounts (not just $10s and $20s but $18.94537208 if you wanted to), while preventing double spending, counterfeiting, and ensuring that at all times the amount of money created is exactly the same as the amount of money destroyed.  In that case your transaction may look like this:</p>
+
+<ul>
+<li>Inputs:
+
+<ul>
+<li>$20 bill - destroyed</li>
+</ul>
+</li>
+<li>Outputs:
+
+<ul>
+<li>$1 newly created bill to cashier</li>
+<li>$19 newly created bill to you</li>
+</ul>
+</li>
+</ul>
+
+
+<p>That is exactly how bitcoin works.  Except instead of bills we call the elements inputs and outputs.  When you &quot;spend&quot; bitcoins (create a transaction) you must use the entire value of an unspent output (of a prior transaction) and make it the input for a new transaction.  Your wallet hides this somewhat by continually looking for unspent outputs and adding up their total value.  So when your wallet says you have 130 BTC it simply means the sum of all your unspent outputs total 130 BTC.  Just like a fiat wallet the value comes from one or more discrete bills/outputs.</p>
+
+<p>Take the case of the transaction <a href="http://blockchain.info/tx/0a1c0b1ec0ac55a45b1555202daf2e08419648096f5bcc4267898d420dffef87">0a1c0b1ec0ac55a45b1555202daf2e08419648096f5bcc4267898d420dffef87</a>, a 10.89 BTC previously unspent output was spent by the client.  10 BTC was the payment amount, and 0.89 BTC was the amount of change returned.  The client can&#39;t spend just 10.00 BTC out of a 10.89 BTC payment anymore than a person can spend $1 out of a $20 bill.  The entire 10.89 BTC unspent output became the input of this new transaction and in the process produced are two new unspent outputs which have a combined value of 10.89 BTC.  The 10.89 BTC is now &quot;spent&quot; and effectively destroyed because the network will prevent it from ever being spent again.   Those unspent outputs can now become inputs for future transactions.</p>
+
+<p>In this transaction, the fee is 0 but if there was a tx fee paid it would be the difference between the inputs and the outputs.  (i.e. 10.89 BTC input and a 10.88 BTC output = 0.01 BTC fee).</p>
+
+<p>The wallet file contains the private keys for change addresses, and they can receive and send coins normally. However, the GUI in the default client does not display them in the address book, therefore a recommendation is to backup wallet.dat every 50 transactions.</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+<a href="../tags/Vocabulary/" rel="tag">Vocabulary</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Bitcoin_Core/">Bitcoin Core</a>
+
+<a href="../Deterministic_wallet/">Deterministic wallet</a>
+
+<a href="../From_address/">From address</a>
+
+<a href="../Maximum_transaction_rate/">Maximum transaction rate</a>
+
+<a href="../Transaction/">Transaction</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2014-09-19T07:25:18Z">Fri 19 Sep 2014 07:25:18 AM Europe</time>
+<!-- Created <time datetime="2011-11-08T08:19:10Z" pubdate="pubdate">Tue 08 Nov 2011 08:19:10 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

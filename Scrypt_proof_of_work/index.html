@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Scrypt proof of work</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Scrypt proof of work
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Scrypt_proof_of_work" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p><strong>Scrypt proof of work</strong> denotes the <a href="../Hashcash/">Hashcash</a> proof of work using scrypt as underlying hash function.
+By using a memory-intensive hash function designed to reduce the efficiency of logic circuits, this was claimed to make only CPU mining remain profitable, even with the advent of GPU mining, and completely failed in that goal.</p>
+
+<p>It has been less widely used and analyzed than the SHA2 hashing algorithm used in Bitcoin, so there is some concern about possible weaknesses in its cryptographic scheme being discovered in the future.</p>
+
+<h2 id="History">History</h2>
+
+<p>Originally introduced as part of the <a href="../Altcoin/">altcoin</a> <strong>Tenebrix</strong> (TBX) by ArtForz and Lolcust, it was claimed to be resistant to GPU, FPGA, and ASIC implementation.</p>
+
+<h3 id="Specialized_hardware">Specialized hardware</h3>
+
+<p>Around mid-2012, GPU-based scrypt mining began to become widespread, and by late 2013 scrypt ASICs had began shipping. As scrypt is not GPU-resistant, FPGA-resistant nor ASIC-resistant, it has failed to meet its stated goals entirely.</p>
+
+<h2 id="Problems">Problems</h2>
+
+<h3 id="Vulnerability_to_mining_monopoly">Vulnerability to mining monopoly</h3>
+
+<p>&quot;51% attacks&quot; become more difficult to launch and maintain as the hash rate of the network grows.
+However, this argument posits that since scrypt is designed to be inefficient on all common computer components (both CPUs and GPUs), a malicious entity need only produce a small batch of specialized/custom hardware to overtake all the commodity mining systems combined.</p>
+
+<h3 id="Memory_bandwidth_refutation">Memory bandwidth refutation</h3>
+
+<p>Some attempt to refute this by arguing that scrypt is not designed to be inefficient, but is instead designed to be highly dependent on memory bandwidth.
+Since the high-speed cache RAM on modern processors already takes up most of the die space, no sizeable improvement could then be made by creating custom chips.
+If we accept this argument we then estimate the cost of attack utilizing GPUs that are available today.</p>
+
+<p>To do so we start with an estimated cost of hardware at $400 per megahash per second and a reasonable network hashrate of 30 gigahashes per second.
+The total amount of equipment necessary to match and takeover this network via 51% attack would then be an estimated $12M USD (or about 45,000 AMD HD 7950s).</p>
+
+<h2 id="Variations">Variations</h2>
+
+<p>In mid-2013, a user nicknamed pocopoco introduced an altcoin (&quot;YACoin&quot;) using scrypt with an adaptive &quot;N-factor&quot; (7.1).</p>
+
+<h2 id="References">References</h2>
+
+<p>7.1: <a href="https://bitcointalk.org/?topic=196196">BitcoinTalk discussion thread for the &quot;YACoin&quot; altcoin</a></p>
+
+<ul>
+<li><a href="https://www.weusecoins.com/what-is-litecoin/">What is Litecoin?</a></li>
+<li><a href="https://www.bitcoinmining.com/what-is-litecoin-mining/">What is Litecoin Mining?</a></li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Altcoin/">Altcoin</a>
+
+<a href="../CryptoNight/">CryptoNight</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-06-17T03:41:52Z">Wed 17 Jun 2015 03:41:52 AM Europe</time>
+<!-- Created <time datetime="2014-04-03T03:26:04Z" pubdate="pubdate">Thu 03 Apr 2014 03:26:04 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

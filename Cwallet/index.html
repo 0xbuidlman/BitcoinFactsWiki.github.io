@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Cwallet</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Cwallet
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Cwallet" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>A tool used to easily and securely create a paper wallet. It is designed to work with the Pirate Linux live disc (version 2.0 alpha 3).</p>
+
+<p>What makes it different from the other paper wallet solutions?</p>
+
+<ul>
+<li><p>Pirate Linux does not use Ubuntu, but instead hardened Gentoo, regarded by many as the most secure operating system.</p></li>
+<li><p>Cwallet does not use a web browser. It is coded in pure C, and has both a graphical (gtk+) and command line interface.</p></li>
+<li><p>Cwallet uses only real random numbers from /dev/random and asks you to shake your mouse if it stalls and needs more entropy.</p></li>
+<li><p>Cwallet uses one-time-pads for encryption of the private keys. The passphrase is converted to a base-256 one-time pad that is byte-wise added to the base-256 private key.</p></li>
+<li><p>Cwallet performs many robust checks to make sure that the data that you print out is correct and not corrupted in the process. The last thing you want is to find out that you have the wrong private key for the address you sent your funds to.</p></li>
+<li><p>Cwallet has some other nice little features to make it easier to use.</p></li>
+</ul>
+
+
+<h2 id="External_Links">External Links</h2>
+
+<ul>
+<li><a href="https://piratelinux.org/?page_id=774">Guide</a> with screenshots and more information</li>
+<li><a href="https://bitcointalk.org/index.php?topic=669684.msg7574268#msg7574268">Forum discussion</a></li>
+<li><a href="http://www.reddit.com/r/Bitcoin/comments/29egro/pirate_linux_20_alpha_3_fully_working_paper/">Reddit discussion</a></li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Paper_wallet/">Paper wallet</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2014-07-01T20:11:26Z">Tue 01 Jul 2014 08:11:26 PM Europe</time>
+<!-- Created <time datetime="2014-06-30T05:21:27Z" pubdate="pubdate">Mon 30 Jun 2014 05:21:27 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

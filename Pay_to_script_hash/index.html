@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Pay to script hash</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Pay to script hash
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Pay_to_script_hash" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p><strong>Pay to script hash</strong> (P2SH) transactions were standardised in <a href="../BIP_0016/">BIP 16</a>. They allow transactions to be sent to a script hash (<a href="../Address/">address</a> starting with 3) instead of a public key hash (addresses starting with 1). To spend bitcoins sent via P2SH, the recipient must provide a <a href="../Script/">script</a> matching the script hash and data which makes the script evaluate to true.</p>
+
+<p>Using P2SH, you can send bitcoins to an address that is secured in various unusual ways without knowing anything about the details of how the security is set up. You just send bitcoins to the ~34-character P2SH address. The recipient might need the signatures of several people to spend these bitcoins, or a password might be required, or the requirements could be completely unique.</p>
+
+<h2 id="Addresses">Addresses</h2>
+
+<p><a href="../BIP_0013/">BIP 13</a> specifies the address format. Bitcoin P2SH addresses always start with <code>3</code>.</p>
+
+<h2 id="Example">Example</h2>
+
+<p>Transaction 40eee3ae1760e3a8532263678cdf64569e6ad06abc133af64f735e52562bccc8 paid to P2SH address 3P14159f73E4gFr7JterCCQh9QjiTjiZrG.  You can see the redeem script in transaction 7edb32d4ffd7a385b763c7a8e56b6358bcd729e747290624e18acdbe6209fc45 which spends that output, using <code>OP_FALSE  { OP_1  OP_1 OP_CHECKMULTISIG }</code>.</p>
+
+<h2 id="History">History</h2>
+
+<p>342ftSRCvFHfCeFFBuz4xwbeqnDw6BGUey is a Bitcoin <a href="../Address/">address</a> notable for being the first <a href="../P2SH/">P2SH</a>-compatible address receiving bitcoins on the production network.
+Its payment was mined in <a href="../Block/">block</a> 160720; note that it was spent prior to the enforcement of <a href="../BIP_0016/">BIP 16</a>, so it&#39;s not a good example to understand P2SH.</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Address/">Address</a>
+
+<a href="../List_of_address_prefixes/">List of address prefixes</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-01-29T15:34:40Z">Fri 29 Jan 2016 03:34:40 PM Europe</time>
+<!-- Created <time datetime="2012-08-31T02:13:20Z" pubdate="pubdate">Fri 31 Aug 2012 02:13:20 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

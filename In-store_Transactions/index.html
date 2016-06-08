@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>In-store Transactions</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+In-store Transactions
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>A common question people have about Bitcoin is how it can be used for in-person transactions, like at a supermarket.</p>
+
+<p>Today, Bitcoin is software that runs on your desktop or laptop computer. You can also host your wallet with an <a href="../EWallet/">EWallet</a>. Neither solution is convenient for the supermarket use case. The most commonly proposed solutions are examined below.</p>
+
+<div class="toc">
+	<ol>
+		<li class="L2"><a href="#index1h2">Smart phones</a>
+		</li>
+		<li class="L2"><a href="#index2h2">Smart cards</a>
+		</li>
+		<li class="L2"><a href="#index3h2">Paper Bitcoins</a>
+		</li>
+		<li class="L2"><a href="#index4h2">See Also</a>
+		</li>
+		<li class="L2"><a href="#index5h2">References</a>
+		</li>
+	</ol>
+</div>
+
+
+<h2 id="Smart_phones"><a name="index1h2"></a>Smart phones</h2>
+
+<p>The best solution is to use smart phones. Communication can be via QR codes (2.1), unencrypted Bluetooth (2.2) or using Near Field Communications (NFC) (2.3). NFC is a form of radio that travels only a few centimeters, so to use it devices must be touched together. In such a setup, you touch your phone to another NFC aware device like another phone, or for the supermarket a simple NFC transmitter. That device sends a Bitcoin address and a requested amount, which is displayed on the devices screen. Confirming the payment causes the phone to create, sign and broadcast the Bitcoin transaction as normal. The supermarkets Bitcoin node will receive the transaction a few seconds later.</p>
+
+<p>To ensure you&#39;re paying who you think you&#39;re paying, the address can itself be signed with an Extended Validation Certificate (EV) (2.4) as issued by various SSL certificate authorities. The EV standard and auditing process ensures they are only issued to organizations that can prove their identity to a high level of assurance. The phone can then show the organizational name rather than the raw Bitcoin address.</p>
+
+<p>An alternative to EV issued certificate signing would be to have the merchant sign a one-time string using the private key of the intended payment address. While not as verifiable as an EV certificate signature it would at least ensure that the merchant is in possession of the corresponding private key for the payment address. This gives at least as much confidence in the transaction as current cash transactions.</p>
+
+<p>Because you own the device and carry it with you, there&#39;s no risk of a corrupt merchant or criminal tampering with the device when you are not around to see it, as has happened with smart card readers. Modern phones can encrypt locally stored data like a wallet such that it can&#39;t be extracted unless the right PIN is provided. Whilst physical tamper resistance isn&#39;t as strong as with a smartcard, it&#39;s probably strong enough to ensure that if a phone is stolen, there is sufficient time to reach a backup and move the coins in it to a new address rendering the stolen wallet worthless.</p>
+
+<p>This solution has another advantage over smart cards - namely that the hardware to do it is being mass manufactured and many people have access to it. This means that in person transactions don&#39;t require any complex setup or special hardware. You can pay your friends in the pub as easily as you can pay the supermarket.</p>
+
+<h2 id="Smart_cards"><a name="index2h2"></a>Smart cards</h2>
+
+<p><em>see also: <a href="../Smart_card_wallet/">Smart card wallet</a></em></p>
+
+<p>Today one of the most common ways to pay in supermarkets is with cards you either swipe (magstripe cards) or insert into a reader and enter a PIN (smartcards). It&#39;s natural to think of applying the same techniques to Bitcoin, for instance by putting the private keys inside the card.</p>
+
+<p>Unfortunately there is no decentralized way to create such a system. The EMV smartcard framework used throughout Europe today is a combination of standards created by the major card processors that covers not just smartcards but also the readers as well, for instance to try and ensure tamper resistance.</p>
+
+<p>Without central certification of what EMV calls <em>payment entry devices</em> (PEDs), anyone is free to create a PED that <em>looks</em> real, and displays the transaction you expect to be paying on screen, but actually sends an entirely different transaction to be signed by the card. The system is only secure when the readers can be trusted. Even if some central authority certifies PEDs, if their tamperproofing fails the certification is worthless. The tamperproofing done by Ingenico and others on their EMV PEDs turned out to be insufficient and has been attacked several times, in one notable incident, readers had GSM taps installed at the factory before distribution.</p>
+
+<p>It&#39;s worth noting that the physical smart card form is an accident of history. VISA already offers <a href="http://usa.visa.com/personal/cards/paywave/micro_tag.html">keyfobs</a> that do the same thing but use near-field communication (NFC) technology.</p>
+
+<h2 id="Paper_Bitcoins"><a name="index3h2"></a>Paper Bitcoins</h2>
+
+<p>Another common way to pay at the supermarket is with paper money. There have been various efforts to allow Bitcoins to be printed out and passed around, for instance using this python script (4.1). The private keys are printed on the paper. But putting private keys on the paper itself simply means anyone who receives the note can take away the underlying Bitcoins backing it.</p>
+
+<p>Solution to this would be to create a paper money where you can see if someone have been using the private key, and a solution to this is found here <a href="http://bitbills.com/">Bitbills</a>. But even this is secure (or secure enough) only through huge anti-counterfeiting efforts by a large central authority, in the USA this is the Secret Service. The techniques of making paper money hard to forge are not widely available.</p>
+
+<h2 id="See_Also"><a name="index4h2"></a>See Also</h2>
+
+<ul>
+<li><a href="../Merchant_Howto/">Merchant Howto</a></li>
+<li><a href="../Open_Transactions/">Open Transactions</a></li>
+</ul>
+
+
+<h2 id="References"><a name="index5h2"></a>References</h2>
+
+<p>2.1: <a href="https://bitcoin.stackexchange.com/questions/8111/what-are-qr-codes-and-how-do-you-use-them-as-request-payment-from-wallet">What are QR codes and How do you use them as request payment from Wallet?</a><br />
+2.2: <a href="https://bitcointalk.org/index.php?topic=278237.0">Offline Transactions and Bluetooth!</a><br />
+2.3: <a href="https://bitcointalk.org/index.php?topic=29490.0">NFC initiated Bitcoin payments with Bitcoin Wallet for Android</a><br />
+2.4: <a href="https://en.wikipedia.org/wiki/Extended_Validation_Certificate">Extended Validation Certificate</a><br />
+4.1: <a href="http://web.archive.org/web/20110529121124/http://bitcoin.modernjob.info/print.html">Instant printable bitcoins (Internet Archive copy)</a></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Merchant_Howto/">Merchant Howto</a>
+
+<a href="../Open_Transactions/">Open Transactions</a>
+
+<a href="../Securing_online_services/">Securing online services</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-06-07T14:24:02Z">Tue 07 Jun 2016 02:24:02 PM Europe</time>
+<!-- Created <time datetime="2011-03-13T16:58:22Z" pubdate="pubdate">Sun 13 Mar 2011 04:58:22 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

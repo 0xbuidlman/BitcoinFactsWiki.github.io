@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Libbitcoin Network</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Libbitcoin Network
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=Libbitcoin_Network" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>The <a href="https://github.com/libbitcoin/libbitcoin-network">libbitcoin-network</a> library is a partial implementation of the <a href="../Protocol_documentation/">Bitcoin P2P network protocol</a>. Excluded are all sub-protocols that require access to a blockchain. The <a href="../Libbitcoin_Node/">libbitcoin-node</a> library extends this P2P networking capability and incorporates <a href="../Libbitcoin_Blockchain/">libbitcoin-blockchain</a> in order to implement a <a href="../Full_node/">full node</a>. The <a href="../Libbitcoin_Explorer/">libbitcoin-explorer</a> library uses the P2P networking capability to post transactions to the P2P network.</p>
+
+<h2 id="Example">Example</h2>
+
+<pre><code>#include &lt;future&gt;
+#include &lt;bitcoin/network.hpp&gt;
+
+// Send a transaction to a single P2P node.
+int main(int argc, char* argv[])
+{
+using namespace bc;
+
+// Decode a base16-encoded Bitcoin transaction. 
+data_chunk decoded;
+if (argc &lt; 1  !decode_base16(decoded, argv&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=0&amp;amp;do=create&amp;amp;from=Libbitcoin_Network&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;0&lt;/span&gt;))
+return -1;
+
+// Parse the decoded transaction.
+const auto tx = chain::transaction::factory_from_data(decoded);
+
+// Configure the P2P network session for best performance.
+auto settings = network::settings::mainnet;
+settings.inbound_port = 0;
+settings.host_pool_capacity = 0;
+settings.outbound_connections = 0;
+settings.relay_transactions = false;
+settings.manual_retry_limit = 3;
+
+// Start a network session.
+network::p2p network(settings);
+
+// Declare completion signal.
+std::promise&lt;nowiki&gt;&lt;code&gt;&lt;/nowiki&gt; complete;
+
+const auto send_handler = &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Libbitcoin_Network&amp;amp;do=create&amp;amp;page=%26complete&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;&amp;complete&lt;/span&gt;(code ec)
+{
+complete.set_value(ec);
+};
+
+const auto connect_handler = [&amp;tx , &amp;send_handler](&amp;complete,)(
+code ec, network::channel::ptr node)
+{
+if (ec)
+complete.set_value(ec);
+else
+node-&gt;send(tx, send_handler);
+};
+
+// Connect to the one specified host with retry.
+network.connect(&quot;localhost&quot;, 8333, connect_handler);
+
+// Wait for completion and return result.
+return complete.get_future().get() ? -1 : 0;
+}
+</code></pre>
+
+<h2 id="History">History</h2>
+
+<ul>
+<li><p>The P2P protocol was originally contained within the <a href="../Libbitcoin_Common/">libbitcoin</a> library.</p></li>
+<li><p>In late 2014 <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=William_Swanson&amp;from=Libbitcoin_Network" rel="nofollow">?</a>William Swanson</span> reorganized libbitcoin sources (3.1) in accordance with the roadmap (3.2) agreed in Toronto earlier that year. Later sources were moved into the libbitcoin::network namespace.</p></li>
+<li><p>By early 2016 <span class="createlink"><a href="/ikiwiki.cgi?page=Eric_Voskuil&amp;do=create&amp;from=Libbitcoin_Network" rel="nofollow">?</a>Eric Voskuil</span> completed the version 3 redesign to improve reliability, performance and readability. The namespace was forked into its own repository and integrated with dependent repositories.</p></li>
+</ul>
+
+
+<h2 id="Dependencies">Dependencies</h2>
+
+<ul>
+<li><a href="http://www.boost.org">boost</a></li>
+<li><a href="../Libbitcoin_Common/">libbitcoin</a></li>
+</ul>
+
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../Libbitcoin/">Libbitcoin</a></li>
+</ul>
+
+
+<h2 id="References">References</h2>
+
+<p>3.1: <a href="https://lists.dyne.org/lurker/message/20141201.054416.c146b7bc.en.html">Libbitcoin network refactoring</a><br />
+3.2: <a href="https://lists.dyne.org/lurker/message/20140924.201619.e3930350.en.html">Libbitcoin roadmap summary</a></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Clients/" rel="tag">Clients</a>
+
+<a href="../tags/Open_Source/" rel="tag">Open Source</a>
+
+<a href="../tags/Software__8207____8206__/" rel="tag">Software‏‎</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Libbitcoin/">Libbitcoin</a>
+
+<a href="../Libbitcoin_Common/">Libbitcoin Common</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-02-22T12:30:56Z">Mon 22 Feb 2016 12:30:56 PM Europe</time>
+<!-- Created <time datetime="2016-02-04T09:57:58Z" pubdate="pubdate">Thu 04 Feb 2016 09:57:58 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

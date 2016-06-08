@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Dominant Assurance Contracts</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Dominant Assurance Contracts
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Dominant_Assurance_Contracts&amp;page=Talk&amp;do=create" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>This scheme is an attempt at <a>Mike Hearn</a>&#39;s <a href="../Contracts/#Example_3:_Assurance_contracts">exercise for the reader</a>:  an implementation of dominant assurance contracts.  The scheme requires the use of multisignature transactions, nLockTime and transaction replacement which means it won&#39;t work until these features are available on the Bitcoin network.</p>
+
+<ol>
+<li>A vendor agrees to produce a good if X BTC are raised by date D and to pay Y BTC to each of n contributors if X BTC are not raised by date D, or to pay nY BTC if X BTC are raised and the vendor fails to produce the good to the satisfaction of 2 of 3 independent arbitrators picked through a fair process</li>
+<li>The arbitrators specify a 2-of-3 multisignature script to use as an output for the fundraiser with a public key from each arbitrator, which will allow them to judge the performance on actually producing the good</li>
+<li>For each contributor:
+
+<ol>
+<li>The vendor and the contributor exchange public keys</li>
+<li>They create a 2-of-2 multisignature output from those public keys</li>
+<li>With no change, they create but do not sign a transaction with an input of X/n BTC from the contributor and an input of Y BTC from the vendor, with X/n+Y going to the output created in 3.2</li>
+<li>The contributor creates a transaction where the output is X+nY to the address created in step 2 and the input is the output of the transaction in 3.3, signs it using SIGHASH_ALL  SIGHASH_ANYONECANPAY, with version = UINT_MAX and gives it to the vendor</li>
+<li>The vendor creates a transaction of the entire balance of the transaction in 3.3 to the contributor with nLockTime of D and version &lt; UINT_MAX, signs it and gives it to the contributor</li>
+<li>The vendor and contributor then both sign the transaction in 3.3 and broadcast it to the network, making the transaction in 3.4 valid when enough contributors participate and the transaction in 3.5 valid when nLockTime expires</li>
+</ol>
+</li>
+<li>As date D nears, nLockTime comes close to expiration.
+
+<ol>
+<li>If enough (n) people contribute, all of the inputs from 3.4 can combine to make the output valid when signed by the vendor, creating a valid transaction sending that money to the arbitrators, which only agree to release the funds when the vendor produces a satisfactory output</li>
+<li>If not enough people (&lt;n) contribute, nLockTime expires on the transaction in 3.5, meaning each contributor can sign and redeem her transaction containing X/n + Y BTC from 3c</li>
+<li>Note that there is a limit at which it can be more profitable for the vendor to make the remaining contributions when D approaches</li>
+</ol>
+</li>
+<li>Now the arbitrators have control of X (the payment from the contributors) + nY (the performance bond from the vendor) BTC and pay the vendor only when the vendor performs satisfactorily</li>
+</ol>
+
+
+<p>Such contracts can be used for crowdfunding.  Notable examples from Mike Hearn include:</p>
+
+<ul>
+<li>Funding Internet radio stations which don&#39;t want to play ads: donations are the only viable revenue source as pay-for-streaming models allow undercutting by subscribers who relay the stream to their own subscribers</li>
+<li>Automatically contributing to the human translation of web pages</li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Contract/">Contract</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2012-03-06T18:32:07Z">Tue 06 Mar 2012 06:32:07 PM Europe</time>
+<!-- Created <time datetime="2012-03-06T18:32:07Z" pubdate="pubdate">Tue 06 Mar 2012 06:32:07 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

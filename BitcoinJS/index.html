@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>BitcoinJS</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+BitcoinJS
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=BitcoinJS&amp;page=Talk&amp;do=create" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>A reimplementation of Bitcoin using Node.js and web technologies.</p>
+
+<p>It currently implements the basics of the Bitcoin protocol, enough to send and receive transactions via the <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Webcoin&amp;from=BitcoinJS" rel="nofollow">?</a>Webcoin</span> frontend. All official BitcoinJS components are released under the <a href="http://www.opensource.org/licenses/mit-license.php">MIT license</a>.</p>
+
+<h2 id="Components">Components</h2>
+
+<p>BitcoinJS consists of several loosely coupled component that can be used in different combinations to solve different problems.</p>
+
+<h3 id="node-bitcoin-p2p">node-bitcoin-p2p</h3>
+
+<p>The main component implementing the Bitcoin P2P <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Protocol&amp;from=BitcoinJS" rel="nofollow">?</a>protocol</span> and parts of the <a href="../API_reference_(JSON-RPC)/">JSON-RPC API</a>. You can think of it as the counterpart to the <a href="../Original_Bitcoin_client/">original client&#39;s</a> CLI daemon, bitcoind.</p>
+
+<p>As the name implies, node-bitcoin-p2p is built using the <a href="http://nodejs.org">Node.js framework</a>. It also uses <a href="http://www.mongodb.org/">MongoDB</a> for storage and indexing of the block chain data.</p>
+
+<h3 id="node-bitcoin-exit">node-bitcoin-exit</h3>
+
+<p>Builds on top of node-bitcoin-p2p to provide access to balances and transaction information on a per-account basis. It also allows the upload of new transactions to the network. These two functions are enough to allow a client to access the network only through this server.</p>
+
+<h3 id="Other">Other</h3>
+
+<p>Various other software builds on top of the basic BitcoinJS infrastructure. Notable examples include <span class="createlink"><a href="/ikiwiki.cgi?page=Webcoin&amp;do=create&amp;from=BitcoinJS" rel="nofollow">?</a>Webcoin</span> and <span class="createlink"><a href="/ikiwiki.cgi?page=BitcoinJS%2FExplorer&amp;do=create&amp;from=BitcoinJS" rel="nofollow">?</a>BitcoinJS Explorer</span>.</p>
+
+<h2 id="History">History</h2>
+
+<ul>
+<li>First commit was uploaded on March 12th, 2011  (6.1)</li>
+<li>Repository moved to separate BitcoinJS account on April 30th, 2011  (6.2)</li>
+<li>Official announcement including screencast on May 5th, 2011  (6.3)</li>
+</ul>
+
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Webcoin&amp;do=create&amp;from=BitcoinJS" rel="nofollow">?</a>Webcoin</span></li>
+</ul>
+
+
+<h2 id="External_Links">External Links</h2>
+
+<ul>
+<li><a href="http://bitcoinjs.org/">Official project website</a></li>
+<li><a href="https://github.com/bitcoinjs">BitcoinJS project on Github</a></li>
+</ul>
+
+
+<h2 id="References">References</h2>
+
+<p>6.1: <a href="https://github.com/justmoon/node-bitcoin-p2p/commit/aaad1406cfc652560abb708619e201898672f1db">&quot;Initial commit.&quot;</a>  committed, March 12th 2011<br />
+6.2: <a href="https://github.com/justmoon/node-bitcoin-p2p/commit/a585bbae384a523c3d2ee19973daffd8db3d199a">&quot;Added new README with link to new repo.&quot;</a>  committed, April 30, 2011<br />
+6.3: <a href="https://bitcointalk.org/index.php?topic=7357.0">&quot;Webcoin Alpha Sneak Preview&quot;</a>  on Bitcoin.org forums, May 5, 2011</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Clients/" rel="tag">Clients</a>
+
+<a href="../tags/Free_Software/" rel="tag">Free Software</a>
+
+<a href="../tags/License/MIT-X11/" rel="tag">License/MIT-X11</a>
+
+<a href="../tags/Mobile/" rel="tag">Mobile</a>
+
+<a href="../tags/Nodes/" rel="tag">Nodes</a>
+
+<a href="../tags/Open_Source/" rel="tag">Open Source</a>
+
+</nav>
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2012-02-18T22:48:39Z">Sat 18 Feb 2012 10:48:39 PM Europe</time>
+<!-- Created <time datetime="2011-07-02T12:47:29Z" pubdate="pubdate">Sat 02 Jul 2011 12:47:29 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

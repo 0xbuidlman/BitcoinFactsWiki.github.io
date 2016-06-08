@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Metonymous:Transactions</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Metonymous:Transactions
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Metonymous%3ATransactions" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<h1 id="Abstract">Abstract</h1>
+
+<p>Transactions could be treated as non atomic entities.</p>
+
+<h1 id="Influences">Influences</h1>
+
+<p>This page proposes a command line interface based to transactions based on the &quot;Object&quot; lifecycle from ObjectOriented programming. It also borrows from RESTful architecture design (get, put, update, delete, resources via URI). The &quot;Functional design&quot; influences are inspired by <a href="../Da2ce7:New_Transaction/">Da2ce7:New Transaction</a> and Erlang.</p>
+
+<h1 id="New_Concepts">New Concepts</h1>
+
+<p>Transactions can be represented as a list containing</p>
+
+<h1 id="Interface">Interface</h1>
+
+<ul>
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=transaction_id&amp;do=create&amp;from=Metonymous%3ATransactions" rel="nofollow">?</a>transaction id</span> create_transaction {params}
+
+<ul>
+<li>atomic &quot;new&quot;, &quot;save&quot;,&quot;broadcast&quot; operation</li>
+<li>if the transaction created by new_transaction {params} would be invalid, create_transaction will throw an error
+
+<pre><code>      * {transaction} new_transaction
+</code></pre></li>
+</ul>
+</li>
+<li>{transaction} get_transaction {transaction_id}
+
+<ul>
+<li>returns comma seperated ...</li>
+</ul>
+</li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2011-07-25T19:29:09Z">Mon 25 Jul 2011 07:29:09 PM Europe</time>
+<!-- Created <time datetime="2011-07-25T19:29:09Z" pubdate="pubdate">Mon 25 Jul 2011 07:29:09 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

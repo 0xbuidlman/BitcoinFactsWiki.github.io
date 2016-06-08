@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Mining</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Mining
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p><a href="../Quick-and-dirty-4x5970-cooling.jpg"><img class="right" height="77" src="./120x120-Quick-and-dirty-4x5970-cooling.jpg" title="A quick and dirty mining rig" width="119" /></a></p>
+
+<h2 id="Introduction">Introduction</h2>
+
+<p><strong>Mining</strong> is the process of adding transaction records to Bitcoin&#39;s public ledger of past transactions.
+This ledger of past transactions is called the <a href="../Block_chain/">block chain</a> as it is a chain of <a href="../Block/">blocks</a>.
+The block chain serves to <a href="../Confirmation/">confirm</a> transactions to the rest of the network as having taken place.
+Bitcoin nodes use the block chain to distinguish legitimate Bitcoin transactions from attempts to re-spend coins that have already been spent elsewhere.</p>
+
+<p>Mining is intentionally designed to be resource-intensive and difficult so that the number of blocks found each day by miners remains steady. Individual <a href="../Blocks/">blocks</a> must contain a <a href="../Proof_of_work/">proof of work</a> to be considered valid. This proof of work is verified by other Bitcoin nodes each time they receive a block. Bitcoin uses the <a href="../Hashcash/">hashcash</a> proof-of-work function.</p>
+
+<p>The primary purpose of mining is to allow Bitcoin nodes to reach a secure, tamper-resistant consensus.
+Mining is also the mechanism used to introduce Bitcoins into the system:
+Miners are paid any transaction fees as well as a &quot;subsidy&quot; of newly created coins.
+This both serves the purpose of disseminating new coins in a decentralized manner as well as motivating people to provide security for the system.</p>
+
+<p>Bitcoin mining is so called because it resembles the mining of other commodities:
+it requires exertion and it slowly makes new currency available at a rate that resembles the rate at which commodities like gold are mined from the ground.</p>
+
+<h2 id="Difficulty">Difficulty</h2>
+
+<h3 id="The_Computationally-Difficult_Problem">The Computationally-Difficult Problem</h3>
+
+<p>Mining a block is difficult because the SHA-256 hash of a block&#39;s header must be lower than or equal to the <a href="../Target/">target</a> in order for the block to be accepted by the network. This problem can be simplified for explanation purposes: The hash of a block must start with a certain number of zeros. The probability of calculating a hash that starts with many zeros is very low, therefore many attempts must be made. In order to generate a new hash each round, a <a href="../Nonce/">nonce</a> is incremented. See <a href="../Proof_of_work/">Proof of work</a> for more information.</p>
+
+<h3 id="The_Difficulty_Metric">The Difficulty Metric</h3>
+
+<p>The <a href="../Difficulty/">difficulty</a> is the measure of how difficult it is to find a new block compared to the easiest it can ever be. It is recalculated every 2016 blocks to a value such that the previous 2016 blocks would have been generated in exactly two weeks had everyone been mining at this difficulty. This will yield, on average, one block every ten minutes. As more miners join, the rate of block creation will go up. As the rate of block generation goes up, the difficulty rises to compensate which will push the rate of block creation back down. Any blocks released by malicious miners that do not meet the required difficulty <a href="../Target/">target</a> will simply be rejected by everyone on the network and thus will be worthless.</p>
+
+<h3 id="Reward">Reward</h3>
+
+<p>When a block is discovered, the discoverer may award themselves a certain number of bitcoins, which is agreed-upon by everyone in the network. Currently this bounty is 25 bitcoins; this value will halve every 210,000 blocks. See <a href="../Controlled_Currency_Supply/">Controlled Currency Supply</a>.</p>
+
+<p>Additionally, the miner is awarded the fees paid by users sending transactions. The fee is an incentive for the miner to include the transaction in their block. In the future, as the number of new bitcoins miners are allowed to create in each block dwindles, the fees will make up a much more important percentage of mining income.</p>
+
+<h2 id="The_mining_ecosystem">The mining ecosystem</h2>
+
+<h3 id="Hardware">Hardware</h3>
+
+<p><span class="createlink"><a href="/ikiwiki.cgi?page=Usb-fpga_module_1.15x-hs-800.jpg&amp;do=create&amp;from=Mining" rel="nofollow">?</a>Usb-fpga module 1.15x-hs-800.jpg</span>
+Users have used various types of hardware over time to mine blocks. Hardware specifications and performance statistics are detailed on the <a href="../Mining_Hardware_Comparison/">Mining Hardware Comparison</a> page.</p>
+
+<h4 id="CPU_Mining">CPU Mining</h4>
+
+<p>Early Bitcoin client versions allowed users to use their CPUs to mine. The advent of GPU mining made CPU mining financially unwise as the hashrate of the network grew to such a degree that the amount of bitcoins produced by CPU mining became lower than the cost of power to operate a CPU. The option was therefore removed from the core Bitcoin client&#39;s user interface.</p>
+
+<h4 id="GPU_Mining">GPU Mining</h4>
+
+<p>GPU Mining is drastically faster and more efficient than CPU mining. See the main article: <a href="../Why_a_GPU_mines_faster_than_a_CPU/">Why a GPU mines faster than a CPU</a>. A variety of popular <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Mining_rig&amp;from=Mining" rel="nofollow">?</a>mining rigs</span> have been documented.</p>
+
+<h4 id="FPGA_Mining">FPGA Mining</h4>
+
+<p>FPGA mining is a very efficient and fast way to mine, comparable to GPU mining and drastically outperforming CPU mining. FPGAs typically consume very small amounts of power with relatively high hash ratings, making them more viable and efficient than GPU mining. See <a href="../Mining_Hardware_Comparison/">Mining Hardware Comparison</a> for FPGA hardware specifications and statistics.</p>
+
+<h4 id="ASIC_Mining">ASIC Mining</h4>
+
+<p>An application-specific integrated circuit, or <em>ASIC</em>, is a microchip designed and manufactured for a very specific purpose. ASICs designed for Bitcoin mining were first released in 2013. For the amount of power they consume, they are vastly faster than all previous technologies and already have made GPU mining financially unwise in some countries and setups.</p>
+
+<h4 id="Mining_services_.28Cloud_mining.29">Mining services (Cloud mining)</h4>
+
+<p><span class="createlink"><a href="/ikiwiki.cgi?from=Mining&amp;do=create&amp;page=tags%2FMining_contractors" rel="nofollow">?</a>Mining contractors</span> provide mining services with performance specified by contract, often referred to as a &quot;Mining Contract&quot;. They may, for example, rent out a specific level of mining capacity for a set price for a specific duration.</p>
+
+<h3 id="Pools">Pools</h3>
+
+<p>As more and more miners competed for the limited supply of blocks, individuals found that they were working for months without finding a block and receiving any reward for their mining efforts. This made mining something of a gamble. To address the variance in their income miners started organizing themselves into <a href="../Pooled_mining/">pools</a> so that they could share rewards more evenly. See <a href="../Pooled_mining/">Pooled mining</a> and <span class="createlink"><a href="/ikiwiki.cgi?from=Mining&amp;do=create&amp;page=Comparison_of_mining_pools" rel="nofollow">?</a>Comparison of mining pools</span>.</p>
+
+<h3 id="History">History</h3>
+
+<p>Bitcoin&#39;s public ledger (the &#39;block chain&#39;) was started on January 3rd, 2009 at 18:15 UTC presumably by <a href="../Satoshi_Nakamoto/">Satoshi Nakamoto</a>. The first block is known as the <a href="../Genesis_block/">genesis block</a>. The first transaction recorded in the first block was a single transaction paying the reward of 50 new bitcoins to its creator.</p>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="https://www.bitcoinmining.com">Bitcoin Mining</a></li>
+<li><a href="http://codinginmysleep.com/bitcoin-mining-in-plain-english">Bitcoin Mining in Plain English</a> by David Perry</li>
+<li><a href="https://www.weusecoins.com/en/mining-guide/">Getting Started With Bitcoin Mining</a></li>
+<li><a href="http://bitcoinminer.com">Bitcoin Miner</a></li>
+<li><a href="http://www.reddit.com/r/Bitcoin/comments/18q2jx/eli5_bitcoin_mining_xpost_in_eli5/">Simplified Explanation of Bitcoin Mining</a> by reddit user <a href="http://www.reddit.com/user/azotic">azotic</a></li>
+<li><a href="https://bitcoinchain.com/pools">Bitcoin Mining Pools Comparison</a></li>
+<li><a href="https://www.youtube.com/watch?v=GmOzih6I1zs">Video: What is Bitcoin Mining?</a></li>
+<li><a href="http://bitcoindaily.org/bitcoin-guides/what-is-bitcoin-mining/">Bitcoin Mining Explained</a></li>
+</ul>
+
+
+
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Mining/" rel="tag">Mining</a>
+
+<a href="../tags/Vocabulary/" rel="tag">Vocabulary</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../2009/">2009</a>
+
+<a href="../2011/">2011</a>
+
+<a href="../ASIC/">ASIC</a>
+
+<a href="../Bitcoin/">Bitcoin</a>
+
+<a href="../Block/">Block</a>
+
+<a href="../Controlled_supply/">Controlled supply</a>
+
+<a href="../Help:FAQ/">Help:FAQ</a>
+
+<a href="../Help:Introduction/">Help:Introduction</a>
+
+<a href="../How_bitcoin_works/">How bitcoin works</a>
+
+<a href="../Mine/">Mine</a>
+
+
+<span class="popup">...
+<span class="balloon">
+
+<a href="../Myths/">Myths</a>
+
+<a href="../Myths/talk/">Myths/talk</a>
+
+<a href="../Nonce/">Nonce</a>
+
+<a href="../Pooled_mining/">Pooled mining</a>
+
+<a href="../Proof_of_work/">Proof of work</a>
+
+<a href="../SHA-256/">SHA-256</a>
+
+<a href="../Using_Bitcoin/">Using Bitcoin</a>
+
+<a href="../Vocabulary/">Vocabulary</a>
+
+<a href="../Weaknesses/">Weaknesses</a>
+
+<a href="../">index</a>
+
+</span>
+</span>
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-06-07T10:45:50Z">Tue 07 Jun 2016 10:45:50 AM Europe</time>
+<!-- Created <time datetime="2011-11-27T03:44:05Z" pubdate="pubdate">Sun 27 Nov 2011 03:44:05 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

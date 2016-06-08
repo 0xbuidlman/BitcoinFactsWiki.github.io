@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Satoshi Client Transaction Exchange</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Satoshi Client Transaction Exchange
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Satoshi_Client_Transaction_Exchange&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<h2 id="Overview">Overview</h2>
+
+<p>The Satoshi client advertises locally generated transactions and relays
+transactions from other nodes. This article describes the operations
+that deal with this exchange of transactions.</p>
+
+<p>Transactions are exchanged only if they are <span class="createlink"><a href="/ikiwiki.cgi?from=Satoshi_Client_Transaction_Exchange&amp;page=IsStandard&amp;do=create" rel="nofollow">?</a>standard</span> and <a href="../Invalid_block/">valid</a>.</p>
+
+<h2 id="Wallet_Send">Wallet Send</h2>
+
+<p>The client periodically calls SendMessages() (in main.cpp) which calls
+ResendWalletTransactions to send transactions generated locally.
+This routine looks to see if there has been a new block since last time,
+and if so, and the local transaction are still not in a block,
+then the transactions are sent to all nodes.
+This is done only about every 30 minutes.</p>
+
+<p>Transactions are only rebroadcast if they have a timestamp at least
+5 minutes older than the last block was received. They are sorted
+and sent oldest first. (3.1)</p>
+
+<h2 id="Periodic_Advertisement">Periodic Advertisement</h2>
+
+<p>The client periodically calls SendMessages() (in main.cpp) which
+determines if a message should be sent to a remote node.
+For each message processing iteration, one node is chosen as the
+&quot;trickle node&quot;. (4.1)  This node is the only one chosen to receive
+an &quot;addr&quot; message, if appropriate. (4.2)</p>
+
+<p>In the section for inventory, the client sends 1/4 of the transaction
+inventory, determined randomly (4.3), UNLESS they are the trickle node,
+in which case they receive ALL transactions. (4.4) Yes, that seems reversed,
+but it is what it is. If the node is to receive 1/4 (not all), then the
+code also avoids sending any transactions that came from the local
+wallet. (4.5)  The comments indicate this is intended to increase privacy.</p>
+
+<h2 id="Relay">Relay</h2>
+
+<p>When the client receives a transaction via a &quot;tx&quot; messages,
+it calls RelayMessage, which calls RelayInventory, which queues the
+inventory to be sent to all other nodes. (5.1)</p>
+
+<h2 id="See_Also">See Also</h2>
+
+<p> <span class="createlink"><a href="/ikiwiki.cgi?from=Satoshi_Client_Transaction_Exchange&amp;page=Transaction_broadcasting&amp;do=create" rel="nofollow">?</a>Transaction broadcasting</span></p>
+
+<h2 id="Footnotes">Footnotes</h2>
+
+<p>3.1: See: <code>CWallet::ResendWalletTransactions</code> in wallet.cpp.<br />
+<span class="ref-label">4.1:
+<span class="ref-column">
+ See: <br /><code>pnodeTrickle = vNodesCopy[GetRand(vNodesCopy.size())];</code><br />
+and <br /><code>SendMessages(pnode, pnode == pnodeTrickle);</code><br /> in ThreadMessageHandler2() in net.cpp.</span><br />
+<span class="ref-label">4.2:
+<span class="ref-column">
+ See:<br /><code>
+        //<br />
+        // Message: addr<br />
+        //<br />
+        if (fSendTrickle)<br />
+        {  </code><br />
+in SendMessages() in main.cpp.</span><br />
+<span class="ref-label">4.3:
+<span class="ref-column">
+ See: <br /><code>bool fTrickleWait = ((hashRand &amp; 3) != 0);</code><br />
+in SendMessages() in main.cpp.</span><br />
+<span class="ref-label">4.4:
+<span class="ref-column">
+ See:<br /><code>
+        // trickle out tx inv to protect privacy<br />
+        if (inv.type == MSG_TX &amp;&amp; !fSendTrickle)<br />
+        {   </code><br />
+in SendMessages() in main.cpp.</span><br />
+<span class="ref-label">4.5:
+<span class="ref-column">
+ See:<br /><code>
+        // always trickle our own transactions<br />
+        if (!fTrickleWait)<br />
+        {   <br />
+            CWalletTx wtx;<br />
+            if (GetTransaction(inv.hash, wtx))<br />
+               if (wtx.fFromMe)<br />
+                  fTrickleWait = true;<br />
+        }</code><br />
+in SendMessages() in main.cpp.</span><br />
+5.1: Both RelayMessage and RelayInventory in net.h.</span></span></span></span></span></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Developer/" rel="tag">Developer</a>
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Bitcoind/">Bitcoind</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-09-18T14:24:56Z">Fri 18 Sep 2015 02:24:56 PM Europe</time>
+<!-- Created <time datetime="2011-09-17T21:38:40Z" pubdate="pubdate">Sat 17 Sep 2011 09:38:40 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

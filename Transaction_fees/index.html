@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Transaction fees</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Transaction fees
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p><strong>Transaction fees</strong> may be included with any transfer of bitcoins from one address to another.</p>
+
+<h2 id="Background">Background</h2>
+
+<p><a href="../Fee.png"><img class="img" height="225" src="./310x310-Fee.png" title="Receiving the fees from hundreds of transactions (0.44 BTC)" width="310" /></a></p>
+
+<p>The transaction fee is processed by and received by the bitcoin miner.  When a new bitcoin block is generated with a successful hash, the information for all of the transactions is included with the block and all transaction fees are collected by that user creating the block, who is free to assign those fees to himself.</p>
+
+<p>Transaction fees are voluntary on the part of the person making the bitcoin transaction, as the person attempting to make a transaction can include any fee or none at all in the transaction. On the other hand, nobody mining new bitcoins necessarily needs to accept the transactions and include them in the new block being created.  The transaction fee is therefore an incentive on the part of the bitcoin user to make sure that a particular transaction will get included into the next block which is generated.</p>
+
+<p>It is envisioned that over time the cumulative effect of collecting transaction fees will allow somebody creating new blocks to &quot;earn&quot; more bitcoins than will be mined from new bitcoins created by the new block itself.  This is also an incentive to keep trying to create new blocks even if the value of the newly created block from the mining activity is zero in the far future.</p>
+
+<h2 id="Reference_Implementation">Reference Implementation</h2>
+
+<p>The following sections describe the behavior of the <a href="../Original_Bitcoin_client/">reference implementation</a> as of version 0.12.0. Earlier versions treated fees differently, as do other popular implementations (including possible later versions).</p>
+
+<h3 id="Sending">Sending</h3>
+
+<p>Users can decide to pay a predefined fee rate by setting <code>-paytxfee=&lt;n&gt;</code>
+(or <code>settxfee &lt;n&gt;</code> rpc during runtime). A value of <code>n=0</code> signals Bitcoin
+Core to use floating fees. By default, Bitcoin Core will use floating
+fees.</p>
+
+<p>Based on past transaction data, floating fees approximate the fees
+required to get into the <code>m</code>th block from now. This is configurable
+with <code>-txconfirmtarget=&lt;m&gt;</code> (default: <code>2</code>).</p>
+
+<p>Sometimes, it is not possible to give good estimates, or an estimate
+at all. Therefore, a fallback value can be set with <code>-fallbackfee=&lt;f&gt;</code>
+(default: <code>0.0002</code> BTC/kB).</p>
+
+<p>At all times, Bitcoin Core will cap fees at <code>-maxtxfee=&lt;x&gt;</code> (default:
+0.10) BTC.
+Furthermore, Bitcoin Core will never create transactions smaller than
+the current minimum relay fee.
+Finally, a user can set the minimum fee rate for all transactions with
+<code>-mintxfee=&lt;&lt;nowiki&gt;i&lt;/nowiki&gt;&gt;</code>, which defaults to 1000 satoshis per kB.</p>
+
+<p>Note that a typical transaction is 500 bytes.</p>
+
+<h3 id="Including_in_Blocks">Including in Blocks</h3>
+
+<p>This section describes how the reference implementation selects which transactions to put into new blocks, with default settings. All of the settings may be changed if a miner wants to create larger or smaller blocks containing more or fewer free transactions.</p>
+
+<p>Then transactions that pay a fee of at least 0.00001 BTC/kb are added to the block, highest-fee-per-kilobyte transactions first, until the block is not more than 750,000 bytes big.</p>
+
+<p>The remaining transactions remain in the miner&#39;s &quot;memory pool&quot;, and may be included in later blocks if their priority or fee is large enough.</p>
+
+<p>For Bitcoin Core 0.12.0 zero bytes (5.1) in the block are set aside for the highest-<a href="./#Priority_transactions">priority transactions</a>. Transactions are added highest-priority-first to this section of the block.</p>
+
+<h3 id="Relaying">Relaying</h3>
+
+<p>The reference implementation&#39;s rules for relaying transactions across the peer-to-peer network are very similar to the rules for sending transactions, as a value of 0.00001 BTC is used to determine whether or not a transaction is considered &quot;Free&quot;. However, the rule that all outputs must be 0.01 BTC or larger does not apply. To prevent &quot;penny-flooding&quot; denial-of-service attacks on the network, the reference implementation caps the number of free transactions it will relay to other nodes to (by default) 15 thousand bytes per minute.</p>
+
+<h3 id="Settings">Settings</h3>
+
+<table>
+<thead>
+<tr>
+<th>Setting </th>
+<th>Default Value (units)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>txconfirmtarget </td>
+<td>2 (blocks)</td>
+</tr>
+<tr>
+<td>paytxfee </td>
+<td>0 (BTC/kB)</td>
+</tr>
+<tr>
+<td>mintxfee </td>
+<td>0.00001 (BTC/kB)</td>
+</tr>
+<tr>
+<td>limitfreerelay </td>
+<td>15 (thousand bytes per minute)</td>
+</tr>
+<tr>
+<td>minrelaytxfee </td>
+<td>0.00001 (BTC/kB)</td>
+</tr>
+<tr>
+<td>blockmaxsize </td>
+<td>750000 (bytes)</td>
+</tr>
+<tr>
+<td>blockminsize </td>
+<td>0 (bytes)</td>
+</tr>
+<tr>
+<td>blockprioritysize </td>
+<td>0 (bytes)</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2 id="Fee_Plotting_Sites">Fee Plotting Sites</h2>
+
+<p>As of May 2016, the following sites seem to plot the required fee, in satoshi per (kilo)byte, required to get a transaction mined in a certain number of blocks.</p>
+
+<p><a href="https://bitcoinfees.21.co/">https://bitcoinfees.21.co/</a></p>
+
+<p><a href="https://bitcoinfees.github.io/">https://bitcoinfees.github.io/</a></p>
+
+<h2 id="Priority_transactions">Priority transactions</h2>
+
+<p>Historically it was not required to include a fee for every transaction. A large portion of miners would mine transactions with no fee given that they had enough &quot;priority&quot;. Today, low priority is mostly used as an indicator for spam transactions and almost all miners expect every transaction to include a fee.</p>
+
+<p>Transaction priority is calculated as a value-weighted sum of input age, divided by transaction size in bytes:
+    priority = sum(input_value_in_base_units * input_age)/size_in_bytes
+Transactions need to have a priority above 57,600,000 to avoid the enforced limit (as of client version 0.3.21).  This threshold is written in the code as COIN * 144 / 250, suggesting that the threshold represents a one day old, 1 btc coin (144 is the expected number of blocks per day) and a transaction size of 250 bytes.</p>
+
+<p>So, for example, a transaction that has 2 inputs, one of 5 btc with 10 confirmations, and one of 2 btc with 3 confirmations, and has a size of 500bytes, will have a priority of
+    (500000000 * 10 + 200000000 * 3) / 500 = 11,200,000</p>
+
+<h3 id="Historic_rules_for_free_transactions">Historic rules for free transactions</h3>
+
+<p>A transaction was safe to send without fees if these conditions were met:</p>
+
+<ul>
+<li>It is smaller than 1,000 bytes.</li>
+<li>All outputs are 0.01 BTC or larger.</li>
+<li>Its priority is large enough (see above)</li>
+</ul>
+
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Free_transaction_relay_policy&amp;from=Transaction_fees" rel="nofollow">?</a>Free transaction relay policy</span></li>
+<li><a href="http://bitcoinexchangerate.org/fees">Unconfirmed transactions fee chart</a></li>
+</ul>
+
+
+<h2 id="References">References</h2>
+
+<p>5.1: https://github.com/bitcoin/bitcoin/blob/v0.12.0/doc/release-notes.md#relay-and-mining-priority-transactions</p>
+
+<p><span class="createlink"><a href="/ikiwiki.cgi?from=Transaction_fees&amp;page=de%3ATransaktionsgeb%C3%BChren&amp;do=create" rel="nofollow">?</a>de:Transaktionsgeb&uuml;hren</span></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Mining/" rel="tag">Mining</a>
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+<a href="../tags/Vocabulary/" rel="tag">Vocabulary</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Bitcoin/">Bitcoin</a>
+
+<a href="../Funding_network_security/">Funding network security</a>
+
+<a href="../How_bitcoin_works/">How bitcoin works</a>
+
+<a href="../Myths/">Myths</a>
+
+<a href="../Off-Chain_Transactions/">Off-Chain Transactions</a>
+
+<a href="../Orphan_Block/">Orphan Block</a>
+
+<a href="../Transaction_Fee/">Transaction Fee</a>
+
+<a href="../Transaction_fee/">Transaction fee</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-06-07T14:24:02Z">Tue 07 Jun 2016 02:24:02 PM Europe</time>
+<!-- Created <time datetime="2010-12-19T21:49:40Z" pubdate="pubdate">Sun 19 Dec 2010 09:49:40 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

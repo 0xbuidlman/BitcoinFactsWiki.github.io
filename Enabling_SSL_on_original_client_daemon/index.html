@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Enabling SSL on original client daemon</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Enabling SSL on original client daemon
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>JSON-RPC over <a href="https://en.wikipedia.org/wiki/Secure_Sockets_Layer">SSL</a> is strongly discouraged</p>
+
+<p>&quot;The RPC interface isn&#39;t designed to be used in any scenario which would require SSL, which would be access over the internet or other untrusted networks. It doesn&#39;t have the necessary denial of service protections or review to make it safe for use this way, and so letting potentially malicious clients connect to it would be incredibly unwise. If you need to talk to a remote bitcoind instance you are better off tunneling with SSH or stunnel which will provide a secure, authenticated path without exposing the socket any further than localhost.&quot;</p>
+
+<p>-<a href="https://bitcoin.stackexchange.com/questions/39117/why-is-json-rpc-over-ssl-strongly-discouraged">Bitcoin(StackExchange, August 17th, 2015)</a></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../API_reference_(JSON-RPC)/">API reference (JSON-RPC)</a>
+
+<a href="../Bitcoiner/">Bitcoiner</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-03-22T22:45:34Z">Tue 22 Mar 2016 10:45:34 PM Europe</time>
+<!-- Created <time datetime="2011-04-22T17:32:00Z" pubdate="pubdate">Fri 22 Apr 2011 05:32:00 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

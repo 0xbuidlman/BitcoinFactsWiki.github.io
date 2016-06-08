@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Softfork</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Softfork
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Softfork" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>A softfork is a change to the bitcoin protocol wherein only previously valid blocks/transactions are made invalid.
+Since old nodes will recognise the new blocks as valid, a softfork is backward-compatible.
+This kind of fork requires only a majority of the miners upgrading to enforce the new rules.</p>
+
+<p>New transaction types can often be added as softforks, requiring only that the participants (sender and receiver) and miners understand the new transaction type.
+This is done by having the new transaction appear to older clients as a &quot;pay-to-anybody&quot; transaction (of a special form), and getting the miners to agree to reject blocks including these transaction unless the transaction validates under the new rules.
+This is how <a href="../P2SH/">P2SH</a> was added to Bitcoin.</p>
+
+<h2 id="Mechanism">Mechanism</h2>
+
+<p>Given a set of valid blocks, you can take any subset of those blocks and that subset will also, of course, all be valid. A softfork changes the rules such that only a subset of blocks that were previously valid remain so. Often softforks make certain transactions invalid, for example a softfork could make any transaction that is more than 1KB invalid (not that that would necessarily be desirable).</p>
+
+<p>Generally softforks accomplish something more useful, for example Pay-to-Script-Hash (<a href="../P2SH/">P2SH</a>) was a softfork. Originally the script &quot;OP_HASH160 <span class="createlink"><a href="/ikiwiki.cgi?page=20-byte-hash-value&amp;do=create&amp;from=Softfork" rel="nofollow">?</a>20-byte-hash-value</span> OP_EQUAL&quot; could be redeemed by simply pushing the preimage of the hashed value onto the stack. Now the value you push must be a script that evaluates to true. All new transactions with the script &quot;OP_HASH160 <span class="createlink"><a href="/ikiwiki.cgi?from=Softfork&amp;page=20-byte-hash-value&amp;do=create" rel="nofollow">?</a>20-byte-hash-value</span> OP_EQUAL&quot; weren&#39;t valid if they merely had a preimage of the hash pushed onto the stack, the preimage had to be a valid script. The requirement for the preimage being a valid script shrunk the set of valid transactions and added a feature at the same time.</p>
+
+<p>In the P2SH example, two opcodes were redefined so they had a new function. You can also add new opcodes that originally didn&#39;t do anything. Because the new rules must cause the set of valid blocks to be a proper subset of the valid blocks with the old rules, you must ensure that adding this new opcode doesn&#39;t cause transactions that were once invalid to be valid. In <span class="createlink"><a href="/ikiwiki.cgi?page=BIP12&amp;do=create&amp;from=Softfork" rel="nofollow">?</a>BIP12</span> OP_EVAL is proposed. To softfork this new opcode in, the proposal stated an opcode that previously didn&#39;t have any effect would be replaced. The script would be evaluated twice, once with the opcode having the new OP_EVAL behavior and once with it&#39;s old behavior of doing nothing. The script being run with the old behavior of doing nothing would ensure that the transaction was valid to old clients.</p>
+
+<h2 id="Security">Security</h2>
+
+<p>In order for a softfork to work, a majority of the mining power needs to be running a client recognizing the fork. The more miners that accept the new rules, the more secure the network is post-fork. If you have 3/4 of miners recognizing the fork, 1/4 blocks created aren&#39;t guaranteed to follow the new rules. These 1/4 blocks will be valid to old nodes that aren&#39;t aware of the new rules, but they will be ignored by new nodes. This allows a &quot;fake confirmation&quot; vulnerability, an attacker could create a transaction paying to their victim, but have it end up in a block not following new rules, they might bribe a miner to make the block incompatible with new rules or make the transaction itself incompatible. Because 3/4 the hashrate won&#39;t mine on top of the block, the block and the transaction paying to you will eventually not be in the &quot;mainchain&quot; allowing the attacker to attempt to <a href="../Double-spending/">doublespend</a>.</p>
+
+<p>These attacks can be avoided by upgrading your client, however if the vast majority of miners (&gt;95%) accept the new rules, the odds of an attacker being able to create many fake confirmations is low. Because miners want to make money, and without upgrading their blocks may be reorged out, there is an incentive for miners to upgrade and 100% acceptance of a fork should be achieved by miners quickly.</p>
+
+<h3 id="z-015_BIP66_Blockchain_Fork">2015 BIP66 Blockchain Fork</h3>
+
+<p>After the deployment of the BIP66 softfork in 2015 95% of hash power stated that they accepted BIP66 by setting their block version to 3. In theory setting your block version to 3 is an agreement with the network to consider version 2 blocks invalid and only mine on valid forks. Being part of the 5% that hadn&#39;t updated and weren&#39;t creating version 3 blocks, BTCNuggets created a version 2 block which was invalid to all new clients (&gt;=0.9.5) but valid to old clients. Antminer and F2Pool, comprising ~40% of the network at the time, were creating version 3 blocks, however neither miner validated previous blocks. This caused both Antminer and F2Pool to mine on top of BTCNuggets version 2 block and create an invalid fork. Over 40% of the hashpower was mining on this version 2 fork despite 95% having &quot;agreed&quot; to not do so. This led to a 6 block fork that was resolved after contacting the F2Pool and Antminer pool owners.</p>
+
+<p>Any SPV clients or out of date clients were vulnerable to these fake confirmations and in theory there could have been a reversed 6 confirmation transaction. Fortunately there were zero doublespent confirmed transactions and the only money lost was mining revenue that these pools lost. F2Pool has continued mining without validating beforehand and SPV client as well as outdated full node clients are at an even higher risk as long as they do so.</p>
+
+<h2 id="Implications">Implications</h2>
+
+<p>Softforks don&#39;t require any nodes to upgrade to maintain consensus since all blocks with the new softforked in rules also follow the old rules, therefore old clients accept them. Softforks cannot be reversed without a hardfork since a softfork by definition only allows the set of valid blocks to be a proper subset of what was valid pre-fork.</p>
+
+<p>If users upgrade to a post-softfork client and for some reason a majority of miners switch back to the pre-softfork client, the post-softfork client users would break consensus as soon as a block came along that didn&#39;t follow their clients new rules.</p>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../Hardfork/">Hardfork</a></li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Fork_(disambiguation)/">Fork (disambiguation)</a>
+
+<a href="../Hardfork/">Hardfork</a>
+
+<a href="../Hardfork_Wishlist/">Hardfork Wishlist</a>
+
+<a href="../Scalability_FAQ/">Scalability FAQ</a>
+
+<a href="../Script/">Script</a>
+
+<a href="../Softfork_wishlist/">Softfork wishlist</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-01-13T13:21:33Z">Wed 13 Jan 2016 01:21:33 PM Europe</time>
+<!-- Created <time datetime="2014-03-22T17:45:37Z" pubdate="pubdate">Sat 22 Mar 2014 05:45:37 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

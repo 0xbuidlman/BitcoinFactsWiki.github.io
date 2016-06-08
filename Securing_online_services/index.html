@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Securing online services</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Securing online services
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>Like any financial system, Bitcoin represents an attractive target for thieves and hackers. Any organization that accepts or sends significant volumes of money must therefore ensure they can <strong>secure their online service</strong> against these risks. This page details some best practices for merchants and other organizations, along with avenues for future research. It is <em>not</em> about securing your personal wallet.</p>
+
+<h2 id="Traditional_payment_risks">Traditional payment risks</h2>
+
+<p>Any time you accept payments online, you must deal with risk. This is true both of Bitcoin and credit cards, but the risks and responses to those risks are different. Let&#39;s recap the risks involved with traditional payment networks so we can compare them with Bitcoin.</p>
+
+<h3 id="Risks_involved_with_accepting_credit_card_payments_online">Risks involved with accepting credit card payments online</h3>
+
+<p>To accept credit card payments online, you must perform the following tasks:</p>
+
+<ol>
+<li>Obtain a merchant account with a bank</li>
+<li>Build a database and online ordering system that can store credit card details</li>
+<li>Ensure it is secured to the level specified by the PCI DSS (Payment Card Industry Data Security Standards)</li>
+<li>Handle inspections by PCI auditors</li>
+<li>Be prepared to handle chargebacks, potentially large volumes of them depending on the type of business</li>
+</ol>
+
+
+<p>A <em>chargeback</em> occurs when the owner of a credit card disputes a transaction, typically because either they believe you did not deliver satisfactorily, or because the card details were stolen and used by a card fraudster. If a chargeback  occurs, the credit card company will take back the money and also fine you. If too many of your transactions result in chargebacks, you will lose the ability to accept credit card transactions and most likely your online business with it.</p>
+
+<p>As you may have noticed, whilst happy customers are somewhat under your control in aggregate, you have no control over how many credit card numbers are stolen. For this reason credit-card accepting merchants typically have large and sophisticated fraud control measures in place, involving dedicated risk operations staff, machine learning, JavaScript browser fingerprinting and so on. The goal being to spot repeat fraudsters and deny their transactions. Too many false positives and legitimate customers who want to pay for your product cannot, limiting your market. Too many false negatives and you can lose significant money to chargebacks, which may arrive weeks or months after the product or service has been delivered.</p>
+
+<p>Unsurprisingly, many merchants choose to outsource this arduous process to a third party payment gateway like <span class="createlink"><a href="/ikiwiki.cgi?from=Securing_online_services&amp;do=create&amp;page=PayPal" rel="nofollow">?</a>PayPal</span>, Google Checkout and so on or a third party fraud prevention like FraudLabs Pro, Signifyd and so on. However all these services add their own policies, fees and often do not provide any guarantees of chargeback protection.</p>
+
+<h3 id="Risks_involved_in_online_banking">Risks involved in online banking</h3>
+
+<p>Storing money in an internet accessible bank account is convenient, but how safe it is depends very heavily on the type and quality of security measures put in place by your bank. A good online banking system looks like this:</p>
+
+<ol>
+<li>To log in, it requires you to input a code into a dedicated hardware device and then type back the response.</li>
+<li>To wire money, it requires you to input a fragment of the destination account number into a dedicated hardware device and then type back the response. Typically this is only required the first time you send money to an account. After that repeat transactions will be considered OK.</li>
+<li>It uses SSL.</li>
+<li>The bank will not issue new hardware or other credentials based purely on a phone conversation and a few personal trivia checks.</li>
+<li>The bank may also perform manual inspection of unusual transactions and call you to verify them.</li>
+</ol>
+
+
+<p>With such a setup the rates of fraudulent bank wires are low and so bank transfers tend to be hard to reverse, so merchants are also protected. This setup describes many banks around the world, especially in the European SEPA zone. Unfortunately some banks, particularly American banks, often look like this:</p>
+
+<ol>
+<li>To log in you have to provide a password and something vaguely password-ish like a secret question</li>
+<li>There are no dedicated hardware devices used</li>
+<li>Security may be entirely heuristic</li>
+<li>Though Fedwire bank wires are not reversible, banks can still return funds that were received such as when the transfer was the result of phishing, for instance.</li>
+<li>Whilst consumer accounts may have some liability protection, business accounts do not</li>
+</ol>
+
+
+<p>Because the security mechanisms in place are entirely controlled by your bank, if yours is unacceptable your only choice is to find another bank. If all banks serving your local market are the same, you&#39;re out of luck. Even if your bank has good security, accepting payments from a bank that does not can entail significant risk.</p>
+
+<h2 id="Risks_involved_in_handling_Bitcoins">Risks involved in handling Bitcoins</h2>
+
+<p>In contrast to the above systems, Bitcoin carries a different set of risks which can be managed in different ways.</p>
+
+<ol>
+<li>The server containing your wallet may be hacked and the coins stolen</li>
+<li>Money sent to your wallet may be reversed</li>
+<li>Your wallet may be accidentally destroyed, along with all the money in it.</li>
+<li>You may be scammed into sending your money elsewhere (this problem is not unique to Bitcoin)</li>
+</ol>
+
+
+<p>However, unlike with traditional payment schemes, the risk of fraudulent payments is low and Bitcoin gives you tremendous flexibility to implement as much or as little security as you like. At no point are you at the mercy of third party payment processors who may or may not be properly incentivized to be secure. Below we discuss each problem Bitcoin using traders may face, and some common solutions.</p>
+
+<h3 id="Server_hacking">Server hacking</h3>
+
+<p>Server hacks have resulted in the loss of tens of thousands of Bitcoins. Any internet-connected computer that has liquid access to data worth hundreds of thousands of dollars will come under sophisticated and sustained attack, but there are some simple techniques you can use to reduce your risk.</p>
+
+<ul>
+<li>For merchants who need to automatically accept payments online but not make them, use an <strong>encrypted wallet</strong> that does not have the password on the server. To receive a payment all you need is a public key (for better privacy most merchants use one fresh key per user or transaction). The public key alone does not allow you to spend the money. By creating a wallet with plenty of keys on your own local computer and then uploading the encrypted version to the server, you ensure that whilst the server can accept payments only your own computer can make them, even though they share the same balance. Thus hacking the server doesn&#39;t allow any financial gain. Of course you must still ensure your local computer is secured.</li>
+<li>Some organizations need to be able to automatically send money as well as receive it. Examples include trading platforms and mining pools. These typically use <strong>cold storage</strong> as much as possible, where only the minimum balance necessary to handle withdrawls is on the server. The rest is sent to a separate wallet which is kept away from internet connected computers. Because a wallet can receive coins without it being online, profit can be moved from the server to cold storage without risking the cold money. If an unusually large withdrawal takes place the transaction can be placed on hold until a human operator has time to reach the cold wallet and send money from it to the live site. This limits your losses to the size of your hot wallet in the case of a server breach.</li>
+<li>Avoid managed server hosting. During 2012 several high profile breaches were caused not by lax security on the part of the site operators themselves but rather the companies providing the servers. Many datacenter operators, even large well known ones, are <em>not</em> equipped to handle sensitive data regardless of what assurances they may provide. They can be vulnerable to hacking and social engineering themselves. Instead, purchase your own server(s) and rent a cage / network connection from a local datacenter that you can visit in person. For added security, either disable remote access entirely or ensure only connections from your home IP ranges are allowed. Make sure the datacenter operator won&#39;t provide remote access on request without some pre-agreed security protocol being followed, like a callback.</li>
+<li>Consider implementing a supervisor system. In this scheme, the site gives its users multi-signature addresses for sending payments. The money received requires a signature by both the website and an independent supervisor computer. The job of the supervisor is to analyze the stream of payment requests from the other server and try to spot anomalies. If a payment request looks OK then it will be signed. If it looks iffy a human will be called for further attention. The supervisor can be made a lot more secure than the website because it has only a single, well defined purpose and does not need to run complex user-facing software like a web site or email system. So the job of the attacker now becomes either to hack both systems (hard if they are deliberately set up differently), or to find a way to extract money that the supervisor won&#39;t notice. What exactly &quot;good&quot; vs &quot;bad&quot; transactions look like are merchant specific.</li>
+</ul>
+
+
+<h3 id="Transaction_reversals">Transaction reversals</h3>
+
+<p>Whilst both credit cards and Bitcoins can experience transaction reversals, in Bitcoin the risk is entirely theoretical and has yet to be observed in the wild, whilst chargebacks are extremely common in the credit card world. Nevertheless, you should understand the risks:</p>
+
+<ul>
+<li>For merchants that are shipping physical goods you probably don&#39;t have to worry. Reversing a transaction gets harder and harder with time. After only one hour it becomes computationally infeasible to reverse a Bitcoin transaction. Inserting a small delay before shipping isolates you from this risk entirely.</li>
+<li>For automated trading platforms that may pay out some other currency in response to Bitcoin deposits, you should also delay payment for a short time until reversal becomes infeasible. Low risk deposits from trusted customers could be processed faster, as reversing a Bitcoin transaction is a non trivial problem at this time which is suited only to relatively skilled attackers who are after large sums of money.</li>
+<li>For merchants shipping things immediately, like digital downloads, measuring the propagation of a transaction across the network and waiting until most nodes have reported it is probably good enough. This allows you to accept the payment within seconds. Whilst there&#39;s a higher risk of transaction reversal here, the attack is still expensive and the attacker cannot choose the timing of the attack. Therefore watching out for users who receive an address and then delay the act of payment significantly is probably enough to insulate you from this attack (the <a href="../Double-spending/#Finney_attack">Finney attack</a>).</li>
+</ul>
+
+
+<h3 id="Your_wallet_may_be_accidentally_destroyed">Your wallet may be accidentally destroyed</h3>
+
+<p>Backing up Bitcoin wallets is easy, as they are just files. For high volume sites with the existing software (Bitcoin 0.6), you should pre-generate a large number of keys such that a single old backup is enough to restore all your money. Future versions will derive new keys deterministically, so a single backup should be enough to ensure you can always restore your wallet after an accidental or malicious deletion.</p>
+
+<h3 id="You_may_be_scammed_into_sending_the_money_elsewhere">You may be scammed into sending the money elsewhere</h3>
+
+<p>Whilst no financial system can completely solve human gullibility, Bitcoins multi-signature keys allow you to lock up money such that multiple people have to agree in order for it to be spent. For example, the bulk of your balance could be assigned to a multi-signature key that requires you
+and your business partners to agree .... thus forcing a mental sanity check from multiple people, hopefully making the act of scamming harder.</p>
+
+<h2 id="Future_research">Future research</h2>
+
+<p>Whilst running your own physical servers with no datacenter operator access is secure, it lacks convenience. In future it may be possible to the use TPM (trusted platform module) chips to allow managed hosting such that root or even physical access is insufficient to steal the funds, as the wallet keys would be bound to a particular software environment. Well engineered trusted computing solutions have some degree of physical resistance so rebooting the machine, opening it up or logging in with local/remote root would be not allow you to steal the wallets balance.</p>
+
+<p>Unfortunately engineering such systems is non trivial and the technical difficulty places this solution out of reach for most traders right now. In future easy to use software libraries, documentation, examples and managed hosting providers that sell TC enabled hardware may increase its attractiveness.</p>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../In-store_Transactions/">In-store Transactions</a></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=How_to_accept_Bitcoin%2C_for_small_businesses&amp;do=create&amp;from=Securing_online_services" rel="nofollow">?</a>How to accept Bitcoin, for small businesses</span></li>
+<li><a href="http://bitcointalk.org/index.php?topic=93770.0">How CoinPal avoided PayPal fraud</a></li>
+</ul>
+
+
+<h2 id="References">References</h2>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/ECommerce/" rel="tag">ECommerce</a>
+
+<a href="../tags/Security/" rel="tag">Security</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Merchant_Howto/">Merchant Howto</a>
+
+<a href="../Secure_Trading/">Secure Trading</a>
+
+<a href="../Setting_up_a_secure_ecommerce_site/">Setting up a secure ecommerce site</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2014-07-25T07:16:14Z">Fri 25 Jul 2014 07:16:14 AM Europe</time>
+<!-- Created <time datetime="2012-05-17T00:49:30Z" pubdate="pubdate">Thu 17 May 2012 12:49:30 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

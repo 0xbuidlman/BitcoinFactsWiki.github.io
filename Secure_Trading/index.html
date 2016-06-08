@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Secure Trading</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Secure Trading
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=Secure_Trading" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>Bitcoin users may want to trade bitcoin directly with each other in what is known as an over-the-counter market. This topic is a guide on how to set up your online identity and includes some best practices for trading with others in the Bitcoin community.</p>
+
+<h2 id="Introduction">Introduction</h2>
+
+<p>Within the Bitcoin community, individuals should be careful with their security and identity, primarily for two reasons:</p>
+
+<ol>
+<li>At this time, there is little in the way of law enforcement. No court has dealt directly with a significant theft of bitcoins or determined Bitcoin&#39;s legal status. Bitcoin users are for the most part, on their own.</li>
+<li>In lieu of legal action and lack of community trust outside the Bitcoin system itself, one&#39;s reputation has become the focus for building trust relationships with others in the community. Traders will take very little risk with new users who have not proven themselves (as one user can easily commit continuous fraud using many different identities.</li>
+</ol>
+
+
+<p>The Bitcoin community uses a few tools to help protect privacy, and thus identity. The first and most important is a <a href="../Securing_Your_Computer/">secure computer</a>.<br /></p>
+
+<p><strong>Before proceeding please make sure you have completed the <a href="../Securing_Your_Computer/">Securing Your Computer</a> guide; this guide assumes that your computer is secure both physically and in software.</strong></p>
+
+<p>If you are trading within Canada you are encouraged to use Interac e-transfer and Clearcoin (now closed) as outlined on <span class="createlink"><a href="/ikiwiki.cgi?page=Secure_Trading-CAD-interac&amp;do=create&amp;from=Secure_Trading" rel="nofollow">?</a>this page</span>.</p>
+
+<h2 id="Creating_a_secure_identity">Creating a secure identity</h2>
+
+<p>The first step is to create a cryptographically secure public-private key-pair.  This will be used as the basis of keeping both your wallet (see <a href="../Securing_your_wallet/">Securing your wallet</a>) and your identity secure.</p>
+
+<h3 id="Creating_your_first_.5Bhttp.3A.2F.2Fen.wikipedia.org.2Fwiki.2FPretty_Good_Privacy_PGP.5D_key-pair">Creating your first [http://en.wikipedia.org/wiki/Pretty_Good_Privacy PGP] key-pair</h3>
+
+<p>A PGP key-pair serves two very important functions:</p>
+
+<ol>
+<li>To sign information with an unforgeable signature</li>
+<li>To decrypt things that other people encrypt for you</li>
+</ol>
+
+
+<p>This allows you to both conduct business privately (encryption), and give out promises that you cannot deny making (signature).</p>
+
+<h4 id="Installing_GPG">Installing GPG</h4>
+
+<p>Virtually all GNU/Linux distributions include <a href="http://en.wikipedia.org/wiki/GNU_Privacy_Guard">GPG</a> in their default configurations, but Microsoft Windows users will need to install additional software.</p>
+
+<h5 id="Microsoft_Windows.3A">Microsoft Windows:</h5>
+
+<p>On Windows, the recommend package that contains GPG is the <a href="http://en.wikipedia.org/wiki/Git_%28software%29">Git</a> package by the <a href="http://code.google.com/p/msysgit">msysgit project</a>.  This package contains a collection of Unix tools that are very useful for any Windows installation.</p>
+
+<ul>
+<li>Navigate to <span class="createlink"><a href="/ikiwiki.cgi?from=Secure_Trading&amp;page=Git&amp;do=create" rel="nofollow">?</a>msysgit</span> https://code.google.com/p/msysgit/downloads/list</li>
+<li>Select the latest <em>Git</em> package. (Git-1.7.4-preview20110204.exe)</li>
+<li><p>When installing Git on the <em>Adjusting your PATH environment</em> screen, select: <em>Run Git and included Unix tools from the Windows Command Prompt</em><br />
+This option will install both Git and its supporting tools that include <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=gpg&amp;from=Secure_Trading" rel="nofollow">?</a>gpg</span> into the Windows file PATH.  This will enable any Windows application to access GPG.<br />
+It is possible that some other software on your system has installed GPG before. If you think this may be the case, it is advised to use the search tool or command prompt to find or run GPG respectively.</p></li>
+<li><p>After installation, GPG can be used by entering &#39;gpg&#39; into any Windows Command Prompt (cmd).</p></li>
+</ul>
+
+
+<h4 id="Setting_up_OpenPGP_email">Setting up OpenPGP email</h4>
+
+<p>Once you have GPG installed on your system, it is recommended that you use Thunderbird that works on both Windows and Linux systems:</p>
+
+<h5 id="All.3A">All:</h5>
+
+<ol>
+<li>Install Thunderbird: https://www.mozillamessaging.com/en-GB/</li>
+<li>Setup your email account with Thunderbird.</li>
+<li>Install the Enigmail plugin for Thunderbird: https://addons.mozilla.org/en-US/thunderbird/addon/enigmail/<br /></li>
+</ol>
+
+
+<p>Upon loading Enigmail, Thunderbird will ask you to make a new &lsquo;identity,&rsquo; follow this wizard and you will have created your identity.<br />
+You should backup your private key in a secure place.<br />
+Secondary, you should create a revocation certificate and store that in a different secure place (maybe print it out and store it in your fire safe).</p>
+
+<h3 id="Register_with_.5B.23bitcoin-otc.5D">Register with [#bitcoin-otc]</h3>
+
+<p>Follow the guide here: http://wiki.bitcoin-otc.com/wiki/Using_bitcoin-otc</p>
+
+<h3 id="Register_the_same_username_at_the_popular_places.3A">Register the same username at the popular places:</h3>
+
+<ul>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Secure_Trading&amp;do=create&amp;page=Bitcoin_Forum" rel="nofollow">?</a>Bitcoin Forum</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Secure_Trading&amp;do=create&amp;page=Bitcoin.it_Wiki" rel="nofollow">?</a>Bitcoin Wiki</span></li>
+<li><a href="../Bitcoin_Wiki:Community_portal/#IRC_Chat">Freenode IRC</a>
+Use a strong and different password for each of these places, keeping your passwords in a secure place.  This will allow other people in the community to track you across the different Bitcoin related sites.  Also making identity theft online more challenging.</li>
+</ul>
+
+
+<h2 id="Best_Practices_with_trading">Best Practices with trading</h2>
+
+<h3 id="Decentralised.2Fsocial_exchanges">Decentralised/social exchanges</h3>
+
+<p>Using a service such as <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Bitcoin-otc&amp;from=Secure_Trading" rel="nofollow">?</a>Bitcoin OTC</span> or <span class="createlink"><a href="/ikiwiki.cgi?from=Secure_Trading&amp;page=CoinTouch&amp;do=create" rel="nofollow">?</a>CoinTouch</span>, you can find friends of friends that trade crypto currency, and trade with them directly. Remember to verify the counterparty using more than one means of contact (e.g. Facebook message and phone call)</p>
+
+<h4 id="Bitcoin-OTC">Bitcoin-OTC</h4>
+
+<p>The <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Bitcoin-otc&amp;from=Secure_Trading" rel="nofollow">?</a>Bitcoin OTC</span> acts as a secure &#39;Address Book&#39; within the bitcoin community.</p>
+
+<ul>
+<li>Always require the user to become registered with #bitcoin-otc.</li>
+<li>Require a signed message from the fingerprint quoted at: http://bitcoin-otc.com/viewgpg.php</li>
+<li>Follow additional <a href="http://wiki.bitcoin-otc.com/wiki/Using_bitcoin-otc#Risk_of_fraud">recommendations</a> for avoiding fraud.</li>
+</ul>
+
+
+<h5 id="Using_the_Web-Of-Trust">Using the Web-Of-Trust</h5>
+
+<p>One of the key features of the Bitcoin OTC is the Web of Trust, this allows users to &#39;rate&#39; each other.  One can have more confidence trading with a user that has many good ratings.</p>
+
+<ul>
+<li>http://bitcoin-otc.com/viewratings.php</li>
+</ul>
+
+
+<h3 id="Make_sure_both_parties_agree_to_the_terms_of_the_trade_with_signed_messages">Make sure both parties agree to the terms of the trade with signed messages</h3>
+
+<ul>
+<li>Get a PGP signed quote, and check the signature.</li>
+<li>Send a PGP signed receipt.
+This allows either party to go public if the trade has become sour and stops your trading partner from claiming the details of the agreement were somehow different.<br /></li>
+</ul>
+
+
+<p>Search the Bitcoin Forum for the username of the person that you are trading with. Check if the user has provided constructive and useful advice to other parties.  And, most importantly, check for any claims that the user has scammed.</p>
+
+<h3 id="Use_an_Escrow_Service">Use an Escrow Service</h3>
+
+<p>Trading might benefit from an <span class="createlink"><a href="/ikiwiki.cgi?from=Secure_Trading&amp;page=tags%2FEscrow_services&amp;do=create" rel="nofollow">?</a>escrow service</span> such that bitcoins are disbursed only after contract terms have been met.<br /></p>
+
+<p>Additionally, found in Bitcoin&#39;s community are trusted individuals willing to act as independent, third-party escrow brokers.</p>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../Securing_online_services/">Securing online services</a></li>
+<li><a href="http://bitcointalk.org/index.php?topic=137272.0">Tips for Local Trading</a></li>
+</ul>
+
+
+<p><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=de%3ASicheres_Handeln&amp;from=Secure_Trading" rel="nofollow">?</a>de:Sicheres Handeln</span>
+<span class="createlink"><a href="/ikiwiki.cgi?from=Secure_Trading&amp;page=zh-cn%3A%E4%BA%A4%E6%98%93%E5%AE%89%E5%85%A8&amp;do=create" rel="nofollow">?</a>zh-cn:&#x4EA4;&#x6613;&#x5B89;&#x5168;</span></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Instructional/" rel="tag">Instructional</a>
+
+<a href="../tags/Security/" rel="tag">Security</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Currency_exchange/">Currency exchange</a>
+
+<a href="../Securing_Your_Computer/">Securing Your Computer</a>
+
+<a href="../">index</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-05-11T09:32:59Z">Mon 11 May 2015 09:32:59 AM Europe</time>
+<!-- Created <time datetime="2011-03-30T07:20:27Z" pubdate="pubdate">Wed 30 Mar 2011 07:20:27 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

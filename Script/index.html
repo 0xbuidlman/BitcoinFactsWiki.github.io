@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Script</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Script
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>Bitcoin uses a scripting system for <a href="../Transactions/">transactions</a>. <a>Forth</a>-like, Script is simple, stack-based, and processed from left to right. It is purposefully not Turing-complete, with no loops.</p>
+
+<p>A script is essentially a list of instructions recorded with each transaction that describe how the next person wanting to spend the Bitcoins being transferred can gain access to them.  The script for a typical Bitcoin transfer to destination Bitcoin address D simply encumbers future spending of the bitcoins with two things: the spender must provide</p>
+
+<ol>
+<li>a public key that, when hashed, yields destination address D embedded in the script, and</li>
+<li>a signature to show evidence of the private key corresponding to the public key just provided.</li>
+</ol>
+
+
+<p>Scripting provides the flexibility to change the parameters of what&#39;s needed to spend transferred Bitcoins.  For example, the scripting system could be used to require two private keys, or a combination of several, or even no keys at all.</p>
+
+<p>A transaction is valid if nothing in the combined script triggers failure and the top stack item is true (non-zero).  The party who originally <em>sent</em> the Bitcoins now being spent, dictates the script operations that will occur <em>last</em> in order to release them for use in another transaction.  The party wanting to spend them must provide the input(s) to the previously recorded script that results in those operations occurring last leaving behind true (non-zero).</p>
+
+<p>The stacks hold byte vectors.
+When used as numbers, byte vectors are interpreted as little-endian variable-length integers with the most significant bit determining the sign of the integer.
+Thus 0x81 represents -1.
+0x80 is another representation of zero (so called negative 0).
+Positive 0 is represented by a null-length vector.
+Byte vectors are interpreted as Booleans where False is represented by any representation of zero, and True is represented by any representation of non-zero.</p>
+
+<h2 id="Words">Words</h2>
+
+<p>This is a list of all Script words, also known as opcodes, commands, or functions.</p>
+
+<p>There are some words which existed in very early versions of Bitcoin but were removed out of a concern that the client might have a bug in their implementation. This fear was motivated by a bug found in OP_LSHIFT which could crash any Bitcoin node if exploited, and by other bugs in how Script worked which allowed anyone to spend anyone&#39;s bitcoins. The removed opcodes are sometimes said to be &quot;disabled&quot; opcodes, but this is something of a misnomer because there is <em>absolutely no way</em> for anyone using Bitcoin to use these opcodes (they simply <em>do not exist anymore</em> in the protocol), and there are also no solid plans to ever re-enable all of these opcodes. They are listed here only for historical interest.</p>
+
+<p>New opcodes can be added by means of a carefully designed and executed <a href="../Softfork/">softfork</a> using OP_NOP1-OP_NOP10.</p>
+
+<p>False is zero or negative zero (using any number of bytes) or an empty array, and True is anything else.</p>
+
+<h3 id="Constants">Constants</h3>
+
+<p>When talking about scripts, these value-pushing words are usually omitted.</p>
+
+<table>
+<thead>
+<tr>
+<th>Word</th>
+<th>Opcode</th>
+<th>Hex</th>
+<th>Input</th>
+<th>Output</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OP_0, OP_FALSE</td>
+<td>0</td>
+<td>0x00</td>
+<td>Nothing.</td>
+<td>(empty value)</td>
+<td>An empty array of bytes is pushed onto the stack. (This is not a no-op: an item is added to the stack.)</td>
+</tr>
+<tr>
+<td>N/A</td>
+<td>1-75</td>
+<td>0x01-0x4b</td>
+<td>(special)</td>
+<td>data</td>
+<td>The next <em>opcode</em>bytes is data to be pushed onto the stack</td>
+</tr>
+<tr>
+<td>OP_PUSHDATA1</td>
+<td>76</td>
+<td>0x4c</td>
+<td>(special)</td>
+<td>data</td>
+<td>The next byte contains the number of bytes to be pushed onto the stack.</td>
+</tr>
+<tr>
+<td>OP_PUSHDATA2</td>
+<td>77</td>
+<td>0x4d</td>
+<td>(special)</td>
+<td>data</td>
+<td>The next two bytes contain the number of bytes to be pushed onto the stack.</td>
+</tr>
+<tr>
+<td>OP_PUSHDATA4</td>
+<td>78</td>
+<td>0x4e</td>
+<td>(special)</td>
+<td>data</td>
+<td>The next four bytes contain the number of bytes to be pushed onto the stack.</td>
+</tr>
+<tr>
+<td>OP_1NEGATE</td>
+<td>79</td>
+<td>0x4f</td>
+<td>Nothing.</td>
+<td>-1</td>
+<td>The number -1 is pushed onto the stack.</td>
+</tr>
+<tr>
+<td>OP_1, OP_TRUE</td>
+<td>81</td>
+<td>0x51</td>
+<td>Nothing.</td>
+<td>1</td>
+<td>The number 1 is pushed onto the stack.</td>
+</tr>
+<tr>
+<td>OP_2-OP_16</td>
+<td>82-96</td>
+<td>0x52-0x60</td>
+<td>Nothing.</td>
+<td>2-16</td>
+<td>The number in the word name (2-16) is pushed onto the stack.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h3 id="Flow_control">Flow control</h3>
+
+<table>
+<thead>
+<tr>
+<th>Word</th>
+<th>Opcode</th>
+<th>Hex</th>
+<th>Input</th>
+<th>Output</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OP_NOP</td>
+<td>97</td>
+<td>0x61</td>
+<td>Nothing</td>
+<td>Nothing</td>
+<td>Does nothing.</td>
+</tr>
+<tr>
+<td>OP_IF</td>
+<td>99</td>
+<td>0x63</td>
+<td>colspan=&quot;2&quot;if <span class="createlink"><a href="/ikiwiki.cgi?from=Script&amp;page=statements&amp;do=create" rel="nofollow">?</a>statements</span><span class="createlink"><a href="/ikiwiki.cgi?page=statements&amp;do=create&amp;from=Script" rel="nofollow">?</a>statements</span>* endif</td>
+<td>If the top stack value is not 0, the statements are executed. The top stack value is removed.</td>
+<td></td>
+</tr>
+<tr>
+<td>OP_NOTIF</td>
+<td>100</td>
+<td>0x64</td>
+<td>colspan=&quot;2&quot;if <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=statements&amp;from=Script" rel="nofollow">?</a>statements</span><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=statements&amp;from=Script" rel="nofollow">?</a>statements</span>* endif</td>
+<td>If the top stack value is 0, the statements are executed. The top stack value is removed.</td>
+<td></td>
+</tr>
+<tr>
+<td>OP_ELSE</td>
+<td>103</td>
+<td>0x67</td>
+<td>colspan=&quot;2&quot;if <span class="createlink"><a href="/ikiwiki.cgi?from=Script&amp;page=statements&amp;do=create" rel="nofollow">?</a>statements</span><span class="createlink"><a href="/ikiwiki.cgi?from=Script&amp;page=statements&amp;do=create" rel="nofollow">?</a>statements</span>* endif</td>
+<td>If the preceding OP_IF or OP_NOTIF or OP_ELSE was not executed then these statements are and if the preceding OP_IF or OP_NOTIF or OP_ELSE was executed then these statements are not.</td>
+<td></td>
+</tr>
+<tr>
+<td>OP_ENDIF</td>
+<td>104</td>
+<td>0x68</td>
+<td>colspan=&quot;2&quot;if <span class="createlink"><a href="/ikiwiki.cgi?from=Script&amp;do=create&amp;page=statements" rel="nofollow">?</a>statements</span><span class="createlink"><a href="/ikiwiki.cgi?from=Script&amp;do=create&amp;page=statements" rel="nofollow">?</a>statements</span>* endif</td>
+<td>Ends an if/else block. All blocks must end, or the transaction is <strong>invalid</strong>. An OP_ENDIF without OP_IF earlier is also <strong>invalid</strong>.</td>
+<td></td>
+</tr>
+<tr>
+<td>OP_VERIFY</td>
+<td>105</td>
+<td>0x69</td>
+<td>True / false</td>
+<td>Nothing / <em>fail</em></td>
+<td><strong>Marks transaction as invalid</strong>if top stack value is not true.</td>
+</tr>
+<tr>
+<td><a href="../OP_RETURN/">OP RETURN</a></td>
+<td>106</td>
+<td>0x6a</td>
+<td>Nothing</td>
+<td><em>fail</em></td>
+<td><strong>Marks transaction as invalid</strong>. A standard way of attaching extra data to transactions is to add a zero-value output with a scriptPubKey consisting of OP_RETURN followed by exactly one pushdata op. Such outputs are provably unspendable, reducing their cost to the network. Currently it is usually considered non-standard (though valid) for a transaction to have more than one OP_RETURN output or an OP_RETURN output with more than one pushdata op.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h3 id="Stack">Stack</h3>
+
+<table>
+<thead>
+<tr>
+<th>Word</th>
+<th>Opcode</th>
+<th>Hex</th>
+<th>Input</th>
+<th>Output</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OP_TOALTSTACK</td>
+<td>107</td>
+<td>0x6b</td>
+<td>x1</td>
+<td>(alt)x1</td>
+<td>Puts the input onto the top of the alt stack. Removes it from the main stack.</td>
+</tr>
+<tr>
+<td>OP_FROMALTSTACK</td>
+<td>108</td>
+<td>0x6c</td>
+<td>(alt)x1</td>
+<td>x1</td>
+<td>Puts the input onto the top of the main stack. Removes it from the alt stack.</td>
+</tr>
+<tr>
+<td>OP_IFDUP</td>
+<td>115</td>
+<td>0x73</td>
+<td>x</td>
+<td>x / x x</td>
+<td>If the top stack value is not 0, duplicate it.</td>
+</tr>
+<tr>
+<td>OP_DEPTH</td>
+<td>116</td>
+<td>0x74</td>
+<td>Nothing</td>
+<td></td>
+<td>Puts the number of stack items onto the stack.</td>
+</tr>
+<tr>
+<td>OP_DROP</td>
+<td>117</td>
+<td>0x75</td>
+<td>x</td>
+<td>Nothing</td>
+<td>Removes the top stack item.</td>
+</tr>
+<tr>
+<td>OP_DUP</td>
+<td>118</td>
+<td>0x76</td>
+<td>x</td>
+<td>x x</td>
+<td>Duplicates the top stack item.</td>
+</tr>
+<tr>
+<td>OP_NIP</td>
+<td>119</td>
+<td>0x77</td>
+<td>x1 x2</td>
+<td>x2</td>
+<td>Removes the second-to-top stack item.</td>
+</tr>
+<tr>
+<td>OP_OVER</td>
+<td>120</td>
+<td>0x78</td>
+<td>x1 x2</td>
+<td>x1 x2 x1</td>
+<td>Copies the second-to-top stack item to the top.</td>
+</tr>
+<tr>
+<td>OP_PICK</td>
+<td>121</td>
+<td>0x79</td>
+<td>xn ... x2 x1 x0 </td>
+<td>xn ... x2 x1 x0 xn</td>
+<td>The item <em>n</em>back in the stack is copied to the top.</td>
+</tr>
+<tr>
+<td>OP_ROLL</td>
+<td>122</td>
+<td>0x7a</td>
+<td>xn ... x2 x1 x0 </td>
+<td>... x2 x1 x0 xn</td>
+<td>The item <em>n</em>back in the stack is moved to the top.</td>
+</tr>
+<tr>
+<td>OP_ROT</td>
+<td>123</td>
+<td>0x7b</td>
+<td>x1 x2 x3</td>
+<td>x2 x3 x1</td>
+<td>The top three items on the stack are rotated to the left.</td>
+</tr>
+<tr>
+<td>OP_SWAP</td>
+<td>124</td>
+<td>0x7c</td>
+<td>x1 x2</td>
+<td>x2 x1</td>
+<td>The top two items on the stack are swapped.</td>
+</tr>
+<tr>
+<td>OP_TUCK</td>
+<td>125</td>
+<td>0x7d</td>
+<td>x1 x2</td>
+<td>x2 x1 x2</td>
+<td>The item at the top of the stack is copied and inserted before the second-to-top item.</td>
+</tr>
+<tr>
+<td>OP_2DROP</td>
+<td>109</td>
+<td>0x6d</td>
+<td>x1 x2</td>
+<td>Nothing</td>
+<td>Removes the top two stack items.</td>
+</tr>
+<tr>
+<td>OP_2DUP</td>
+<td>110</td>
+<td>0x6e</td>
+<td>x1 x2</td>
+<td>x1 x2 x1 x2</td>
+<td>Duplicates the top two stack items.</td>
+</tr>
+<tr>
+<td>OP_3DUP</td>
+<td>111</td>
+<td>0x6f</td>
+<td>x1 x2 x3</td>
+<td>x1 x2 x3 x1 x2 x3</td>
+<td>Duplicates the top three stack items.</td>
+</tr>
+<tr>
+<td>OP_2OVER</td>
+<td>112</td>
+<td>0x70</td>
+<td>x1 x2 x3 x4</td>
+<td>x1 x2 x3 x4 x1 x2</td>
+<td>Copies the pair of items two spaces back in the stack to the front.</td>
+</tr>
+<tr>
+<td>OP_2ROT</td>
+<td>113</td>
+<td>0x71</td>
+<td>x1 x2 x3 x4 x5 x6</td>
+<td>x3 x4 x5 x6 x1 x2</td>
+<td>The fifth and sixth items back are moved to the top of the stack.</td>
+</tr>
+<tr>
+<td>OP_2SWAP</td>
+<td>114</td>
+<td>0x72</td>
+<td>x1 x2 x3 x4</td>
+<td>x3 x4 x1 x2</td>
+<td>Swaps the top two pairs of items.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h3 id="Splice">Splice</h3>
+
+<p>If any opcode marked as disabled is present in a script, it must abort and fail.</p>
+
+<table>
+<thead>
+<tr>
+<th>Word</th>
+<th>Opcode</th>
+<th>Hex</th>
+<th>Input</th>
+<th>Output</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OP_CAT</td>
+<td>126</td>
+<td>0x7e</td>
+<td>x1 x2</td>
+<td>out</td>
+<td>style=&quot;background:#D97171;&quot;Concatenates two strings. <em>disabled.</em></td>
+</tr>
+<tr>
+<td>OP_SUBSTR</td>
+<td>127</td>
+<td>0x7f</td>
+<td>in begin size</td>
+<td>out</td>
+<td>style=&quot;background:#D97171;&quot;Returns a section of a string. <em>disabled.</em></td>
+</tr>
+<tr>
+<td>OP_LEFT</td>
+<td>128</td>
+<td>0x80</td>
+<td>in size</td>
+<td>out</td>
+<td>style=&quot;background:#D97171;&quot;Keeps only characters left of the specified point in a string. <em>disabled.</em></td>
+</tr>
+<tr>
+<td>OP_RIGHT</td>
+<td>129</td>
+<td>0x81</td>
+<td>in size</td>
+<td>out</td>
+<td>style=&quot;background:#D97171;&quot;Keeps only characters right of the specified point in a string. <em>disabled.</em></td>
+</tr>
+<tr>
+<td>OP_SIZE</td>
+<td>130</td>
+<td>0x82</td>
+<td>in</td>
+<td>in size</td>
+<td>Pushes the string length of the top element of the stack (without popping it).</td>
+</tr>
+</tbody>
+</table>
+
+
+<h3 id="Bitwise_logic">Bitwise logic</h3>
+
+<p>If any opcode marked as disabled is present in a script, it must abort and fail.</p>
+
+<table>
+<thead>
+<tr>
+<th>Word</th>
+<th>Opcode</th>
+<th>Hex</th>
+<th>Input</th>
+<th>Output</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OP_INVERT</td>
+<td>131</td>
+<td>0x83</td>
+<td>in</td>
+<td>out</td>
+<td>style=&quot;background:#D97171;&quot;Flips all of the bits in the input. <em>disabled.</em></td>
+</tr>
+<tr>
+<td>OP_AND</td>
+<td>132</td>
+<td>0x84</td>
+<td>x1 x2</td>
+<td>out</td>
+<td>style=&quot;background:#D97171;&quot;Boolean <em>and</em>between each bit in the inputs. <em>disabled.</em></td>
+</tr>
+<tr>
+<td>OP_OR</td>
+<td>133</td>
+<td>0x85</td>
+<td>x1 x2</td>
+<td>out</td>
+<td>style=&quot;background:#D97171;&quot;Boolean <em>or</em>between each bit in the inputs. <em>disabled.</em></td>
+</tr>
+<tr>
+<td>OP_XOR</td>
+<td>134</td>
+<td>0x86</td>
+<td>x1 x2</td>
+<td>out</td>
+<td>style=&quot;background:#D97171;&quot;Boolean <em>exclusive or</em>between each bit in the inputs. <em>disabled.</em></td>
+</tr>
+<tr>
+<td>OP_EQUAL</td>
+<td>135</td>
+<td>0x87</td>
+<td>x1 x2</td>
+<td>True / false</td>
+<td>Returns 1 if the inputs are exactly equal, 0 otherwise.</td>
+</tr>
+<tr>
+<td>OP_EQUALVERIFY</td>
+<td>136</td>
+<td>0x88</td>
+<td>x1 x2</td>
+<td>Nothing / <em>fail</em></td>
+<td>Same as OP_EQUAL, but runs OP_VERIFY afterward.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h3 id="Arithmetic">Arithmetic</h3>
+
+<p>Note: Arithmetic inputs are limited to signed 32-bit integers, but may overflow their output.</p>
+
+<p>If any input value for any of these commands is longer than 4 bytes, the script must abort and fail.
+If any opcode marked as <em>disabled</em> is present in a script - it must also abort and fail.</p>
+
+<table>
+<thead>
+<tr>
+<th>Word</th>
+<th>Opcode</th>
+<th>Hex</th>
+<th>Input</th>
+<th>Output</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OP_1ADD</td>
+<td>139</td>
+<td>0x8b</td>
+<td>in</td>
+<td>out</td>
+<td>1 is added to the input.</td>
+</tr>
+<tr>
+<td>OP_1SUB</td>
+<td>140</td>
+<td>0x8c</td>
+<td>in</td>
+<td>out</td>
+<td>1 is subtracted from the input.</td>
+</tr>
+<tr>
+<td>OP_2MUL</td>
+<td>141</td>
+<td>0x8d</td>
+<td>in</td>
+<td>out</td>
+<td>style=&quot;background:#D97171;&quot;The input is multiplied by 2. <em>disabled.</em></td>
+</tr>
+<tr>
+<td>OP_2DIV</td>
+<td>142</td>
+<td>0x8e</td>
+<td>in</td>
+<td>out</td>
+<td>style=&quot;background:#D97171;&quot;The input is divided by 2. <em>disabled.</em></td>
+</tr>
+<tr>
+<td>OP_NEGATE</td>
+<td>143</td>
+<td>0x8f</td>
+<td>in</td>
+<td>out</td>
+<td>The sign of the input is flipped.</td>
+</tr>
+<tr>
+<td>OP_ABS</td>
+<td>144</td>
+<td>0x90</td>
+<td>in</td>
+<td>out</td>
+<td>The input is made positive.</td>
+</tr>
+<tr>
+<td>OP_NOT</td>
+<td>145</td>
+<td>0x91</td>
+<td>in</td>
+<td>out</td>
+<td>If the input is 0 or 1, it is flipped. Otherwise the output will be 0.</td>
+</tr>
+<tr>
+<td>OP_0NOTEQUAL</td>
+<td>146</td>
+<td>0x92</td>
+<td>in</td>
+<td>out</td>
+<td>Returns 0 if the input is 0. 1 otherwise.</td>
+</tr>
+<tr>
+<td>OP_ADD</td>
+<td>147</td>
+<td>0x93</td>
+<td>a b</td>
+<td>out</td>
+<td>a is added to b.</td>
+</tr>
+<tr>
+<td>OP_SUB</td>
+<td>148</td>
+<td>0x94</td>
+<td>a b</td>
+<td>out</td>
+<td>b is subtracted from a.</td>
+</tr>
+<tr>
+<td>OP_MUL</td>
+<td>149</td>
+<td>0x95</td>
+<td>a b</td>
+<td>out</td>
+<td>style=&quot;background:#D97171;&quot;a is multiplied by b. <em>disabled.</em></td>
+</tr>
+<tr>
+<td>OP_DIV</td>
+<td>150</td>
+<td>0x96</td>
+<td>a b</td>
+<td>out</td>
+<td>style=&quot;background:#D97171;&quot;a is divided by b. <em>disabled.</em></td>
+</tr>
+<tr>
+<td>OP_MOD</td>
+<td>151</td>
+<td>0x97</td>
+<td>a b</td>
+<td>out</td>
+<td>style=&quot;background:#D97171;&quot;Returns the remainder after dividing a by b. <em>disabled.</em></td>
+</tr>
+<tr>
+<td>OP_LSHIFT</td>
+<td>152</td>
+<td>0x98</td>
+<td>a b</td>
+<td>out</td>
+<td>style=&quot;background:#D97171;&quot;Shifts a left b bits, preserving sign. <em>disabled.</em></td>
+</tr>
+<tr>
+<td>OP_RSHIFT</td>
+<td>153</td>
+<td>0x99</td>
+<td>a b</td>
+<td>out</td>
+<td>style=&quot;background:#D97171;&quot;Shifts a right b bits, preserving sign. <em>disabled.</em></td>
+</tr>
+<tr>
+<td>OP_BOOLAND</td>
+<td>154</td>
+<td>0x9a</td>
+<td>a b</td>
+<td>out</td>
+<td>If both a and b are not 0, the output is 1. Otherwise 0.</td>
+</tr>
+<tr>
+<td>OP_BOOLOR</td>
+<td>155</td>
+<td>0x9b</td>
+<td>a b</td>
+<td>out</td>
+<td>If a or b is not 0, the output is 1. Otherwise 0.</td>
+</tr>
+<tr>
+<td>OP_NUMEQUAL</td>
+<td>156</td>
+<td>0x9c</td>
+<td>a b</td>
+<td>out</td>
+<td>Returns 1 if the numbers are equal, 0 otherwise.</td>
+</tr>
+<tr>
+<td>OP_NUMEQUALVERIFY</td>
+<td>157</td>
+<td>0x9d</td>
+<td>a b</td>
+<td>Nothing / <em>fail</em></td>
+<td>Same as OP_NUMEQUAL, but runs OP_VERIFY afterward.</td>
+</tr>
+<tr>
+<td>OP_NUMNOTEQUAL</td>
+<td>158</td>
+<td>0x9e</td>
+<td>a b</td>
+<td>out</td>
+<td>Returns 1 if the numbers are not equal, 0 otherwise.</td>
+</tr>
+<tr>
+<td>OP_LESSTHAN</td>
+<td>159</td>
+<td>0x9f</td>
+<td>a b</td>
+<td>out</td>
+<td>Returns 1 if a is less than b, 0 otherwise.</td>
+</tr>
+<tr>
+<td>OP_GREATERTHAN</td>
+<td>160</td>
+<td>0xa0</td>
+<td>a b</td>
+<td>out</td>
+<td>Returns 1 if a is greater than b, 0 otherwise.</td>
+</tr>
+<tr>
+<td>OP_LESSTHANOREQUAL</td>
+<td>161</td>
+<td>0xa1</td>
+<td>a b</td>
+<td>out</td>
+<td>Returns 1 if a is less than or equal to b, 0 otherwise.</td>
+</tr>
+<tr>
+<td>OP_GREATERTHANOREQUAL</td>
+<td>162</td>
+<td>0xa2</td>
+<td>a b</td>
+<td>out</td>
+<td>Returns 1 if a is greater than or equal to b, 0 otherwise.</td>
+</tr>
+<tr>
+<td>OP_MIN</td>
+<td>163</td>
+<td>0xa3</td>
+<td>a b</td>
+<td>out</td>
+<td>Returns the smaller of a and b.</td>
+</tr>
+<tr>
+<td>OP_MAX</td>
+<td>164</td>
+<td>0xa4</td>
+<td>a b</td>
+<td>out</td>
+<td>Returns the larger of a and b.</td>
+</tr>
+<tr>
+<td>OP_WITHIN</td>
+<td>165</td>
+<td>0xa5</td>
+<td>x min max</td>
+<td>out</td>
+<td>Returns 1 if x is within the specified range (left-inclusive), 0 otherwise.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h3 id="Crypto">Crypto</h3>
+
+<table>
+<thead>
+<tr>
+<th>Word</th>
+<th>Opcode</th>
+<th>Hex</th>
+<th>Input</th>
+<th>Output</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OP_RIPEMD160</td>
+<td>166</td>
+<td>0xa6</td>
+<td>in</td>
+<td>hash</td>
+<td>The input is hashed using RIPEMD-160.</td>
+</tr>
+<tr>
+<td>OP_SHA1</td>
+<td>167</td>
+<td>0xa7</td>
+<td>in</td>
+<td>hash</td>
+<td>The input is hashed using SHA-1.</td>
+</tr>
+<tr>
+<td>OP_SHA256</td>
+<td>168</td>
+<td>0xa8</td>
+<td>in</td>
+<td>hash</td>
+<td>The input is hashed using SHA-256.</td>
+</tr>
+<tr>
+<td>OP_HASH160</td>
+<td>169</td>
+<td>0xa9</td>
+<td>in</td>
+<td>hash</td>
+<td>The input is hashed twice: first with SHA-256 and then with RIPEMD-160.</td>
+</tr>
+<tr>
+<td>OP_HASH256</td>
+<td>170</td>
+<td>0xaa</td>
+<td>in</td>
+<td>hash</td>
+<td>The input is hashed two times with SHA-256.</td>
+</tr>
+<tr>
+<td>OP_CODESEPARATOR</td>
+<td>171</td>
+<td>0xab</td>
+<td>Nothing</td>
+<td>Nothing</td>
+<td>All of the signature checking words will only match signatures to the data after the most recently-executed OP_CODESEPARATOR.</td>
+</tr>
+<tr>
+<td><a href="../OP_CHECKSIG/">OP CHECKSIG</a></td>
+<td>172</td>
+<td>0xac</td>
+<td>sig pubkey</td>
+<td>True / false</td>
+<td>The entire transaction&#39;s outputs, inputs, and script (from the most recently-executed OP_CODESEPARATOR to the end) are hashed. The signature used by OP_CHECKSIG must be a valid signature for this hash and public key. If it is, 1 is returned, 0 otherwise.</td>
+</tr>
+<tr>
+<td>OP_CHECKSIGVERIFY</td>
+<td>173</td>
+<td>0xad</td>
+<td>sig pubkey</td>
+<td>Nothing / <em>fail</em></td>
+<td>Same as OP_CHECKSIG, but OP_VERIFY is executed afterward.</td>
+</tr>
+<tr>
+<td>OP_CHECKMULTISIG</td>
+<td>174</td>
+<td>0xae</td>
+<td>x sig1 sig2 ... pub1 pub2 </td>
+<td>True / False</td>
+<td>Compares the first signature against each public key until it finds an ECDSA match. Starting with the subsequent public key, it compares the second signature against each remaining public key until it finds an ECDSA match. The process is repeated until all signatures have been checked or not enough public keys remain to produce a successful result.  All signatures need to match a public key. Because public keys are not checked again if they fail any signature comparison, signatures must be placed in the scriptSig using the same order as their corresponding public keys were placed in the scriptPubKey or redeemScript.  If all signatures are valid, 1 is returned, 0 otherwise. Due to a bug, one extra unused value is removed from the stack.</td>
+</tr>
+<tr>
+<td>OP_CHECKMULTISIGVERIFY</td>
+<td>175</td>
+<td>0xaf</td>
+<td>x sig1 sig2 ... pub1 pub2 ... </td>
+<td>Nothing / <em>fail</em></td>
+<td>Same as OP_CHECKMULTISIG, but OP_VERIFY is executed afterward.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h3 id="Locktime">Locktime</h3>
+
+<table>
+<thead>
+<tr>
+<th>Word</th>
+<th>Opcode</th>
+<th>Hex</th>
+<th>Input</th>
+<th>Output</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OP_CHECKLOCKTIMEVERIFY (previously OP_NOP2)</td>
+<td>177</td>
+<td>0xb1</td>
+<td>Nothing</td>
+<td>Nothing / <em>fail</em></td>
+<td><strong>Marks transaction as invalid</strong>if the top stack item is greater than the transaction&#39;s nLockTime field, otherwise script evaluation continues as though an OP_NOP was executed. Transaction is also invalid if 1. the stack is empty; or 2. the top stack item is negative; or 3. the top stack item is greater than or equal to 500000000 while the transaction&#39;s nLockTime field is less than 500000000, or vice versa; or 4. the input&#39;s nSequence field is equal to 0xffffffff. The precise semantics are described in <a href="../BIP_0065/">BIP 0065</a></td>
+</tr>
+<tr>
+<td>OP_CHECKSEQUENCEVERIFY (previously OP_NOP3)</td>
+<td>178</td>
+<td>0xb2</td>
+<td>Nothing</td>
+<td>Nothing <s>/ <em>fail</em></s></td>
+<td>The word is ignored until the <a href="../BIP_0068/">BIP 0068</a>and <a href="../BIP_0112/">BIP 0112</a>softfork completes.<s><strong>Marks transaction as invalid</strong>if the relative lock time of the input (enforced by <a href="../BIP_0068/">BIP 0068</a>with nSequence) is not equal to or longer than the value of the top stack item. The precise semantics are described in <a href="../BIP_0112/">BIP 0112</a>.</s></td>
+</tr>
+</tbody>
+</table>
+
+
+<h3 id="Pseudo-words">Pseudo-words</h3>
+
+<p>These words are used internally for assisting with transaction matching. They are invalid if used in actual scripts.</p>
+
+<table>
+<thead>
+<tr>
+<th>Word</th>
+<th>Opcode</th>
+<th>Hex</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OP_PUBKEYHASH</td>
+<td>253</td>
+<td>0xfd</td>
+<td>Represents a public key hashed with OP_HASH160.</td>
+</tr>
+<tr>
+<td>OP_PUBKEY</td>
+<td>254</td>
+<td>0xfe</td>
+<td>Represents a public key compatible with OP_CHECKSIG.</td>
+</tr>
+<tr>
+<td>OP_INVALIDOPCODE</td>
+<td>255</td>
+<td>0xff</td>
+<td>Matches any opcode that is not yet assigned.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h3 id="Reserved_words">Reserved words</h3>
+
+<p>Any opcode not assigned is also reserved. Using an unassigned opcode makes the transaction <strong>invalid</strong>.</p>
+
+<table>
+<thead>
+<tr>
+<th>Word</th>
+<th>Opcode</th>
+<th>Hex</th>
+<th>When used...</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OP_RESERVED</td>
+<td>80</td>
+<td>0x50</td>
+<td><strong>Transaction is invalid</strong>unless occuring in an unexecuted OP_IF branch</td>
+</tr>
+<tr>
+<td>OP_VER</td>
+<td>98</td>
+<td>0x62</td>
+<td><strong>Transaction is invalid</strong>unless occuring in an unexecuted OP_IF branch</td>
+</tr>
+<tr>
+<td>OP_VERIF</td>
+<td>101</td>
+<td>0x65</td>
+<td><strong>Transaction is invalid even when occuring in an unexecuted OP_IF branch</strong></td>
+</tr>
+<tr>
+<td>OP_VERNOTIF</td>
+<td>102</td>
+<td>0x66</td>
+<td><strong>Transaction is invalid even when occuring in an unexecuted OP_IF branch</strong></td>
+</tr>
+<tr>
+<td>OP_RESERVED1</td>
+<td>137</td>
+<td>0x89</td>
+<td><strong>Transaction is invalid</strong>unless occuring in an unexecuted OP_IF branch</td>
+</tr>
+<tr>
+<td>OP_RESERVED2</td>
+<td>138</td>
+<td>0x8a</td>
+<td><strong>Transaction is invalid</strong>unless occuring in an unexecuted OP_IF branch</td>
+</tr>
+<tr>
+<td>OP_NOP1, OP_NOP4-OP_NOP10</td>
+<td>176, 179-185</td>
+<td>0xb0, 0xb2-0xb9</td>
+<td>The word is ignored. Does not mark transaction as invalid.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2 id="Scripts">Scripts</h2>
+
+<p>This is a list of interesting scripts. Keep in mind that all constants actually use the data-pushing commands above. Note that there is a small number of standard script forms that are relayed from node to node; non-standard scripts are accepted if they are in a block, but nodes will not relay them.</p>
+
+<h3 id="Standard_Transaction_to_Bitcoin_address_.28pay-to-pubkey-hash.29">Standard Transaction to Bitcoin address (pay-to-pubkey-hash)</h3>
+
+<pre><code>scriptPubKey: OP_DUP OP_HASH160 &lt;pubKeyHash&gt; OP_EQUALVERIFY OP_CHECKSIG
+scriptSig: &lt;sig&gt; &lt;pubKey&gt;
+</code></pre>
+
+<p>To demonstrate how scripts look on the wire, here is a raw scriptPubKey:</p>
+
+<pre>  76       A9             14
+OP_DUP OP_HASH160    Bytes to push
+
+89 AB CD EF AB BA AB BA AB BA AB BA AB BA AB BA AB BA AB BA   88         AC
+                      Data to push                     OP_EQUALVERIFY OP_CHECKSIG</pre>
+
+
+<p>Note: scriptSig is in the input of the spending transaction and scriptPubKey is in the output of the previously unspent i.e. &quot;available&quot; transaction.</p>
+
+<p>Here is how each word is processed:</p>
+
+<table>
+<thead>
+<tr>
+<th>Stack </th>
+<th>Script </th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Empty.</td>
+<td>OP_DUP OP_HASH160 OP_EQUALVERIFY OP_CHECKSIG </td>
+<td>scriptSig and scriptPubKey are combined.</td>
+</tr>
+<tr>
+<td></td>
+<td>OP_DUP OP_HASH160 OP_EQUALVERIFY OP_CHECKSIG </td>
+<td>Constants are added to the stack.</td>
+</tr>
+<tr>
+<td></td>
+<td>OP_HASH160 OP_EQUALVERIFY OP_CHECKSIG </td>
+<td>Top stack item is duplicated.</td>
+</tr>
+<tr>
+<td></td>
+<td>OP_EQUALVERIFY OP_CHECKSIG</td>
+<td>Top stack item is hashed.</td>
+</tr>
+<tr>
+<td></td>
+<td>OP_EQUALVERIFY OP_CHECKSIG</td>
+<td>Constant added.</td>
+</tr>
+<tr>
+<td></td>
+<td>OP_CHECKSIG</td>
+<td>Equality is checked between the top two stack items.</td>
+</tr>
+<tr>
+<td>true</td>
+<td>Empty.</td>
+<td>Signature is checked for top two stack items.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h3 id="Obsolete_pay-to-pubkey_transaction">Obsolete pay-to-pubkey transaction</h3>
+
+<p>OP_CHECKSIG is used directly without first hashing the public key.
+This was used by early versions of Bitcoin where people paid directly to IP addresses, before Bitcoin addresses were introduced.
+scriptPubKeys of this transaction form are still recognized as payments to user by Bitcoin Core.
+The disadvantage of this transaction form is that the whole public key needs to be known in advance, implying longer payment addresses, and that it provides less protection in the event of a break in the ECDSA signature algorithm.</p>
+
+<pre><code>scriptPubKey: &lt;pubKey&gt; OP_CHECKSIG
+scriptSig: &lt;sig&gt;
+</code></pre>
+
+<p>Checking process:</p>
+
+<table>
+<thead>
+<tr>
+<th>Stack </th>
+<th>Script </th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Empty.</td>
+<td>OP_CHECKSIG</td>
+<td>scriptSig and scriptPubKey are combined.</td>
+</tr>
+<tr>
+<td></td>
+<td>OP_CHECKSIG</td>
+<td>Constants are added to the stack.</td>
+</tr>
+<tr>
+<td>true</td>
+<td>Empty.</td>
+<td>Signature is checked for top two stack items.</td>
+</tr>
+</tbody>
+</table>
+
+
+<h3 id="Provably_Unspendable.2FPrunable_Outputs">Provably Unspendable/Prunable Outputs</h3>
+
+<p>The standard way to mark a transaction as provably unspendable is with a scriptPubKey of the following form:</p>
+
+<pre><code>scriptPubKey: OP_RETURN {zero or more ops}
+</code></pre>
+
+<p>OP_RETURN immediately marks the script as invalid, guaranteeing that no scriptSig exists that could possibly spend that output. Thus the output can be immediately pruned from the UTXO set even if it has not been spent. <a href="http://blockexplorer.com/tx/eb31ca1a4cbd97c2770983164d7560d2d03276ae1aee26f12d7c2c6424252f29">eb31ca1a4cbd97c2770983164d7560d2d03276ae1aee26f12d7c2c6424252f29</a> is an example: it has a single output of zero value, thus giving the full 0.125BTC fee to the miner who mined the transaction without adding an entry to the UTXO set. You can also use OP_RETURN to add data to a transaction without the data ever appearing in the UTXO set, as seen in 1a2e22a717d626fc5db363582007c46924ae6b28319f07cb1b907776bd8293fc; <span class="createlink"><a href="/ikiwiki.cgi?from=Script&amp;do=create&amp;page=P2Pool" rel="nofollow">?</a>P2Pool</span> does this with the share chain hash txout in the coinbase of blocks it creates.</p>
+
+<h3 id="Anyone-Can-Spend_Outputs">Anyone-Can-Spend Outputs</h3>
+
+<p>Conversely a transaction can be made spendable by anyone at all:</p>
+
+<pre><code>scriptPubKey: (empty)
+scriptSig: OP_TRUE
+</code></pre>
+
+<p>With some software changes such transactions can be used as a way to donate funds to miners in addition to transaction fees: any miner who mines such a transaction can also include an additional one after it sending the funds to an address they control. This mechanism may be used in the future for <a href="../Fidelity_bonds/">fidelity bonds</a> to sacrifice funds in a provable way.</p>
+
+<p>Anyone-Can-Spend outputs are currently considered non-standard, and are not relayed on the P2P network.</p>
+
+<h3 id="Transaction_puzzle">Transaction puzzle</h3>
+
+<p>Transaction a4bfa8ab6435ae5f25dae9d89e4eb67dfa94283ca751f393c1ddc5a837bbc31b is an interesting puzzle.</p>
+
+<pre><code>scriptPubKey: OP_HASH256 6fe28c0ab6f1b372c1a6a246ae63f74f931e8365e15a089c68d6190000000000 OP_EQUAL
+scriptSig: &lt;data&gt;
+</code></pre>
+
+<p>To spend the transaction you need to come up with some data such that hashing the data twice results in the given hash.</p>
+
+<table>
+<thead>
+<tr>
+<th>Stack </th>
+<th>Script </th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Empty.</td>
+<td>OP_HASH256  OP_EQUAL</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>OP_HASH256  OP_EQUAL</td>
+<td>scriptSig added to the stack.</td>
+</tr>
+<tr>
+<td></td>
+<td> OP_EQUAL</td>
+<td>The data is hashed.</td>
+</tr>
+<tr>
+<td> </td>
+<td>OP_EQUAL</td>
+<td>The given hash is pushed to the stack.</td>
+</tr>
+<tr>
+<td>true</td>
+<td>Empty.</td>
+<td>The hashes are compared, leaving true on the stack.</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>This transaction was successfully spent by 09f691b2263260e71f363d1db51ff3100d285956a40cc0e4f8c8c2c4a80559b1. The required data happened to be the <a href="../Genesis_block/">Genesis block</a>, and the given hash was the genesis block hash. Note that while transactions like this are fun, they are not secure, because they do not contain any signatures and thus any transaction attempting to spend them can be replaced with a different transaction sending the funds somewhere else.</p>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../Transactions/">Transactions</a></li>
+<li><a href="../Contracts/">Contracts</a></li>
+</ul>
+
+
+<h2 id="External_Links">External Links</h2>
+
+<ul>
+<li><a href="https://www.cs.princeton.edu/~tongbinw/bitcoinIDE/build/editor.html">Bitcoin IDE</a>: Bitcoin Script for dummies</li>
+<li><a href="https://webbtc.com/script">Bitcoin Debug Script Execution</a></li>
+<li><a href="http://www.crmarsh.com/script-playground/">Script Playground</a> &mdash; convert Script to JavaScript
+<sup>(cf. &quot;<a href="http://bitcoin.stackexchange.com/q/42576/4334">Online Bitcoin Script simulator or debugger?</a>&quot;)</sup></li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+<a href="../tags/Vocabulary/" rel="tag">Vocabulary</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Block/">Block</a>
+
+<a href="../Colored_Coins/">Colored Coins</a>
+
+<a href="../Contract/">Contract</a>
+
+<a href="../Controlled_supply/">Controlled supply</a>
+
+<a href="../Fidelity_bonds/">Fidelity bonds</a>
+
+<a href="../From_address/">From address</a>
+
+<a href="../Funding_network_security/">Funding network security</a>
+
+<a href="../Gocoin/">Gocoin</a>
+
+<a href="../Lightning_Network/">Lightning Network</a>
+
+<a href="../Maximum_transaction_rate/">Maximum transaction rate</a>
+
+
+<span class="popup">...
+<span class="balloon">
+
+<a href="../OP_CHECKSIG/">OP CHECKSIG</a>
+
+<a href="../OP_RETURN/">OP RETURN</a>
+
+<a href="../Pay_to_script_hash/">Pay to script hash</a>
+
+<a href="../Protocol_documentation/">Protocol documentation</a>
+
+<a href="../Protocol_rules/">Protocol rules</a>
+
+<a href="../Transaction/">Transaction</a>
+
+</span>
+</span>
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-03-31T09:33:34Z">Thu 31 Mar 2016 09:33:34 AM Europe</time>
+<!-- Created <time datetime="2010-12-19T21:39:26Z" pubdate="pubdate">Sun 19 Dec 2010 09:39:26 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

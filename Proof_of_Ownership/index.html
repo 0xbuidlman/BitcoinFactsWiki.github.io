@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Proof of Ownership</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Proof of Ownership
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Proof_of_Ownership&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p><strong>Proof of Ownership</strong> is a method that uses Bitcoin&#39;s decentralized ledger (also called <a href="https://en.bitcoin.it/wiki/Block_chain">blockchain</a>) or Bitcoin-related technologies to track the different owners of a certain information over the time.</p>
+
+<p>This technique can be used by artists or businesses to certify the integrity, date of publication and ownership of their creations or contracts.</p>
+
+<h2 id="Technology">Technology</h2>
+
+<h3 id="Using_the_Bitcoin_blockchain">Using the Bitcoin blockchain</h3>
+
+<p>The Bitcoin Core protocol now accepts raw data transactions up to 40 bytes per output using the opcode <strong>OP_RETURN</strong>.
+Putting the hash of the signature of a file&#39;s hash in the blockchain makes the owner of the private key associated with the signature the owner of the file in the blockchain (as long as someone else doesn&#39;t show up with a proof certified before).</p>
+
+<h3 id="Using_a_new_blockchain">Using a new blockchain</h3>
+
+<p>It&#39;s also possible to create a new blockchain for this purpose. This blockchain wouldn&#39;t only store coins but also notarized proofs.</p>
+
+<h2 id="Content_of_a_proof">Content of a proof</h2>
+
+<h3 id="Ownership">Ownership</h3>
+
+<p>Only the people with the private key associated with the signature can prove they are the owner.</p>
+
+<h3 id="Existence">Existence</h3>
+
+<p>A Proof of Ownership is always attached to a piece of data. Certifying the ownership of a certain information in the blockchain also proves that this information existed at a certain time.</p>
+
+<h3 id="Integrity">Integrity</h3>
+
+<p>A Proof of Ownership is always attached to a piece of data using cryptographic functions. This makes it impossible to alter the data after certification. If the content is modified, even by a single bit, then the whole certificate becomes invalid.</p>
+
+<h3 id="Authenticity">Authenticity</h3>
+
+<p>Because proofs are logged in the blockchain, it makes it easy to make transfers of ownership and find the original issuer of a certificate. Certificates can&rsquo;t be &ldquo;<a href="https://en.bitcoin.it/wiki/Double-spending">double-spent</a>&rdquo;.</p>
+
+<h2 id="Usages">Usages</h2>
+
+<ul>
+<li><a href="http://crypto-copyright.com/">crypto-copyright.com</a> - Decentralized Proof of Ownership using Bitcoin&#39;s blockchain</li>
+<li><a href="https://bitproof.io/">bitproof.io</a> - Certify your files and ideas for free in the Bitcoin blockchain</li>
+<li><a href="http://coinsecrets.org/">coinsecrets.org</a> - list of metadata recently embedded in the bitcoin blockchain using OP_RETURN outputs.</li>
+<li><a href="https://github.com/bitcoinjs/bitcoinjs-lib/blob/master/test/integration/advanced.js#L24">github.com</a> Creating OP_RETURN transactions in the blockchain</li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Proof-of-x/" rel="tag">Proof-of-x</a>
+
+</nav>
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-10-22T04:52:07Z">Thu 22 Oct 2015 04:52:07 AM Europe</time>
+<!-- Created <time datetime="2015-03-01T12:50:30Z" pubdate="pubdate">Sun 01 Mar 2015 12:50:30 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

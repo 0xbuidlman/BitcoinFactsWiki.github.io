@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Mining pool reward FAQ</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Mining pool reward FAQ
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<h2 id="How_does_mining_in_a_pool_improve_my_payouts.3F">How does mining in a pool improve my payouts?</h2>
+
+<p>Pooled mining will not have a significant effect on the <a href="http://en.wikipedia.org/wiki/Expected_value">expectation</a> of your payouts (it can decrease a bit due to fees), but it can dramatically decrease their <a href="http://en.wikipedia.org/wiki/Variance">variance</a>.</p>
+
+<h2 id="What_reward_systems_are_there.3F">What reward systems are there?</h2>
+
+<p>All reward systems use the concept of &quot;share&quot;, a hash which is easier than the real difficulty and proves you have worked on finding a valid block. Your reward when the pool finds a valid block depends on the shares you submitted.</p>
+
+<p>The main reward systems used are:</p>
+
+<blockquote><p><strong>Maximum pay per share</strong>: Every share submitted receives a fixed value known in advance. The value is rewarded to the miner to the extent that the pool has funds to cover it. When it does not, the remaining value is stored as extra credit which the pool may pay in the future when it has sufficient funds. This has virtually 0 variance and is thus good for beginners.</p>
+
+<p><strong>Pay per share</strong>: Every share submitted receives a fixed BTC reward known in advance. This has virtually 0 variance and is thus good for beginners. The Pool Operator often takes a relatively large fee, due to the fact that they cannot know how much will be paid in total to all the miners.</p>
+
+<p><strong>Proportional</strong> (&quot;Share-based&quot;): Every time a block is found, its reward is split between participants according to the number of shares they submitted.</p>
+
+<p><strong>Score-based</strong>: Each share submitted receives a score based on its age, and the block reward is split between participants according to their score. The variance of this method is slightly higher than proportional.</p></blockquote>
+
+<h2 id="What_will_be_my_expected_payout_per_share.3F">What will be my expected payout per share?</h2>
+
+<p>Every share will give you, on average, the block reward (minus any pool fees) divided by the difficulty. For example, with a block reward of 50 BTC, 2% fee and difficulty of 240000, each share submitted will give on average 0.000204 BTC (204 &mu;BTC).</p>
+
+<h2 id="How_many_hashes_does_it_take_to_find_a_share.3F">How many hashes does it take to find a share?</h2>
+
+<p>On average, one share will be found for every 2<sup>32</sup>, or 4.295 billion, hashes calculated. So at 1 MHash/s, you will find a share on average every 72 minutes.</p>
+
+<h2 id="How_much_will_the_pool_decrease_my_variance.3F">How much will the pool decrease my variance?</h2>
+
+<p>If you constitute a significant part of the pool (say, above 1%), your variance will be roughly proportional to your portion of the pool. If, for example, you are 20% of the pool, your variance will be 20% of solo mining variance (a decrease factor of 5 times).</p>
+
+<p>If not, your variance will not depend on the size of yourself or the pool, but rather on the scoring method used. For proportional, the decrease factor is roughly difficulty/ln(difficulty). For the geometric method the decrease factor is roughly (1 + 2<em>difficulty</em>c), where c is the score fee parameter used.</p>
+
+<p>Increasing the size of the pool will always decrease the variance, but at some point you will have diminishing marginal utility.</p>
+
+<h2 id="Show_me_some_examples_and_assist_in_clarifying_what_it_all_means...">Show me some examples and assist in clarifying what it all means...</h2>
+
+<h5 id="z-http.3A.2F.2Fforum.bitcoin.org.2Findex.php.3Ftopic.3D6667.msg233175.23msg233175_Quote_from.3A_SoreGums_on_2011.2F06.2F18_at_05.3A09.3A43_pm.5D.3D">[http://forum.bitcoin.org/index.php?topic=6667.msg233175#msg233175 Quote from: SoreGums on 2011/06/18 at 05:09:43 pm]=</h5>
+
+<p>so what am i missing with this:</p>
+
+<ul>
+<li>miner1 does 9 shares, mining the whole time</li>
+<li>miner2 does 1 share then leaves, spent 3mins doing this at the start of the round</li>
+<li>miner3 does 3 shares, working in the last 5mins of this block</li>
+<li>miner4 does 7 shares, mining the whole time, and finds the block after 30mins</li>
+<li>total shares = 20, each share is worth 50/20=2.5</li>
+<li>miners get <a href="9*2.5,">1<em>2.5, 3</em>2.5, 7*2.5</a> after block has 120 confirmations if it turns out to be invalid then shares go into current block solving round</li>
+</ul>
+
+
+<p>having typed that out, I&#39;m guessing that this is PPS...
+how does this promote pool hoping?
+if reward is only given after a block is found how is the operator out of pocket?</p>
+
+<p>sorry if this has all been covered elsewhere - most everything else I&#39;ve read regarding payouts is not as simple as what I have put above</p>
+
+<h5 id="z-http.3A.2F.2Fforum.bitcoin.org.2Findex.php.3Ftopic.3D6667.msg233652.23msg233652_Quote_from.3A_ewal_on_2011.2F06.2F18_at_06.3A48.3A11_pm.5D.3D">[http://forum.bitcoin.org/index.php?topic=6667.msg233652#msg233652 Quote from: ewal on 2011/06/18 at 06:48:11 pm]=</h5>
+
+<p>What you described is a transitional proportional payout scheme. &nbsp;Your payout is proportional to the amount of work that you did for any given block.</p>
+
+<p>In your example, miner1 got 22.5 BTC (9*2.5). &nbsp;That is 22.5 BTC for 30 minutes of work = 45BTC per hour.</p>
+
+<p>If you compare to an unlucky block that takes 100 times as long to find:</p>
+
+<ul>
+<li>miner1 does 900 shares, mining the whole time</li>
+<li>miner2 does 100 share then leaves, spent 300mins doing this at the start of the round</li>
+<li>miner3 does 300 shares, working in the last 500mins of this block</li>
+<li>miner4 does 700 shares, mining the whole time, and finds the block after 3000mins</li>
+<li>total shares = 2000, each share is worth 50/2000=0.025</li>
+</ul>
+
+
+<p>In this example miner1 still gets 22.5 BTC (900*0.025) except this time it took 100 times longer to get it. &nbsp;Now it was 22.5 BTC for 3000 minutes of work or 0.45 BTC per hour. &nbsp;Way less per hour because the block was very unlucky.</p>
+
+<p>Traditional Pay-per-share (PPS) is a different system where you get paid by the number of shares you submit regardless of if a block is found. &nbsp;The payout per share is determined by taking 50/difficulty.</p>
+
+<p>Say difficulty is 20, so the price per share is 2.5 or 50/20. &nbsp;In scenario 1, miner1 makes 22.5BTC in 30 minutes (9*2.5) or 45BTC per hour. &nbsp;In scenario 2, miner1 makes 2,250 BTC in 3000 minutes or the same 45BTC per hour. &nbsp;</p>
+
+<p>In PPS, your pay per hour is always the same even in the short term, but the drawback is that the pool might go bankrupt if there are too many long blocks. &nbsp;
+In proportional, your pay per hour in any given 24 hours varies based on if blocks are lucky or unlucky and the drawback is that pool hoppers skip town on long blocks. &nbsp;
+In MaxPPS, your pay per hour in any given 24 hours may also vary if the pool is small enough that it isn&#39;t reliably finding multiple blocks per day, but the variation will lower than in proportional because the pool has withheld some of the payment you would have received from short blocks so that it can pay you more on long blocks. &nbsp;The benefits are that the pool can&#39;t go bankrupt, and there is no longer any incentive for pool hoppers to switch to another pool on long blocks.</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Pooled_mining/">Pooled mining</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2011-06-27T22:22:50Z">Mon 27 Jun 2011 10:22:50 PM Europe</time>
+<!-- Created <time datetime="2011-05-26T09:14:41Z" pubdate="pubdate">Thu 26 May 2011 09:14:41 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

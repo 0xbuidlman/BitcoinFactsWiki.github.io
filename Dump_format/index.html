@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Dump format</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Dump format
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Dump_format" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>Bitcoin dumps various data structures using a format like this:</p>
+
+<pre>CBlock(hash=000000000019d6, ver=1, hashPrevBlock=00000000000000, hashMerkleRoot=4a5e1e, nTime=1231006505, nBits=1d00ffff, nNonce=2083236893, vtx=1)
+  CTransaction(hash=4a5e1e, ver=1, vin.size=1, vout.size=1, nLockTime=0)
+    CTxIn(COutPoint(000000, -1), coinbase 04ffff001d010)
+    CTxOut(nValue=50.00000000, scriptPubKey=0x5F1DF16B2B704C8A578D0B)
+  vMerkleTree: 4a5e1e</pre>
+
+
+<p>The indentation shows membership. In the above example, the CTxIn and CTxOut structures are part of the CTransaction structure, which is part of the CBlock structure. Data stored in the structure is displayed in parenthesis.</p>
+
+<p>All of the names used are names of the associated variables/classes in Bitcoin, though the values of the variables may not be exactly as shown. In particular, long data is sometimes shortened and converted to hex.</p>
+
+<p>It is important to understand this format because it is used extensively in Bitcoin, and, due to its compactness, it is the preferred format when discussing Bitcoin blocks/transactions.</p>
+
+<p>The Bitcoin -printblock switch produces CBlock dumps.</p>
+
+<h2 id="Types">Types</h2>
+
+<h3 id="General_note_about_hashes">General note about hashes</h3>
+
+<p>Output from hash functions are usually thought of as big-endian byte strings. So the traditional way of of displaying the SHA-256 hash of 0x00 would be:
+    6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d</p>
+
+<p>Since Bitcoin uses hashes as big numbers and performs calculations with them, however, the standard way of displaying Bitcoin-related hashes is as little-endian numbers. The same hash as above in Bitcoin format:
+    1da0af1706a31185763837b33f1d90782c0a78bbe644a59c987ab3ff9c0b346e</p>
+
+<p>Bitcoin also does two hashes for every hash operation. So the real Bitcoin hash of 0x00 would be:
+    9a538906e6466ebd2617d321f71bc94e56056ce213d366773699e28158e00614</p>
+
+<h3 id="COutPoint">COutPoint</h3>
+
+<pre><code>COutPoint(000000, -1)
+</code></pre>
+
+<p>Part of a CTxIn structure, this references a specific output. The first value is the truncated hash of the transaction, and the second value is an output index.</p>
+
+<h3 id="CTxIn">CTxIn</h3>
+
+<pre><code>CTxIn(COutPoint(237fe8, 0), scriptSig=0xA87C02384E1F184B79C6AC)
+CTxIn(COutPoint(000000, -1), coinbase 04ffff001d010)
+CTxIn(COutPoint(237fe8, 0), scriptSig=0xA87C02384E1F184B79C6AC, nSequence=5000)
+</code></pre>
+
+<p>A transaction input. scriptSig is the truncated scriptSig of the input. &quot;coinbase&quot; is the non-truncated scriptSig of a generation input. nSequence appears only if the input has a non-default sequence. Sequence numbers are intended for use with the transaction replacement feature, but can currently be safely ignored.</p>
+
+<h3 id="CScript">CScript</h3>
+
+<pre><code>OP_DUP OP_HASH160 c28af0f6a8d2c5601e0fd1c3c19bcd74c107e8c7 OP_EQUALVERIFY OP_CHECKSIG
+</code></pre>
+
+<p>The abstract script consists of a series of words separated by spaces, evaluated from left to right. The mnemonic for each opcode is given. Constants are shown in hex without any of the required OP_PUSHDATA operations.</p>
+
+<h3 id="CTxOut">CTxOut</h3>
+
+<pre><code>CTxOut(nValue=50.00000000, scriptPubKey=OP_DUP OP_HASH160 0x1512)
+</code></pre>
+
+<p>A transaction output. nValue is the the full-precision output value. scriptPubKey is the truncated CScript for the output (the entire script string is truncated to 30 characters).</p>
+
+<h3 id="CTransaction">CTransaction</h3>
+
+<pre>CTransaction(hash=4a5e1e, ver=1, vin.size=1, vout.size=1, nLockTime=0)
+  CTxIn(COutPoint(000000, -1), coinbase 04ffff001d010)
+  CTxOut(nValue=50.00000000, scriptPubKey=0x5F1DF16B2B704C8A578D0B)</pre>
+
+
+<p>A transaction. hash is the truncated hash. ver is the transaction version. vout.size is the number of outputs. nLockTime is intended for use with transaction replacement, and is not currently used for anything useful.</p>
+
+<h3 id="CBlock">CBlock</h3>
+
+<p>A block. Hash is the truncated hash. Version is the block version. HashPrevBlock is the truncated hash of the previous block. HashMerkleRoot is the truncated Merkle root. nTime is the Unix timestamp of the block. nBits is the current target in compact format. nNonce is the nonce. vtx is the number of transactions.</p>
+
+<p>vMerkleTree is a list of hashes in the Merkle tree. You can see how the tree is constructed by looking at the ordering. The bottom tier is listed first, then the next-higher tier, etc. For example, consider this block:</p>
+
+<pre>CBlock(hash=00000000009ffdadbb2a, ver=1, hashPrevBlock=0000000000b079382c19, hashMerkleRoot=e81287,
+nTime=1281156783, nBits=1c00ba18, nNonce=2283211008, vtx=6)
+  CTransaction(hash=2d7f4d, ver=1, vin.size=1, vout.size=1, nLockTime=0)
+    CTxIn(COutPoint(000000, -1), coinbase 0418ba001c02ce03)
+    CTxOut(nValue=50.00000000, scriptPubKey=0x4FE11D72F988AEA611F026)
+  CTransaction(hash=3407a8, ver=1, vin.size=2, vout.size=1, nLockTime=0)
+    CTxIn(COutPoint(df39bf, 0), scriptSig=0x01DD1AD8E9EFE65B70E983)
+    CTxIn(COutPoint(64ebea, 1), scriptSig=0x0165A1F9873BA16265D9C4)
+    CTxOut(nValue=0.06000000, scriptPubKey=OP_DUP OP_HASH160 0xEDEF)
+  CTransaction(hash=5edf5a, ver=1, vin.size=1, vout.size=1, nLockTime=0)
+    CTxIn(COutPoint(b77e0f, 0), scriptSig=0x01E39C53AFC1B9BE02E53A)
+    CTxOut(nValue=350.00000000, scriptPubKey=OP_DUP OP_HASH160 0xD7EF)
+  CTransaction(hash=65c356, ver=1, vin.size=1, vout.size=2, nLockTime=0)
+    CTxIn(COutPoint(893335, 0), scriptSig=0x01B8C315FD58F0DFA0DEA2)
+    CTxOut(nValue=1.85850000, scriptPubKey=OP_DUP OP_HASH160 0x3181)
+    CTxOut(nValue=3.14150000, scriptPubKey=OP_DUP OP_HASH160 0xF99E)
+  CTransaction(hash=89aa32, ver=1, vin.size=1, vout.size=2, nLockTime=0)
+    CTxIn(COutPoint(4a7469, 0), scriptSig=0x010D15199DCE4B11D391CF)
+    CTxOut(nValue=0.05000000, scriptPubKey=OP_DUP OP_HASH160 0x5603)
+    CTxOut(nValue=0.20000000, scriptPubKey=OP_DUP OP_HASH160 0x6074)
+  CTransaction(hash=e3e69c, ver=1, vin.size=1, vout.size=2, nLockTime=0)
+    CTxIn(COutPoint(b77e0f, 1), scriptSig=0x012E18AF1264180255E0C3)
+    CTxOut(nValue=50.00000000, scriptPubKey=OP_DUP OP_HASH160 0x458E)
+    CTxOut(nValue=100.00000000, scriptPubKey=OP_DUP OP_HASH160 0x9EEF)
+  vMerkleTree: 2d7f4d 3407a8 5edf5a 65c356 89aa32 e3e69c 8ebc6a d5e414 89b77c d1074c 70a4e6 e81287</pre>
+
+
+<p>In vMerkleTree, 2d7f4d-e3e69c are transactions. The remaining hashes are tree hashes. Notice that the top hash is the Merkle root included in the block header. The tree:</p>
+
+<pre><code>---------e81287-------
+
+----d1074c-----          70a4e6 (this is a hash of two 89b77c hashes)
+
+-8ebc6a-      -d5e414-      -89b77c-
+
+2d7f4d 3407a8 5edf5a 65c356 89aa32 e3e69c
+</code></pre>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+</nav>
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-08-17T16:01:47Z">Mon 17 Aug 2015 04:01:47 PM Europe</time>
+<!-- Created <time datetime="2011-01-04T16:11:44Z" pubdate="pubdate">Tue 04 Jan 2011 04:11:44 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

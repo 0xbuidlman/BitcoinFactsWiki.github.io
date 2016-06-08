@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>talk</title>
+
+<link rel="stylesheet" href="../../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../../">bitcoin</a>/ 
+
+<a href="../">BIP 0020</a>/ 
+
+</span>
+<span class="title">
+talk
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>Has anybody thought about including network addresses (IPv4/IPv6) of the receiving client into the URL? This way, a payment transaction could be sent directly (in addition to
+sending P2P of course). --<a>Goonie</a> 11:21, 23 July 2011 (GMT)</p>
+
+<h2 id="Fallback_URI">Fallback URI</h2>
+
+<p>On Android an app can register to open with a normal web URI.  This has the advantage of acting as a fallback URI in case there is no app that supports <strong>bitcoin:</strong>.  For example we could propose <strong>https://en.bitcoin.it/wiki/Send/</strong></p><address>[?][amount=][&amp;][label=<label>][&amp;][message=].  If the user had a mobile app that supported bitcoin it would have registered <strong>https://en.bitcoin.it/wiki/Send/</strong> and be launched.  If the user did not have such an app their browser would launch and be directed to <strong>https://en.bitcoin.it/wiki/Send/</strong>.  This page could then inform the user about various apps that support bitcoin transfers and possibly have a link to <span class="createlink"><a href="/ikiwiki.cgi?from=BIP_0020%2Ftalk&amp;page=MyBitcoin&amp;do=create" rel="nofollow">?</a>MyBitcoin</span> as well.  Maybe <strong>https://bitcoin.org/Send/</strong> would be more appropriate, though that one might not be updated often enough.
+
+<ul>
+<li><p>iPhone support
+There is even a way to have this work on iOS devices.  Have the web page redirect to the standard <strong>bitcoin:</strong> scheme.  If an app is present to support this the app will launch, if not the browser the will stay open at the explanation page.</p></li>
+<li><p>Upshot
+This fallback proposal will make bitcoin QR codes meaningful regardless of if the user has a bitcoin app installed.--<a>BitMark</a> 16:05, 2 April 2011 (GMT)</p></li>
+</ul>
+
+
+<h2 id="Use-cases_-_buy_this_link">Use-cases - buy this link</h2>
+
+<p>On the buy-this link, perhaps we should also incorporate an optional transaction id or something which would be passed along to the bitcoin client. Not really transaction but some sort of arbitrary data, only meaningful to the merchant. Something an online merchant can use to verify which transaction it has received is relevant to a purchase. <a>Dantman</a> 20:45, 18 April 2011 (GMT)</p>
+
+<h2 id="Why_all_the_crazy_representation_stuff.3F">Why all the crazy representation stuff?</h2>
+
+<p>Amounthex, amountdec, exponents.. wtf? Why not settle on one normalized representation, this complicates parsing (and testing of parsers) for no good reason --<a>Witchspace</a> 05:14, 4 August 2011 (GMT)</p>
+
+<ul>
+<li>An earlier draft used a simple Satoshi count for amount, but some community members thought it needed to use more high-level units so we ended up with a combination of both. Parsing is not very complicated, and doing it this way allows people writing URIs to easily specify the value they want in any existing <span class="createlink"><a href="/ikiwiki.cgi?from=BIP_0020%2Ftalk&amp;do=create&amp;page=Units" rel="nofollow">?</a>unit</span>. The spec also has examples which can be used for testing. --<a>Luke-jr</a> 14:04, 10 August 2011 (GMT)</li>
+</ul>
+
+
+<h2 id="After_Buy_URL">After Buy URL</h2>
+
+<p>It might be interesting to include an URL the user is directed to after payment.</p>
+
+<p>Use case: buy digital goods for mobile devices.</p>
+
+<p>Example: I want to buy a digital newspaper or app via QR code: I scan the code, pay the amount and am then redirected to a refreshing &quot;waiting for payment&quot; page that will show me the content when it considers the transaction valid.</p>
+
+<p><a>Phelix</a> 10:19, 22 January 2012 (GMT)</p>
+
+<h2 id="The_bitcoin_URL_scheme_doesn.27t_include_web.2B_prefix">The bitcoin URL scheme doesn&#39;t include &quot;web+&quot; prefix</h2>
+
+<p>https://bitcointalk.org/index.php?topic=128822.0</p>
+
+<p><a>Ripper234</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=BIP_0020%2Ftalk&amp;page=User_talk%3ARipper234&amp;do=create" rel="nofollow">?</a>talk</span>) 20:56, 2 December 2012 (GMT)</p>
+</label></address>
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../">BIP 0020</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2012-12-02T20:56:33Z">Sun 02 Dec 2012 08:56:33 PM Europe</time>
+<!-- Created <time datetime="2011-01-10T08:02:10Z" pubdate="pubdate">Mon 10 Jan 2011 08:02:10 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

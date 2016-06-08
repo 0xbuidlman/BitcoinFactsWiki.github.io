@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Firstbits</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Firstbits
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p><strong>Firstbits</strong> refers to the practice of abbreviating a <a href="../Bitcoin_address/">Bitcoin address</a> such that only enough of the initial characters of the address are given so that the full address can be identified from the <a href="../Block_chain/">block chain</a>.  It also refers to the website http://www.Firstbits.net.</p>
+
+<p>The term Firstbits was popularized by the Firstbits website, which was provided with the intent of a &quot;Bitcoin address shortener&quot;, working similar to a URL shortener.  Firstbits.net performs a lookup service, giving the full address from the block chain from the initial portion of an address.  Anyone with access to a complete copy of the block chain can independently perform the same lookup done by Firstbits.net.</p>
+
+<p>Any time a Bitcoin address is used for transactional purposes and appears in the block chain, its firstbits - or the prefix that uniquely identifies that address within the block chain - are considered assigned at that time.  If another address is created and used with the same prefix at a later time, the firstbits of that new address will be at least one character longer, as the shorter prefix remains reserved for the address that used it first.  No action on the part of any user is required for firstbits to be assigned - any transaction activity (receiving or sending) for an address for the first time results in firstbits becoming automatically assigned.</p>
+
+<p>Unlike Bitcoin addresses, firstbits are deemed assigned in a <strong>case-insensitive</strong> manner.</p>
+
+<h2 id="Criticism">Criticism</h2>
+
+<p>Firstbits is considered by many, including most (if not all) Bitcoin developers to be a bad idea.
+This is for a number of reasons:</p>
+
+<h3 id="Blockchain_bloat">Blockchain bloat</h3>
+
+<p>Firstbits&#39; design encourages its users to bloat the blockchain with a dummy self-send transactions in order to get the shortest possible firstbits before anyone else. The creator of firstbits himself is known to have mass registered numerous identifiers to get many short addresses before other people. The transaction churn created by firstbits registrations increases the size of the blockchain and make operating Bitcoin nodes more expensive and cause them to take longer to perform their initial synchronization. This affects all Bitcoin users, even without their consent to Firstbits.</p>
+
+<h3 id="Most_good_names_have_already_been_snatched_up">Most good names have already been snatched up</h3>
+
+<p>The near zero cost of producing many firstbits addresses encouraged people to go out and mass register whole dictionaries of names. This is especially true for vanity addresses, where they may be &quot;squatted&quot; like domain names in hopes of selling them to a trademark or obvious company/person they represent. But since Firstbits addresses cannot be securely transferred to a new owner&mdash; because the original party might retain a copy of the private key&mdash; many of these names are likely forever useless. New firstbits users often have to settle for longer names. An alternative design&mdash; for example, requiring progressively higher transaction fees to rate limit registration&mdash; could have mitigated this &quot;gold rush&quot;, but that isn&#39;t how firstbits was designed.</p>
+
+<h3 id="Vulnerable_to_confusion">Vulnerable to confusion</h3>
+
+<p>Because firstbits identifiers are short and entered manually it&#39;s easy to make a typo or a misreading which gives you another valid firstbits address.  A malicious party can intentionally and very cheaply register all the common typos around a popular firstbits address. Normal Bitcoin addresses contain a 32-bit checksum to make typos nearly impossible, but firstbit addresses can have no such protection. As usual for Bitcoin misdirected funds cannot be recovered. The need to use longer versions of short names such as &quot;1baseballs&quot; instead of &quot;1baseball&quot;&mdash; which may or may not be the same address depending on if another &quot;1baseball&quot; was used first&mdash; further increases the risk of error.</p>
+
+<h3 id="Contradicts_design_of_Bitcoin">Contradicts design of Bitcoin</h3>
+
+<p>Bitcoin was designed such that addresses should only be used once, for a single transaction.
+Firstbits, by contrast, encourages people to find and use a single address for multiple transactions.
+This breaks numerous assumptions of the Bitcoin system (to be addressed on another page), in ways which harm even Bitcoin users who choose not to use Firstbits.</p>
+
+<h3 id="Increases_storage_requirements_of_light_nodes">Increases storage requirements of light nodes</h3>
+
+<p>Firstbits requires nodes that support it to keep an unpruned index of every address ever used, which means it will grow forever.
+Note that all existing indexes required for fully-verifying Bitcoin nodes may be pruned.
+Since Bitcoin is designed so that every transaction should have a unique address, this index will also grow for every transaction.
+Thus, even light nodes are required to store an eternally, rapidly growing index for as long as Bitcoin (or at least Firstbits) is used.</p>
+
+<h3 id="Incompatible_with_SPV_nodes">Incompatible with SPV nodes</h3>
+
+<p>SPV nodes, which download data only as they require it for their own wallet&#39;s maintenance, never see most transactions and cannot build the Firstbits index at all.
+This means that it is impossible to support Firstbits in SPV nodes.
+Eventually, all Bitcoin clients will likely use SPV as an initialization state, which makes it additionally confusing for end users.</p>
+
+<h3 id="Encourages_the_use_of_centralized_services">Encourages the use of centralized services</h3>
+
+<p>Because of the cost and storage of creating and maintaining a separate index for firstbits queries an otherwise secure SPV user may feel pressured to use a centralized service to resolve firstbits prefixes given to him by other parties. There are multiple centralized firstbits resolution services already. If a resolution service is compromised and returns wrong results funds will be sent to the wrong destinations. If users are going to use a centralized service any way a centralized alternative to firstbits can be easily created which lacks most of the above problems (at the expense of being centralized).</p>
+
+<h2 id="See_also">See also</h2>
+
+<ul>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Firstbits&amp;page=vanitygen&amp;do=create" rel="nofollow">?</a>vanitygen</span></li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2013-07-18T07:09:29Z">Thu 18 Jul 2013 07:09:29 AM Europe</time>
+<!-- Created <time datetime="2011-11-20T21:08:16Z" pubdate="pubdate">Sun 20 Nov 2011 09:08:16 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

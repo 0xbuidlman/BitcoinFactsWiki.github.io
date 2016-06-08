@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Network</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Network
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Network" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>Bitcoin uses a simple broadcast network to propagate transactions and blocks. All communications are done over TCP. Bitcoin is fully able to use ports other than 8333 via the -port parameter. IPv6 is <a href="https://bitcointalk.org/index.php?topic=81378.0">supported</a> with Bitcoind/Bitcoin-Qt v0.7.</p>
+
+<h2 id="Messages">Messages</h2>
+
+
+
+
+<p>Detailed in the <a href="../Protocol_documentation/">Protocol documentation</a>.</p>
+
+<h2 id="Connection">Connection</h2>
+
+<p>To connect to a peer, you send a <em>version</em> message containing your version number, block count, and current time. The remote peer will send back a <em>verack</em> message and his own <em>version</em> message if he is accepting connections from your version. You will respond with your own <em>verack</em> if you are accepting connections from his version.</p>
+
+<p>The time data from all of your peers is collected, and the median is used by Bitcoin for all network tasks that use the time (except for other version messages).</p>
+
+<p>You then exchange <em>getaddr</em> and <em>addr</em> messages, storing all addresses that you don&#39;t know about. <em>addr</em> messages often contain only one address, but sometimes contain up to 1000. This is most common at the beginning of an exchange.</p>
+
+<h2 id="Standard_relaying">Standard relaying</h2>
+
+<p>When someone sends a transaction, they send an <em>inv</em> message containing it to all of their peers. Their peers will request the full transaction with <em>getdata</em>. If they consider the transaction valid after receiving it, they will also broadcast the transaction to all of their peers with an <em>inv</em>, and so on. Peers ask for or relay transactions only if they don&#39;t already have them. A peer will never rebroadcast a transaction that it already knows about, though transactions will eventually be forgotten if they don&#39;t get into a block after a while. The sender and receiver of the transaction will rebroadcast, however.</p>
+
+<p>Anyone who is generating will collect valid received transactions and work on including them in a block. When someone does find a block, they send an <em>inv</em> containing it to all of their peers, as above. It works the same as transactions.</p>
+
+<p>Everyone broadcasts an <em>addr</em> containing their own IP address every 24 hours. Nodes relay these messages to a couple of their peers and store the address if it&#39;s new to them. Through this system, everyone has a reasonably clear picture of which IPs are connected to the network at the moment. After connecting to the network, you get added to everyone&#39;s address database almost instantly because of your initial <em>addr</em>.</p>
+
+<p>Network alerts are broadcast with <em>alert</em> messages. No <em>inv</em>-like system is used; these contain the entire alert. If a received alert is valid (signed by one of the people with the private key), it is relayed to all peers. For as long as an alert is still in effect, it is rebroadcast at the start of every new connection.</p>
+
+<h2 id="Initial_block_download">Initial block download</h2>
+
+<p>At the start of a connection, you send a <em>getblocks</em> message containing the hash of the latest block you know about. If the peer doesn&#39;t think that this is the latest block, it will send an <em>inv</em> that contains up to 500 blocks ahead of the one you listed. You will then request all of these blocks with <em>getdata</em>, and the peer will send them to you with <em>block</em> messages. After you have downloaded and processed all of these blocks, you will send another <em>getblocks</em>, etc., until you have all of the blocks.</p>
+
+<h2 id="Thin_SPV_Clients">Thin SPV Clients</h2>
+
+<p><a href="../BIP_0037/">BIP 0037</a> introduced support for thin or lite clients by way of Simple Payment Verification. SPV clients do not need to download the full block contents to verify the existence of funds in the blockchain, but rely on the chain of block headers and bloom filters to obtain the data they need from other nodes. This method of client communication allows high security trustless communication with full nodes, but at the expensive of some privacy as the peers can deduce which addresses the SPV client is seeking information about.</p>
+
+<p><a href="../Multibit/">MultiBit</a> and <span class="createlink"><a href="/ikiwiki.cgi?from=Network&amp;page=Bitcoin_Wallet&amp;do=create" rel="nofollow">?</a>Bitcoin Wallet</span> work in this fashion using the library <a href="../Bitcoinj/">bitcoinj</a> as their foundation.</p>
+
+<h2 id="Bootstrapping">Bootstrapping</h2>
+
+<p>You choose which peers to connect to by sorting your address database by the time since you last saw the address and then adding a bit of randomization.</p>
+
+<p>Bitcoin has three methods of finding peers.</p>
+
+<h3 id="Addr">Addr</h3>
+
+<p>The <em>addr</em> messages described above create an effect similar to the IRC bootstrapping method. You know reasonably quickly whenever a peer joins, though you won&#39;t know for a while when they leave.</p>
+
+<p>Bitcoin comes with a list of addresses known as &quot;seed nodes&quot;. If you are unable to connect to IRC and you&#39;ve never connected to the network before, the client will update the address database by connecting to one of the nodes from this list.</p>
+
+<p>The -addnode command line option can be used to manually add a node.  The -connect option can force bitcoin to connect only to a specific node.</p>
+
+<h3 id="DNS">DNS</h3>
+
+<p>Bitcoin looks up the IP Addresses of several host names and adds those to the list of potential addresses.  This is the default seeding mechanism, as of v0.6.x and later.</p>
+
+<h3 id="IRC">IRC</h3>
+
+<p>As-of version 0.6.x of the Bitcoin client, IRC bootstrapping is no longer enabled by default.  The information below is accurate for most versions prior.</p>
+
+<p>Bitcoin joins a random channel between #bitcoin00 and #bitcoin99 on irc.lfnet.org. Your nick is set to an encoded form of your IP address. By decoding all the nicks of all users on the channel, you get a list of all IP addresses currently connected to Bitcoin.</p>
+
+<p>For hosts that cannot make outbound connections on port 6667, the lfnet servers are also <a href="../FAQ/#Do_I_need_to_configure_my_firewall_to_run_bitcoin?">listening on port 7777</a>.</p>
+
+<h2 id="Heartbeat">Heartbeat</h2>
+
+<p>If thirty minutes or more has passed since the client has transmitted any messages it will transmit a message to keep the connection to the peer node alive.</p>
+
+<p>If ninety minutes has passed since a peer node has communicated any messages, then the client will assume that connection has closed.</p>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../Protocol_documentation/">Protocol documentation</a></li>
+<li><a href="../Satoshi_Client_Node_Discovery/">Satoshi Client Node Discovery</a></li>
+<li><a href="http://bitcoinstatus.rowit.co.uk/">Historical Network Status (no longer updated)</a></li>
+<li><a href="http://getaddr.bitnodes.io/">Bitnodes.io&#39;s network size estimate</a></li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Alert_system/">Alert system</a>
+
+<a href="../Bitcoin_Server/">Bitcoin Server</a>
+
+<a href="../Block/">Block</a>
+
+<a href="../Clearing_Up_Misconceptions_About_Full_Nodes/">Clearing Up Misconceptions About Full Nodes</a>
+
+<a href="../Full_node/">Full node</a>
+
+<a href="../Help:Introduction/">Help:Introduction</a>
+
+<a href="../Node/">Node</a>
+
+<a href="../Protocol_documentation/">Protocol documentation</a>
+
+<a href="../Satoshi_Client_Node_Discovery/">Satoshi Client Node Discovery</a>
+
+<a href="../Transaction/">Transaction</a>
+
+
+<span class="popup">...
+<span class="balloon">
+
+<a href="../Vocabulary/">Vocabulary</a>
+
+<a href="../">index</a>
+
+</span>
+</span>
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-06-07T14:24:02Z">Tue 07 Jun 2016 02:24:02 PM Europe</time>
+<!-- Created <time datetime="2010-12-19T21:14:19Z" pubdate="pubdate">Sun 19 Dec 2010 09:14:19 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

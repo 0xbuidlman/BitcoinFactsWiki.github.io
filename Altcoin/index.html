@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Altcoin</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Altcoin
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>Altcoins are cryptocurrencies other than Bitcoin.
+The majority of altcoins are forks of Bitcoin with small uninteresting changes. This page categorises different ways altcoins have modified Bitcoin.</p>
+
+<h2 id="Different_proof-of-work_algorithm">Different proof-of-work algorithm</h2>
+
+<p>The PoW algorithm used for mining Bitcoin is SHA2.
+It was chosen because it is fast to verify and has been critically analyzed.
+SHA2 has had ASICs developed for it meaning there is a much smaller risk of centralization.
+The following mining algorithms are being used in different altcoins:</p>
+
+<ul>
+<li><a href="../Scrypt_proof_of_work/">Scrypt proof of work</a></li>
+<li>Combination of hashing algorithms in series (e.g. X11)</li>
+<li>Combination of hashing algorithms in parallel (e.g. Myriad algorithm)</li>
+</ul>
+
+
+<p>The problem with having an algorithm that is &quot;easy to mine with&quot; (referring to the ability to CPU or GPU mine profitably) is that mining should be hard in order to secure the network. When a mining algorithm is difficult to make ASICs for, there is a higher barrier to entry. A high barrier to entry increases the time that the first group to create ASICs will monopolize the market (and the time the network is vulnerable to a 51% attack from a single source). Many argue that the creators or the developers could simply change the mining algorithm when an ASIC is developed, but this defeats the purpose of decentralized consensus by causing centralization. (2.1)</p>
+
+<p>If these cryptocurrencies do have a healthy number of companies producing ASICs and have avoided centralization, they still are using algorithms that take longer to verify than SHA2. Therefore, at best a cryptocurrencies with merely a hashing algorithm change are as good as an exact clone of Bitcoin and not better (however since Bitcoin already exists, an exact clone of Bitcoin has no innovation or value). If the hashing algorithm is slower, as most altcoin algorithms are, it is a disadvantage because it takes more processing time to validate a block and increases the number of organic re-orgs (makes it easier to double spend).</p>
+
+<h2 id="Proof_Of_Stake">Proof Of Stake</h2>
+
+<p>In <a href="../Proof_of_Stake/">Proof of Stake</a>, instead of sacrificing energy to mine a block, a user must prove they own a certain amount of the cryptocurrency to generate a block. The more stake you own, the more likely you are to generate a block. In theory, this should prevent users from creating forks because it will devalue their stake and it should save a lot of energy.</p>
+
+<p>Proof of Stake sounds like a good idea, but ironically, there is the &quot;Nothing at Stake&quot; problem. Because mining Bitcoin is costly, it is not smart to waste your energy on a fork that won&#39;t earn you any money, however with Proof of Stake, it is free to mine a fork.</p>
+
+<p>An example of a nothing at stake attack is an attacker buying lots of &quot;old stake&quot; from users inexpensively (inexpensive to users who no longer have stake in the currency). This can be made convenient by offering small payments to users for uploading their wallet.dat. Eventually after accumulating enough &quot;old stake&quot;, the user can begin creating blocks and destroying as many or more coin days than the network was at that time. This block generation can be repeated until it catches up to and beats the current main-chain very cheaply.</p>
+
+<p>There are also &quot;stake grinding&quot; attacks which require a trivial amount of currency. In a stake (3.1) grinding attack, the attacker has a small amount of stake and goes through the history of the blockchain and finds places where their stake wins a block. In order to consecutively win, they modify the next block header until some stake they own wins once again. This attack requires a bit of computation, but definately isn&#39;t impractical.</p>
+
+<p>Because these attacks exists, including Peercoin (3.2) and Blackcoin (3.3) proof of stake cryptocurrencies have &quot;master&quot; public keys that control the blockchain.</p>
+
+<p>This class of cryptocurrency is either insecure or centralized, however proof of stake (based on a PoW currency) is useful in some systems because gaining stake is costly, but it isn&#39;t workable for bootstrapping distributed consensus.</p>
+
+<h2 id="Application_Built_on_Top_of_a_Cryptocurrency">Application Built on Top of a Cryptocurrency</h2>
+
+<p>Bitcoin is a lot like HTTP. It is an application layer protocol and tools can be built on it (like websites can be built on HTTP). There is a class of cryptocurrencies that promise features like casino websites and exchanges and anonymity protocols to be built on top of them.</p>
+
+<p>When creating a new website, one doesn&#39;t make a new protocol unless it is necessary. For example, HTTPS is an encrypted version of HTTP, therefore it is useful and necessary. When creating an app such as &quot;<a href="https://bitcointalk.org/index.php?topic=467857.0">DarkSend</a>&quot;, one doesn&#39;t need to make a new protocol such as &quot;Darkcoin&quot;. This is synonymous to making an HTTPS alternative (eg. HTTPSX) for your new encrypted chat website and not adding any new security or functionality to HTTPSX.</p>
+
+<p>Because Darkcoin is by far the most popular cryptocurrency of this class, the Darkcoin example will be covered in this section.</p>
+
+<p>The Darkcoin devs created a tool called DarkSend. DarkSend is an implementation of coinjoin (an anonymity feature originally implemented in Bitcoin (4.1)) which utilizes the Darkcoin network to organize the coinjoins. If DarkSend becomes open source and is useful, it will be ported to Bitcoin with a few small modifications. These changes won&#39;t be a hardfork, they will likely involve the masternodes being paid by those they are coinjoining for rather than the block reward, which is already possible and implemented for Bitcoin.  (4.2)Currently one must hold 1000DRK to become a DarkSend masternodes. Masternodes are paid 10% of the block reward. (4.3) This is a flawed reward scheme because while purchasing 1000DRK is trustlessly verifiable, a user running a DarkSend masternode isn&#39;t trustlessly verifiable. It is also costs bandwidth to run a masternode, therefore there is an incentive to buy 1000DRK and get a chance at the 10% block reward masternodes are being paid, but not actually act as a masternode. For this reason, DarkSend would work better if the masternodes were paid by those they were helping coinjoin, or if there wasn&#39;t a masternode at all and everyone collaborated in a decentralized fashion. The better implementation not vulnerable to tragedy of the commons is compatible with Bitcoin, therefore, the Darksend protocol serves no purpose.</p>
+
+<h2 id="Demographic_Based_Premined_Cryptocurrencies">Demographic Based Premined Cryptocurrencies</h2>
+
+<p>This is a new class of altcoin that is targeted at a certain demographic.</p>
+
+<p>All of these cryptocurrencies have a large premine intended to be paid to members of that demographic. Ultimately, all of these coins have suffered (or are suffering) their fate of an immediate sell off after the &quot;airdrop&quot; (term for distribution of coins to the target demographic) begins.</p>
+
+<p>Note: These cryptocurrencies aren&#39;t government initiatives, but are independently created for that demographic.</p>
+
+<h2 id="Useful_Cryptocurrencies">Useful Cryptocurrencies</h2>
+
+<p>A cryptocurrency is useful if it accomplishes a task that Bitcoin cannot.</p>
+
+<ul>
+<li>Acting as a keystore for things like decentralized domain registration.</li>
+<li>Having demmurage or some other economic system that is one of the <a href="../Prohibited_changes/">prohibited changes</a>.</li>
+<li>Allowing creation of and transmission of digital assets.</li>
+</ul>
+
+
+<h2 id="References">References</h2>
+
+<p>2.1: <a href="https://download.wpsoftware.net/bitcoin/asic-faq.pdf">ASIC FAQ</a><br />
+3.1: <a href="https://bitcointalk.org/index.php?topic=131901.0">Peercoin Security Analysis</a><br />
+3.2: <a href="https://github.com/ppcoin/ppcoin/blob/master/src/checkpoints.cpp#L370">Centralized Checkpointing Public Key</a>  Centralized Checkpointing Public Key<br />
+3.3: <a href="https://github.com/rat4/blackcoin/blob/master/src/checkpoints.cpp#L361">Centralized Checkpointing Public Key</a>  Centralized Checkpointing Public Key<br />
+4.1: <a href="https://bitcointalk.org/index.php?topic=279249.0">BitcoinTalk</a>  BitcoinTalk<br />
+4.2: <a href="https://www.wpsoftware.net/coinjoin/">Rotating Coinjoiner</a><br />
+4.3: <a href="https://darkcointalk.org/threads/darkcoin-update-masternode-requirements-masternode-payments.225/">DarkSend Payment Scheme</a></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Bitcoin_XT/">Bitcoin XT</a>
+
+<a href="../Fork_(disambiguation)/">Fork (disambiguation)</a>
+
+<a href="../Scrypt_proof_of_work/">Scrypt proof of work</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-06-07T16:35:02Z">Tue 07 Jun 2016 04:35:02 PM Europe</time>
+<!-- Created <time datetime="2014-05-11T02:04:07Z" pubdate="pubdate">Sun 11 May 2014 02:04:07 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

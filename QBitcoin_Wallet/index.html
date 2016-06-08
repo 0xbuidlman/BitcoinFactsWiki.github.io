@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>QBitcoin Wallet</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+QBitcoin Wallet
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=QBitcoin_Wallet&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>The QBitcoin Wallet is a separate process allowing wallet manipulations. It is meant to be lightweight, and portable. It depends on no external library and only manages what needs to be managed: the wallet.</p>
+
+<p>Unlike the <a href="../Original_Bitcoin_client/">Original Bitcoin client</a> wallet, the <a href="../QBitcoin/">QBitcoin</a> wallet contains no information on the amount stored on each address (this is up to the frontend).</p>
+
+<h2 id="Technical_Specifications">Technical Specifications</h2>
+
+<h3 id="Communications_with_front_end">Communications with front end</h3>
+
+<p>When the wallet is launched, it will open the SQLite database file passed as first argument and output &quot;READY&quot;. Starting there it is possible to send various commands to the wallet.</p>
+
+<h4 id="SEED_x">SEED x</h4>
+
+<p>This command allows giving more randomness to the generated bitcoin addresses. As the wallet is portable, it may not be able to take advantage of the best sources of randomness, and because of this an attacker may be able to predict the generated bitcoin private keys. The front end should, from time to time, provide randomness to the wallet.</p>
+
+<p>The parameter is a hexadecimal random string (max 32 bytes). Example:</p>
+
+<pre><code>SEED F48701ECC9
+</code></pre>
+
+<p>When the wallet shuts down, it will save its entropy to the wallet db file, and seeding is added to the existing entropy.</p>
+
+<h4 id="RAND_x">RAND x</h4>
+
+<p>Should the front end need some random bytes, it can ask that to the wallet. The x parameter is the number of bytes. Example:</p>
+
+<pre><code>RAND 32
+</code></pre>
+
+<h3 id="Wallet_Encryption">Wallet Encryption</h3>
+
+<p>Wallet encryption is achevied by storing a 4096 bytes RSA key pair in the wallet. The private key is encrypted with AES (rijndael) using sha256(sha256(public key + user passphrase)).</p>
+
+<p>Using RSA allows creation of new addresses without requiring a password, while requiring one to send transactions. Public keys are kept in the wallet so the balance can be displayed properly.</p>
+
+<h3 id="Wallet_Backups">Wallet Backups</h3>
+
+<p>When generating a wallet backup (with the &quot;Export wallet&quot; option of the frontend), only the RSA key (encrypted-private &amp; public) and the ECC private keys are stored. This means someone with a wallet backup cannot even know which keys are in there.</p>
+
+<p>The RSA public key is required as it is used as salt to decrypt the RSA private key.</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Infrastructure/">Infrastructure</a>
+
+<a href="../QBitcoin/">QBitcoin</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2011-01-15T22:08:13Z">Sat 15 Jan 2011 10:08:13 PM Europe</time>
+<!-- Created <time datetime="2010-12-19T12:48:22Z" pubdate="pubdate">Sun 19 Dec 2010 12:48:22 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

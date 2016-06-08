@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Anonymity</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Anonymity
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>While the Bitcoin technology <a href="http://www.bitcointalk.org/index.php?topic=241.0">can support</a> strong anonymity, the current implementation is usually not very anonymous.</p>
+
+<p><strong>TOC</strong></p>
+
+<p>The main problem is that every transaction is publicly logged. Anyone can see the flow of Bitcoins from address to address (see first image). Alone, this information can&#39;t identify anyone because the addresses are just random numbers. However, if <em>any</em> of the addresses in a transaction&#39;s past or future can be tied to an actual identity, it might be possible to work from that point and guess who may own all of the other addresses. This identity information might come from network analysis, surveillance, or just Googling the address. The officially encouraged practice of using a new address for every transaction is designed to make this attack more difficult.
+<a href="../Unknownaddress.png"><img class="img" height="158" src="../Unknownaddress.png" title="The flow of Bitcoins is highly public." width="638" /></a></p>
+
+<p>The second image shows a simple example. Someone runs both a money exchanger and a site meant to trap people. When Mr. Doe buys from the exchanger and uses those same coins to buy something from the trap site, the attacker can <strong>prove</strong> that these two transactions were made by the same person. The block chain would show:
+<a href="../Knownaddress.png"><img class="img" height="158" src="../Knownaddress.png" title="" width="638" /></a></p>
+
+<ul>
+<li>Import coins from address A. Send 100 to B. Authorized by (signature).</li>
+<li>Import coins from address B. Send 100 to C. Authorized by (signature).
+Bitcoin transactions do not have a <a href="../From_address/">&quot;from&quot; address</a> but if the attacker believes that address B is controlled by Mr. Doe because the attacker received $5 from Mr. Doe&#39;s PayPal account and then sent 100 BTC to that address then they can infer the identity of the party sending to C. This assumption is not always correct because address B may have been an address held on behalf of Mr. Doe by a third party and the transaction to C may have been unrelated.</li>
+</ul>
+
+
+<p>Another example: someone is scammed and posts the address they were using on the Bitcoin forum. It is possible to see which address they sent coins to. When coins are sent which were previously send to this (the scammer&#39;s) address, the addresses that receive them can also be easily found and posted on the forum. In this way, all of these coins are marked as &quot;dirty&quot;, potentially over an infinite number of future transactions. When some smart and honest person notices that his address is now listed, he can reveal who he received those coins from. The Bitcoin community can now ask some pointed questions, &quot;Who did you receive these coins from? What did you create this address for?&quot; Eventually the original scammer will be found. Clearly, this becomes more difficult the more addresses that exist between the &quot;target&quot; and the &quot;identity point&quot;.</p>
+
+<p>You might be thinking that this attack is not feasible. But consider this case:</p>
+
+<ul>
+<li>You live in China and want to buy a &quot;real&quot; newspaper for Bitcoins.</li>
+<li>You join the Bitcoin forum and use your address as a signature. Since you are very helpful, you manage to get 30 BTC after a few months.</li>
+<li>Unfortunately, you choose poorly in who you buy the newspaper from: you&#39;ve chosen a government agent! Maybe you are under the mistaken impression that Bitcoin is perfectly anonymous.</li>
+<li>The government agent looks at the block chain and Googles (or Baidus) every address in it. He finds your address in your signature on the Bitcoin forum. You&#39;ve left enough personal information in your posts to be identified, so you are now scheduled to be &quot;reeducated&quot;.</li>
+</ul>
+
+
+<p>You need to protect yourself from both forward attacks (getting something that identifies you using coins that you got with methods that must remain secret, like the scammer example) and reverse attacks (getting something that must remain secret using coins that identify you, like the newspaper example).</p>
+
+<h2 id="Staying_Anonymous">Staying Anonymous</h2>
+
+<p>By necessity the history of all the bitcoins must be highly public. However, if one has bitcoins on paid to address, one can theoretically choose the coins they spend in a way that will minimize the amount of information they leak. Choosing personally generated coins or an address that you know doesn&#39;t reveal information would protect you. Unfortunately, the default Bitcoin client doesn&#39;t support this currently, so you must assume that your entire balance can identify you if any of the addresses can.</p>
+
+<p>You may consider a bitcoin to be &quot;less-anonymous&quot; when an attacker could feasibly find the true identity of a very recent owner of the bitcoin, perhaps because one of the bitcoin addresses was posted to a website, or because he knows some identifying information through other means.</p>
+
+<p>If your balance has been contaminated by both anonymous and non-anonymous coins, you may take action to make it &quot;clean&quot;.</p>
+
+<p>Recommended way of anonymizing your balance:</p>
+
+<ul>
+<li>Send however many coins you want to anonymize to a new <a href="../EWallet/">eWallet</a> account as a lump sum. There are other eWallet services however the more widely used the greater the potential for anonymity. <font color="red">This is not an endorsement of trust in the use of eWallet services.  There are no guarantees that any eWallet service won&#39;t one day take all your bitcoins and disappear. Use at your own risk.</font></li>
+</ul>
+
+
+<p>With this method an attacker will have to gain access to the eWallet service&#39;s transaction logs to continue to follow you in the transaction history.</p>
+
+<p>The protection that this method offers is significantly reduced if you are trying to anonymize more than about 10% of the total number of Bitcoins that the eWallet service holds. You&#39;ll end up getting your own coins back instead of other users&#39; coins.  Withdrawing Bitcoins more slowly and in smaller increments will help reduce this problem. Sending coins to an eWallet service in the largest single transfer possible will also help.</p>
+
+<p>To further enhance your anonymity, you can:</p>
+
+<ul>
+<li>Send Bitcoins from one eWallet sevice to another and <em>then</em> to yourself. Each transfer needs to be painstakingly investigated and many transfers will present insurmountable difficulty.</li>
+</ul>
+
+
+<p>Once you have an anonymous balance set up, be sure to keep your anonymous and non-anonymous balances completely separate.</p>
+
+<p>A future version of the client will have more control which will allow the sender to specify which coins to use in a transaction (2.1).</p>
+
+<p>In the future, trusted relay servers operating on the <span class="createlink"><a href="/ikiwiki.cgi?page=friendly_addresses_with_enhanced_privacy&amp;do=create&amp;from=Anonymity" rel="nofollow">?</a>friendly addresses with enhanced privacy</span> protocol could provide bitcoin users strong anonymity with increased convenience, thereby eliminating the need to make a trade-off between privacy and ease of use.</p>
+
+<h3 id="Helping_other_people_stay_anonymous">Helping other people stay anonymous</h3>
+
+<ul>
+<li>Set up a real <a href="http://www.bitcointalk.org/index.php?topic=241.0">external mixing service</a>. Make it like an eWallet service but make sure that a user never withdraws the same coins that are put in.  Also delete empty addresses and transaction logs.</li>
+<li>Even if you&#39;re not a programmer, you can make a slightly less secure version of an external mixing service (as a Tor hidden service, preferably):
+
+<ul>
+<li>Set up two Bitcoin installations.</li>
+<li>Put some amount of BTC in installation B. This is the maximum amount of BTC you can deal with at once (for all customers).</li>
+<li>Customers send BTC to installation A. You send them an equal number of coins (or minus a fee) from installation B. Send as 10 to 50 BTC increments.</li>
+<li>Send all coins from A to B when <strong>all</strong> orders are satisfied. You can&#39;t send coins from A to B if you have any orders that have not been satisfied from B.</li>
+<li>This can be automated, or you can do everything manually.</li>
+</ul>
+</li>
+<li>Put lots of bitcoins in an eWallet service and keep it there. If anyone uses the anonymization method described in &quot;staying anonymous&quot; above, this will enhance it. Send in smaller increments if a large amount is transferred.</li>
+</ul>
+
+
+<h3 id="CoinJoin">CoinJoin</h3>
+
+<p>While external mixers are useful and historically important, they have several problems. The mixer may also steal the customer&#39;s coins. Thus the mixer service will depend significantly on it&#39;s reputation to maintain customer&#39;s privacy and not steal their money, which allows them to charge a significant fee far above the marginal cost which takes advantage of this reputation.</p>
+
+<p><a href="../CoinJoin/">CoinJoin</a> is a special kind of bitcoin transaction that solves these problems. It is a kind of smart contract which does not allow any party to steal the coins of any other party.</p>
+
+<h2 id="Legality">Legality</h2>
+
+<p>Obviously, using Bitcoin anonymity techniques for the purposes of <a>money laundering</a> is illegal, but participating or running schemes which others use for money laundering may also be illegal or at least leave the participant vulnerable to accusations of aiding criminals and terrorists. Bitcoin anonymity techniques involving bitcoins worth large amounts of money (over some value between FJ$1,100 and US$58,000, depending on your jurisdiction) is illegal in most jurisdictions, being in violation of <a>anti-structuring laws</a>.</p>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../Anonymity_&amp;_Security/">Anonymity &amp; Security</a></li>
+<li><a href="../CoinJoin/">CoinJoin</a></li>
+<li><a href="http://www.bitcointalk.org/index.php?topic=2893.0">RFC: Bitcoin Mixnet</a></li>
+<li><a href="http://www.bitcointalk.org/index.php?topic=241.0">anonymity</a></li>
+<li><a href="http://www.bitcointalk.org/index.php?topic=24784.0">Patching The Bitcoin Client To Make It More Anonymous</a></li>
+<li><a href="http://arxiv.org/abs/1107.4524">An Analysis of Anonymity in the Bitcoin System</a> research by Fergal Reid, Martin Harrigan (<a href="http://bitcointalk.org/index.php?topic=31539.0">discussion</a>)</li>
+<li><a href="http://bitcoinhelp.net/know/more/top-seven-ways-your-identity-can-be-linked-to-your-bitcoin-address">Top Seven Ways Your Identity Can Be Linked to Your Bitcoin Address</a></li>
+<li><a href="https://plusbitcoin.net/bitcoin-anonymity/">Tips to improve your bitcoin anonymity</a></li>
+</ul>
+
+
+<h2 id="References">References</h2>
+
+<p>2.1: <a href="http://bitcointalk.org/index.php?topic=24784.msg307661#msg307661">Patching The Bitcoin Client To Make It More Anonymous</a></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Anonymity/" rel="tag">Anonymity</a>
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Help:Installing_Bitcoin_Core/">Help:Installing Bitcoin Core</a>
+
+<a href="../Help:Introduction/">Help:Introduction</a>
+
+<a href="../Mixing_service/">Mixing service</a>
+
+<a href="../Off-Chain_Transactions/">Off-Chain Transactions</a>
+
+<a href="../Open_Transactions/">Open Transactions</a>
+
+<a href="../Shared_coin/">Shared coin</a>
+
+<a href="../The_Byzantine_Generals_Problem/">The Byzantine Generals Problem</a>
+
+<a href="../Using_Bitcoin/">Using Bitcoin</a>
+
+<a href="../Vocabulary/">Vocabulary</a>
+
+<a href="../Weaknesses/">Weaknesses</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-06-07T12:53:17Z">Tue 07 Jun 2016 12:53:17 PM Europe</time>
+<!-- Created <time datetime="2010-12-19T20:00:33Z" pubdate="pubdate">Sun 19 Dec 2010 08:00:33 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

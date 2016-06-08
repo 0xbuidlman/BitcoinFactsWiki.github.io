@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Version Handshake</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Version Handshake
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Version_Handshake&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>On connect, <a href="../Protocol_specification/#version">version</a> and <a href="../Protocol_specification/#verack">verack</a> messages are exchanged, in order to ensure compatibility between peers.</p>
+
+<h2 id="Version_Handshake">Version Handshake</h2>
+
+<p>When the local peer (L) connects to a remote peer (R), the remote peer will not send any data until it receives a version message.</p>
+
+<pre><code>L -&gt; R: Send version message with the local peer&#39;s version
+R -&gt; L: Send version message back
+R:      Sets version to the minimum of the 2 versions
+R -&gt; L: Send verack message
+L:      Sets version to the minimum of the 2 versions
+</code></pre>
+
+<p>Note: A version number of 10300 is converted to 300 before being processed and versions below 209 are no longer supported.</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Protocol_documentation/">Protocol documentation</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2013-02-16T02:45:50Z">Sat 16 Feb 2013 02:45:50 AM Europe</time>
+<!-- Created <time datetime="2013-02-16T02:45:50Z" pubdate="pubdate">Sat 16 Feb 2013 02:45:50 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Java Example</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Java Example
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p><source lang="java"></source></p>
+
+<p>package com.mtgox.api;</p>
+
+<p>import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;</p>
+
+<p>public class Client {
+    protected String key;
+    protected String secret;</p>
+
+<pre><code>/**
+</code></pre>
+
+<ul>
+<li>@param args the command line arguments</li>
+<li><p>/
+  public static void main(String[] args) {
+  Client client = new Client(
+  &quot;your key here&quot;,
+  &quot;your secret here&quot;
+  );
+  HashMap&lt;String, String&gt; query_args = new HashMap&lt;&gt;();
+  query_args.put(&quot;currency&quot;, &quot;BTC&quot;);
+  query_args.put(&quot;amount&quot;, &quot;5.0&quot;);
+  query_args.put(&quot;return_success&quot;, &quot;https://mtgox.com/success&quot;);
+  query_args.put(&quot;return_failure&quot;, &quot;https://mtgox.com/failure&quot;);</p>
+
+<p>  client.query(&quot;1/generic/private/merchant/order/create&quot;, query_args);
+  }</p>
+
+<p>  public Client(String key, String secret) {
+  this.key = key;
+  this.secret = secret;
+  }</p>
+
+<p>  public String query(String path, HashMap&lt;String, String&gt; args) {
+  try {
+  // add nonce and build arg list
+  args.put(&quot;nonce&quot;, String.valueOf(System.currentTimeMillis()));
+  String post_data = this.buildQueryString(args);</p>
+
+<p>  // args signature
+  Mac mac = Mac.getInstance(&quot;HmacSHA512&quot;);
+  SecretKeySpec secret_spec = new SecretKeySpec((new BASE64Decoder()).decodeBuffer(this.secret), &quot;HmacSHA512&quot;);
+  mac.init(secret_spec);
+  String signature = (new BASE64Encoder()).encode(mac.doFinal(post_data.getBytes()));</p>
+
+<p>  // build URL
+  URL queryUrl = new URL(&quot;https://mtgox.com/api/&quot; + path);</p>
+
+<p>  // create connection
+  HttpURLConnection connection = (HttpURLConnection)queryUrl.openConnection();
+  connection.setDoOutput(true);
+  // set signature
+  connection.setRequestProperty(&quot;User-Agent&quot;, &quot;Mozilla/4.0 (compatible; Java Test client)&quot;);
+  connection.setRequestProperty(&quot;Rest-Key&quot;, this.key);
+  connection.setRequestProperty(&quot;Rest-Sign&quot;, signature.replaceAll(&quot;\n&quot;, &quot;&quot;));</p>
+
+<p>  // write post
+  connection.getOutputStream().write(post_data.getBytes());</p>
+
+<p>  // read info
+  byte buffer[] = new byte<span class="createlink"><a href="/ikiwiki.cgi?from=Java_Example&amp;page=16384&amp;do=create" rel="nofollow">?</a>16384</span>;
+  int len = connection.getInputStream().read(buffer, 0, 16384);
+  System.out.print(new String(buffer, 0, len, &quot;UTF-8&quot;));
+  } catch (Exception ex) {
+  Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+  }
+  return &quot;foo&quot;;
+  }</p>
+
+<p>  protected String buildQueryString(HashMap&lt;String, String&gt; args) {
+  String result = new String();
+  for (String hashkey : args.keySet()) {
+  if (result.length() &gt; 0) result += &#39;&amp;&#39;;
+  try {
+  result += URLEncoder.encode(hashkey, &quot;UTF-8&quot;) + &quot;=&quot;</p>
+
+<ul>
+<li>URLEncoder.encode(args.get(hashkey), &quot;UTF-8&quot;);
+} catch (Exception ex) {
+Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+}
+}
+return result;
+}
+}</li>
+</ul>
+</li>
+</ul>
+
+
+<p></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2012-04-16T09:06:36Z">Mon 16 Apr 2012 09:06:36 AM Europe</time>
+<!-- Created <time datetime="2012-04-16T09:06:36Z" pubdate="pubdate">Mon 16 Apr 2012 09:06:36 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

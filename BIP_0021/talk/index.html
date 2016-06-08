@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>talk</title>
+
+<link rel="stylesheet" href="../../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../../">bitcoin</a>/ 
+
+<a href="../">BIP 0021</a>/ 
+
+</span>
+<span class="title">
+talk
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>Marian on IRC reports: &quot;The BNF <span class="createlink"><a href="/ikiwiki.cgi?from=BIP_0021%2Ftalk&amp;do=create&amp;page=here" rel="nofollow">?</a>here</span> is erroneous, regarding the params, it says  <a title="?">bitcoinparams</a> while bitcoinparams is just *bitcoinparam, thus with that BNF there are no separators between the parameters&quot;. --<a>Gmaxwell</a> (<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=User_talk%3AGmaxwell&amp;from=BIP_0021%2Ftalk" rel="nofollow">?</a>talk</span>) 23:04, 23 April 2013 (GMT)</p>
+
+<p>--&gt; (<a>Michael_S</a> (<span class="createlink"><a href="/ikiwiki.cgi?page=User_talk%3AMichael_S&amp;do=create&amp;from=BIP_0021%2Ftalk" rel="nofollow">?</a>talk</span>) 8 Sept 2013) So should it rather be written something like this (I am not a BNF expert, just following my logic):
+    bitcoinurn      = &quot;bitcoin:&quot; bitcoinaddress   <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=bitcoinparams&amp;from=BIP_0021%2Ftalk" rel="nofollow">?</a>bitcoinparams</span>
+    bitcoinparams   = *bitcoinparamamp
+    bitcoinparamamp = &quot;&amp;&quot; bitcoinparam</p>
+
+<h2 id="Suggesting_usability_enhancement_in_BIP_0021_for_paying_tips_in_restaurant.2Fbar_conveniently_.28tips_w.2Fo_taps.29">Suggesting usability enhancement in BIP 0021 for paying tips in restaurant/bar conveniently (&quot;tips w/o taps&quot;)</h2>
+
+<p>(<a>Michael_S</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=BIP_0021%2Ftalk&amp;page=User_talk%3AMichael_S&amp;do=create" rel="nofollow">?</a>talk</span>) 8 Sept 2013)</p>
+
+<p>I am suggesting a simple downward compatible enhancement of BIP 0021 to allow effortless tipping in restaurants, bars, pubs, etc.</p>
+
+<p>When watching bitpay&#39;s mobile checkout demo video &quot;http://www.youtube.com/watch?v=YZ-pqo0cLcE&quot; it is clear that paying tips is somewhat cumbersome for the customer with today&#39;s wallet and merchant solutions. This can be dramatically improved with some support by the client app and a minor enhancement of BIP 0021.</p>
+
+<p><span><strong>Enhancement proposal</strong></span>:</p>
+
+<pre><code>bitcoinurn     = &quot;bitcoin:&quot; bitcoinaddress  [bitcoinparams](&quot;?&quot;)
+bitcoinaddress = base58 *base58
+bitcoinparams  = *bitcoinparam
+bitcoinparam   = amountparam  labelparam  messageparam  &lt;span style=&quot;color:#0000FF&quot;&gt;**tipparam **&lt;/span&gt; otherparam  reqparam
+amountparam    = &quot;amount=&quot; *digit  [*digit](&quot;.&quot;)
+labelparam     = &quot;label=&quot; *pchar
+messageparam   = &quot;message=&quot; *pchar
+&lt;span style=&quot;color:#0000FF&quot;&gt;**tipparam       = &quot;tip=&quot;   [*digit](&quot;.&quot;)   &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=__34__25__34__&amp;amp;do=create&amp;amp;from=BIP_0021%2Ftalk&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;&amp;#34;25&amp;#34;&lt;/span&gt;  **&lt;/span&gt;
+otherparam     = pchar *pchar &quot;=&quot; *pchar
+reqparam       = &quot;req-&quot; pchar *pchar &quot;=&quot; *pchar
+</code></pre>
+
+<p>Actually, &quot;tipparam&quot; is just a special case of &quot;otherparam&quot;, hence completely downwards compatible.</p>
+
+<p>The tip can be specified in BTC or in percent of the amount, and it acts as a recommended or default tip setting in the customer&#39;s wallet app.</p>
+
+<p><strong>Examples</strong> for the following scenario:</p>
+
+<blockquote><p>Request 0.567 BTC from the customer of a restaurant and make the customer&#39;s bitcoin app show an advanced send dialog that allows adding a tip:</p></blockquote>
+
+<p>Ex. 1a) The pre-set tip value in the send dialog is undefined (user must specify) or set to the client&#39;s pre-configured default tip value:</p>
+
+<pre><code>&lt;nowiki&gt;bitcoin:175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?amount=0.567&lt;/nowiki&gt;&lt;span style=&quot;color:#0000FF&quot;&gt;**&amp;tip=**&lt;/span&gt;
+</code></pre>
+
+<p>Ex. 1b) The pre-set tip value in the send dialog is explicitly set to zero (this restaurant is on &quot;service charge included in &#39;amount&#39;&quot; policy and informs the client about this explicitly by &quot;tip=0&quot; in the URI):</p>
+
+<pre><code>&lt;nowiki&gt;bitcoin:175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?amount=0.567&lt;/nowiki&gt;&lt;span style=&quot;color:#0000FF&quot;&gt;**&amp;tip=0**&lt;/span&gt;
+</code></pre>
+
+<p>Ex. 2) The pre-set tip value is 15% of 0.567 BTC, i.e. 0.08508 BTC:
+    bitcoin:175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?amount=0.567<span><strong>&amp;tip=0.08505</strong></span>
+    bitcoin:175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?amount=0.567<span><strong>&amp;tip=15%25</strong></span>
+    <a href="URI">code of the percentage character is &quot;%25&quot;</a>
+    bitcoin:175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?amount=0.567<span><strong>&amp;tip=15%</strong></span>
+                <a href="a">&quot;lazy&quot; URI</a></p>
+
+<p>Ex. 3) The pre-set tip value is 0.08508 BTC, and the &quot;notes&quot; field in the client app is pre-occupied with the name of the restaurant:
+    bitcoin:175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?amount=0.567<span><strong>&amp;tip=15%25</strong></span>&amp;message=Charly%27s%20Bar</p>
+
+<p>Explanation:</p>
+
+<ul>
+<li>The new parameter has no &quot;req-&quot; prefix, i.e. if an old bitcoin client app does not know it, it can safely ignore it.</li>
+<li>Otherwise, the customer&#39;s bitcoin client will not open the normal but an enhanced send dialog where the customer can specify a tip that will be added to the bill to be paid. In examples 2 and 3 above the tip shall be pre-configured with the amount specified in the URI, so the customer can most conveniently just accept it by a simple tap, if the client app is well-written.</li>
+</ul>
+
+
+<p>The details are of course dependent on the client app implementation, a best practice-example is demonstrated in the following images.</p>
+
+<p>Standard send dialog (no tips):</p>
+
+<p><a href="../../Bitcoin-app-tipOFF_BIP_0021.png"><img class="img" height="760" src="../../Bitcoin-app-tipOFF_BIP_0021.png" title="border" width="500" /></a></p>
+
+<p>Advanced send dialog for giving tips:</p>
+
+<p><a href="../../Bitcoin-app-tipON_BIP_0021.png"><img class="img" height="748" src="../../Bitcoin-app-tipON_BIP_0021.png" title="border" width="543" /></a></p>
+
+<p>Discussion: It has been argued that the described improvement of the user experience for the scenario &quot;make payment with a tip&quot; can be achieved by sole improvement of the wallet app, without any protocol change.</p>
+
+<p>But this is only partly true. Certainly enhancement of the wallet app to provide an advanced &quot;send&quot; dialog for easy tipping is crucial. However, with the legacy BIP 0021 the wallet app cannot know whether it shall display the standard send dialog (no tip) or the advanced send dialog (with tip option) to the user. So the user has to select this manually. With the optional &quot;tip&quot; parameter in the URI, the wallet app can readily display the appropriate send dialog without extra user interaction, thereby providing ultimate user experience.</p>
+
+<h2 id="Further_enhancement_for_paying_tips_in_restaurant.2Fbar.3A_tip_address">Further enhancement for paying tips in restaurant/bar: &quot;tip address&quot;</h2>
+
+<p>(<a>Michael_S</a> (<span class="createlink"><a href="/ikiwiki.cgi?page=User_talk%3AMichael_S&amp;do=create&amp;from=BIP_0021%2Ftalk" rel="nofollow">?</a>talk</span>) 9 Sept 2013)</p>
+
+<p>Further enhancement: Sending billing amount and tip to separate addresses:</p>
+
+<p>(Note: This feature is typically invisible in the GUI of the customer&#39;s wallet app)</p>
+
+<pre><code>bitcoinurn     = &quot;bitcoin:&quot; bitcoinaddress  [bitcoinparams](&quot;?&quot;)
+bitcoinaddress = base58 *base58
+bitcoinparams  = *bitcoinparam
+bitcoinparam   = amountparam  labelparam  messageparam  &lt;span style=&quot;color:#0000FF&quot;&gt;**tipparam **&lt;/span&gt; &lt;span style=&quot;color:#E20074&quot;&gt;**tipaddrparam **&lt;/span&gt; otherparam  reqparam
+amountparam    = &quot;amount=&quot; *digit  [*digit](&quot;.&quot;)
+labelparam     = &quot;label=&quot; *pchar
+messageparam   = &quot;message=&quot; *pchar
+&lt;span style=&quot;color:#0000FF&quot;&gt;**tipparam       = &quot;tip=&quot;   [*digit](&quot;.&quot;)   &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=BIP_0021%2Ftalk&amp;amp;page=__34__25__34__&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;&amp;#34;25&amp;#34;&lt;/span&gt;  **&lt;/span&gt;
+&lt;span style=&quot;color:#E20074&quot;&gt;**tipaddrparam   = &quot;tipaddr=&quot; bitcoinaddress**&lt;/span&gt;
+otherparam     = pchar *pchar &quot;=&quot; *pchar
+reqparam       = &quot;req-&quot; pchar *pchar &quot;=&quot; *pchar
+</code></pre>
+
+<p>Example:
+    bitcoin:175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?amount=0.567<span><strong>&amp;tip=15%25</strong></span><span>&amp;tipaddr=1waiter7b38klseWrTZm5sE8PrrupPB2Q2</span></p>
+
+<p>The &quot;tipaddr&quot; parameter specifies that if the wallet app sends a tip in addition to the &quot;amount&quot;, it shall <strong><em>preferably</em></strong> send it to the specifed &quot;tip address&quot;. However, this is not mandatory (because it is an optional parameter w/o &quot;req-&quot;), so if the wallet app sends amount and tip to the main address, the merchant shall still be able to figure this out.</p>
+
+<p>If the merchant cannot handle tips sent to the same address as the billing amount, he shall instead make use of this parameter:</p>
+
+<pre><code>&lt;span style=&quot;color:#a20024&quot;&gt;**reqtipaddrparam = &quot;req-tipaddr=&quot; bitcoinaddress**&lt;/span&gt;
+</code></pre>
+
+<p>Example:
+    bitcoin:175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?amount=0.567<span><strong>&amp;tip=15%25&amp;</strong></span><span>&amp;req-tipaddr=1waiter7b38klseWrTZm5sE8PrrupPB2Q2</span></p>
+
+<p>In this case, the wallet app is guaranteed to send the tip to the separate address, or will otherwise reject the complete URI. Upon rejection, the waiter knows that the customer has a non-compliant wallet app and can start a second try showing the URI without any tip parameters (or with &quot;tip=0&quot;). The tip can then be paid in a separate transaction (or classically by cash).</p>
+
+<h2 id="Short_parameter_tags_yielding_shorter_URIs_for_QR_codes">Short parameter tags yielding shorter URIs for QR codes</h2>
+
+<p>(<a>Michael_S</a> (<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=User_talk%3AMichael_S&amp;from=BIP_0021%2Ftalk" rel="nofollow">?</a>talk</span>) 10 Sept 2013)</p>
+
+<p>Another proposal: Allow short forms for the parameter tags, to shorten the URIs.</p>
+
+<p>This is not important for URIs when used in links on web pages, but it can become relevant when generating QR codes. The longer the URI, the more difficult it will be to scan and decode the QR code by a smartphone due to smaller QR code block size or lower error protection level.</p>
+
+<p>Hence a simple table of equivalent ALIASES is proposed, to shorten the URI:</p>
+
+<pre><code>**Parameter Tag       Alias**
+amount=             a=
+label=              l=
+message=            m=
+tip=                t=
+tipaddr=            ta=
+req-                -
+req-tipaddr=        -ta=
+req-aal=            -aal=
+</code></pre>
+
+<p>Hence, for example the following URIs are fully equivalent:</p>
+
+<p>155 characters:
+    bitcoin:175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?amount=0.567&amp;tip=15%25&amp;req-tipaddr=1waiter7b38klseWrTZm5sE8PrrupPB2Q2&amp;message=Thank%20You&amp;label=Charly%27s%20Bar</p>
+
+<p>129 characters:
+    bitcoin:175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?a=.567&amp;t=15%25&amp;-ta=1waiter7b38klseWrTZm5sE8PrrupPB2Q2&amp;m=Thank%20You&amp;l=Charly%27s%20Bar</p>
+
+<h2 id="Critical_Improvement_of_BIP_0021_for_req-_param">Critical Improvement of BIP 0021 for &quot;req-&quot; param</h2>
+
+<p>(<a>Michael_S</a> (<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=User_talk%3AMichael_S&amp;from=BIP_0021%2Ftalk" rel="nofollow">?</a>talk</span>) 12 Sept 2013)</p>
+
+<p>One aspect of current BIP 0021 is critical:</p>
+
+<p>It says that wallets that do not know one or several &quot;req-&quot; keys in the URI should reject (i.e. not process) the complete URI, to avoid doing anything in the wrong way.</p>
+
+<p>However, very old wallet apps may have not even implemented this rule and may still process the &quot;known part&quot; of the URI, thereby causing an unwanted result.</p>
+
+<p>The solution to the problem is to specify BIP 0021 in a way that, in case that at least one &quot;req-&quot; key is used, some other details of the URI must be modified too, such that it becomes &quot;incompatible&quot; and &quot;undecodable&quot; by older apps.</p>
+
+<p>The concrete proposal here is to append &quot;R-&quot; directly after &quot;bitcoin:&quot;. Then a string with a &quot;req-&quot; parameter would look like this:
+    bitcoin:<strong>R-</strong>175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?amount=0.567&amp;tip=15%25&amp;<strong>req-</strong>tipaddr=1waiter7b38klseWrTZm5sE8PrrupPB2Q2&amp;message=Thank%20You&amp;label=Charly%27s%20Bar</p>
+
+<p>The BFN Syntax then looks as follows:
+    bitcoinurn     = &quot;bitcoin:&quot; <strong> <span class="createlink"><a href="/ikiwiki.cgi?page=__34__R-__34__&amp;do=create&amp;from=BIP_0021%2Ftalk" rel="nofollow">?</a>&quot;R-&quot;</span></strong> bitcoinaddress  <a title="?">bitcoinparams</a>
+where &quot;R-&quot; is mandatory as soon as at least one &quot;reqparam&quot; is used.</p>
+
+<h2 id="Paying_to_Multiple_Outputs">Paying to Multiple Outputs</h2>
+
+<p>(<a>Michael_S</a> (<span class="createlink"><a href="/ikiwiki.cgi?page=User_talk%3AMichael_S&amp;do=create&amp;from=BIP_0021%2Ftalk" rel="nofollow">?</a>talk</span>) 12 Sept 2013)</p>
+
+<p>Another Enhancement relates to the &quot;Humble Bundle&quot; scenario: Paying one transaction with multiple outputs, specifying a dedicated amount for each output address.</p>
+
+<p>This scenario allows to specify additional pairs of addresses and amounts. Optionally, also further labels can be specified. We call the new parameter &quot;<strong>req-aal</strong>&quot; for <strong>a</strong>ddress-<strong>a</strong>mount-<strong>l</strong>abel, and we specify it as a <strong>req</strong>uired parameter because procesing an incomplete URI would result in sending only a partial amount.</p>
+
+<pre><code>bitcoinparam   = amountparam  labelparam  **reqaalparam ** messageparam  tipparam  tipaddrparam  otherparam  reqparam
+reqaalparam    = &quot;req-aal=&quot; bitcoinaddress &quot;:&quot; *digit  [*digit](&quot;.&quot;)  [*pchar](&quot;:&quot;)
+</code></pre>
+
+<p>Example:
+    bitcoin:R-175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?amount=0.567&amp;label=book&amp;req-aal=1tZdShH7b38klseWrTZm5sE8PrtZPwqdK:0.123:game&amp;message=Thank%20You</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../">BIP 0021</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2013-09-12T01:41:14Z">Thu 12 Sep 2013 01:41:14 AM Europe</time>
+<!-- Created <time datetime="2013-04-23T23:04:26Z" pubdate="pubdate">Tue 23 Apr 2013 11:04:26 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

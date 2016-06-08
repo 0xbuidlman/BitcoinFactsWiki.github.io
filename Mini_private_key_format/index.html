@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Mini private key format</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Mini private key format
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p><a href="../QR-privkeys-sidebyside.png"><img class="right" height="64" src="./120x120-QR-privkeys-sidebyside.png" title="QR codes of the same private key, in mini versus regular private key format.  Both codes have the same dot density and error correction level, but the mini key is 57% of the full code&#39;s size." width="119" /></a>
+The <strong>mini private key format</strong> is a method of encoding a Bitcoin private key in as few as 30 characters so that it can be embedded in a small space.  This private key format was first used in Casascius physical bitcoins, and is also favorable for use in QR codes.  The fewer characters encoded in a QR code, the lower dot density can be used, as well as more dots allocated to error correction in the same space, significantly improving readability and resistance to damage.  The mini private key format offers its own built-in check code as a small margin of protection against typos.</p>
+
+<p>An example key using this encoding is <strong>S6c56bnXQiBjk9mqSYE7ykVQ7NzrRy</strong>.</p>
+
+<h2 id="Usage_on_a_physical_bitcoin">Usage on a physical bitcoin</h2>
+
+<p>The way it might appear within a physical bitcoin is on a round card printed as follows:</p>
+
+<p>Side of discs showing mini private key: (from <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Casascius_physical_bitcoins&amp;from=Mini_private_key_format" rel="nofollow">?</a>Casascius physical bitcoins</span>)<br />
+<a href="../Miniprivkeys.jpg"><img class="img" height="90" src="./300x300-Miniprivkeys.jpg" width="299" /></a></p>
+
+<p>Side of discs showing prefix of bitcoin address (printed on the opposite side):<br />
+<a href="../Minipubkeys.jpg"><img class="img" height="83" src="./300x300-Minipubkeys.jpg" width="300" /></a></p>
+
+<p>The examples in this article use the private key and Bitcoin address of the leftmost circle in the above two photos.</p>
+
+<h2 id="Usage_in_bar_codes">Usage in bar codes</h2>
+
+<p>The mini private key is suitable for use in QR codes.  The recommended settings for maximizing readability are: QR version 3, error correction level Q (near highest, 25% possible lost codeword recovery).  This results in a 29x29 grid.  A minikey QR code can also fit in a 25x25 grid with QR version 2, error correction level L (lowest, 7% possible lost codeword recovery).</p>
+
+<p>The sample private minikey encoded as a QR code on a 29x29 grid looks like this:</p>
+
+<p><img alt="Private minikey in 2D barcode.gif" src="../Private_minikey_in_2D_barcode.gif" /></p>
+
+<p>The mini private key is small enough to fit in a one-dimensional barcode while still remaining practical.  Among the most popular one-dimensional barcode symbologies, the one known as &quot;Code 128&quot; is best suited for encoding a minikey due to its favorable data density and support for mixed case strings.  The variant known as &quot;Code 128-B&quot; produces the shortest code for strings containing lowercase characters.</p>
+
+<p>The sample private minikey encoded with Code 128-B looks like this:</p>
+
+<p><img alt="Private minikey in 1D barcode.gif" src="../Private_minikey_in_1D_barcode.gif" /></p>
+
+<h2 id="Import">Import</h2>
+
+<p>Mini private keys can be imported through the following clients/services:</p>
+
+<h3 id="Applications">Applications</h3>
+
+<ul>
+<li><a href="../Armory/">Armory</a></li>
+</ul>
+
+
+<p>The current mainline (&quot;Satoshi&quot;) client cannot currently be used to import minikeys.</p>
+
+<h3 id="Web">Web</h3>
+
+<ul>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Mini_private_key_format&amp;do=create&amp;page=BlockChain.info" rel="nofollow">?</a>BlockChain.info</span>
+
+<ul>
+<li>Private keys can be imported into a Blockchain.info wallet and bitcoins can be sent to another address immediately upon import without needing to wait for any confirmations.  Even after import, funds remain associated with the private key until they are actually spent to a different address.</li>
+</ul>
+</li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Mini_private_key_format&amp;page=StrongCoin&amp;do=create" rel="nofollow">?</a>StrongCoin</span></li>
+</ul>
+
+
+<h2 id="Decoding">Decoding</h2>
+
+<p>The private key encoding consists of 30 alphanumeric characters from the <span class="createlink"><a href="/ikiwiki.cgi?from=Mini_private_key_format&amp;do=create&amp;page=base58" rel="nofollow">?</a>base58</span> alphabet used in Bitcoin.  The first of the characters is always the uppercase letter S.</p>
+
+<p>To determine whether the minikey is valid:</p>
+
+<ol>
+<li>Add a question mark to the end of the mini private key string.</li>
+<li>Take the SHA256 hash of the entire string.  However, we will only look at the first byte of the result.</li>
+<li>If the first byte is 00, the string is a well-formed minikey.  If the first byte is not 00, the string should be rejected as a minikey.</li>
+</ol>
+
+
+<h3 id="Example_with_SHA256">Example with SHA256</h3>
+
+<p>Here is an example with the sample private key <tt>S6c56bnXQiBjk9mqSYE7ykVQ7NzrRy</tt>.</p>
+
+<p>The string &quot;<tt>S6c56bnXQiBjk9mqSYE7ykVQ7NzrRy?</tt>&quot; has a SHA256 value that begins with 00, so it is well-formed.</p>
+
+<p>To obtain the full 256-bit private key, simply take the SHA256 hash of the entire string.  There is no encoding for line breaks in the string, even if the key is broken into multiple lines for printing.  The SHA256 should be taken of exactly thirty bytes.</p>
+
+<pre><code>SHA256(&quot;S6c56bnXQiBjk9mqSYE7ykVQ7NzrRy&quot;) = 4C7A9640C72DC2099F23715D0C8A0D8A35F8906E3CAB61DD3F78B67BF887C9AB  
+</code></pre>
+
+<p>This sample key in <a href="../Wallet_export_format/">wallet export format</a> is <tt>5JPy8Zg7z4P7RSLsiqcqyeAF1935zjNUdMxcDeVrtU1oarrgnB7</tt>, and the corresponding <a href="../Bitcoin_address/">Bitcoin address</a> is <tt>1CciesT23BNionJeXrbxmjc7ywfiyM4oLW</tt>.</p>
+
+<h4 id="Command_line_verification">Command line verification</h4>
+
+<p>To calculate SHA256 from the command line on OSX or Linux devices:</p>
+
+<pre><code>echo -n &quot;S6c56bnXQiBjk9mqSYE7ykVQ7NzrRy?&quot;  shasum -a 256
+</code></pre>
+
+<p>That should output a line of text like &quot;<tt>000f2453798ad4f951eecced2242eaef3e1cbc8a7c813c203ac7ffe57060355d  -</tt>&quot;. Since the first two characters are <tt>00</tt> the verification passes for the mini key <tt>S6c56bnXQiBjk9mqSYE7ykVQ7NzrRy</tt></p>
+
+<h2 id="Check_code">Check code</h2>
+
+<p>The mini private key format offers a simple typo check code.  Mini private keys must be generated in a &quot;brute force&quot; fashion, keeping only keys that conform to the format&#39;s rules.  If a key is well-formed (30 Base58 characters starting with S), but fails the hash check, then it probably contains a typo.</p>
+
+<p>If the SHA256 hash of the string followed by &#39;?&#39; doesn&#39;t result in something that begins with 0x00, the string is not a valid mini private key.</p>
+
+<h2 id="Creating_mini_private_keys">Creating mini private keys</h2>
+
+<p>Creating mini private keys is relatively simple.  One program which can create such keys is <span class="createlink"><a href="/ikiwiki.cgi?page=Casascius_Bitcoin_Utility&amp;do=create&amp;from=Mini_private_key_format" rel="nofollow">?</a>Casascius Bitcoin Utility</span>.</p>
+
+<p>Mini private keys must be created &quot;from scratch&quot;, as the conversion from mini private key to full-size private key is one-way.  In other words, there is no way to convert an existing full-size private key into a mini private key.</p>
+
+<p>To create mini private keys, simply create random strings that satisfy the well-formedness requirement, and then eliminate the ones that do not pass the typo check.  (This means eliminating more than 99% of the candidates.)  Then use the appropriate algorithm to compute the corresponding private key, and in turn, the matching Bitcoin address.  The Bitcoin address can always be computed from just the private key.</p>
+
+<p>It is strongly advisable to avoid using the digit &quot;1&quot; in minikeys unless it is being printed in such a way where a user is unlikely to mistake it for the lowercase letter &quot;l&quot;.  Few clients and redemption tools are prepared to tell the user that their entry containing the letter &quot;l&quot; should actually be the number &quot;1&quot; - rather, they will simply reject the code and may leave the user confused.</p>
+
+<p>In all cases, you <strong>must</strong> use a secure cryptographic random number generator to eliminate risks of predictability of the random strings.</p>
+
+<h2 id="Casascius_Series_1_coins">Casascius Series 1 coins</h2>
+
+<p>Casascius Series 1 Physical Bitcoins use a 22-character variant of the minikey format, instead of 30 characters.  Everything is the same other than the length.  To properly implement minikey redemption, services and clients MUST support the 30-character format, but MAY support the 22-character format as well.  Use of the 22-character format for future applications is discouraged due to security considerations.</p>
+
+<h2 id="Python_Code">Python Code</h2>
+
+<p>The following code produces sample 30-character SHA256-based mini private keys in Python.  For real-world use, <em>random</em> must be replaced with a better source of entropy, as the Python documentation for <em>random</em> states the function <em>&quot;is completely unsuitable for cryptographic purposes&quot;</em>.</p>
+
+<p><source lang="python">
+import random
+import hashlib</source></p>
+
+<p>BASE58 = &#39;23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz&#39;</p>
+
+<p>def Candidate():
+    &quot;&quot;&quot;
+    Generate a random, well-formed mini private key.
+    &quot;&quot;&quot;
+    return(&#39;%s%s&#39; % (&#39;S&#39;, *.join(
+     <a href="random.randrange(0,len(BASE58">(1)</a>)) for i in range(29))))</p>
+
+<p>def GenerateKeys(numKeys = 10):
+    &quot;&quot;&quot;
+    Generate mini private keys and output the mini key as well as the full
+    private key. numKeys is The number of keys to generate, and
+    &quot;&quot;&quot;
+    keysGenerated = 0
+    totalCandidates = 0
+    while keysGenerated &lt; numKeys:
+    try:
+    cand = Candidate()
+    # Do typo check
+    t = &#39;%s?&#39; % cand
+    # Take one round of SHA256
+    candHash = hashlib.sha256(t).digest()
+    # Check if the first eight bits of the hash are 0
+    if candHash<span class="createlink"><a href="/ikiwiki.cgi?from=Mini_private_key_format&amp;page=0&amp;do=create" rel="nofollow">?</a>0</span> == &#39;\x00&#39;:
+    privateKey = GetPrivateKey(cand)
+    print(&#39;\n%s\nSHA256( ): %s\nsha256(?): %s&#39; %
+    (cand, privateKey, candHash.encode(&#39;hex_codec&#39;)))
+    if CheckShortKey(cand):
+    print(&#39;Validated.&#39;)
+    else:
+    print(&#39;Invalid!&#39;)
+    keysGenerated += 1
+    totalCandidates += 1
+    except KeyboardInterrupt:
+    break
+    print(&#39;\n%s: %i\n%s: %i\n%s: %.1f&#39; %
+    (&#39;Keys Generated&#39;, keysGenerated,
+    &#39;Total Candidates&#39;, totalCandidates,
+    &#39;Reject Percentage&#39;,
+    100*(1.0-keysGenerated/float(totalCandidates))))</p>
+
+<p>def GetPrivateKey(shortKey):
+    &quot;&quot;&quot;
+    Returns the hexadecimal representation of the private key corresponding
+    to the given short key.
+    &quot;&quot;&quot;
+    if CheckShortKey(shortKey):
+    return hashlib.sha256(shortKey).hexdigest()
+    else:
+    print(&#39;Typo detected in private key!&#39;)
+    return None</p>
+
+<p>def CheckShortKey(shortKey):
+    &quot;&quot;&quot;
+    Checks for typos in the short key.
+    &quot;&quot;&quot;
+    if len(shortKey) != 30:
+    return False
+    t = &#39;%s?&#39; % shortKey
+    tHash = hashlib.sha256(t).digest()
+    # Check to see that first byte is \x00
+    if tHash<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=0&amp;from=Mini_private_key_format" rel="nofollow">?</a>0</span> == &#39;\x00&#39;:
+    return True
+    return False
+</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Fractional_Reserve_Banking_and_Bitcoin/">Fractional Reserve Banking and Bitcoin</a>
+
+<a href="../Private_key/">Private key</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-04-02T04:49:30Z">Thu 02 Apr 2015 04:49:30 AM Europe</time>
+<!-- Created <time datetime="2011-09-04T03:32:16Z" pubdate="pubdate">Sun 04 Sep 2011 03:32:16 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

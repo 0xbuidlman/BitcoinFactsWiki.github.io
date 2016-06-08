@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>talk</title>
+
+<link rel="stylesheet" href="../../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../../">bitcoin</a>/ 
+
+<a href="../">QBitcoin</a>/ 
+
+</span>
+<span class="title">
+talk
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<h2 id="Skip_IRC_bootstrap.3F">Skip IRC bootstrap?</h2>
+
+<p>As <a href="http://www.bitcoin.org/smf/index.php?topic=84.0">said in the earlier stages of bitcoin</a> IRC is only a temporary solution for bootstrapping. Since I do not feel like implementing something that will be dropped soon after, I&#39;d guess I should just skip the IRC bootstrap part and implement various other way to harvest initial nodes. I&#39;m thinking of storing known peers in a database, and keeping those that stay most of the time (ie, got a fixed ip and provide bitcoin service). Any comment? <a>MagicalTux</a> 07:32, 18 December 2010 (GMT)</p>
+
+<blockquote><p>If the file is large and releases are often, then there should be at least a few bootstrap clients in the file that work. <a>Genjix</a> 03:04, 24 December 2010 (GMT)
+Even if not often, some nodes are probably going to stay for years (the nodelist will start with the most long-established nodes). Once one node has been reached, things are easy <a>MagicalTux</a> 03:17, 24 December 2010 (GMT)</p></blockquote>
+
+<h2 id="Initial_welcome.2Flogin_screen">Initial welcome/login screen</h2>
+
+<p>Upon starting the GUI, the user should initially be prompted to either:</p>
+
+<ul>
+<li>Login to a local/remote RPC core, or</li>
+<li>Create a new local/standalone core
+If a local core is detected, (A) should be default. Otherwise (B).
+The user should have the option to automatically choose the same by default at future launches.
+Ideally, users should be able to connect to and interact with multiple cores from the same GUI.
+
+<blockquote><p>Preferrable if it silently selects a local core, but is configurable to use a remote one. <a>Genjix</a> 23:12, 12 January 2011 (GMT)
+I disagree. A pre-configured &quot;Login&quot; dialog (with checked &quot;automatically log me in&quot;) that the user clicks once the first time they run it shouldn&#39;t be a nuance. <a>Luke-jr</a> 01:08, 13 January 2011 (GMT)</p></blockquote></li>
+</ul>
+
+
+<h2 id="Currency_Settings">Currency Settings</h2>
+
+<p>Users should have the option to display their choice (single or multiple) of currencies in the window:
+Fixed currencies:</p>
+
+<ul>
+<li>Decimal BitCoin (BTC) -- <strong>DEFAULT</strong></li>
+<li>Milli-BitCoin (mBTC)</li>
+<li>Micro-BitCoin (&mu;BTC)</li>
+<li>Mill-TonalBitCoin (&#x1D50;TBC)</li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Tonal_BitCoin&amp;from=QBitcoin%2Ftalk" rel="nofollow">?</a>TonalBitCoin (TBC)</span></li>
+<li>TonalBitCoin-bong (TBC&#x1D47;)</li>
+<li><p>Custom (Multiply/offset)
+Exchange currencies:</p></li>
+<li><p>USD/EUR/Gold equivalent via MtGox/Market/Central/etc APIs</p></li>
+</ul>
+
+
+<h2 id="Separate_core_from_transaction_generation">Separate core from transaction generation</h2>
+
+<p>Transactions should be generated/signed with a library, leaving the core to handle only the p2p network.</p>
+
+<h2 id="Suggestions">Suggestions</h2>
+
+<p>Add this article to the <a href="../../tags/Software/">Software</a> category.  <span class="createlink"><a href="/ikiwiki.cgi?page=User%3Asgornick&amp;do=create&amp;from=QBitcoin%2Ftalk" rel="nofollow">?</a>User:sgornick</span>  06:32 19 February 2011 (GMT)</p>
+
+<p>I&#39;ve had various ideas for improvements for improving Bitcoin, but because I haven&#39;t written them down I&#39;ve forgotten most of them. I&#39;ll try to keep a list here of ideas:</p>
+
+<ul>
+<li>Show small denominations of bitcoins using SI-notation. i.e 0.001 BTC = 1 mBTC, 100000 BTC = 0.1 GBTC</li>
+<li>Do not have accounts. Instead allow more flexible tree based method of organising addresses with ability to tag them in groups or categories.</li>
+<li>Basic libbitcoin so others can make clients for gtk, KDE ...</li>
+<li>Ability to generate at lower speeds</li>
+<li>Same one column for transaction amounts. Money sent is like -10 BTC and the row&#39;s background is highlighted red. Money received, the row is highlighed green and shown as +10 BTC. <a>Genjix</a> 17:35, 24 December 2010 (GMT)
+
+<blockquote><p> Ok let&#39;s see...
+* SI denomination: mostly cosmetic, why not. The difficult part will be to choose the right unit
+* Accounts-in-a-tree, that sounds interesting :) I was already planning to give one &quot;account&quot; the ability to hold more than one address so returns can be kept together
+* This one is not going to get easy since I&#39;m using Qt net libs. The core component do not use QtGui so it can be easily connected to a gtk UI, but the networking will still be done by Qt
+* The client itself will not include any generator, generation will be handled by external binaries via a specific API. Still I&#39;ll include a CPU miner in the distro, giving it the ability to generate at lower speeds should be possible (result may vary depending on OS)
+* This one is already planned in the UI :p
+ <a>MagicalTux</a> 03:17, 24 December 2010 (GMT)
+* SI denominations are already a standard. So you don&#39;t need to pick a unit.
+* Maybe you could have 2 components- core network with API as a library, and thin client GUI on top.
+* Not including a generator in the application is a <em>great idea</em>.
+<a>Genjix</a> 17:35, 24 December 2010 (GMT)
+* What I mean is, let&#39;s say I have 4740000 BTC, should I display 4.74  MBTC or 4740 kBTC ? This kind of things...
+* The core component and the GUI are already separated, however the core component uses Qt for non-gui stuff (networking, etc... Qt can do many things beside GUI)
+* I&#39;ve read some documentation about that. I&#39;m considering allowing the generator to show a configuration panel (or configuration api) to configure generator settings, but that&#39;s for later ;)
+<a>MagicalTux</a> 18:34, 24 December 2010 (GMT)</p></blockquote></li>
+</ul>
+
+
+<p>Another idea. The main list view should look something like this:</p>
+
+<p>|style=&quot;background-color:#ff9999;&quot;Processing (2)|style=&quot;background-color:#ff9999;&quot;20 Dec 10|style=&quot;background-color:#ff9999;&quot;hello jon|style=&quot;background-color:#ff9999;&quot;-10|style=&quot;background-color:#ff9999;&quot;170
+|style=&quot;background-color:#99ff99;&quot;Confirmed (10)|style=&quot;background-color:#99ff99;&quot;18 Dec 10|style=&quot;background-color:#99ff99;&quot;bls djdsksd sdls|style=&quot;background-color:#99ff99;&quot;+20|style=&quot;background-color:#99ff99;&quot;180</p>
+
+<p>The date should be in that format, as it&#39;s confusing for non-Americans as they write the date wrong as MM/DD/YY instead of the usual DD/MM/YY.</p>
+
+<p>Also here&#39;s a link to a list of <a href="http://en.wikipedia.org/wiki/SI_prefix">SI prefixes</a>. People find it confusing dealing with large numbers, which is why SI prefixes exist. It&#39;s easier to handle numbers in the 0-100 range than the 10000000000-100000000000 range.</p>
+
+<p>Another idea would be that it&#39;d be nice to associate bitcoin addresses with people&#39;s names like with email. So if I wanted to send money to my friend John, then I just click his name. When you send money in Bitcoin, there&#39;s a button to open the address book. It should already be integrated in that send dialog- having to make another click to reach the address book is off putting for the user and discourages them to use it. If it was already integrated as a list view in that dialog then it&#39;d be easy to quickly select your friends, type in a number and hit send. Instead of type number, click address book, select friend, click OK, click OK. <a>Genjix</a> 17:35, 24 December 2010 (GMT)</p>
+
+<blockquote><p> I like the idea of allowing the user to have an address book of contacts (other than his own addresses). I don&#39;t like however that users will send bitcoins to the same address for someone each time, but this can be solved the following way:
+* User decides to send 100 BTC to contact X
+* The client sends a request on the P2P network asing for X (by providing his address), and also including a freshly generated public key
+<strong> </strong>Case 1<strong>: X&#39;s client is running, it receives the P2P request and signs back a reply including a different (freshly generated) address and broadcasts it back on the network after encrypting it (ECIES) with the provided public key
+</strong> <strong>Case 2</strong>: X&#39;s client is not running, the transaction is sent as-is on the blockchain after a few minutes (less anonymous)
+ This is still as secure (nobody can provide a different address since it is signed, and the reply cannot be understood, so it cannot be linked to the resulting transaction) and would allow keeping fixed addresses without having each transaction sent to the same address. Of course the discovery packet will not be included in the chain, and clients would have to forget those after ~24 hours
+ <a>MagicalTux</a> 18:34, 24 December 2010 (GMT)</p>
+
+<p>Ah, good point. That was a bad idea. Your idea while feasible sounds waayyyy complex (for the beginning :p)... I&#39;ll keep adding more points here as I remember. Will you be using a private git repo that you&#39;ll share with me to spy on you? I&#39;m curious how Bitcoin works internally.
+According to <a href="http://www.bitcoin.org/smf/index.php?topic=2294.0">this thread</a>, it&#39;s possible to share a wallet between many parties, so that permission is required to use it. So in my poker software, we could have several independent servers who own all the players money. Cashing out and adding money to table requires permission from all 8 holders of that wallet. Do you think something like this could be possible in your client? =) <a>Genjix</a> 23:20, 24 December 2010 (GMT)</p>
+
+<p>Why not drop the JSON API? If you have a small core which supports basic commands, and the client is a wrapper on top then if someone wants to make the JSON API then they can program their own intermediate layer. Or use system() calls. <a>Genjix</a> 23:25, 24 December 2010 (GMT)</p></blockquote>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../">QBitcoin</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2011-02-20T07:32:34Z">Sun 20 Feb 2011 07:32:34 AM Europe</time>
+<!-- Created <time datetime="2010-12-18T07:32:42Z" pubdate="pubdate">Sat 18 Dec 2010 07:32:42 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

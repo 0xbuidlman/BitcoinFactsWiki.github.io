@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Maximum transaction rate</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Maximum transaction rate
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=Maximum_transaction_rate" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>The maximum transaction rate is the block size limit divided by the average transaction size. The block size limit is well known, 1MB, however the average transaction size isn&#39;t. Here we&#39;ll look at what influences that size.</p>
+
+<p>The minimum sized transaction type (1.1) is the <a href="../Script/#Standard_Generation_Transaction">OP CHECKSIG transaction</a>:</p>
+
+<pre><code>scriptPubKey: &lt;33 byte compressed pubKey&gt; OP_CHECKSIG
+scriptSig: &lt;72 byte signature&gt;
+</code></pre>
+
+<p>Each transaction input requires at least 41 bytes for the previous transaction reference and other headers and each transaction output requires an additional 9 bytes of headers. Finally every transaction has a header at least 10 bytes long. Added up we get 166 bytes for the minimum-sized Bitcoin transaction. For 1MB (1,000,000 byte) blocks this implies a theoretical maximum rate of 10tx/s.</p>
+
+<p>However <a href="../Change/">change</a> complicates the situation. It isn&#39;t always possible for a client to find a transaction input of the size required. Thus client software will included additional outputs to themselves for the change, and similarly they will include additional inputs to collect change outputs together when no one output is large enough.</p>
+
+<p>Users with large wallets, in particular <span class="createlink"><a href="/ikiwiki.cgi?page=eWallets&amp;do=create&amp;from=Maximum_transaction_rate" rel="nofollow">?</a>eWallets</span> such as Instawallet or large exchanges like Mt. Gox are most likely to be able to find transaction outputs of a suitable size for any given payment. It&#39;s conceivable that if transaction fees are high enough in the future users who trust each other may get together to use each others wallets to make payments as a way to avoid transaction fees, with the balances settled periodically by some other means.</p>
+
+<h2 id="Trust-free_Combining">Trust-free Combining</h2>
+
+<p>Users can also combine their transactions to make them slightly smaller, and possibly improve privacy. A transaction is invalid until every transaction input is signed for, thus multiple users can create a joint transaction with no risk of their funds being stolen. This reduces average transaction size by 10 bytes, the size of the per-transaction header. Using this technique aggressively results in 156 byte average transactions, or 10.7tx/s.</p>
+
+<h2 id="Lower-bound_transaction_rate">Lower-bound transaction rate</h2>
+
+<p>A reasonable, conservative, assumption is to assume that every transaction requires two outputs, including change, and two inputs, consuming change. Assuming that trust-free combining is not used gives us 322 byte transactions, or 5.2tx/s.</p>
+
+<p>Actual real-world rates will likely be somewhere between those numbers, although equally rates may be less as well if multi-signature transactions are become popular; the figure 7tx/s is commonly quoted as a &#39;ball-park&#39; approximation in discussions of the <a href="../Scalability/">blocksize limit</a>.</p>
+
+<h2 id="The_Bitcoin_system_vs._the_Bitcoin_blockchain">The Bitcoin system vs. the Bitcoin blockchain</h2>
+
+<p>Numbers discussed here apply to the bitcoin blockchain and are no hard limits to the bitcoin system in a broader sense. Off chain transactions, most notably transaction channels allow arbitrary transaction rates with instant, off the chain (added privacy), secure micro-transactions.</p>
+
+<h2 id="Footnotes">Footnotes</h2>
+
+<p>1.1: Even smaller transactions can be made by using empty scriptPubKeys, however such transactions are not secure because anyone can spend them.</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Funding_network_security/">Funding network security</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2014-01-14T19:27:18Z">Tue 14 Jan 2014 07:27:18 PM Europe</time>
+<!-- Created <time datetime="2013-02-24T20:38:34Z" pubdate="pubdate">Sun 24 Feb 2013 08:38:34 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

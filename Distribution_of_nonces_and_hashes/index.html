@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Distribution of nonces and hashes</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Distribution of nonces and hashes
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=Distribution_of_nonces_and_hashes" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>Here we analyze the <a href="../Nonce/">nonce</a> values and <a href="../Hash/">hashes</a> for all the valid blocks in the <a href="../Blockchain/">blockchain</a>: (1.1)</p>
+
+<h2 id="Time_Evolution">Time Evolution</h2>
+
+<h3 id="Nonces_vs_Hashes_.28y-axis_logarithmic.2C_x-axis_linear.29">Nonces vs Hashes (y-axis logarithmic, x-axis linear)</h3>
+
+<p>This plot readily shows that the distribution of <a href="../Nonce/">nonces</a> that produce valid <a href="../Hash/">hashes</a> is uniform.<br /><a href="../Nonces_vs_Hashes.png"><img class="img" height="480" src="../Nonces_vs_Hashes.png" title="verba alia" width="640" /></a></p>
+
+<h3 id="Nonces_vs_Hashes_.28log-log_scale.29">Nonces vs Hashes (log-log scale)</h3>
+
+<p><a href="../Nonces_vs_Hashes_(log-log_scale).png"><img class="img" height="480" src="../Nonces_vs_Hashes_(log-log_scale).png" title="Nonces vs Hashes (log-log scale)" width="640" /></a></p>
+
+<p>In the animated version of this last plot, (4.1) you can really visualize the change in the <a href="../Difficulty/">difficulty</a> and even see where the <a href="../Difficulty/">difficulty</a> was decreased.</p>
+
+<h2 id="Histograms">Histograms</h2>
+
+<h3 id="Distribution_of_Nonces">Distribution of Nonces</h3>
+
+<p>The nonces found are skewed toward 0 because this is a <a>selection effect</a>: most everyone starts searching for nonces starting at 0, so the lower nonces are found first, even though there may be also higher nonces that could produce a winning block:<br /><a href="../Nonces_Histogram.png"><img class="img" height="600" src="../Nonces_Histogram.png" title="histogram of nonces" width="800" /></a></p>
+
+<h3 id="Distribution_of_Hashes">Distribution of Hashes</h3>
+
+<p>Although the distribution of hashes is not uniform, this does not matter; all that matters is that the distribution of nonces is uniform (which they are, minus the selection effect of starting at 0):<br /><a href="../Hashes_Histogram.png"><img class="img" height="600" src="../Hashes_Histogram.png" title="histogram of hashes" width="800" /></a></p>
+
+<h3 id="z--D_Distribution_of_Nonces_.26amp.3B_Hashes">2-D Distribution of Nonces &amp; Hashes</h3>
+
+<p>2-D histogram of hashes and nonces (logarithmic color scale):<br /><a href="../Density_Plot_(log_colorscale).png"><img class="img" height="600" src="../Density_Plot_(log_colorscale).png" title="Density Plot (log colorscale)" width="800" /></a>
+<br />
+This also illustrates very well that the distribution of nonces is uniform.</p>
+
+<h2 id="References">References</h2>
+
+<p>1.1: https://bitcoin.stackexchange.com/q/36414/4334<br />
+4.1: <a href="https://i.imgur.com/3LkacLD.gif">animated version (cumulative)</a> cf.  or</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Proof_of_work/">Proof of work</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-03-14T02:08:43Z">Sat 14 Mar 2015 02:08:43 AM Europe</time>
+<!-- Created <time datetime="2015-03-12T13:05:09Z" pubdate="pubdate">Thu 12 Mar 2015 01:05:09 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

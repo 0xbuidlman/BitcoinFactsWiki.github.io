@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Lightning Network</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Lightning Network
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=Lightning_Network" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p><strong>Lightning Network</strong> is a proposed implementation of Hash Time Locked Contracts (HTLCs) with bi-directional <a href="../Payment_channels/">payment channels</a> which allows payments to be securely routed across multiple peer-to-peer payment channels. (1.1)  This allows the formation of a network where any peer on the network can pay any other peer even if they don&#39;t directly have a channel open between each other.</p>
+
+<h2 id="Key_features">Key features</h2>
+
+<p>Key features of the Lightning Network proposal include,</p>
+
+<ul>
+<li><strong>Rapid payments:</strong> payments within an established channel can be made almost as fast as data can travel over the Internet between the two peers.</li>
+<li><strong>No third-party trust:</strong> the two peers in a channel pay each other directly using regular Bitcoin transactions (of which only one is broadcast) so at no point does any third party control their funds.</li>
+<li><strong>Reduced blockchain load:</strong> only channel open transactions, channel close transactions, and (hopefully infrequent) anti-fraud respends need to be committed to the blockchain, allowing all other payments within Lightning Network channels to remain uncommitted.  This allows Lightning Network users to make frequent payments secured by Bitcoin without placing excessive load on full nodes which must process every transaction on the blockchain.</li>
+<li><strong>Channels can stay open indefinitely:</strong> as long as the two parties in the channel continue to cooperate with each other, the channel can stay open indefinitely -- there is no mandatory timeout period.  This can further reduce the load on the blockchain as well as allow the fees for opening and closing the channel to be amortized over a longer period of time.</li>
+<li><strong>Rapid cooperative closes:</strong> if both parties cooperate, a channel can be closed immediately (with the parties likely wanting to wait for one or more confirmations to ensure the channel closed in the correct state). Non-cooperative closes (such as when one party disappears) are also possible but they take longer.</li>
+<li><strong>Outsourcable enforcement:</strong> if one party closes a channel in an old state in an attempt to steal money, the other party has to act within a defined period of time to block the attempted theft.  This function can be outsourced to a third-party without giving them control over any funds, allowing wallets to safely go offline for periods longer than the defined period.</li>
+<li><strong>Onion-style routing:</strong> payment routing information can be encrypted in a nested fashion so that intermediary nodes only know who they received a routable payment from and who to send it to next, preventing those intermediary nodes from knowing who the originator or destination is (provided the intermediaries didn&#39;t compare records).</li>
+<li><strong>Multisignature capable:</strong> each party can require that their payments into the channel be signed by multiple keys (2.1), giving them access to additional security techniques.</li>
+<li><strong>Securely cross blockchains:</strong> payments can be routed across more than one blockchain (including altcoins and sidechains) as long as all the chains support the same hash function to use for the hash lock, as well as the ability the ability to create time locks.</li>
+<li><strong>Sub-satoshi payments:</strong> payments can be made conditional upon the outcome of a random event, allowing probabilistic payments.  For example, Alice can pay Bob 0.1 satoshi by creating a 1-satoshi payment with 10-to-1 odds so that 90% of the time she does this she pays him 0 satoshis and 10% of the time she pays him 1 satoshi for an average payment of 0.1 satoshis.</li>
+<li><strong>Single-funded channels:</strong> when Alice needs to send a payment to Bob and doesn&#39;t currently have a way to pay him through the Lightning Network (whether because she can&#39;t reach him or because she doesn&#39;t have enough money in an existing channel), she can make a regular on-chain payment that establishes a channel without Bob needing to add any of his funds to the channel. Alice only uses 12 bytes more than she would for a non-Lightning direct payment and Bob would only need about 25 more segwit virtual bytes to close the channel than he would had he received a non-Lightning direct payment.</li>
+</ul>
+
+
+<h2 id="Technologies_.26amp.3B_Techniques">Technologies &amp; Techniques</h2>
+
+<p>The Lightning Network design makes use of a number of different technologies and techniques, many of which were either developed separately from Lightning or which can be useful in constructing other types of advanced payment channels (such as Duplex Payment Channels (3.1)) as well as other smart contracts.</p>
+
+<h3 id="Hash_locks">Hash locks</h3>
+
+<p>Bitcoin&#39;s Script language currently provides five opcodes that hash data contained within a transaction.  The <a href="../Script/">Script</a> page describes a transaction that uses one of these hash functions to create a &quot;<a href="../Script/#Transaction_puzzle">transaction puzzle</a>&quot;, a transaction output which can only be spent by someone who can satisfy this encumbrance:</p>
+
+<pre><code>OP_HASH256 6fe28c0ab6f1b372c1a6a246ae63f74f931e8365e15a089c68d6190000000000 OP_EQUAL
+</code></pre>
+
+<p>The encumbrance above will take the data on the top of the stack (not shown), hash it with the sha256d function (creating a computed hash), and compare it to the string 6fe2...0000 above (the provided hash).  If the computed hash equals the provided hash, then the encumbrance is satisfied and the output can be spent.</p>
+
+<p>The Script page tells us that provided hash is the hash of the Genesis Block header, so the data necessary to satisfy this encumbrance is the header of the Genesis Block.  Someone has already done that, so if we look up the transaction on the blockchain that spent this output, we would see that Genesis Block header in one of that transaction&#39;s scriptSigs.</p>
+
+<p>Had the provided hash above been the hash of some high-entropy (random) data, the encumbrance wouldn&#39;t be a puzzle---it&#39;d be a lock that could only be opened by revealing the randomly-generated data used to create the hash.  By revealing that data (called a pre-image), the hash lock is rendered unusable for further security since everyone now has the key (the pre-image) and can do whatever they want to the funds encumbered by the hash lock.  For this reason, outputs protected by hash locks should also be protected by signatures so that both a correct pre-image and an appropriate signature are required to spend the funds.</p>
+
+<p>However, hash locks have the very useful property that multiple outputs can all be encumbered by the same hash lock, so that if the person who has the pre-image reveals it in order to spend their encumbered funds, everyone else who has an output encumbered by the same hash lock can get the pre-image they need from the first person&#39;s transaction on the blockchain.</p>
+
+<p>This property allows payments to be routed through third parties without any risk that the third-parties will take the payment for themselves.  For example,</p>
+
+<ul>
+<li>Dan creates a pre-image with 256 bits of entropy (randomness) and hashes it with the sha256d function, creating a hash.</li>
+<li>Dan gives the hash to Alice.</li>
+<li>Alice pays an output encumbered to Bob&#39;s public key plus the hash generated by Dan.</li>
+<li>Bob spends one of his previously-received outputs to Charlie, setting the amount to the same amount Alice paid him (minus fees) and setting the encumbrance to Charlie&#39;s public key plus the hash generated by Dan</li>
+<li>Charlie does the same as Bob, setting the encumbrance to Dan&#39;s public key plus the hash Dan generated</li>
+</ul>
+
+
+<p>Now whenever Dan spends the output Charlie gave him, he&#39;s required to reveal the pre-image.  Charlie can now use this to spend the output Bob gave him and Bob can use it to spend the output he received from Alice.  In essence, Alice has paid Dan through the two intermediaries without giving Bob or Charlie the ability to steal the money for themselves.</p>
+
+<p>This simple example is meant only to illustrate how hash locks enable the routability required by the Lightning Network.  The example uses direct Bitcoin transactions even though it makes no sense to pay through intermediaries with direct transactions, and the construction above is insecure because it relies on unconfirmed transactions and because it allows Bob and Charlie to hold Alice&#39;s funds hostage.  The other techniques used in Lightning mitigate these problems.</p>
+
+<h4 id="Other_uses">Other uses</h4>
+
+<p>Other described uses of hash locks include,</p>
+
+<ul>
+<li><a href="https://bitcointalk.org/index.php?topic=193281.msg2224949#msg2224949">Cross-chain atomic swaps</a>: trading bitcoins for coins on a compatible altcoin chain or sidechain without either party needing to trust each other or any third-party.</li>
+<li><a href="http://lists.linuxfoundation.org/pipermail/bitcoin-dev/2014-April/005554.html">On-chain betting</a>: someone (called an oracle) generates multiple pre-images and their corresponding hashes; the players create outputs protected by a combination of signatures and hash locks, and then provide all the necessary signatures to each other.  Then the oracle reveals a single pre-image and deletes the rest; the players who won insert that preimage into the transaction along with the signatures they already have and collect their winnings.  Note, this scheme does still require the oracle to be honest.  Peter Todd believes that this scheme is inferior to one in which the oracle uses simple signatures. (5.1)</li>
+</ul>
+
+
+<h4 id="Compatibility">Compatibility</h4>
+
+<p>The hash functions in <a href="../Script/">Script</a> that are necessary to create hash locks were part of the original Bitcoin 0.1 release. (6.1)  In December 2010, after several problems were found with Bitcoin&#39;s opcodes, Gavin Andresen introduced the IsStandard() function (6.2) which prevented relay and mining by default of transactions using those hash functions and other rarely-used opcodes.  After the opcodes received more auditing and had been enabled for years on testnet without issue, Bitcoin Core 0.10.0 (February 2015) removed most IsStandard() restrictions on P2SH transactions (6.3), re-allowing the use of hash locks in transactions that are relayed and mined by default.</p>
+
+<h3 id="Time_locks">Time locks</h3>
+
+<p>Bitcoin currently provides two different mechanisms for creating time locks (nLockTime and CheckLockTimeVerify (7.1)) and after the BIP9/68/112/113 soft fork, it will provide two more mechanisms (nSequence relative time (7.2) and CheckSequenceVerify (7.3)).</p>
+
+<p>Lightning will use CheckSequenceVerify (CSV).  CSV allows an output to specify how many blocks or seconds must elapse after it is added to the blockchain before an input spending that output can be added to the blockchain.</p>
+
+<p>For example, Alice pays Bob 1 BTC using an output encumbrance that requires both Bob&#39;s signature (using the CheckSig opcode) and 10 blocks to elapse (using CSV).  If Alice&#39;s transaction is added to block 500,000, then a transaction created by Bbo that spends that output can&#39;t be added until block 500,010.  But if Alice&#39;s transaction was added to block 500,001, then Bob&#39;s spend of that output couldn&#39;t be added until block 500.011.</p>
+
+<p>The CSV opcode can be used with conditional logic to allow an output to be spent earlier than the time lock if some conditions are met.  For example, if we extend the earlier scenario, Alice may allow Bob to spend the previously-described output sooner than 10 blocks provided that Alice also adds her signature to the spend.</p>
+
+<p>Lightning uses a condition similar to this to allow either party to close a channel on the blockchain immediately but prevents them from further spending the money they withdrew from the channel for the period of time specified by parameter given to CSV (1,000 blocks in the original paper (1.1)).</p>
+
+<p>The other party to the channel can use this time to inspect the withdrawal and see if it contains an old version of the channel state.  If it does, they can use the other conditions of the withdrawal output to spend that output before the CSV time lock expires, allowing them to claim all funds the withdrawing party paid into the channel as a penalty for the withdrawing party closing the channel in an old state.</p>
+
+<h2 id="Glossary">Glossary</h2>
+
+<p>This section attempts to document the most frequently used terms found in Lightning Network literature that may not be familiar to a general technical audience, including both the new terms created by Lightning Network designers as well as pre-existing terms that may not be well known from Bitcoin, cryptography, network routing, and other fields.</p>
+
+<p>The list below should be in alphabetical order. Any commonly-used synonyms or analogs for a term are placed in parenthesis after the term.</p>
+
+<ul>
+<li><strong>Bi-directional payment channel:</strong> (1.1) a payment channel where payments can flow both directions, from Alice to Bob and back to Alice. This is contrasted with Spillman-style and CLTV-style payment channels where payments can only go one direction and once Alice has paid Bob all of the bitcoins she deposited in the channel funding transaction, the channel is no longer useful and so will be closed.</li>
+<li><strong>Breach Remedy Transaction:</strong> (1.1) the transaction Alice creates when Mallory attempts to steal her money by having an old version of the channel state committed to the blockchain. Alice&#39;s breach remedy transaction spends all the money that Mallory received but which Mallory can&#39;t spend yet because his unilateral spend is still locked by a relative locktime using <code>OP_CSV</code>. This is the third of the maximum of three on-chain transactions needed to maintain a Lightning channel; it only needs to be used in the case of attempted fraud (contract breach).</li>
+<li><strong>Channel</strong> (Lightning channel (1.1), payment channel (8.1)) a communication channel that allows two parties to make many secure payments between each other in exchange for making only a few transactions on the blockchain.</li>
+<li><strong>Commitment Transaction:</strong> (1.1) a transaction created collaboratively by Alice and Bob each time they update the state of the channel; it records their current balances within the channel. The <strong>Initial Commitment Transaction</strong> (1.1) is the first of these transactions; it records the inital balances within the channel. This is the second of the maximum of three on-chain transactions needed to maintain a Lightning channel; it can be combined with a <em>funding transaction</em> for a new channel under the cooperative conditions necessary to create an <em>exercise settlement transaction</em>.</li>
+<li><strong>Contract:</strong> (8.2) an agreement between two or more entities to use Bitcoin transactions in a certain way, usually a way that allows Bitcoin&#39;s automated consensus to enforce some or all terms in the contract. Often called a <em>smart contract</em>.</li>
+<li><strong>CSV:</strong> (<code>OP_CheckSequenceVerify</code>, <code>OP_CSV</code>) (7.2) a opcode that allows an output to conditionally specify how long it must be part of the blockchain before an input spending it may be added to the blockchain. See <em>relative locktime.</em></li>
+<li><strong>Delivery Transaction:</strong> (1.1) not really a transaction but rather the name for the outputs in the <em>commitment transaction</em> which Alice and Bob receive if one of them closes the channel unilaterally in the correct (current) state. If the channel is closed in an old state (indicating possible fraud), a <em>breach remedy transaction</em> will be generated from the output that would have paid the party closing the channel. If the channel is closed cooperatively, they&#39;ll create an <em>exercise settlement transaction</em> instead.</li>
+<li><strong>Dispute period:</strong> (dispute resolution period (8.3)) the period of time that Alice has to get her <em>breach remedy transaction</em> added to the blockchain after Mallory has an old <em>commitment transaction</em> added to the blockchain. If the dispute period ends without a breach remedy transaction being added to the blockchain, Mallory can spend the funds he received from the old commitment transaction.</li>
+<li><strong>Dual-funded channel:</strong> (8.4) a channel opened by a <em>funding transaction</em> containing inputs from both Alice and Bob. Compare to a <em>single-funded channel</em> where only Alice&#39;s inputs contribute to the balance of the channel.</li>
+<li><strong>Encumbrance:</strong> (8.5) a generic name for any conditions that must be satisfied before a bitcoin output may be spent. Early Bitcoin transactions placed all their conditions in the scriptPubKey; later the introduction of P2SH allowed conditions to be added in a redeemScript which the scriptPubKey committed to; the introduction of soft fork segwit will add a similar mechanism for detached conditions that the scriptPubKey commits to; in addition, there are even more novel ways to add conditions to outputs that are discussed but rarely used. The term &quot;encumbrance&quot; allows specifying what the conditions do without fussing over exactly where the conditions appear in a serialized transaction.</li>
+<li><strong>Exercise Settlement Transaction:</strong> (1.1) a form of the <em>commitment transaction</em> created cooperatively by Alice and Bob when they want to close their channel together. Unlike a regular commitment transaction, none of the outputs on an exercise settlement transaction are time locked, allowing them to be immediately respent.</li>
+<li><strong>Exhausted:</strong> (8.4) (exhausted channel) a payment channel where no additional payments can be made in one direction (such as from Alice to Bob). The person controlling the exhausted side of a Lightning channel loses nothing from fraudulently trying to commit an old channel state, so allowing a channel to become exhausted (or too near to being exhausted) is unpreferable. (Exception: channels can be securely started in an exhausted state, such as a <em>single-funded channel.</em></li>
+<li><strong>Full push:</strong> (8.4) when Alice pays the full amount of the channel to Bob in the <em>initial commitment transaction</em>, which <em>exhausts</em> the channel without incentivizing fraud because Alice doesn&#39;t have a previous <em>commitment transaction</em> that she can broadcast. This term is used in the context of a <em>single-funded transaction</em> and stands in contrast to an <em>overpayment</em> where Alice deposits more than she pays Bob in that initial payment so that she can continue to use the channel without needing to <em>rebalance</em>.</li>
+<li><strong>Funding Transaction:</strong> (1.1) (deposit transaction) a transaction created collaboratively by Alice and Bob to open a Lightning channel. In a single-funded channel, Alice provides all the funding; (8.4) in a dual-funded channel, Alice and Bob both provide some funding. This is the first of the maximum of three on-chain transactions needed to maintain a Lightning channel; it can be combined with a commitment transaction from a previous channel being closed under cooperative conditions.</li>
+<li><strong>Half-signed:</strong> (1.1) a transaction input which requires two signatures to be added to the blockchain but which only has one signature attached. (More generally, this could be any input that has fewer signatures attached than it needs to be added to the blockchain.)</li>
+<li><strong>Hash lock:</strong> (8.6) an encumbrance to a transaction output that requires the pre-image used to generate a particular hash be provided in order to spend the output. In Lightning, this is used to allow payments to be routable without needing to trust the intermediaries.</li>
+<li><strong>HTLC:</strong> (Hash Time Locked Contract (8.7)) a contract such as that used in a Lightning Channel where both a <em>hash lock</em> and a <em>time lock</em> are used, the hash lock being used to allow Alice to route payments to Bob even through a Mallory that neither of them trust, and the time lock being used to prevent Mallory from stealing back any payments he made to Alice within the channel (provided Alice enforces the contract).</li>
+<li><strong>Intermediary:</strong> (1.1) When Bob has one channel open with Alice and another channel open with Charlie, Bob can serve as an intermediary for transferring payments between Alice and Charlie. With Lightning payments being secured with a <em>hash lock,</em> Bob can&#39;t steal the payment from Alice to Charlie when it travels through Bob&#39;s node. Lightning payments can securely travel through a theoretically unlimited number of intermediaries.</li>
+<li><strong>Limbo channel:</strong> (8.4) an optional special state for a Lightning channel where it cannot be immediately closed by one or both of the parties unilaterally (it can still be immediately closed cooperatively). This is used in particular for <em>PLIPPs.</em></li>
+<li><strong>Multisig:</strong> (6.1) (multisignature, m-of-n multisig) a transaction output that requires signatures from at least one of a set of two or more different private keys. Used in Lightning to give both Alice and Bob control over their individual funds within a channel by requiring both of them sign <em>commitment transactions</em>.</li>
+<li><strong>Node:</strong> (Lightning node (1.1)) a wallet with one of more open Lightning channels. This should not be confused with a Bitcoin <a href="../Full_node/">full node</a> that validates Bitcoin blocks, although a full node&#39;s wallet may also be simultaneously used as a Lightning node to the advantage of the Lightning network user.</li>
+<li><strong>Overfunding:</strong> (8.4) in a <em>single-funded channel,</em> Alice deposits more bitcoins into the channel than she pays Bob in the initial payment, allowing her to make additional payments through the Lightning network. This stands in contrast to a <em>full push</em> where Alice only deposits enough to pay Bob in the initial payment.</li>
+<li><strong>PILPP:</strong> (Pre-Image Length Probabilistic Payments (8.4)) a specific type of <em>probabilistic payment</em> within a payment channel where Alice creates string with a random length and Bob guesses the length; if he guesses correctly, Alice has to pay him; if he guesses incorrectly, Alice gets to keep her money.</li>
+<li><strong>Pre-image:</strong> (8.8) (R (1.1)) data input into a hash function, which produces a hash of the pre-image. Inputting the same pre-image into the same hash function will always produce the same hash; Lightning uses this feature to create <em>hash locks</em>.</li>
+<li><strong>Probabilistic Payment:</strong> (8.9) a payment where Alice only pays Bob if some event outside of Alice&#39;s and Bob&#39;s control occurs in Bob&#39;s favor. Probabilistic payments are usually proposed for scenarios where payments can&#39;t conveniently be made small enough for technical reasons (such as not being able to pay less than 1 satoshi) or economic reasons (such as having to pay a transaction fee for every on-chain payment, making small payments uneconomical). See <em>PLIPP</em> for a specific type of probabilistic payment possible within a Lightning channel.</li>
+<li><strong>R:</strong> the variable commonly used (1.1) in formulas to represent a <em>pre-image</em>.</li>
+<li><strong>Rebalance:</strong> (8.10) a cooperative process between Alice and Bob when they adjust their balances within the channel. This happens with every payment in a Lightning channel and is only noteworthy because single-directional channels (such as Spillman-style and CLTV-style channels) are unable to rebalance and so must close as soon as Alices has paid Bob all the bitcoins she deposited into the channel. See <em>bi-directional payment channels.</em></li>
+<li><strong>Relative locktime:</strong> (7.2) the ability to specify when a transaction output may be spent relative to the block that included that transaction output. Enabled by BIP68 and made scriptable by BIP112. Lightning uses relative locktime to ensure <em>breach remedy transactions</em> may be broadcast within a time period starting from when an old <em>commitment transaction</em> is added to the blockchain; by making this a relative locktime (instead of an absolute date or block height), Lightning channels don&#39;t have a hard deadline for when they need to close and so can stay open indefinitely as long as the participants continue to cooperate.</li>
+<li><strong>Revocable Sequence Maturity Contract (RSMC):</strong> (1.1) a <em>contract</em> used in Lightning to revoke the previous <em>commitment transaction</em>. This is allowed through mutual consent in Lightning by both parties signing a new commitment transaction and releasing the data necessary to create <em>breach remedy transactions</em> for the previous commitment transaction. This property allows Lightning to support <em>bi-directional payment channels</em>, recover from failed <em>HTLC</em> routing attempts without needing to commit to the blockchain, as well as provide advanced features such as <em>PILPPs.</em></li>
+<li><strong>Single-funded channel:</strong> (8.4) a channel opened by a <em>funding transaction</em> containing only inputs from Alice. Compare to a <em>dual-funded channel</em> where Alice and Bob both contribute inputs to the initial balance of the channel.</li>
+<li><strong>Timelock:</strong> (8.11) either an encumbrance to a transaction that prevents that transaction from being added to the blockchain before a particular time or block height (as is the case with <a href="../NLockTime/">nLockTime</a>, or an encumbrance that prevents a spend from a transaction output from being added to the blockchain before a particular time or block height (as is the case of OP_CLTV, consensus enforced sequence number relative locktime, and OP_CSV). In Lightning, this is used to prevent malicious intermediaries from holding other users&#39; funds hostages as well as to allow victims of attempted theft to submit breach remedy transactions before the thief can respend the funds he stole.</li>
+<li><strong>TTL:</strong> (Time To Live (8.12)) when Alice pays Bob with a <em>hash locked</em> in-channel payment that&#39;s ultimately intended for Charlie, she specifies how long Bob has to deliver the payment (its time to live) before the payment becomes invalid. When Bob pays Charlie with his own in-channel payment that has the same hash lock, Bob specifies a slightly shorter amount of time that Charlie has to reveal the pre-image that unlocks the hash lock before Bob&#39;s payment becomes invalid. This ensures that either Bob receives the data necessary to remove the hash lock from the payment he received from Alice or the payment he made to Charlie is invalidated; Alice gets the same guarantee that either the payment she made to Bob ultimate goes through to Charlie or her payment to Bob is invalidated.</li>
+<li><strong>Unilateral:</strong> (1.1) any action performed by only one of the participants in a channel without requesting or needing permission from the other participant. Lightning allows channels to be closed unilaterally (so Alice can close the channel by herself if Bob becomes unresponsive) and attempted fraud can be penalized unilaterally (so Alice can take any bitcoins Mallory tried to steal when he broadcast an old <em>commitment transaction</em>).</li>
+<li><strong>UTXO:</strong> (8.13) (Unspent Transaction Output) spendable bitcoins. A transaction output lists a bitcoin amount and the conditions (called an <em>encumbrance</em>) that need to be fulfilled in order to spend those bitcoins. Once those bitcoins have been spent on the blockchain, no other transaction in the same blockchain can spend the same bitcoins, so an Uspent Transaction Output (UTXO) is bitcoins that can be spent.</li>
+</ul>
+
+
+<h2 id="References">References</h2>
+
+<p><span class="ref-label">1.1:
+<span class="ref-column">
+ <a href="https://lightning.network/lightning-network-paper.pdf">Lightning Network paper, v0.5.9.1</a> <br />Joseph Poon &amp; Thaddeus Dryja<br />&#39;&#39;Retrieved 2016-04-10&#39;&#39;</span><br />
+<span class="ref-label">2.1:
+<span class="ref-column">
+ <a href="https://lists.linuxfoundation.org/pipermail/lightning-dev/2016-January/000403.html">2-of-3 Instant Escrow, or How to Do &quot;2-of-3 Multisig Contract&quot; Equivilant on Lightning</a> <br />Joseph Poon<br />&#39;&#39;Retrieved 2016-04-11&#39;&#39;</span><br />
+<span class="ref-label">3.1:
+<span class="ref-column">
+ <a href="http://www.tik.ee.ethz.ch/file/716b955c130e6c703fac336ea17b1670/duplex-micropayment-channels.pdf">A Fast and Scalable Payment Network with Bitcoin Duplex Micropayment Channels</a> <br />Christian Decker &amp; Roger Wattenhofer<br />Retrieved 2016-04-11</span><br />
+<span class="ref-label">5.1:
+<span class="ref-column">
+ <a href="BIP">- Hash Locked Transaction</a>  <br />Peter Todd<br />Retrieved 2016-04-11</span><br />
+<span class="ref-label">6.1:
+<span class="ref-column">
+ <a href="http://satoshi.nakamotoinstitute.org/code/">Bitcoin 0.1 code</a> <br />Satoshi Nakamoto<br />Retrieved 2016-04-11</span><br />
+<span class="ref-label">6.2:
+<span class="ref-column">
+ <a href="https://github.com/bitcoin/bitcoin/commit/a206a23980c15cacf39d267c509bd70c23c94bfa">IsStandard() check for CScripts: only relay/include in blocks CScripts we can understand</a> <br />Gavin Andresen (attributed)<br />Retrieved 2016-04-11</span><br />
+<span class="ref-label">6.3:
+<span class="ref-column">
+ <a href="https://bitcoin.org/en/release/v0.10.0#standard-script-rules-relaxed-for-p2sh-addresses">Standard Script Rules Relaxed for P2SH Addresses</a> <br />Bitcoin Core developers<br />Retrieved 2016-04-11</span><br />
+<span class="ref-label">7.1:
+<span class="ref-column">
+ <a href="https://github.com/bitcoin/bips/blob/master/bip-0065.mediawiki">BIP65: OP_CHECKLOCKTIMEVERIFY</a> <br />Peter Todd<br />Retrieved 2016-04-12</span><br />
+<span class="ref-label">7.2:
+<span class="ref-column">
+ <a href="https://github.com/bitcoin/bips/blob/master/bip-0068.mediawiki">BIP68: Relative lock-time using consensus-enforced sequence numbers</a> <br />Mark Friedenbach, BtcDrak, Nicolas Dorier, and kinoshitajona<br />Retrieved 2016-04-12</span><br />
+<span class="ref-label">7.3:
+<span class="ref-column">
+ <a href="https://github.com/bitcoin/bips/blob/master/bip-0112.mediawiki">BIP112: CHECKSEQUENCEVERIFY</a> <br />BtcDrak, Mark Friedenbach, Eric Lombrozo<br />Retrieved 2016-04-12</span><br />
+<span class="ref-label">8.1:
+<span class="ref-column">
+ <a href="https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2013-April/002433.html">Anti DoS for tx replacement</a> <br />Jeremy Spillman<br />Retrieved 2016-04-17</span><br />
+<span class="ref-label">8.2:
+<span class="ref-column">
+ <a href="http://szabo.best.vwh.net/smart_contracts_idea.html">The Idea of Smart Contracts</a> <br />Nick Szabo<br />Retrieved 2016-04-17</span><br />
+<span class="ref-label">8.3:
+<span class="ref-column">
+ <a href="https://lightning.network/lightning-network-presentation-time-2015-07-06.pdf">Time, Bitcoin, and the Lightning Network</a> <br />Joseph Poon<br />Retrieved 2016-04-17</span><br />
+<span class="ref-label">8.4:
+<span class="ref-column">
+ <a href="https://docs.google.com/presentation/d/1G4xchDGcO37DJ2lPC_XYyZIUkJc2khnLrCaZXgvDN0U/edit?pref=2&amp;pli=1#slide=id.g85f425098_0_2">LN as a Directed Graph: Single-Funded Channel Topology</a> <br />Thaddeus Dryja<br />Retrieved 2016-04-17</span><br />
+<span class="ref-label">8.5:
+<span class="ref-column">
+ <a href="http://chimera.labs.oreilly.com/books/1234000001802/ch02.html">Mastering Bitcoin, Chapter 2: How Bitcoin Works</a> <br />Andreas Antonopoulos<br />Retrieved 2016-04-17</span><br />
+<span class="ref-label">8.6:
+<span class="ref-column">
+ <a href="https://www.mail-archive.com/bitcoin-development@lists.sourceforge.net/msg05135.html">BIP - Hash Locked Transaction</a> <br />Tier Nolan<br />Retrieved 2016-04-17</span><br />
+<span class="ref-label">8.7:
+<span class="ref-column">
+ <a href="https://github.com/ElementsProject/lightning/raw/master/doc/deployable-lightning.pdf">Reaching the Ground with Lightning</a> <br />Rusty Russell<br />Retrieved 2016-04-17</span><br />
+<span class="ref-label">8.8:
+<span class="ref-column">
+ <a href="https://en.wikipedia.org/wiki/Image_%28mathematics%29#Inverse_image">Image (mathematics)</a> <br />English Wikipedia contributors<br />Retrieved 2016-04-17</span><br />
+<span class="ref-label">8.9:
+<span class="ref-column">
+ <a href="../Nanopayments/">Nanopayments</a><br />Bitcoin Wiki contributors<br />Retrieved 2016-04-17</span><br />
+<span class="ref-label">8.10:
+<span class="ref-column">
+ <a href="https://blockstream.com/2015/09/01/lightning-network/">The Lightning Network: What Is It and What&#39;s Happening?</a> <br />Rusty Russell<br />Retrieved 2016-04-17</span><br />
+<span class="ref-label">8.11:
+<span class="ref-column">
+ <a href="http://rusty.ozlabs.org/?p=450">Lightning Networks Part I: Revocable Transactions</a> <br />Rusty Russell<br />2016-04-17</span><br />
+<span class="ref-label">8.12:
+<span class="ref-column">
+ <a href="http://lists.linuxfoundation.org/pipermail/lightning-dev/2015-July/000019.html">Re: Routing on the Lightning Network?</a> <br />Rusty Russell<br />Retrieved 2016-04-17</span><br />
+<span class="ref-label">8.13:
+<span class="ref-column">
+ <a href="https://bitcoin.org/en/glossary/unspent-transaction-output">Unspent Transaction Output (UTXO)</a> <br />Bitcoin.org Developer Glossary<br />Retrieved 2016-04-17</span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Payment_channels/">Payment channels</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-04-18T02:45:42Z">Mon 18 Apr 2016 02:45:42 AM Europe</time>
+<!-- Created <time datetime="2016-04-11T00:35:04Z" pubdate="pubdate">Mon 11 Apr 2016 12:35:04 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

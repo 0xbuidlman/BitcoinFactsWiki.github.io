@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Agent</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Agent
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>An <strong>agent</strong> is an autonomous program that is able to survive by selling services for Bitcoins, and using the proceeds to rent server capacity. Agents that are profitable enough may replicate themselves by spawning additional instances on other servers.</p>
+
+<p>Bitcoin-using autonomous agents were first described in a forum post by julz in 2011 and further elaborated on in that same discussion by Gregory Maxwell, who used a file storage system called StorJ as an illustrative example<a href="https://bitcointalk.org/index.php?topic=53855.msg642768#msg642768">(1)</a>. Mike Hearn gave a talk on the topic at the Turing Festival 2013 (<a href="https://www.youtube.com/watch?v=Pu4PAMFPo5Y">video</a> and <a href="http://www.slideshare.net/mikehearn/future-of-money-26663148">slides</a>). The concept has also been referred to as a &quot;decentralised autonomous corporation&quot; or DAC in a series of articles by Vitalik Buterin called <a href="http://bitcoinmagazine.com/7050/bootstrapping-a-decentralized-autonomous-corporation-part-i/">&quot;Bootstrapping a decentralised autonomous corporation&quot;</a>.</p>
+
+<h2 id="Core_concepts">Core concepts</h2>
+
+<p>Agents interact with the world via the following mechanisms:</p>
+
+<ol>
+<li>The Bitcoin network</li>
+<li>APIs that allow for renting server capacity, and then remotely controlling that server (ie, ssh)</li>
+<li>Human readable contracts posted to freelancer forums or the Mechanical Turk</li>
+<li>Their own application protocols, for example, by serving HTTP</li>
+</ol>
+
+
+<p>By maintaining their own balance, for the first time it becomes possible for software to exist on a level playing field to humans. It may even be that people find themselves working for the programs because they need the money, rather than programs working for the people. Being a peer rather than a tool is what distinguishes a program that uses Bitcoin from an agent.</p>
+
+<p>Because server capacity is sold in well defined, standardized units (CPU seconds, gigabytes of RAM/disk, megabits of bandwidth) it becomes possible for software to automatically find and negotiate with providers who accept Bitcoin.</p>
+
+<p>If a better deal is found, the agent can move itself. An agent that is profitable can be programmed to use some of those profits to bring up a child instance and fund it with a starter pack of coins. If the child instance is able to break even or better, it will survive, otherwise when its bank balance expires the server provider will delete the account and the agent along with it.</p>
+
+<p>Agents can expose their services to humans (or other agents) by selecting a name and then registering it with <a href="../Namecoin/">Namecoin</a>. If the agent has only Bitcoins it can use peer to peer exchanges to atomically trade Bitcoins for Namecoins or vice-versa. Using DNS hierarchies and Namecoin together allows interested parties to monitor for new agents coming online: the agent of registering a name under a particular part of the tree automatically advertises its existence.</p>
+
+<p>Agents can improve themselves by purchasing the services of humans and using dispute mediators to give the humans some assurance the coins will be paid upon completion of the contract. A/B testing can be used to determine if the delivered work is really better than the old one or not, with the dispute mediator only releasing the coins if the results of the test are positive. For example, a redesigned user interface can be tested on 10% of all users, to see if they are more or less likely to upload/download a file. Alternatively, a quorum of dispute mediators can be specified, and they decide if the contract was met or not. New code can also be bought to increase the agents abilities.</p>
+
+<h2 id="Reliance_on_low_trust_protocols">Reliance on low trust protocols</h2>
+
+<p>Low trust protocols are important for agents to protect themselves against being scammed by humans. Being merely dumb programs, they cannot make nuanced trust judgements and are potentially easy to scam, for example, by offering to sell something then not actually providing it. Humans can spread the word, use courts of law and so on to try and reclaim losses when scammed, but agents cannot.</p>
+
+<p>The most basic agent protocol is buying server time. By resigning transactions that are not broadcast, an agent can buy server capacity by the minute or even by the second. A very simple protocol can suffice, for instance, a ~/.account-billing-details file in the home directory of the new account that contains a Bitcoin address and the prices as negotiated. The agent can read the billing details from this standardized file and proceed to pay the server operator.</p>
+
+<p>To evolve the agent, new code is needed, which must be written by people. To avoid humans scamming the agent and providing code that steals its wallet, the agent can use sandboxing technologies like Java or NativeClient to ensure the newly developed code only has access to what it needs. This would impose a small amount of rigidity on the agents design, but would allow truly autonomous bargaining. The agent can be programmed to trust the judgement of long-term customers: if enough of those customers review and sign the new code, it could be released from the sandbox and allowed to modify the agent in arbitrary ways. If the agent is sufficiently improved, it will outcompete its peers and reproduce more.</p>
+
+<h2 id="Examples">Examples</h2>
+
+<p>Consider the original example of a file storage agent.</p>
+
+<ol>
+<li>It rents its disk and bandwidth in return for coins. Anyone who wants a file to stay online can send coins to the files Bitcoin address.</li>
+<li>If it starts to run out of capacity, it can use some of its profits to spawn children on other hosting services. If a service has unknown reputation, the child can be monitored for a while until the parent is convinced it&#39;s operating correctly.</li>
+<li>Nodes can register their existence with names like &quot;x536ma.storj.bit&quot;. Any name registered under storj.bit is assumed to offer the same services.</li>
+<li>The agents can compete on the quality of their user interfaces.</li>
+<li>Users could pledge for incorporation of a simple file viewer interface, to supplement download ability.</li>
+</ol>
+
+
+<p>Whilst there are companies that provide shell accounts for Bitcoins, most don&#39;t. Server brokers are agents that simply re-sell computing capacity to other agents:</p>
+
+<ol>
+<li>By handling the details of how to interact with providers they offer a useful service, for which agents should be willing to pay.</li>
+<li>Brokers can purchase from humans scripts that handle signing up for accounts at new services. They can interact with exchanges to sell Bitcoin for the currencies and payment mechanisms the providers accept.</li>
+<li>Colo providers can run a modified sshd that understands how to treat SSH keys as <a href="../Smart_Property/">Smart Property</a>. By pre-creating shell accounts with resource quotas, and then selling the access keys to brokers, brokers can easily re-sell accounts automatically in a zero trust manner using the lock time and transaction input/output features of the Bitcoin protocol. The brokers would automatically handle recruitment of customers and matching agents with servers.</li>
+</ol>
+
+
+<h2 id="Use_of_trusted_computing.2FTPM_chips">Use of trusted computing/TPM chips</h2>
+
+<p>To be truly autonomous, an agent should need to trust nobody (and nothing). But to make a trade you often need some assurance that the other side will behave as expected. People rely on the law to enforce contracts, but agents have no such recourse. Whilst clever protocols can configure incentives to ensure co-operation in some cases, trusted computing can be used to provide this assurance in the general case.</p>
+
+<p>For example, agents may need some assurance that the provider of computing time will not attempt to steal the agents profits. Whilst it may be uneconomic in the long term to steal vs revenue share, it&#39;s quick and easy to make bogus offers to whatever agents are out there and wait for the money to roll in.</p>
+
+<p>Modern CPUs have the ability to remotely prove what code they are running, and encrypt keys such that they are only available when the hardware is in the same configuration as before. The <a href="http://sparrow.ece.cmu.edu/group/flicker.html">Flicker</a> project demonstrates how to achieve this on AMD and Intel CPUs running Linux for short term computations (interrupts must be disabled in their simple implementation). Breaking the security requires modification of the TPM chip, which is designed to be tamper resistant. If it is protecting sums of money that are not extremely large, this should be a sufficiently high level of difficulty to discourage fraud.</p>
+
+<p>To use these facilities, a child agent (that is in the process of being created by its parent) would copy its code to the remote server. At this point it has no wallet. It would then enter the protected domain, where it is isolated from the regular operating system, and execute a PAL (piece of application logic) which creates itself a private key, which is then &quot;sealed&quot; to the state of the CPU at that time. Upon leaving the protected domain, it is left with encrypted data that cannot be read by the (possibly malicious) host operating system. The host OS is treated as an untrusted proxy and provider of resources.</p>
+
+<p>The parent needs to provide its child with a small amount of money to let it get started, but how does it know its sending money truly to the child it just created and not a greedy imposter? The child can use the TPM to remotely prove it was in total control of the CPU at the time it created the private key corresponding to the provided address. The parent can verify that remote attestation and be assured it&#39;s sending money to the program it thinks it is.</p>
+
+<p>If the services of an agent are purchased, for example, a file is uploaded to StorJ, the accompanying payment is presented to the secure PAL, along with the merkle branch linking it into the block chain. The PAL then updates its bookkeeping so it knows it needs to pay the host more, and when the host invoices the agent, the secure PAL verifies the bill is as expected and then creates/signs a transaction that pays the bill. The transaction is passed back to the untrusted host which broadcasts it.</p>
+
+<p>Not all hardware supports trusted computing facilities. However, various laptops and server/desktop class PCs can be purchased that have the relevant chips. Renting such hardware to brokers might prove a profitable way to reduce the cost of a new computer purchase.</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Contract/">Contract</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2014-02-01T16:05:55Z">Sat 01 Feb 2014 04:05:55 PM Europe</time>
+<!-- Created <time datetime="2012-01-19T00:40:37Z" pubdate="pubdate">Thu 19 Jan 2012 12:40:37 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Smart card wallet</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Smart card wallet
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Smart_card_wallet&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>This pages gathers resources for the implementation of a Bitcoin wallet on a smart card.</p>
+
+<h3 id="Rationale">Rationale</h3>
+
+<ul>
+<li>Computers and smartphones are target for malware. The software on a smart card can be protected.</li>
+<li>Smart cards do not need a battery, nor internet connection, they are robust.</li>
+<li>Adoption: people are already used to paying with smart cards.</li>
+</ul>
+
+
+<h3 id="Desired_features">Desired features</h3>
+
+<ul>
+<li>no blockchain, no node; the card contains only private keys, and an algorithm to sign a transaction</li>
+<li><p>the smart card should have its own keyboard (for pin code protection) and display (to show the transaction amount)
+(&lt;- Alternative to this is the card returning, to the terminal screen, the debit amount multiplied by a number only the card holder knows which cycles from 1 to 100 to 1 incrementing by 1 each transfer - the card is locked 10 minutes if a second amount is send before a pin is typed.)</p></li>
+<li><p>The card holder will know pin, puk, private key and address only from when he programmed it or ordered his smart card.</p></li>
+<li>the card should implement a deterministic wallet, so that funds can be recovered if the card is lost.</li>
+</ul>
+
+
+<h3 id="Usage_scenario">Usage scenario</h3>
+
+<ul>
+<li>the reading device may belong to a merchant at a point of sale; it cannot be trusted with private keys.</li>
+<li>the reading device is connected to a full bitcoin node; it can be trusted for getting and sending blockchain information.</li>
+<li>the reading device sends to the card the current balance of its bitcoin addresses. This information can be cached in the card.</li>
+<li>the reading device sends a bitcoin receiving address and transaction amount to the card.</li>
+<li>the amount is displayed by the card ; the user confirms the transaction with his pin code.</li>
+<li>the smart card creates a signed transaction and sends it to the reading device</li>
+<li>the transaction is checked and broadcast by the bitcoin node.</li>
+</ul>
+
+
+<h2 id="Implementation_steps">Implementation steps</h2>
+
+<h3 id="z-._write_a_bitcoin_daemon_that_can_talk_to_a_lightweight_wallet">1. write a bitcoin daemon that can talk to a lightweight wallet</h3>
+
+<ul>
+<li>this has been done already, see for example bitcoinjs: https://github.com/bitcoinjs/bitcoinjs-lib</li>
+<li>See also this pull request: <a href="https://github.com/piotrnar/bitcoin/tree/importexporttx">importexporttx</a> can be used to broadcast the transaction</li>
+<li>https://bitcointalk.org/index.php?topic=28278.msg383312#msg383312</li>
+</ul>
+
+
+<h3 id="z-._write_a_lightweight_wallet">2. write a lightweight wallet</h3>
+
+<ul>
+<li>wallet without blockchain, in order to test the daemon</li>
+<li>this lightweight wallet will be later implemented on the card</li>
+<li>use it to define the communication protocol between card and reading device.</li>
+</ul>
+
+
+<p>update: this is done, see <a href="../Electrum/">Electrum</a></p>
+
+<h3 id="z-._implement_wallet_on_a_simple_smart_card">3. implement wallet on a simple smart card</h3>
+
+<ul>
+<li>http://www.opensc-project.org/opensc openSC : tools and libraries for smart cards.</li>
+<li>amadousarr.free.fr/crypto/ECDSAJAVACARD.pdf : A Software Implementation of ECDSA on a Java Smart Card</li>
+<li>http://www.acs.com.hk : cards, readers, development kits; no display, pincode needs to be typed on the reading device</li>
+<li>http://www.basiccard.com/index.html?overview.htm : Smart Card (ZC7.5) which contains RSA/EC and DES/AES coprocessors. Used in an implementation of the OpenPGP Card 2.0 standard (http://g10code.com/p-card.html)</li>
+</ul>
+
+
+<h3 id="z-._implement_wallet_on_a_smart_card_with_display_and_pincode">4. implement wallet on a smart card with display and pincode</h3>
+
+<p>list of vendors:</p>
+
+<ul>
+<li>http://www.nidsecurity.com/products/solution-enterprise.html (smart cards with LCD displays)</li>
+<li>http://www.avesodisplays.com/ (smard cards with flexible displays)</li>
+</ul>
+
+
+<h2 id="references">references</h2>
+
+<ul>
+<li>https://bitcointalk.org/index.php?topic=7539.0 Bitcoin smartcard Point of Sale terminal</li>
+<li>https://bitcointalk.org/index.php?topic=20933.0 Bitcoin and Smart Cards</li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Developer/" rel="tag">Developer</a>
+
+<a href="../tags/Mobile/" rel="tag">Mobile</a>
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+<a href="../tags/Wallets/" rel="tag">Wallets</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Hardware_wallet/">Hardware wallet</a>
+
+<a href="../In-store_Transactions/">In-store Transactions</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2013-01-07T02:39:45Z">Mon 07 Jan 2013 02:39:45 AM Europe</time>
+<!-- Created <time datetime="2011-10-01T13:52:48Z" pubdate="pubdate">Sat 01 Oct 2011 01:52:48 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

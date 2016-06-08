@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>BIP PoolAPI</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+BIP PoolAPI
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=BIP_PoolAPI&amp;page=Talk&amp;do=create" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<pre>
+  BIP: ?
+  Title: JSON Pool Information API
+  Author: Paul Sheppard  and Luke Dashjr 
+  Status: Draft
+  Type: Standards Track
+  Created: 22-05-2012
+</pre>
+
+
+<h2 id="Abstract">Abstract</h2>
+
+<p>This BIP aims to create a standard API for pool statistics.</p>
+
+<h2 id="Specification">Specification</h2>
+
+<ul>
+<li>All time keys are seconds since Jan 1 1970 midnight UTC.</li>
+<li>Hashrate is measured in full block hashes per second. So if a full block proof-of-work requires two rounds of SHA256 (as it does with Bitcoin today), each two rounds counts only as a single hash.</li>
+<li>Currencies are always represented in the smallest divisible part of the currency. eg, for USD this is 1 cent and for Bitcoin this is 0.00000001 BTC</li>
+</ul>
+
+
+<h3 id="Object_Formats">Object Formats</h3>
+
+<p>|colspan=&#39;3&#39;Root
+|---
+|version |Number |always 1
+|group |Object |information about the organizational pool
+|collab |Array of Objects |information about each collaborative pool
+colspan=&#39;3&#39;Organizational pool
+Key Type Description
+|name |String |human-readable identifier for organizational pool
+|hashrate |Number |total hashrate of all mining in the organizational pool
+|message |String |whatever the pool wants to tell us
+|minercount |Number |total number of active miners
+|miners |Array of Objects |information of specific miners
+|workercount |Number |total number of active workers
+colspan=&#39;3&#39;Collaborative pool
+Key Type Description
+|name |String |human-readable identifier for collaborative pool
+|hashrate |Number |total hashrate of all mining in the same collaborative pool
+|message |String |whatever the pool wants to tell us
+|round |Object |information about the current round
+|fee |Number |fee (0.01 = 1%)
+|rewardalgo |String |reward algorithm identifier
+|minercount |Number |total number of active miners
+|miners |Array of Objects |information of specific miners
+|time |Number |time as the poolserver sees it
+|workercount |Number |total number of active workers
+colspan=&#39;3&#39;Round
+Key Type Description
+|id |String |unique identifier for the round
+|begintime |Number |time the current round began
+|shares |Object |number of shares submitted to the current round
+|network |String |which network the round is relevant for
+|parent |String |network-specific identifier for the base of the current round
+colspan=&#39;3&#39;Shares
+Key Type Description
+|accepted |Number |number of accepted shares
+|* |Number |any <a href="../BIP_0022/#Example_Rejection_Reasons">rejection reason</a>may be a key; value is number of shares
+colspan=&#39;3&#39;Individual miner or worker
+Key Type Description
+|id |String |unique identifier for a miner&#39;s account (shared across collaborative pools)
+|name |String |human-readable identifier for miner
+|message |String |whatever the pool wants to tell us
+|balances |Array of Objects |balance information
+|fee |Number |fee (0.01 = 1%)
+|hashrate |Number |total hashrate of all mining in the same collaborative pool
+|lastactive |Number |time the miner was last seen active
+|rewardalgo |String |reward algorithm identifier
+|sharesround |Object |information on shares submitted to the current round
+|sharesuser |Object |information on shares submitted since last user reset
+|sharestotal |Object |information on shares submitted for all time
+|workers |Array of Objects |information of specific workers
+colspan=&#39;3&#39;Balance info
+Key Type Description
+|currency |String |currency of balance
+|balance |Number |amount currently stored at the pool
+|unconfirmed |Number |amount currently waiting for confirmations
+|estimate |Number |amount expected reward for the current round
+|fee |Number |fee (0.01 = 1%)
+|paid |Number |amount that has been paid out ever
+|lastpay |Number |amount of last payout
+|lastpaytime |Number |time of last payout
+|autopay |Number |minimum amount before autopayout
+|autopayto |String |address for autopayouts</p>
+
+<p>Currencies:</p>
+
+<p>|Bitcoin |Bitcoins (in Satoshis)
+|Namecoin |Namecoins
+|fiat |Pool-specific &quot;play money&quot; (eg, SMPPS &quot;extra credit&quot;)</p>
+
+<p>Networks:</p>
+
+<p>|Bitcoin |Bitcoin blockchain
+|Bitcoin address |Searching for vanity Bitcoin addresses
+|Namecoin |Namecoin blockchain</p>
+
+<p>Reward algorithms:</p>
+
+<p>|Prop |Proportional
+|PPLNS |Pay Per Last N Shares
+|PPS |Pay Per Share
+|SMPPS |Shared Maximum Pay Per Share
+|Score |
+|Geo |Geometric Method
+|DGM |Double Geometric Method</p>
+
+<h3 id="Example">Example</h3>
+
+<pre>
+{
+    &quot;version&quot;: 1,
+    &quot;group&quot;: {
+        &quot;name&quot;: &quot;Eligius&quot;,
+        &quot;hashrate&quot;: 600000000000,
+        &quot;message&quot;: &quot;Welcome to Eligius! Enjoy :)&quot;
+    },
+    &quot;collab&quot;: [
+        {
+            &quot;name&quot;: &quot;Eligius-Ra&quot;,
+            &quot;hashrate&quot;: 550000000000,
+            &quot;time&quot;: 1337729874.2489,
+            &quot;workercount&quot;: 5423,
+            &quot;round&quot;: {
+                &quot;begintime&quot;: 1337719877.959086,
+                &quot;blockchain&quot;: &quot;Bitcoin&quot;,
+                &quot;blockparent&quot;: &quot;00000000000001c536f8865bd2be554372fa149eb88fb1c096f475e1c9cd8176&quot;,
+                &quot;shares&quot;: {
+                    &quot;accepted&quot;: 423433,
+                    &quot;stale-prevblk&quot;: 92,
+                    &quot;duplicate&quot;: 3
+                }
+            },
+            &quot;fee&quot;: 0,
+            &quot;rewardalgo&quot;: &quot;SMPPS&quot;,
+            &quot;miners&quot;: [
+                &quot;id&quot;: &quot;16kNKa7WUg8QAPFy8dJRv7USSu2fAG2pkW&quot;,
+                &quot;name&quot;: &quot;Luke-Jr&quot;,
+                &quot;balances&quot;: [
+                    {
+                        &quot;currency&quot;: &quot;Bitcoin&quot;,
+                        &quot;balance&quot;: 167476453,
+                        &quot;estimate&quot;: 14761828,
+                        &quot;paid&quot;: 5800000000,
+                        &quot;lastpay&quot;: 67423840,
+                        &quot;lastpaytime&quot;: 1337713832.25908
+                    },
+                    {
+                        &quot;currency&quot;: &quot;fiat&quot;,
+                        &quot;balance&quot;: 9342224,
+                        &quot;estimate&quot;: 39433
+                    }
+                ],
+                &quot;hashrate&quot;: 1382848482,
+                &quot;lastactive&quot;: 1337783882.423086,
+                &quot;sharesround&quot;: {
+                    &quot;accepted&quot;: 832
+                },
+                &quot;workers&quot;: [
+                    {
+                        &quot;id&quot;: &quot;16kNKa7WUg8QAPFy8dJRv7USSu2fAG2pkW_Icarus&quot;,
+                        &quot;name&quot;: &quot;Luke-Jr&#39;s Icarus :)&quot;,
+                        &quot;hashrate&quot;: 378483883,
+                        &quot;lastactive&quot;: 1337783882.423086,
+                        &quot;sharesround&quot;: {
+                            &quot;accepted&quot;: 100
+                        }
+                    },
+                    {
+                        &quot;id&quot;: &quot;16kNKa7WUg8QAPFy8dJRv7USSu2fAG2pkW_BFL&quot;,
+                        &quot;name&quot;: &quot;Luke-Jr&#39;s BitForce Single :D&quot;,
+                        &quot;hashrate&quot;: 832942393,
+                        &quot;lastactive&quot;: 1337783882.423086,
+                        &quot;sharesround&quot;: {
+                            &quot;accepted&quot;: 600
+                        }
+                    },
+                    {
+                        &quot;id&quot;: &quot;16kNKa7WUg8QAPFy8dJRv7USSu2fAG2pkW_6870&quot;,
+                        &quot;name&quot;: &quot;Luke-Jr&#39;s Radeon 6870&quot;,
+                        &quot;hashrate&quot;: 371422206,
+                        &quot;lastactive&quot;: 1337783882.423086,
+                        &quot;sharesround&quot;: {
+                            &quot;accepted&quot;: 232
+                        }
+                    }
+                ]
+            ]
+        }
+    ]
+}</pre>
+
+
+<h2 id="Motivation">Motivation</h2>
+
+<p>Moving forward with bitcoin it is important to make all aspects as user friendly as possible.</p>
+
+<h2 id="Rationale">Rationale</h2>
+
+<p>This BIP allows the creators of Apps and Web GUIs for pool monitoring a common interface to use, as opposed to dealing with a differing interface for each pool.</p>
+
+<h2 id="Backwards_Compatibility">Backwards Compatibility</h2>
+
+<p>As an emerging standard, backwards comparability is not applicable. However forward comparability should be maintained. Any future incompatibilities shall be identified by the &#39;API_version&#39; number.</p>
+
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2012-06-07T03:21:05Z">Thu 07 Jun 2012 03:21:05 AM Europe</time>
+<!-- Created <time datetime="2012-05-22T20:37:01Z" pubdate="pubdate">Tue 22 May 2012 08:37:01 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>ASIC</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+ASIC
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<div class="toc">
+	<ol>
+		<li class="L2"><a href="#index1h2">Bitcoin ASIC development pace</a>
+		</li>
+		<li class="L2"><a href="#index2h2">Bitcoin ASIC specifications</a>
+		</li>
+		<li class="L2"><a href="#index3h2">External links</a>
+		</li>
+		<li class="L2"><a href="#index4h2">References</a>
+		</li>
+	</ol>
+</div>
+
+
+<p>An <strong>application-specific integrated circuit</strong> (abbreviated as <strong>ASIC</strong>) is an <a href="https://en.wikipedia.org/wiki/integrated%5Fcircuit">integrated circuit</a> (IC) customized for a particular use, rather than intended for general-purpose use. In <a href="../Mining_Hardware_Comparison/">Bitcoin mining hardware</a>, ASICs were the next step of development after <a href="../Why_a_GPU_mines_faster_than_a_CPU/">CPUs, GPUs</a> and <a href="../FPGA/">FPGAs</a>.  Capable of easily outperforming the aforementioned platforms for Bitcoin <a href="../Mining/">mining</a> in both speed and efficiency, all Bitcoin mining hardware that is practical in use will make use of one or more Bitcoin (<a href="../Block_hashing_algorithm/">SHA256d</a>) ASICs.</p>
+
+<p>Note that Bitcoin ASIC chips generally can <em>only be used for Bitcoin mining</em>.  While there are rare exceptions - for example chips that mine both Bitcoin and Litecoin - this is often because the chip package effectively has two ASICs: one for Bitcoin and one for Litecoin.</p>
+
+<p>The ASIC chip of choice determines, in large part, the cost and efficiency of a given miner, as ASIC development and manufacture are very expensive processes, and the ASIC chips themselves are often the components that require the most power on a Bitcoin miner.</p>
+
+<p>While there are many Bitcoin mining hardware manufacturers, some of these should be seen as <a>systems integrators</a> - using the ASIC chips manufactured by other parties, and combining them with other electronic components on a board to form the Bitcoin mining hardware.</p>
+
+<h2 id="Bitcoin_ASIC_development_pace"><a name="index1h2"></a>Bitcoin ASIC development pace</h2>
+
+<p><a href="../Asic-cointerra-goldstrike-timeline.png"><img class="right" height="475" src="../Asic-cointerra-goldstrike-timeline.png" width="633" /></a>
+The pace at which Bitcoin ASICs have been developed, for a previously non-existent market, has seen some academic interest.  One paper titled <em>&quot;Bitcoin and The Age of Bespoke Silicon&quot;</em> notes:</p>
+
+<blockquote><p>We examined the Bitcoin hardware movement, which led to the development of customized silicon ASICs without the support of any major company. The users self-organized and self-financed the hardware and software development, bore the risks and fiduciary issues, evaluated business plans, and braved the task of developing expensive chips on extremely low budgets. This is unheard of in modern times, where last-generation chip efforts are said to cost $100 million or more
+-- Michael Bedford Taylor, University of California <a href="http://cseweb.ucsd.edu/~mbtaylor/papers/bitcoin_taylor_cases_2013.pdf">http://cseweb.ucsd.edu/~mbtaylor/papers/bitcoin_taylor_cases_2013.pdf</a></p></blockquote>
+
+<p>The Bitcoin and Cryptocurrency Technologies online course by Princeton University notes:</p>
+
+<blockquote><p>The amazing thing about Bitcoin ASICs is that, as hard as they were to design, analysts who have looked at this have said this may be the fastest turnaround time - essentially in the history of integrated circuits - for specifying a problem, which is mining Bitcoins, and turning it around to have a working chip in people&#39;s hands.
+-- Joseph Bonneau, Postdoctoral research associate, Princeton University <a href="https://www.youtube.com/watch?v=jXerV3f5jN8#t=26m40s">https://www.youtube.com/watch?v=jXerV3f5jN8#t=26m40s</a></p></blockquote>
+
+<p>A timeline overview for CoinTerra&#39;s Goldstrike 1 chip also shows this as 8 months between founding the company and shipping a product.</p>
+
+<h2 id="Bitcoin_ASIC_specifications"><a name="index2h2"></a>Bitcoin ASIC specifications</h2>
+
+<p><a href="../Asic-chart-efficiency_vs_hashrate.png"><img class="img" height="338" src="../Asic-chart-efficiency_vs_hashrate.png" width="642" /></a>
+A Bitcoin ASIC&#39;s specification could be seen as having a certain <span class="createlink"><a href="/ikiwiki.cgi?page=hash_per_second&amp;do=create&amp;from=ASIC" rel="nofollow">?</a>hash rate</span> (e.g. Gh/s) at a certain efficiency (e.g. J/Gh).  While cost is another factor, this is often a relatively fixed factor as the minimum cost of a chip will be determined by the fabrication process, while the maximum cost will be determined by market forces, which are outside of post-fabrication technological control.</p>
+
+<p>When reading the specifications for ASICs on this page is that they should be interpreted as being indicative, rather than authoritative.  Many of the figures will have come from the manufacturers, who will present their technology in the best light - be that high hash rates that in practice may not be very efficient and require additional cooling, or very high efficiency at a cost of hash rate and risking being slow in the race against <a href="../Difficulty/">difficulty</a> adjustments.<br />
+Complicating the matter further is that Bitcoin ASICs can often be made to cater to both ends of the spectrum by varying the clock frequency and/or the power provided to the chip (often via a regulated voltage supply).  As such, chips can not be directly compared.</p>
+
+<h3 id="Comparing_Bitcoin_ASICs"><a name="index1h3"></a>Comparing Bitcoin ASICs</h3>
+
+<p>Two proposals have been made in the past for attempts at comparing ASICs - Gh/mm&sup2; and &eta;-factor.<br />
+<strong>Gh/mm&sup2;</strong> is a simple measure of the number of Gigahashes per second of the chip, divided by its die area (area of the the actual silicon).  This measure however does not take into account the <a href="https://en.wikipedia.org/wiki/Semiconductor_device_fabrication">node size</a> which affects how many logical cells can fit in a given area.<br />
+As a result, <strong>&eta;-factor</strong> was suggested at the BitcoinTalk Forums which attempts to take the node size into account, by multiplying the Gh/mm&sup2; value by the half the node size, three times.</p>
+
+<p>Although the merit of these approaches can be debated, ultimately these figures are not as important as the ones that detail what is required to make an ASIC work.  If an ASIC requires highly stable power supply, then the power supply circuitry on a board may be more expensive than for another ASIC.  If the ASIC has a complex communications protocol, additional relatively expensive components may be required.  If an ASIC&#39;s die is large, fewer (rectangular slices) can be obtained from a (circular) <a href="https://en.wikipedia.org/wiki/Wafer_(electronics">wafer</a>), defects affect its design dispropotionately, and cooling solutions are generally more complex compared to smaller die chips which in turn have other overhead.  Chips with a BGA design are less simple to integrate than a QFN, requiring more expensive (inspection and testing) equipment.<br />
+Nevertheless, for historic purposes they are included in listings here where sufficient information is available.</p>
+
+<h3 id="Number_of_cores"><a name="index2h3"></a>Number of cores</h3>
+
+<p>One other oft-mentioned number statistic for an ASIC chip is the number of cores or hashing engines that are on the chip.  While this number is directly related to performance, it is not necessarily a comparitive relation.<br />
+Bitmain Technologies&#39; BM1382 calculates 63 hashes per clock cycle (Hz), while their more efficient BM1384 calculates 55 hashes per clock cycle.  Similarly, while these hashes per clock cycle are spot-on for the claims regarding the number of cores, BitFury&#39;s BF756C55 is claimed to have 756 cores, but yields around 11.6 hashes per clock cycle. This is because the reference to cores sometimes mean different things, and certain designs result in less straightforward calculation (5.1)<br />
+Nevertheless, when a designer makes claims regarding hash rates at certain clock frequencies, one can determine if A. there is a straightforward calculation and B. if the designer is being imprecise (rounding values) or even intentionally dishonest, as the ratio between clock cycles and hash rate should remain the same.</p>
+
+<h2 id="External_links"><a name="index3h2"></a>External links</h2>
+
+<ul>
+<li><a href="https://www.youtube.com/watch?v=NGFhc8R_uO4&amp;">video about the technological aspects of custom processor design</a></li>
+<li><a href="http://www.adapteva.com/andreas-blog/semiconductor-economics-101/">article about the economical aspects of custom processor design</a></li>
+</ul>
+
+
+<h2 id="References"><a name="index4h2"></a>References</h2>
+
+<p>5.1: <a href="https://bitcointalk.org/index.php?topic=228677.msg2408299#msg2408299">https://bitcointalk.org/index.php?topic=228677.msg2408299#msg2408299</a></p>
+
+<ul>
+<li><a href="https://www.bitcoinmining.com/">Bitcoin Mining</a></li>
+<li><a href="https://www.youtube.com/watch?v=GmOzih6I1zs">Video: What is Bitcoin Mining</a></li>
+</ul>
+
+
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Hardware/" rel="tag">Hardware</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Mine/">Mine</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-06-06T21:17:30Z">Mon 06 Jun 2016 09:17:30 PM Europe</time>
+<!-- Created <time datetime="2015-01-29T02:33:37Z" pubdate="pubdate">Thu 29 Jan 2015 02:33:37 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

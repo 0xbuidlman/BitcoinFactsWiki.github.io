@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>talk</title>
+
+<link rel="stylesheet" href="../../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../../">bitcoin</a>/ 
+
+<a href="../">Tor</a>/ 
+
+</span>
+<span class="title">
+talk
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<h2 id="Proposal_to_rename.2Fsplit_Tor_page">Proposal to rename/split Tor page</h2>
+
+<p>Much of the content here details information that is irrelevant to the subject of Bitcoin.  I propose we create a separate wiki page for &quot;Freenode&quot; as that is what the main topic appears to be.  We can keep a Tor page for issues related to Tor/Bitcoin and hidden service fallback nodes.</p>
+
+<p>As an aside note we ought to, at the very least, trim down the mIRC section.  It is after all, a shareware product.  There are more appropriate free open source alternatives that already have SASL support built-in or have implementations that are not broken.</p>
+
+<p>(note1 from ptmhd - i&#39;m back on the wiki editing, i will trim the irc part to bare minimum (also because it is now much easier to setup)</p>
+
+<h2 id="Tor_.2B_Firefox">Tor + Firefox</h2>
+
+<p>I recommend to start with the Vidalia Bundle.
+There Tor comes with a graphical control centre + Tor button for Firefox.
+the Tor button is a plugin that allows you with 1 click to turn on/off the Tor routing for Firefox.</p>
+
+<h2 id="Tor_.2B_Bitcoin">Tor + Bitcoin</h2>
+
+<p>using Bitcoin with Tor is easy. All you need is to check the proxy option. The predefined values in Bitcoin match the Tor settings. As Bitcoin only saves from &amp; to addresses (and no IP addresses), you should be pretty safe. Tor however does not fix the traceability of BTC from one address to other.</p>
+
+<h2 id="Tor_.2B_IRC_.28mIRC.29">Tor + IRC (mIRC)</h2>
+
+<p>This is worked for me on two different computers, drop me a message on Bitcoin forum if you need help.</p>
+
+<h2 id="additional_content.3F">additional content?</h2>
+
+<p>some user started creating a tor page under his user space:
+https://en.bitcoin.it/wiki/User:Sawzall/Tor</p>
+
+<p>maybe there&#39;s some stuff you guys can pull in from there...</p>
+
+<p>also, xchat instructions for using over tor can be nice to have too. not everyone uses mirc, you know. :)</p>
+
+<p>--<a>Nanotube</a> 05:39, 9 January 2011 (GMT)</p>
+
+<p>There&#39;s a bounty for the article at https://bitcointalk.org/index.php?topic=2602
+Thanks for the link to Sawzall&#39;s Tor page. I did not know that.
+I shouldn&#39;t probably edit directly the main article either and should write it in my user space first.
+I have no wiki writing habbits :(
+As for the xchat, I do not do IRC since I left school and installed it after 7 years only to write the Freenode + Tor + SASL howto.</p>
+
+<p>--<a>Ptmhd</a> 18:20, 12 January 2011 (GMT)</p>
+
+<h2 id="hidden_services">hidden services</h2>
+
+<p>rather than trying to keep a separate list of bitcoind as hidden services, it&#39;s probably better to link to the existing list of <span class="createlink"><a href="/ikiwiki.cgi?from=Tor%2Ftalk&amp;do=create&amp;page=fallback_nodes" rel="nofollow">?</a>fallback nodes</span>, which already has a few tor hidden services listed.</p>
+
+<p>In addition, the bitcoin client does not resolve dns, so if you have any nodes added whose dns/.onion addresses are not resolved the connection will fail. You can find an explanation and instructions here https://bitcointalk.org/index.php?topic=59.0;all#msg14635</p>
+
+<h2 id="Configuration_tips">Configuration tips</h2>
+
+<p>In torrc:
+    CircuitBuildTimeout 30 #Picks faster nodes
+    LearnCircuitBuildTimeout 0 #Enables the above setting
+    MaxCircuitDirtiness 1200 #The number of seconds between each enforced IP change.
+    #Increasing it can be good in some cases.
+    WarnUnsafeSocks 0 #Tor doesn&#39;t like the way Bitcoin makes requests, and spams
+    #the log about it. This stops that behavior.</p>
+
+<ul>
+<li>Privoxy is better than Polipo in every way. It has powerful privacy-assisting options (some disabled by default), and it can almost replace Torbutton on non-Firefox browsers. Firefox doesn&#39;t need Privoxy <em>or</em> Polipo because it can handle SOCKS5 natively.</li>
+<li>The most secure browser configuration is Firefox + Torbutton. You must use either Privoxy or Torbutton.</li>
+<li>Use standalone Tor, which outputs Tor&#39;s log to a console. <em>Nearly all problems can be quickly solved by looking at the log.</em></li>
+<li>The official Vidalia bundles install two torrc files in different locations. One of these is useless. (Can&#39;t remember which one.)</li>
+</ul>
+
+
+<p>Summary: The Tor bundles suck. <a>theymos</a> 09:21, 9 January 2011 (GMT)</p>
+
+<ul>
+<li>for the benefit of all users that run windows, would like to use Bitcoin client + IRC + browse the web via Tor, what would you recommend?
+<a>Ptmhd</a> 23:42, 12 January 2011 (GMT+1)
+
+<blockquote><p>Just download the expert bundle, make the torrc modifications I suggested (except the MaxCircuitDirtiness one), run it, and connect Bitcoin to localhost:9050. Same for IRC. If having the Tor window open all the time annoys you, minimize it to the tray with <a href="http://www.abstractpath.com/powermenu/">PowerMenu</a>. There are also command-line options to tor.exe that <a href="https://trac.torproject.org/projects/tor/wiki/TheOnionRouter/TorFAQ#HowdoIrunmyTorrelayasanNTservice">create a Tor NT service</a> -- this is a good idea if you run Tor constantly.</p></blockquote></li>
+</ul>
+
+
+<blockquote><p>I never tried using IRC over Tor, so I can&#39;t recommend any particular IRC client. As a general rule, however, programs meant to be <a href="http://portableapps.com/">portable</a> provide better anonymity.</p>
+
+<p>For browsing, download <a href="http://portableapps.com/apps/internet/firefox_portable">Firefox Portable</a> and install <a href="https://addons.mozilla.org/en-US/firefox/addon/2275/">Torbutton</a> on it. Privoxy/Polipo are not necessary. <a>theymos</a> 08:45, 13 January 2011 (GMT)</p></blockquote>
+
+<h2 id="tor_hidden_service">tor hidden service</h2>
+
+<p>&quot;For clients, hidden services are more secure than encrypted Tor HTTPS connections because the destination&#39;s ISP isn&#39;t involved as they are in the HTTPS case.&quot;</p>
+
+<p>the isp isn&#39;t receiving https traffic, but the timing attacks don&#39;t rely on the protocol being https. how can the destination isp or the final relay not aid in a timing attack?</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../">Tor</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-12-11T18:51:44Z">Fri 11 Dec 2015 06:51:44 PM Europe</time>
+<!-- Created <time datetime="2011-01-08T20:39:39Z" pubdate="pubdate">Sat 08 Jan 2011 08:39:39 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

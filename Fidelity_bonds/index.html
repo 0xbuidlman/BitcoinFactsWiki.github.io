@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Fidelity bonds</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Fidelity bonds
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Fidelity_bonds&amp;page=Talk&amp;do=create" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>A fidelity bond is a proposed mechanism where Bitcoins are deliberately sacrificed to make a cryptographic identity expensive to obtain. The sacrifice is done in a way that can be proven to a third party. By making the identity expensive it can be trusted not to commit unwanted acts, such as spamming message boards, or committing fraud, because upon detection of the unwanted acts the identity becomes useless, requiring the owner of the identity to purchase another one.</p>
+
+<h2 id="Mechanism">Mechanism</h2>
+
+<p>The core of the fidelity bond is the sacrifice - the mechanism by which Bitcoins are provably taken from their original owner. The Bitcoins may be given to someone else or destroyed, but regardless it must not be possible for their original owner to regain control of them.</p>
+
+<p>An effective form of sacrifice is to simply create a transaction assigning the coins to an unspendable output, either an address known to not have a corresponding secret key, or to a scriptPubKey that is <a href="../Script/#Provably_Unspendable.2FPrunable_Outputs">provably unspendable</a>. The Bitcoins are removed from circulation forever, a criticism of this mechanism.</p>
+
+<p>The Bitcoins can also be donated to a third party, such as a charity, however such donations can be controversial, allow the charity itself (or anyone with access to their funds) to purchase bonds at little or no cost, pose the problem of verifying the bonds validity in the future should the chosen charity(s) change, and finally, pose the problem of coming to a consensus on the charities themselves.</p>
+
+<p>In the context of Bitcoin, miners have been proposed as a third party whom any Bitcoin user can agree should receive funds, as miners act to secure the network from attack for everyone. The value is sacrificed to miners in the form of transaction fees.</p>
+
+<h3 id="Single.2FConsecutive_Block_Sacrifices">Single/Consecutive Block Sacrifices</h3>
+
+<p>The sacrifice can be done with transactions that pay abnormally high fees, either single such transactions, or groups of multiple ones in a row, latter intended to prevent miners themselves from creating the sacrifices and mining them in their own blocks. Problems with consecutive transaction sacrifices include the potential for gaps, as well as the large size of the proofs of the sacrifices. (3.1)</p>
+
+<h3 id="Announce.2FCommit_Sacrifices">Announce/Commit Sacrifices</h3>
+
+<p>To ensure that the miner collecting the sacrificed Bitcoin is picked at random the announce/commit sacrifice was proposed. (4.1) First a sacrifice transaction is prepared that either sacrifices value to transaction fees, or spends coins to an <a href="../Script/#Anyone-Can-Spend_Outputs">Anyone-Can-Spend Output</a>. With <a href="../NLockTime/">nLockTime</a> the transaction is made invalid until some time in the future.</p>
+
+<p>The second step is the announcement. The transaction is enclosed in another transaction as data, for instance by using a <a href="../Script/#Provably_Unspendable.2FPrunable_Outputs">prunable output</a>. The announcement is then broadcast and is included in the blockchain, proving that anyone could have seen the inner transaction prior to it becoming valid.</p>
+
+<p>Finally the inner transaction becomes valid when the <a href="../NLockTime/">nLockTime</a> is reached. Because mining is a random process, any miner can collect the value sacrified, and the purchaser of the fidelity bond has no control over where that value goes.</p>
+
+<p>The proof of the sacrifice is then two transactions: the proof the announcement transaction exists in the chain, and the proof that the inner sacrifice exists in the chain. (possibly with proof of the inner sacrifice inputs to prove what fees were actually paid)</p>
+
+<h3 id="Coinbase_TxOut_Sacrifices">Coinbase TxOut Sacrifices</h3>
+
+<p>Coinbase transactions are unique in that they can&#39;t be spent for 100 blocks, thus solving the problem of proving a transaction output was made public prior to it being possible to spend that output in a single transaction. In addition coinbase transactions can be created anonymously without linking the transaction to any other transaction provided that the creator has the ability to mine anonymously. (or have someone else do so on their behalf)</p>
+
+<p>A proof for a coinbase txout is particularly short if the txout is the last txout and the script is meant to be unspendable. SHA256 midstate compression can then be used to prove the committed digest, and that the last opcode was OP_RETURN; it is not possible for a script to return true unless without the last opcode being executed. Fortunately the anyone-can-spend version can-not be proven so easily - consider the following txout fragment:</p>
+
+<pre><code>&lt;SHA256 midstate&gt; &lt;scriptPubKey length&gt; &lt;digest&gt; &lt;nLockTime&gt;
+</code></pre>
+
+<p>The problem is the fragment could actually be part of this scriptPubkey:</p>
+
+<pre><code>&lt;pubkey&gt; OP_CHECKSIGVERIFY OP_PUSHDATA (&lt;scriptPubKey length&gt; &lt;digest&gt;)
+</code></pre>
+
+<p>In reality this isn&#39;t a true sacrifice. The only way around this problem is if the proven data is greater than the maximum pushdata length allowed, 520 bytes, which undesirably depends on a constant whose value may be changed in a future hard-fork.</p>
+
+<h2 id="Passports">Passports</h2>
+
+<p>This wiki combats spam, while still allowing for users to sign up anonymously, by requiring users to pay a small amount of Bitcoins to the wiki before editing privileges are granted. Creating large numbers of &quot;sock-puppets&quot; to add spam content to articles is thus made expensive. The fee approach can be generalized with the concept of a Passport, first proposed by Mike Hearn, (6.1) tied to the users identity. Wikis, forums, webmail and other services can then create blacklists of users who violate the rules of the services, with those blacklists tied to passports.</p>
+
+<p>The advantage of fidelity bonds in that application over simply charging fees is re-usability of an identity across multiple services, as well as the neutrality: if the value required to create the passport provably does not go to the person adding the passport to a blacklist, there is no incentive to do so to collect new sign-up fees.</p>
+
+<h2 id="Financial_Services">Financial Services</h2>
+
+<p>Fidelity bonds can be used to make financial fraud unprofitable. For instance the original fidelity bond proposal (7.1) - called &quot;Trusted identities&quot; at that time - included the idea of using fidelity bonds to create decentralized <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Green_address&amp;from=Fidelity_bonds" rel="nofollow">?</a>green addresses</span>. Someone wishing for their transactions to be accepted without confirmations would first purchase a fidelity bond of some value tied to their identity. Someone determining if they should accept a payment without confirmations can check that the bond was sufficiently expensive to make it unprofitable for the sender to commit fraud. If the sender does commit fraud by double-spending the payment, the recipient can prove that fraud to the world by providing both transactions spending the same inputs. This proof is added to some sort of blacklist, centralized or decentralized, which later recipients can consult to determine if the fidelity bond is now invalidated.</p>
+
+<h2 id="References">References</h2>
+
+<p>3.1: <a href="https://bitcointalk.org/index.php?topic=140711.msg1498806#msg1498806">https://bitcointalk.org/index.php?topic=140711.msg1498806#msg1498806</a><br />
+4.1: <a href="https://bitcointalk.org/index.php?topic=134827.0">Purchasing fidelity bonds by provably throwing away bitcoins</a><br />
+6.1: <a href="https://bitcointalk.org/index.php?topic=140711.0">Creating Bitcoin passports using sacrifices</a><br />
+7.1: <a href="http://sourceforge.net/mailarchive/message.php?msg_id=29185108">Trusted identities</a></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Script/">Script</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2013-07-25T18:05:02Z">Thu 25 Jul 2013 06:05:02 PM Europe</time>
+<!-- Created <time datetime="2013-04-15T11:03:11Z" pubdate="pubdate">Mon 15 Apr 2013 11:03:11 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>talk</title>
+
+<link rel="stylesheet" href="../../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../../">bitcoin</a>/ 
+
+<a href="../">BIP 0013</a>/ 
+
+</span>
+<span class="title">
+talk
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>Personally, I don&#39;t like the nomenclature &quot;version&quot;.  It&#39;s signalling far more than just a version.  How about &quot;address class&quot;?
+--<a>Andyparkins</a> 11:49, 9 December 2011 (GMT)</p>
+
+<p>The &quot;version&quot; portion of the address has so far been labeled &quot;network id&quot;, and signals from which network and which chain the address can be used for. I thin that this change from network id to version is much more fundamental and should not just be squeezed in alone with bip16/17.
+The right way to do this is to structure the bitcoin address into:</p>
+
+<p>base58-encode: <a href="one-byte">network ID</a><a href="20-byte">hash</a><a href="one-byte">address class</a><a href="3-byte">checksum</a></p>
+
+<p>This will move the possibility of using a faulty address from 1 to 4bill to 1 to 24mio. Recall that for most other payment systems this checksum is 1 to 9! So it should be sufficient.
+An old client will then render the new addresses as useless and they will still maintain their old familiar 1xxx look - the whole point in multisig is that it should not be a matter of the paying party to worry about securing wallet of the receiver, hence he should not be bothered with a new &quot;3&quot; kind of address now...
+--<a>Michael Gronager/libcoin</a> 10:49, 20 February 2012 (GMT)</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../">BIP 0013</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2012-02-20T10:51:37Z">Mon 20 Feb 2012 10:51:37 AM Europe</time>
+<!-- Created <time datetime="2011-12-09T11:49:07Z" pubdate="pubdate">Fri 09 Dec 2011 11:49:07 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>PoolServerJ</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+PoolServerJ
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=PoolServerJ&amp;page=Talk&amp;do=create" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>PoolServerJ is a pure java implementation of a Bitcoin mining pool server.  It&rsquo;s functionally very similar to pushpoold.  Although there are some differences it is capable of being swapped over with pushpoold without any config changes.</p>
+
+<h4 id="Features">Features</h4>
+
+<ul>
+<li>Native merged mining support.  Will work with standard bitcoind 0.5</li>
+<li>SCrypt blockchain support</li>
+<li>Customisable coinbase transaction (pay block rewards to any wallet perhaps an offline secure wallet)</li>
+<li>Internal work generation (more than 10x faster than rpc getwork)</li>
+<li>Work caching - caches work from bitcoind or internal WorkMaker to handle short term spikes in requests</li>
+<li>Database resilience.  Server can keep running if database goes down and shares will be sent to database when connection is reestablished</li>
+<li>DoS resilience with QoS support to ensure workers who&#39;ve submitted valid work are serviced with priority</li>
+<li>Capable of pulling work from multiple bitcoin daemons to get around the getwork bottleneck and also to provide some redundancy</li>
+<li>Notify of block change via HTTP to a user configurable URL to support event triggered share processing</li>
+<li>Cached database handling (optional) to reduce round trips.</li>
+<li>Supports Mysql, Postgresql, sqlite3 (JDBC based so others can be added easily - currently only tested on mysql)</li>
+<li>Runs as a Windows service</li>
+<li>Longpolling support</li>
+<li>Integrated block monitoring using all available bitcoin daemon work sources</li>
+<li>Dump shares to Database, log file or stdout</li>
+<li>Safe restart - shares issued to client are dumped to file on shutdown and reloaded on startup so your miners won&#39;t get stale shares if you restart a live server</li>
+<li>Only dependency is a Java 6+ JDK.</li>
+</ul>
+
+
+<h4 id="Links">Links</h4>
+
+<ul>
+<li><a href="http://poolserverj.org/about/">PoolServerJ Homepage</a></li>
+<li><a href="http://forum.bitcoin.org/index.php?topic=33142.0">Forum Thread</a></li>
+<li><a href="http://forum.bitcoin.org/index.php?topic=33144.0">Tech Support Thread</a></li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Mining/" rel="tag">Mining</a>
+
+<a href="../tags/Pool_Operators/" rel="tag">Pool Operators</a>
+
+</nav>
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2014-06-08T04:23:55Z">Sun 08 Jun 2014 04:23:55 AM Europe</time>
+<!-- Created <time datetime="2011-07-31T06:50:57Z" pubdate="pubdate">Sun 31 Jul 2011 06:50:57 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

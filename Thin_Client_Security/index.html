@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Thin Client Security</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Thin Client Security
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>Recently there have been a number of proposals for bitcoin clients which do not store a complete copy of every block in the entire block chain.  This page will refer to all such clients as &quot;thin clients&quot;.  This page is meant to be a place to try to make sense of the security and trust implications of the various schemes.</p>
+
+<h2 id="Full_Node_vs._SPV">Full Node vs. SPV</h2>
+
+<p>It is important to distinguish between block height verification and block depth verification.</p>
+
+<p>A full node client verifies that all preceding blocks are valid in order to guarantee that a transaction is valid.  Currently only the Satoshi client,  libbitcoin, and btcd do full node verification.  Full nodes are the fundamental anchor of trustless security in the Bitcoin system.</p>
+
+<p>A client verifies the depth D of a block by checking that there are D blocks <strong>after</strong> it (also called &quot;confirmations&quot;), all of which are well-formed.  SPV clients don&#39;t verify the preceding blocks, they use the number of confirmations (whether they are valid or not) as a measure of the likelihood of a <a href="../Chain_Reorganization/">block chain reorganization</a> producing a new longer fork which excludes the transaction.</p>
+
+<h2 id="Full_Node_Clients">Full Node Clients</h2>
+
+<p>The &quot;thick&quot; bitcoin client downloads a copy of the entire chain, including all transactions (not just headers).  It will be used as the reference point for security comparisons below.</p>
+
+<p>A full-node client uses the <a href="../Protocol_rules/#Blocks_well-formed">difficultywise-longest</a> valid block chain it can find. A transaction&#39;s <em>depth</em> (the number of blocks or confirmations <em>after</em> it) is used to determine the likelihood of the transaction being double-spent due to the emergence of a longer fork.</p>
+
+<h4><a href="../Bitcoind/">bitcoin-qt</a></h4>
+
+<h4><a href="https://github.com/conformal/btcd">btcd</a></h4>
+
+<h4><a href="../Libbitcoin/">libbitcoin-server</a></h4>
+
+<h3 id="Block_Retention">Block Retention</h3>
+
+<p>Once a full-chain client has downloaded the entire chain, it typically retains it (as the Satoshi client did/does).</p>
+
+<p>Satoshi&#39;s original paper mentions the possibility of pruning individual transactions, which allows for full nodes which verify the entire transaction history but do not retain it. Because users are required to download and verify the block chain from some other node initially, this change isn&#39;t costless.</p>
+
+<h2 id="Simplified_Payment_Verification_.28SPV.29_Clients">Simplified Payment Verification (SPV) Clients</h2>
+
+<p>This client downloads a complete copy of the headers for all blocks in the entire block chain.  This means that the download and storage requirements scale linearly with the amount of time since Bitcoin was invented.</p>
+
+<p>This scheme is described in section 8 of the <a href="http://bitcoin.org/bitcoin.pdf">original bitcoin whitepaper</a>.</p>
+
+<h4 id="Block_Depth_Check">Block Depth Check</h4>
+
+<p>As Satoshi writes, &quot;<a href="the">thin client</a> can&#39;t check the transaction for himself, but by linking it to a place in the chain, he can see that a network node has accepted it, and blocks added after it further confirm the network has accepted it.&quot;  If we take &quot;X&quot; to be the &quot;number of blocks added after it&quot;, then SPV essentially trusts that a transaction X blocks deep will be costly to forge.</p>
+
+<p>This is very different from the trust model in the &quot;thick&quot; client: the thick client verifies that a transaction&#39;s inputs are unspent by actually checking the whole chain up to that point -- there is no &quot;X blocks deep&quot; involved here. At that point it uses &quot;X blocks deep&quot; to decide how likely it is that a longer fork in the chain will emerge which excludes that transaction.</p>
+
+<h4><a href="../BitCoinJ/">bitcoinj</a></h4>
+
+<p>Simplified Payment Verification is the verification mechanism used in <a href="../BitCoinJ/">bitcoinj</a>.</p>
+
+<p>A security analysis of some of the issues in bitcoinj can be found <a href="https://bitcoinj.github.io/security-model">here</a>; however:</p>
+
+<ul>
+<li>The claim that &quot;picking 10 nodes and requiring all of them to be consistent needs much less trust&quot; overlooks the problem of <a href="https://en.bitcoin.it/wiki/Weaknesses#Cancer_nodes">&quot;cancer nodes&quot;</a> and <a href="http://en.wikipedia.org/wiki/Sybil_attack">Sybil attacks</a>.</li>
+<li>Many of the security claims are qualified by some form of &quot;if you don&#39;t think an attacker controls your internet connection&quot;; see the previous section for a discussion of why this is problematic.</li>
+</ul>
+
+
+<h4><a href="https://bitcointalk.org/index.php?topic=128055.0">picocoin</a></h4>
+
+<p>Simplified Payment Verification is the verification mechanism used in picocoin.</p>
+
+<p>The library (libccoin) that picocoin is based on includes code for validating scripts and blocks; this could potentially be used to implement a full-chain client.</p>
+
+<h4><a href="../Electrum/">Electrum</a></h4>
+
+<p>Electrum fetches blockchain information from Electrum servers, bitcoin nodes that index the blockchain by address.
+Electrum performs Simple Payment Verification to check the transactions returned by servers.
+For this, it fetches blokchain headers from about 10 random servers.
+In addition, Electrum servers are authenticated by SSL, in order to protect users from MITM attacks.</p>
+
+<h3 id="Unused_Output_Tree_in_the_Block_chain_.28UOT.29">Unused Output Tree in the Block chain (UOT)</h3>
+
+<p>There have been several proposals (the first appears to be <a href="https://bitcointalk.org/index.php?topic=21995.0">this one</a> by gmaxwell, who called it an &quot;open transaction tree&quot;, although the term &quot;open&quot; is now taken to mean &quot;not yet mined into the block chain&quot; rather than &quot;unspent&quot;) to form a tree of unused transaction outputs at each block in the chain, hash it as a Merkle tree, and encode the root hash in the block chain (probably as part of the coinbase input).  This will be called an Unused Output Tree (UOT).  The first detailed proposal so far appears to be <a href="https://en.bitcoin.it/wiki/User:DiThi/MTUT">Alberto Torres&#39; proposal</a>; etotheipi&#39;s <a href="https://bitcointalk.org/index.php?topic=88208.0">ultimate block chain compression</a> is a variant of this.</p>
+
+<p>If such UOT hashes were included in the block chain, a client which shipped with a <a href="https://en.bitcoin.it/wiki/Vocabulary">checkpoint</a> block that had a UOT would only need to download blocks after the checkpoint.  Moreover, once the client had downloaded those blocks and confirmed their UOTs, it could discard all but the most recent block containing a UOT.</p>
+
+<p>Hostile miners may insert blocks into the chain which have what claims to be a UOT, but which is actually invalid.  It is unlikely that such blocks could be kept out of the chain because, again, this would require adding a new block validity criterion, and miners implementing this new criterion would risk &quot;mining on the wrong side&quot; of a fork, which could cost them a lot of money.  Therefore, any UOT strategy would need to cope with the fact that not every block containing a UOT entry can be trusted.</p>
+
+<p>Note that at the present moment no standard format for such Unused Output Tree hashes has been agreed upon, nor do any of the blocks in the chain contain them.  The <a href="https://bitcointalk.org/index.php?topic=91954">ultraprune</a> feature added to bitcoind-0.8 maintains a similar data structure on the client&#39;s disk.  It does not put this data structure or its hash anywhere in the block chain.</p>
+
+<h2 id="Server-Trusting_Clients">Server-Trusting Clients</h2>
+
+<p>These clients involve a high level of trust in the server they rely upon.  Mechanisms for authenticating the server, and for confirming that the server has not been compromised, are usually not explained.</p>
+
+<p>All thin clients listed below currently connect to a single server, and are vulnerable to an attack similar to a double-spend. The attack can be run by that single server - the server can just lie to them that they received a Bitcoin transaction, and they, assuming the server does not lie, perform some service, transfer funds or send goods without actually receiving any Bitcoin in exchange. Therefore, they are implicitly trusting it.</p>
+
+<p>Future enhancements have been suggested that will have the client talk to multiple servers and broadcast transactions and query all of them.  Unfortunately it is well known to security researchers that this does not actually increase security; it simply makes the exploits more complicated and difficult to find.  Security researchers have a name for this phenomenon: it is called a &quot;Sybil attack&quot; (14.1).  <a href="https://bitcointalk.org/index.php?topic=88208.msg975201#msg975201">This post</a> on bitcointalk explains how some governments (notably Iran and China) already perform these sorts of attacks on their own citizens, with the coerced assistance of SSL certificate authorities.</p>
+
+<p>Clients with a checkpoint (even a very old one) that download and validate the headers for the whole block chain are <a href="http://bitcoinmedia.com/the-irc-bootstrap-method-is-flawed/#comment-4243">not vulnerable</a> to Sybil attacks in the following sense: they can always ensure that an attack would cost more than the amount being stolen.</p>
+
+<h3><a href="../BCCAPI/">BCCAPI</a></h3>
+
+<h2 id="Other">Other</h2>
+
+<ul>
+<li>A <a href="http://sourceforge.net/mailarchive/message.php?msg_id=28633866">thread</a> on bitcoin-dev</li>
+<li>A <a href="http://bitcoin.stackexchange.com/questions/2584/is-reclaiming-disk-space-already-implemented-how-effective-will-it-be/2589">question</a> on bitcoin.stackexchange.com</li>
+<li>The <a href="../Weaknesses/#Sybil_attack">sybil attack (also known as &quot;cancer nodes&quot;)</a> paragraph explains some of the issues with thin clients that base security on trusting whatever &quot;a majority of the IP addresses I can see&quot; say.</li>
+<li><a href="http://bitcoin.stackexchange.com/questions/2613/how-secure-are-various-models-of-bitcoin-clients">related discussion on Stack Exchange</a></li>
+<li>A hypothesized <a href="https://bitcointalk.org/index.php?topic=134318.msg1441171#msg1441171">intermediate security class</a> between SPV and full-chain validation.</li>
+</ul>
+
+
+<h2 id="References">References</h2>
+
+<p>14.1: <a href="https://en.wikipedia.org/wiki/Sybil%5Fattack">Sybil attack</a></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Clients/" rel="tag">Clients</a>
+
+<a href="../tags/Security/" rel="tag">Security</a>
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Armory/">Armory</a>
+
+<a href="../BCCAPI/">BCCAPI</a>
+
+<a href="../Best_Practices/">Best Practices</a>
+
+<a href="../Bitcoinj/">Bitcoinj</a>
+
+<a href="../Clearing_Up_Misconceptions_About_Full_Nodes/">Clearing Up Misconceptions About Full Nodes</a>
+
+<a href="../Clients/">Clients</a>
+
+<a href="../Electrum/">Electrum</a>
+
+<a href="../Libbitcoin_Protocol/">Libbitcoin Protocol</a>
+
+<a href="../Scalability/">Scalability</a>
+
+<a href="../Scalability_FAQ/">Scalability FAQ</a>
+
+
+<span class="popup">...
+<span class="balloon">
+
+<a href="../Software/">Software</a>
+
+</span>
+</span>
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-06-07T14:24:02Z">Tue 07 Jun 2016 02:24:02 PM Europe</time>
+<!-- Created <time datetime="2012-01-15T00:26:00Z" pubdate="pubdate">Sun 15 Jan 2012 12:26:00 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

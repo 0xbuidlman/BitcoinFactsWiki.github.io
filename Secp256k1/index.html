@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Secp256k1</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Secp256k1
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Secp256k1" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>*<sup></sup> <sup></sup> * <sub></sub><a href="../Secp256k1.png"><img class="img" height="600" src="../Secp256k1.png" title=", its graph will in reality look like random scattered points, not anything like this." width="600" /></a></p>
+
+<p><strong>secp256k1</strong> refers to the parameters of the <a href="../ECDSA/">ECDSA</a> curve used in Bitcoin, and is defined in <em>Standards for Efficient Cryptography (SEC)</em> (Certicom Research, http://www.secg.org/sec2-v2.pdf).</p>
+
+<p>secp256k1 was almost never used before Bitcoin became popular, but it is now gaining in popularity due to its several nice properties. Most commonly-used curves have a random structure, but secp256k1 was constructed in a special non-random way which allows for especially efficient computation. As a result, it is often more than 30% faster than other curves if the implementation is sufficiently optimized. Also, unlike the popular NIST curves, secp256k1&#39;s constants were selected in a predictable way, which significantly reduces the possibility that the curve&#39;s creator inserted any sort of backdoor into the curve.</p>
+
+<h3 id="Technical_details">Technical details</h3>
+
+<p>As excerpted from <em>Standards</em>:</p>
+
+<p>The elliptic curve domain parameters over F<em><sub>p</sub></em> associated with a Koblitz curve secp256k1 are specified
+by the sextuple T = (<em>p,a,b,G,n,h</em>) where the finite field F<em><sub>p</sub></em> is defined by:</p>
+
+<ul>
+<li><em>p</em> = FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFE FFFFFC2F</li>
+<li>= 2<sup>256</sup> - 2<sup>32</sup> - 2<sup>9</sup> - 2<sup>8</sup> - 2<sup>7</sup> - 2<sup>6</sup> - 2<sup>4</sup> - 1</li>
+</ul>
+
+
+<p>The curve <em>E</em>: <em>y<sup>2</sup> = x<sup>3</sup>+ax+b</em> over F<em><sub>p</sub></em> is defined by:</p>
+
+<ul>
+<li><em>a</em> = 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000</li>
+<li><em>b</em> = 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000007</li>
+</ul>
+
+
+<p>The base point G in compressed form is:</p>
+
+<ul>
+<li><p><em>G</em> = 02 79BE667E F9DCBBAC 55A06295 CE870B07 029BFCDB 2DCE28D9 59F2815B 16F81798
+and in uncompressed form is:</p></li>
+<li><p><em>G</em> = 04 79BE667E F9DCBBAC 55A06295 CE870B07 029BFCDB 2DCE28D9 59F2815B 16F81798 483ADA77 26A3C465 5DA4FBFC 0E1108A8 FD17B448 A6855419 9C47D08F FB10D4B8
+Finally the order <em>n</em> of <em>G</em> and the cofactor are:</p></li>
+<li><p><em>n</em> = FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFE BAAEDCE6 AF48A03B BFD25E8C D0364141</p></li>
+<li><em>h</em> = 01</li>
+</ul>
+
+
+<p><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=es%3ASecp256k1&amp;from=Secp256k1" rel="nofollow">?</a>es:Secp256k1</span></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Private_key/">Private key</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-03-30T02:43:49Z">Mon 30 Mar 2015 02:43:49 AM Europe</time>
+<!-- Created <time datetime="2011-11-29T16:49:40Z" pubdate="pubdate">Tue 29 Nov 2011 04:49:40 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

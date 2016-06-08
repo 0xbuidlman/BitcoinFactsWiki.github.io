@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Proof of Stake</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Proof of Stake
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>Proof of Stake is a proposed alternative to <a href="../Proof_of_Work/">Proof of Work</a>. Like proof of work, proof of stake attempts to provide consensus and <a href="../Double-spending/">doublespend</a> prevention (see <a href="https://bitcointalk.org/index.php?topic=68213.0">&quot;main&quot; bitcointalk thread</a>, and a <a href="https://bitcointalk.org/index.php?topic=96854.0">Bounty Thread</a>). Because creating forks is costless when you aren&#39;t burning an external resource Proof of Stake alone is considered to an unworkable consensus mechanism. (1.1)</p>
+
+<p>It was probably first proposed <a href="https://bitcointalk.org/index.php?topic=27787.0">here</a> by Quantum Mechanic. With Proof of Work, the probability of mining a block depends on the work done by the miner (e.g. CPU/GPU cycles spent checking hashes). With Proof of Stake, the resource that&#39;s compared is the amount of Bitcoin a miner holds - someone holding 1% of the Bitcoin can mine 1% of the &quot;Proof of Stake blocks&quot;.</p>
+
+<p>Some argue that methods based on Proof of Work alone might lead to a low network security in a cryptocurrency with block incentives that decline over time (like bitcoin) due to <span class="createlink"><a href="/ikiwiki.cgi?page=Tragedy_of_the_Commons&amp;do=create&amp;from=Proof_of_Stake" rel="nofollow">?</a>Tragedy of the Commons</span>, and Proof of Stake is one way of changing the miner&#39;s incentives in favor of higher network security.</p>
+
+<h1 id="Motivation_For_Proof_of_Stake">Motivation For Proof of Stake</h1>
+
+<ul>
+<li><p>A proof-of-stake system might provide increased protection from a malicious attack on the network. Additional protection comes from two sources:
+1) Executing an attack would be much more expensive.
+2) Reduced incentives for attack. The attacker would need to own a near majority of all bitcoin. Therefore, the attacker suffer severely from his own attack.</p></li>
+<li><p>When block rewards are produced through txn fees, a proof of stake system would result in lower equilibrium txn fees. Lower long-run fees would increase the competitiveness of bitcoin relative to alternative payments systems. Intuitively reduced fees are due to vast reductions in the scale of  wastage of resources.</p>
+
+<h2 id="The_Monopoly_Problem">The Monopoly Problem</h2></li>
+</ul>
+
+
+<p>If a single entity (hereafter a monopolist) took control of the majority of txn verification resources, he could use these resources to impose conditions on the rest of the network. Potentially, the monopolist could choose to do this in malicious ways, such as double spending or denying service. If the monopolist chose a malicious strategy and maintained his control for a long period, confidence in bitcoin would be undermined and bitcoin purchasing power would collapse. Alternatively, the monopolist could choose to act benevolently. A benevolent monopolist would exclude all other txn verifiers from fee collection and currency generation, but would not try to exploit currency holders in any way. In order to maintain a good reputation, he would refrain from double spends and maintain service provision. In this case, confidence in Bitcoin could be maintained under monopoly since all of its basic functionality would not be affected.</p>
+
+<p>Both benevolent and malevolent monopoly are potentially profitable, so there are reasons to suspect that an entrepreneurial miner might attempt to become a monopolist at some point. Due to the <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Tragedy_of_the_Commons&amp;from=Proof_of_Stake" rel="nofollow">?</a>Tragedy of the Commons</span> effect, attempts at monopoly become increasingly likely over time.</p>
+
+<h2 id="How_Proof_of_Stake_Addresses_Monopoly_Problems">How Proof of Stake Addresses Monopoly Problems</h2>
+
+<p>Monopoly is still possible under proof-of-stake. However, proof-of-stake would be more secure against malicious attacks for two reasons.</p>
+
+<p>Firstly, proof-of-stake makes establishing a verification monopoly more difficult. At the time of writing, an entrepreneur could achieve monopoly over proof-of-work by investing at most 10 million USD in computing hardware. The actual investment necessary might be less than this because other miners will exit as difficulty increases, but it is difficult to predict exactly how much exit will occur. If price remained constant in the face of extremely large purchases (unlikely), such an entrepreneur would need to invest at least 20 million USD to obtain monopoly under proof-of-stake. Since such a large purchase would dramatically increase bitcoin price, the entrepreneur would likely need to invest several times this amount. Thus, even now proof-of-stake monopoly would be several-fold more costly to achieve than proof-of-work monopoly. Over time the comparison of monopoly costs will become more and more dramatic. The ratio of bitcoin&#39;s mining rewards to market value is programmed to decline exponentially. As this happens, proof-of-work monopoly will become easier and easier to obtain, whereas obtaining proof-of-stake monopoly will become progressively more difficult as more of the total money supply is released into circulation.</p>
+
+<p>Secondly, and perhaps more importantly, a proof-of-stake monopolist is more likely to behave benevolently exactly because of his stake in Bitcoin. In a benevolent monopoly, the currency txn continue as usual, but the monopolist earns all txn fees and coin generations. Other txn verifiers are shut out of the system, however. Since mining is not source of demand for bitcoin, bitcoin might retain most of its value in the event of a benevolent attack. Earnings from a benevolent attack are similar regardless of whether the attack occurs under proof-of-stake or proof-of-work. In a malicious attack, the attacker has some outside opportunity which allows profit from bitcoin&#39;s destruction (simple double-spends are not a plausible motivation; ownership of a competing payment platform is). At the same time, the attacker faces costs related to losses on bitcoin-specific investments which are necessary for the attack. It can be assumed that a malicious attack causes the purchasing power of bitcoin to fall to zero. Under such an attack, the proof-of-stake monopolist will lose his entire investment. By contrast, a malicious proof-of-work monopolist will be able to recover much of their hardware investment through resale. Recall also, that the necessary proof-of-work investment is much smaller than the proof-of-stake investment. Thus, the costs of a malicious attack are several-fold lower under proof-of-work. The low costs associated with malicious attack make a malicious attack more likely to occur.</p>
+
+<h2 id="Why_Proof_of_Stake_Would_Likely_Decrease_Long-run_Txn_Fees_Considerably">Why Proof of Stake Would Likely Decrease Long-run Txn Fees Considerably</h2>
+
+<p>In a competitive market equilibrium, the total volume of txn fees must be equal to opportunity cost of all resources used to verify txns. Under proof-of-work mining, opportunity cost can be calculated as the total sum spent on mining electricity, mining equipment depreciation, mining labor, and a market rate of return on mining capital. Electricity costs, returns on mining equipment, and equipment depreciation costs are likely to dominate here. If these costs are not substantial, then it will be exceptionally easy to monopolize the mining network. The fees necessary to prevent monopolization will be onerous, possibly in excess of the 3% fee currently charged for credit card purchases. Under pure proof-of-stake, opportunity cost can be calculated as the total sum spent on mining labor and the market interest rate for risk-free bitcoin lending (hardware-related costs will be negligible). Since bitcoins are designed to appreciate over time due to hard-coded supply limitations, interest rates on risk-free bitcoin-denominated loans are likely to be negligible. Therefore, the total volume of txn fees under pure proof-of-stake will just need to be just sufficient to compensate labor involved in maintaining bandwidth and storage space. The associated txn fees will be exceptionally low. Despite these exceptionally low fees, a proof-of-stake network will be many times more costly to exploit than the proof-of-work network. Approximately, a proof-of-work network can be exploited using expenditure equal to about one years worth of currency generation and txn fees. By contrast, exploitation of a proof-of-stake network requires purchase of a majority or near majority of all extant coins.</p>
+
+<h1 id="Implementation">Implementation</h1>
+
+<p>There are currently a few distinct proposals on how to implement PoS</p>
+
+<h2 id="Cunicula.27s_Implementation_of_Mixed_Proof-of-Work_and_Proof-of-Stake">Cunicula&#39;s Implementation of Mixed Proof-of-Work and Proof-of-Stake</h2>
+
+<p>This suggestion is of a mixed Proof-of-Work / Proof-of-Stake system.</p>
+
+<h3 id="Cunicula.27s_Note">Cunicula&#39;s Note</h3>
+
+<p>Check the page history for the older implementation. I am replacing my description with a new system which I believe to be much more secure. The new system is a greatly improved version of Coblee&#39;s Proof of Activity <a href="https://bitcointalk.org/index.php?topic=102355.0">proposal</a>. It provides extremely strong protection against PoW attacks, both double-spends and denials of service. It is not vulnerable even if PoW attackers also have substantial (but non majority) stake. It provides strong incentives to maintain full nodes. The system is supported through taxes on coin owners who fail to maintain full nodes. Tax revenue is redistributed to coin owners who maintain full nodes. The maintenance of full nodes is the key element providing security in the system.</p>
+
+<p>The discussion focuses on long-term maintenance of the system. Initial distribution of coins could occur through PoW mining, an IPO mechanism, or a more complex scheme that allows initial coins to be distributed to both PoW miners and businesses voted for by coin owners. The issue of initial distribution is separate from long-term maintenance and it is confusing to discuss the two together.</p>
+
+<h3 id="Glossary">Glossary</h3>
+
+<p>Voluntary Signatures - Voluntary signatures result from a random auditing processes. As blocks are mined, keys are selected for auditing based on random selection. The signatures provide public evidence that a public key owner is running a full node. Passing the audit allows a private key to remain active.</p>
+
+<p>Active Keys - By default, public keys that appear in the blockchain are active if they have a balance of at least one full coin. Public keys that provide voluntary signatures when randomly audited remain active. Active public keys are eligible to participate in lotteries to sign PoW blocks and mine PoS blocks. This is remunerative. Public keys that fail to provide signatures become dead private keys.</p>
+
+<p>Dead Keys - Keys that have failed to provide signatures lose lottery eligibility. Keys that have balances of less than 1 coin are considered dead by default. Dead keys can no longer mine PoS blocks. However, these dead keys can still be used to generate txns. Network maintenance is supported primarily through mandatory fees levied on coins sent by dead keys. After coins are sent using a dead key, the key becomes active provided that it retains a balance of at least 1 coin.</p>
+
+<p>Mandatory Signature Sequence - In order for a PoW block to be valid and enter the blockchain, it must be signed by a sequence of 5 randomly selected active keys. The fifth signatory in the sequence mines a PoS block.</p>
+
+<p>PoS block - The fifth signatory of a PoW block must mint his own block without any PoW submission at all. This block is called a PoS block.</p>
+
+<p>Coin-age - Coin age refers to the age of txn inputs. Coin age is equal to the number of coins sent times the average age on these coins. Age is measured in blocks. Age is reset to 1 block whenever a coin is sent AND whenever a coin provides a signature (both mandatory and voluntary signatures count). Coin-age is used to calculate mandatory fees.</p>
+
+<p>Demurrage Fee - Chain Security is supported primarily through a demurrage tax on sent inputs. This tax proportional to average input age as measured in coin-years. I suggest 5% per coin-year as a reasonable fee. Active keys can avoid demurrage fees simply by remaining active. Thus the actual fee generation will be much lower than 5% per year. Dead keys must pay demurrage. The opportunity to evade demurrage motivates activity.</p>
+
+<p>Optional Fee - Fees are used to ration block space. Blocks select prioritize txns with high fees. If demurrage fees alone are insufficient to motivate txn inclusion, the user can add an optional fee to his txn.</p>
+
+<p>Fee Fund - Both optional fees and demurrage fees enter a fund, rather than being distributed directly to miners. Fees are added to the fund immediately, so there is a weak incentive to include high fee txns in blocks. The PoW miner receives a distribution equal to 0.01% of the accumulated fund. The first four mandatory signatories also receive 0.1% each. The PoS block miner receives 0.1% as well, but his takings will differ slightly because the fund is updated based on txns included in his block. Use of a fund reduces volatility in mining reward.</p>
+
+<p>Root Private Key - The root private key has full spending and signing authority. When significant balances are held, this key should be kept as an offline backup to guard against theft.</p>
+
+<p>Stake Signing Key - Private Key can delegate signing and sending authority to one other private key. The delegated key can sign blocks and has limited authority to send coins. Authority to send coins is determined by two positive constants, t and k. The following txn rule limits the stake signing keys&#39; spending authority:</p>
+
+<pre><code>Change Returned to Public Key &gt;= all coins sent to other addresses * {max(k,k*(t/coin-years on public key)}
+k=9 and t=1/12 are suggested as possible parameters. These parameters allows the stake signing key to spend up to 10% of the total key balance per month. The max value at risk in event of theft of                 
+this key is 10%. Holders of large balances &#39;zero-out&#39; their coin-age frequently via mining and face less theft risk. If this occurs once per week, for example, the large balance holder will only
+risk be able to spend up to 2.3% of their balance per week and will only lose 2.3% in the event of theft. Once theft is detected, all remaining coins can be moved to a secure computer using the
+root private key.
+</code></pre>
+
+<h3 id="Mining_Process">Mining Process</h3>
+
+<p>1) Block meeting work difficulty target is mined. Difficulty target periodically adjusted so that 1 PoW block arrives every 10 minutes.</p>
+
+<p>2) Work submission is hashed 10 times consecutively. Each consecutive hash maps to an individual unspent output in the blockchain. This is essentially a lottery drawing two sets of five winners. The first five hashes map to mandatory signatures, the final five hashses map to voluntary signatures.</p>
+
+<p>3) If the mandatory signatures map to active public keys <a href="see">glossary</a>, the block can potentially be valid. Otherwise, the block is invalid and must be discarded.</p>
+
+<p>4) If PoW miner finds a potentially valid block, he transmits the following hash to the network: {work submission;hash(his block, the previous valid block)}</p>
+
+<p>5) If the work submission meets the difficulty target and maps to active signatories, then the block is relayed through the network. Otherwise, the message is dropped as spam.</p>
+
+<p>5) The first five selected signatories sequentially sign this hash and transmit it onwards as {work submission; hash; sig 1; sig 2; sig 3; sig 4; sig 5}</p>
+
+<p>6) After the mandatory signature sequence is complete, the final signatory publishes the PoW block and also his own PoS block.</p>
+
+<p>7) The final five hashes map to voluntary signatures. These voluntary signatures can be inserted into any block within the next 6 blocks as special txns. These txns do not require fees.</p>
+
+<p>9) Go to step 1</p>
+
+<p>Note: This process is simultaneous so that multiple block hashes can circulate in the network attempting to collect five signatures and generate PoW/PoS block pairs. Block pairs that lose this race
+are orphaned.</p>
+
+<h3 id="Infeasability_of_standard_attack_vectors">Infeasability of standard attack vectors</h3>
+
+<p>Unless attackers own a large share of stake, all types of PoW attacks are computationally infeasible. I think there are two types of known attacks: 1) Double-Spend 2) Denial of Service
+I consider approximations below. The numbers are so favorable that consideration of exact statistics is not particularly interesting.</p>
+
+<p>1) Double Spend.</p>
+
+<p>Double spends rely on secrecy. In order to mine blocks in secret a PoW miner must select his 5 of his own public keys in the lottery. If the PoW miner owns a share 0&lt;s&lt;1 of all coins,
+the probability of doing that a block meeting the difficulty target will select the miner&#39;s coins is (1/s)<sup>5</sup>. For s=0.01, 1 out of 10 billion blocks will satisfy this criteria.
+Even for extremely small hash aggregate rates, it is not practical to privately mine at a rate 10 billion times faster than all other miners combined. For s=0.1, 1 out of 100,000 blocks will
+satisfy this criteria. (i.e. the attack still requires approximately 99.999% of all hashing power). For s=0.5, the attacker will succeed if he controls 51% of the aggregate hash rate.</p>
+
+<p>2) Denial of Service</p>
+
+<p>An attacker who mines publicly could simply produce empty PoW blocks. However, this would fail to deny service. 50% of all blocks are randomly mined via PoS. The attacker cannot
+force the PoS miners to produce empty blocks. Therefore he cannot deny service regardless of how much hash rate he controls.</p>
+
+<h3 id="Long-term_Chain_Evaluation">Long-term Chain Evaluation</h3>
+
+<p>1) Comparison of two long chains is based on a simple sum of block difficulty, just as in bitcoin.</p>
+
+<p>2) A criticism of PoS is that there is no reason not to sign attack chains. However, in a long secret chain, many stakeholders will have dead signatures. These dead stakeholders will not be able to sign the main chain, but not the attack chain. They will have a strong incentive to make sure the main chain wins because the attack chain will impose demurrage fees on them.</p>
+
+<h3 id="Incentives_to_maintain_full_nodes">Incentives to maintain full nodes</h3>
+
+<p>This system introduces powerful incentives to maintain full nodes. Many people argue that the lack of an incentive to maintain a full node is a problem in the bitcoin system.</p>
+
+<p>1) a steady flow of txns will generate some fees even if all public keys remain active. Active keys must be maintaining full nodes. Otherwise they could not provide the voluntary signatures which prove their activity. Even very weak incentives are sufficient in this case. If almost all keys are associated with active nodes, then it is not necessary to motivate additional participation.</p>
+
+<p>2) Some public keys may decide to become inactive. This is costly for them. They will suffer a loss of 5% of their balance per year for as long as they remain inactive.</p>
+
+<p>3) The active public keys constantly capture revenue from inactive public keys. This means that the incentives to remain increase dramatically as participation falls. Suppose that 50% of public keys maintain full nodes, then this 50% will capture 2.5% of coins per annum. This is equal to an annual of return of 2.0%. The alternative, inactivity, yields an annual return of -5.0% as discussed in point 2. I consider this a reasonable incentive level and participation rate. Suppose that I am wrong, and only 10% of public keys maintain full nodes. Then these 10% will capture 4.5% of all extant coins per annum. This implies an annual return on participation equal to 45% per annum. This is a very strong incentive and is almost certain to be sufficient, even if nodes are quite costly to maintain. If only 1% of coins participate, then 4.95% of all extant coins will be distributed to this 1% each year. This implies a weekly return on participation of 3%, a pirate ponzi scheme level return. If these incentive are inadequate to support a healthy network of full nodes (which seems unlikely to me), then the levy on dead coins could be increased to exceed 5% per annum.</p>
+
+<p>4) Many people will not have enough coins to justify running their own node. Such individuals will likely use an online banking service which could store their limited spend key. The service could return interest to users in exchange for managing their keys.</p>
+
+<p>5) Other individuals may prefer the privacy associated with dropping out of participation. These individuals are still welcome to use the network, but must face a wealth tax of 5% per annum to compensate for the security risk created by their behavior.</p>
+
+<h3 id="Storage_of_Blockchain_Metadata">Storage of Blockchain Metadata</h3>
+
+<p>To facilitate the system, data should be extracted from the block chain in a readily accessible database that is updated with each block. The database only needs to incorporate
+public keys which control at least 1 coin. Keys with balances less than 1 coin are considered dead by default. These low-value public keys
+are not allowed to create limited stake public keys. If a public key balance drops below 1 coin, the limited stake public key associated with the root key is invalidated.</p>
+
+<p>The database would look like this:</p>
+
+<table>
+<thead>
+<tr>
+<th>Public Key (ordered list) </th>
+<th>Linked Stake Public key (if any) </th>
+<th>Balance </th>
+<th>Cumulative Balance </th>
+<th>Active? </th>
+<th>Coin-age (in years)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A </td>
+<td>As </td>
+<td>1 </td>
+<td>1 </td>
+<td>1 </td>
+<td>0.03</td>
+</tr>
+<tr>
+<td>B </td>
+<td>Bs </td>
+<td>2.5 </td>
+<td>3.5 </td>
+<td>0 </td>
+<td>0.1</td>
+</tr>
+<tr>
+<td>C </td>
+<td>Cs </td>
+<td>3 </td>
+<td>6.5 </td>
+<td>1 </td>
+<td>0.2</td>
+</tr>
+<tr>
+<td>... </td>
+<td>... </td>
+<td>... </td>
+<td>... </td>
+<td>... </td>
+<td>...</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>The block chain must maintain records of links between public keys and delegated limited stake public keys. These should be put in a simple database for easy access.</p>
+
+<p>Cumulative balance can be used to determine the winners of the lottery. (i.e. the lottery is a uniform draw on the support <a href="0,total">issued coins</a>) This indicates a unique lottery winner,
+whose chance of winning is proportional to his ownership share.</p>
+
+<p>Coin-age is updated as follows.
+If no send, Coin-age_t = Coin-age_t-1 + 1.
+If send, Coin_age_t = 1.
+If send and receipt of coins, Coin_age_t = 1.
+If receipt of coins but no send, Coin_age_t = <a href="Coin_age_(t-1">coins</a>*balance_(t-1)+received)/balance(t)</p>
+
+<p>Coin-age is necessary to determine mandatory demurrage fees and to calculate spending limits for limited stake public keys.</p>
+
+<p>Active is 1 by default and becomes 0 if a key fails to provide a requested voluntary signature. 0 is an absorbing state.</p>
+
+<h3 id="Beneficiaries_and_Lossers_from_Txn_Fees">Beneficiaries and Lossers from Txn Fees</h3>
+
+<p>The total amount of demurrage fees collected annually varies between 0% and 5% of the total money supply.</p>
+
+<p>The most burdensome fee in the system is the fee paid to PoW miners. This fee imposes a demurrage tax of between 0% and 0.1% per annum on all users of the system. In addition to the demurrage tax, PoW miners receive a 2% share of any optional fees paid to access scarce block space. All coin owners are net losers as a result of PoW mining fees. To minimize costs to coin owners, PoW fee payments are kept as low as possible. Since large hash rates play only a tiny role in security, larger fees for PoW miners are unnecessary.</p>
+
+<p>Other demurrage fees are transfers of revenue from one private key to another. Some keys are net beneficiaries of these transfers, while other keys are net losers. Collectively, these fees do not make coin owners better or worse off. Their effects are neutral. However, individually, the fees do create winners and losers. <em>Active</em> users that spend infrequently gain from the system. An <em>active</em> user with average spend frequency is likely to gain from the system as well, but only by a small amount. An <em>active</em> user that spends very frequently will probably lose from the system. <em>Dead</em> users will certainly lose from the system. This loss serves as a punishment for failure to maintain an <em>active</em> node.</p>
+
+<h2 id="Meni.27s_implementation">Meni&#39;s implementation</h2>
+
+<p>This proposal is for a proof-of-work (PoW) skeleton on which occasional checkpoints set by stakeholders are placed. In one variant, double-spending is prevented by waiting for a transaction to be included in a checkpoint; the variant described here uses cementing to prevent double-spending, and checkpoints to resolve cementing conflicts.</p>
+
+<h3 id="Proof_of_work">Proof of work</h3>
+
+<p>Miners use their hashrate to find blocks and build the blockchain exactly as with the pure PoW system. They receive any new generated coins from the block; there will be two kinds of transaction fees, one of which is a mining fee given to the miner who finds the block, just like the PoW transaction fees.</p>
+
+<h3 id="Signatures">Signatures</h3>
+
+<p>One block every 100 blocks (a different number can be used instead) is a signature block. When a signature block is found and confirmed with several subsequent blocks, stakeholders (people who have bitcoins) are expected to sign it by using a private key associated with their address which contains coins to sign the block hash. If there are several blocks of the same height, an address should not sign more than one of them. The signatures are broadcast on the network and included in a future block. For every candidate block, the total weight of all signatures is tallied (the weight of an address is determined mostly by the number of coins in it, as of the last signature block). Stakeholders will be able to collect signature fees when providing a signature, proportionally to their weight.</p>
+
+<p>At the basic level, there are no rules to choosing which of several conflicting blocks to sign, stakeholders should just choose one.</p>
+
+<h3 id="Cementing">Cementing</h3>
+
+<p>Cementing is a node&#39;s reluctance to do a blockchain reorganization. A node will reject any new block found if it contradicts a 6-block deep branch it is already aware of and currently considers valid. That is, once a node receives 6 confirmations for a block, it will not accept a competing block even if it is part of a longer branch.</p>
+
+<p>In a pure PoW system this is problematic to do because a node could be stuck on &quot;the wrong version&quot; - if an attacker isolates the node and feeds him bogus data, it will not embrace the true, longer chain when he learns of it. However, using PoS to have the final say in such situations makes this possible.</p>
+
+<h3 id="Branch_selection">Branch selection</h3>
+
+<p>When a node needs to select which of several branches is valid, it chooses one based on the following criteria in increasing importance (each one is overridden by the next):</p>
+
+<ol>
+<li>Branch length (total difficulty of all blocks), as in a PoW system.</li>
+<li>Cementing - an already cemented block will not be replaced by a longer branch.</li>
+<li>Signatures - even a cemented block will be overridden by a signature block with signature weight more than half the total possible weight by some margin.</li>
+</ol>
+
+
+<p>If the conflict is so long that it contains more than one spot for a signature block, the conflicting signature blocks will be traversed earliest to latest, each time choosing the branch with the majority vote. After the newest uncontested signature block it proceeds to use cementing and branch length.</p>
+
+<p>A signature block with no clear majority will be considered tied, and will not override the other criteria. Signature fees will not be given out but instead carried over to the next signature spot, to encourage stakeholders to participate then.</p>
+
+<h3><a href="../Double-spending/">Double-spending</a> prevention</h3>
+
+<p>A good level of security can be achieved by waiting for a block to be cemented. By that time it is safe to assume that the network recognizes this block and will not easily switch to a different block, even if a longer branch is presented.</p>
+
+<p>A more authoritative confirmation is enabled by waiting for a signature block. Once a block achieves a majority (and some more time is allowed for this majority to spread in the network), it is extremely unlikely that the network will ever switch away from this block.</p>
+
+<h3 id="Weights">Weights</h3>
+
+<p>The weight of every address starts at 0. When an address provides a signature, its weight increases so that after several signatures, the weight approaches the number of coins in the address as of the last signature block. For example,
+    New weight = 0.9 * Old weight + 0.1 * Balance
+If a signature is not provided by the address in a signature block, its weight decreases:
+    New weight = 0.9 * Old weight
+This way, addresses whose owners do not wish to participate in signing do not hamper the ability to reach a majority.</p>
+
+<p>If an address signs two conflicting blocks, its weight is reset to 0. This is to limit the power of malicious stakeholders.</p>
+
+<p>If coins move to a new address, weight is proportionally taken away from the addressed, but is not transferred to the new address. The new stakeholder will have to build up his weight.</p>
+
+<h3 id="Malicious_stakeholders">Malicious stakeholders</h3>
+
+<p>The system is resilient against stakeholders who misuse their signature power, even if they have a majority of the bitcoins. Since their only obligation is to not sign conflicting blocks, the only way they could double-spend is if they first sign one block so it achieves a majority, then sign a different one so that it achieves a bigger majority. Generally this will not work. A short while after a majority is achieved, most of the network will be aware of the relevant signatures. If a different signature is broadcast, the conflict will be detected and both signatures will be ignored. This will cause the current majority block to become tied, but the network is already cemented on it and will vote for this branch in the next signature block. The weight of the attacker will by then reduce to 0 so he will be unable to create more disruption.</p>
+
+<p>Another attack is refusing to sign blocks to keep them tied. Since this causes a decay of the weight, they can only stand in the way of a majority for a short time.</p>
+
+<h3 id="Denial_of_service">Denial of service</h3>
+
+<p>The method as described does not solve a denial of service scenario. A majority miner could create only blocks with no transactions (or with many transactions missing) and reject all other blocks.</p>
+
+<p>This may be solvable by adding some measure of the transaction in a block to the selection criteria, such as Bitcoin days destroyed.</p>
+
+<p>Also, proposals to replace the block chain with a directed acyclic graph have been made, and could be used to make it easier to include transactions.</p>
+
+<h2 id="Key_difference_between_the_two_proposals">Key difference between the two proposals</h2>
+
+<p>In Cunicula&#39;s system, voting power is determined by combining (multiplicatively) your hashrate and stake. This would be problematic if small players could not compete effectively with large players. Though we are waiting on a formal mathematical proof, evidence to date suggests that small and large players would have an equal competitive footing. Simulations described in this thread <a href="https://bitcointalk.org/index.php?topic=68213.msg801253#msg801253">(1)</a> indicate that small players are competitive with large players because the multiplicative combination of hashrate and stake exhibits constant returns. Evidence in the thread suggests that these simulation results are accepted by both Cunicula and Meni.)</p>
+
+<p>In Meni&#39;s, there&#39;s a skeleton based purely on hashrate, and superimposed on it are occasional checkpoints set by stakeholders. You can contribute PoW without having stake, and you can contribute PoS without having work, and in both cases your voting power and reward is linearly proportional to the resources you have.</p>
+
+<h2 id="See_also">See also</h2>
+
+<ul>
+<li><a href="../Proof_of_work/">Proof of work</a></li>
+<li><a href="../Proof_of_burn/">Proof of burn</a></li>
+<li><a href="http://www.reddit.com/r/reddCoin/comments/249dnl/major_announcement_reddcoin_to_implement_new/">Proof of Stake Velocity by Reddcoin</a></li>
+</ul>
+
+
+<p>1.1: https://download.wpsoftware.net/bitcoin/pos.pdf</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Proof-of-x/" rel="tag">Proof-of-x</a>
+
+<a href="../tags/Mining/" rel="tag">mining</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Altcoin/">Altcoin</a>
+
+<a href="../Hardfork_Wishlist/talk/">Hardfork Wishlist/talk</a>
+
+<a href="../Prohibited_changes/">Prohibited changes</a>
+
+<a href="../Proof_of_blockchain_fair_sharing/">Proof of blockchain fair sharing</a>
+
+<a href="../Proof_of_burn/">Proof of burn</a>
+
+<a href="../Proof_of_work/">Proof of work</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-10-10T12:33:47Z">Sat 10 Oct 2015 12:33:47 PM Europe</time>
+<!-- Created <time datetime="2012-03-10T23:07:39Z" pubdate="pubdate">Sat 10 Mar 2012 11:07:39 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

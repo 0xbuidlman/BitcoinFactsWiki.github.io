@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Libbitcoin Node</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Libbitcoin Node
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Libbitcoin_Node" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>The <a href="https://github.com/libbitcoin/libbitcoin-node">libbitcoin-node</a> library provides an abstraction over the low level networking calls required to implement a full node on the Bitcoin peer-to-peer network. It was originally contained within <a href="../Libbitcoin_Common/">libbitcoin</a>.</p>
+
+<h2 id="Example">Example</h2>
+
+<p>The example expects the blockchain to be initialized in &quot;./blockchain/&quot; (see <a href="https://github.com/libbitcoin/libbitcoin-blockchain/blob/master/tools/initchain/initchain.cpp">initchain</a>). The initialize_logging and display_result functions are omitted for brevity.
+    int main()
+    {
+    std::string command;
+    bc::payment_address address;
+    initialize_logging(&quot;debug.log&quot;, &quot;error.log&quot;);</p>
+
+<pre><code>std::cout &lt;&lt; &quot;Starting up...&quot;;
+bc::node::fullnode node(&quot;blockchain&quot;);
+node.start();
+
+std::cout &lt;&lt; &quot;Type a bitcoin address or &#39;stop&#39; to exit.&quot; &lt;&lt; std::endl;
+while (true)
+{
+std::getline(std::cin, command);
+if (command == &quot;stop&quot;)
+break;
+
+if (!address.set_encoded(command))
+{
+std::cout &lt;&lt; &quot;Invalid address.&quot; &lt;&lt; std::endl;
+continue;
+}
+
+const auto fetch_handler = &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=%26address&amp;amp;from=Libbitcoin_Node&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;&amp;address&lt;/span&gt;(const std::error_code&amp; code,
+const bc::chain::history_list&amp; history)
+{
+display_result(code, history, address);
+};
+
+fetch_history(node.chain(), node.indexer(), address, fetch_handler);
+}
+
+std::cout &lt;&lt; &quot;Shutting down...&quot;;
+node.stop();
+
+return 0;
+}
+</code></pre>
+
+<h2 id="Console_Application">Console Application</h2>
+
+<p>The library is accompanied by the console application <a href="../Bitcoin_Node/">Bitcoin Node</a> (bn).</p>
+
+<h2 id="Design">Design</h2>
+
+<ul>
+<li>See <a href="https://github.com/libbitcoin/libbitcoin-server/wiki/Design-Overview">Design Overview</a> (Bitcoin Server)</li>
+</ul>
+
+
+<h2 id="Dependencies">Dependencies</h2>
+
+<ul>
+<li><a href="http://www.boost.org">boost</a></li>
+<li><a href="https://github.com/bitcoin/secp256k1">secp256k1</a></li>
+<li><a href="../Libbitcoin_Common/">libbitcoin</a></li>
+<li><a href="../Libbitcoin_Consensus/">libbitcoin-consensus (optional)</a></li>
+<li><a href="../Libbitcoin_Blockchain/">libbitcoin-blockchain</a></li>
+</ul>
+
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../Libbitcoin/">Libbitcoin</a></li>
+<li><a href="../Bitcoin_Node/">Bitcoin Node</a></li>
+</ul>
+
+
+<h2 id="References">References</h2>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Nodes/" rel="tag">Nodes</a>
+
+<a href="../tags/Open_Source/" rel="tag">Open Source</a>
+
+<a href="../tags/Software__8207____8206__/" rel="tag">Software‏‎</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Bitcoin_Node/">Bitcoin Node</a>
+
+<a href="../Libbitcoin/">Libbitcoin</a>
+
+<a href="../Libbitcoin_Blockchain/">Libbitcoin Blockchain</a>
+
+<a href="../Libbitcoin_Database/">Libbitcoin Database</a>
+
+<a href="../Libbitcoin_Network/">Libbitcoin Network</a>
+
+<a href="../Libbitcoin_Server/">Libbitcoin Server</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-07-12T22:12:18Z">Sun 12 Jul 2015 10:12:18 PM Europe</time>
+<!-- Created <time datetime="2015-05-13T21:29:55Z" pubdate="pubdate">Wed 13 May 2015 09:29:55 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Satoshi Client Node Connectivity</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Satoshi Client Node Connectivity
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Satoshi_Client_Node_Connectivity" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<h2><br />Overview</h2>
+
+<p>The Satoshi bitcoin client creates a thread to manage making
+connections to other nodes. The code for that thread is in a
+function called ThreadOpenConnections2 in <a href="https://github.com/bitcoin/bitcoin/blob/master/src/net.cpp">net.cpp</a>.</p>
+
+<p>The client also handles accepting new inbound connections and
+disconnecting nodes when appropriate in a a thread called
+ThreadSocketHandler2, which is also in <a href="https://github.com/bitcoin/bitcoin/blob/master/src/net.cpp">net.cpp</a>.</p>
+
+<p>The thread making connections does not discover the addresses of other
+nodes. That information is gathered in various ways (See the article
+on Node Discovery). The connection thread chooses among the available
+addresses and makes connections and disconnects nodes when appropriate.
+That is all it does.</p>
+
+<p>Node addresses are chosen based on the following set of rules.</p>
+
+<h2 id="Connection_Rules">Connection Rules</h2>
+
+<h3 id="Outbound_Static_Addresses">Outbound Static Addresses</h3>
+
+<p>If the user specified addresses with -connect, the node uses
+those addresses only. It tries to establish a connection to each node
+and then sleeps for a half second, and then repeats that in a loop
+until shut down. The code establishes a connection by calling
+OpenNetworkConnection(addr). If the connection is already open,
+OpenNetworkConnection just returns.</p>
+
+<p>If the user specified addresses with -node, then connections are
+made to those nodes (with a half second delay between each) upon
+startup. After those connections are attempted, the code proceeds
+to the regular connection handling code.</p>
+
+<h3 id="Outbound_Limiting">Outbound Limiting</h3>
+
+<p>The connection handling code is one loop that performs various functions until shutdown. The first thing the loop does is count
+the number of outbound connections, and if the maximum has been
+reached (8 or -maxconnections), then it goes into a 2 second delay
+loop until the count is below the max.</p>
+
+<p>Assuming the number of connections is below the limit, the node attempts
+to connect to another node. See the next section.</p>
+
+<h3 id="Seed_Nodes">Seed Nodes</h3>
+
+<p>If the node has not been able to learn about other addresses, presumably
+because those methods have failed, the node will use an internal list
+of 320 node addresses hard coded into the software to populate
+the list of known node addresses.</p>
+
+<p>There is code to move away from seed nodes when possible. The presumption
+is that this is to avoid overloading seed nodes. Once the local node has
+enough addresses (presumably learned from the seed nodes), the
+connection thread will close seed node connections.</p>
+
+<h3 id="Outbound_Random_Selection">Outbound Random Selection</h3>
+
+<p>First the code puts the addresses into a.b.c.* buckets so only one
+connection is made to each 24 bit netmasked network.</p>
+
+<p>Next, it loops through every address and determines whether it is &quot;ready&quot;,
+and then, using a complex calculation, computes a score for every address.
+The address with the highest score wins and OpenNetworkConnection is
+called for it. Then the code completes the main loop of the thread and
+continues.</p>
+
+<p>In order to determine readiness, the code hashes the IP and other entropy
+into a deterministic random number between 1 and 3600. If the address
+specifies a nonstandard port, a 2 hour (7200) penalty is added to the number.
+This is an adjustment number to the retry interval.</p>
+
+<p>The main retry interval is basically the square root of the last time seen
+plus the &quot;random&quot; adjustment from the previous paragraph. If the node
+has been seen in the last hour, however, the retry interval is set to
+ten minutes.  The following table is in the code:</p>
+
+<pre><code>// Last seen  Base retry frequency
+//   &lt;1 hour   10 min
+//    1 hour    1 hour
+//    4 hours   2 hours
+//   24 hours   5 hours
+//   48 hours   7 hours
+//    7 days   13 hours
+//   30 days   27 hours
+//   90 days   46 hours
+//  365 days   93 hours
+</code></pre>
+
+<p>After computing the interval, if the address has already been contacted in
+the interval, the address is skipped.</p>
+
+<p>If the address is over a day old, we may skip it. If we are successfully
+getting IRC addresses, and have node connections, then we skip it with
+the assumption that we will see the address advertisement if it is really
+active.</p>
+
+<p>Finally, for all addresses that appear to be ready for a retry, the
+address that has not been contacted the longest is chosen with a maximum
+of 24 hours. However, there is a twist. The calculation for the score is this:
+    int64 nScore = min(nSinceLastTry, (int64)24 * 60 * 60) - nSinceLastSeen - nRandomizer;
+So, the address is penalized for every second since it is last seen (and
+a random adjustment).</p>
+
+<h3 id="Inbound_Accepting_and_Disconnecting">Inbound Accepting and Disconnecting</h3>
+
+<p>The client handles accepting new inbound connections and disconnecting
+nodes when appropriate in a a thread called ThreadSocketHandler2,
+which is in <a href="https://github.com/bitcoin/bitcoin/blob/master/src/net.cpp">net.cpp</a>.</p>
+
+<p>The socket thread is simply a loop which disconnects sockets that
+have the fDisconnect flag set on them (and have empty buffers),
+prepares all sockets for &quot;select&quot; and calls &quot;select&quot;. &quot;select&quot; is
+a system call which waits for activity on a set of sockets.
+When that call returns, the node accepts any new connections,
+receives and sends on any ready sockets, and marks any inactive sockets
+for disconnect with the fDisconnect flag.</p>
+
+<p>Sockets are disconnected if they are 60 seconds old and have not sent
+or received data.</p>
+
+<p>Sockets are disconnected if they have not sent or received data in
+the last 90 minutes.</p>
+
+<p>Sockets are disconnected if the current inbound data exceeds a buffer limit.
+(Search for: if (nPos &gt; ReceiveBufferSize()) in <a href="https://github.com/bitcoin/bitcoin/blob/master/src/net.cpp">net.cpp</a>)</p>
+
+<p>Sockets are disconnected if the current outbound data exceeds a buffer limit.
+(Search for: if (vSend.size() &gt; SendBufferSize()) in <a href="https://github.com/bitcoin/bitcoin/blob/master/src/net.cpp">net.cpp</a>)</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Developer/" rel="tag">Developer</a>
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Bitcoind/">Bitcoind</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2013-01-18T05:03:16Z">Fri 18 Jan 2013 05:03:16 AM Europe</time>
+<!-- Created <time datetime="2011-09-17T21:38:07Z" pubdate="pubdate">Sat 17 Sep 2011 09:38:07 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

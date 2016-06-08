@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Zerocoin</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Zerocoin
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Zerocoin" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p><strong>Zerocoin</strong> is a proposed extension to the Bitcoin protocol that would add true cryptographic anonymity to bitcoin transactions. Given that bitcoin transactions are stored in a public ledger (in the block chain), the history of any transaction can be traced. Zerocoin provides for anonymity by the introduction of a separate <em>zerocoin</em> cryptocurrency that is stored in the Bitcoin block chain. Zerocoins are purchased with the base currency in fixed demoninations by a zerocoin mint transaction. Later, these zerocoins can be redeemed for the base currency to a different address by a zerocoin spend transaction. Through the use of cryptographic accumulators and digital commitments with zero-knowledge proofs, it is not possible to link the address that was used to mint the original zerocoin to the address used to redeem the zerocoin. Though originally proposed for use with the Bitcoin network, Zerocoin could be integrated into any <a href="../Cryptocurrency/">cryptocurrency</a>.</p>
+
+<h2 id="Rationale_for_Zerocoin">Rationale for Zerocoin</h2>
+
+<p>Bitcoin transactions are all stored, by design, in a public ledger (the block chain) that is accessible to everyone. These transactions provide privacy through pseudonymity, in that while each transaction is associated with the public address of the sender and receiver, the names of the owners of these addresses are at no time made known to the network. To increase privacy, each person could create as many public addresses as they like, making it difficult to link transactions to the same person. If additional privacy were required, it is possible to launder coins through a trusted third party, where the input coins are mixed in a large pool and output to a new address. (2.1)</p>
+
+<p>Regardless of the best precautions, by data mining of the block chain, it becomes possible in certain cases to link a set of public addresses to a specific (unnamed) individual. For example, this could be done by the analysis of spending habits, or by having the change of a transaction from one public address being sent to another. Furthermore, by utilizing information external to the block chain, such as public addresses posted on a web site, or the postal address used with an internet purchase, the possibility exists that every single transaction of a given person could be determined.</p>
+
+<h2 id="Zerocoin_protocol">Zerocoin protocol</h2>
+
+<p>The Zerocoin (3.1) extension to bitcoin would have functioned like a money laundering pool, temporarily pooling bitcoins together in exchange for a temporary currency called Zerocoins. While the laundering pool is an established concept already utilized by several currency laundering services, Zerocoin would have implemented this at the protocol level, eliminatating any reliance on trusted third parties. It anonymizes the exchanges to and from the pool using cryptographic principles, and as a proposed extension to the Bitcoin protocol, it would have recorded the transactions within the existing block chain.</p>
+
+<p>The anonymity afforded by Zerocoin is the result of cryptographic operations involved with separate zerocoin mint and spend transactions. (3.1) To mint a zerocoin, a person generates a random serial number <em>S</em>, and encrypts this into a coin <em>C</em> by use of second random number <em>r</em>. The coin <em>C</em> is added to a cryptographic accumulator by miners, and at the same time, the amount of the base currency equal in value to the denomination of the zerocoin is added to a zerocoin escrow pool.</p>
+
+<p>To redeem the zerocoin for the base currency, the owner of the coin needs to prove two things by way of a zero-knowledge proof. (A zero-knowledge proof is a method by which one party can prove to another that a given statement is true, without conveying any additional information apart from the fact that the statement is indeed true.) The first is that they know a coin <em>C</em> that belongs to the set of all other minted zerocoins (<em>C1</em>, <em>C2</em>,... <em>Cn</em>), without revealing which coin it is. The second is that the person knows a number <em>r</em>, that along with the serial number <em>S</em> corresponds to a zerocoin. The proof and serial number <em>S</em> are posted as a zerocoin spend transaction, where miners verify the proof and that the serial number <em>S</em> has not been spent previously. After verification, the transaction is posted to the blockchain, and the amount of the base currency equal to the zerocoin denomination is transferred from the zerocoin escrow pool. Anonymity in the transaction is assured because the minted coin <em>C</em> is not linked to the serial number <em>S</em> used to redeem the coin.</p>
+
+<p>One criticism of Zerocoin is the added computation time required by the process, which would need to have been performed primarily by miners. If the proofs were posted to the block chain, this would also dramatically increase the size of the block chain. (3.2)</p>
+
+<h2 id="Extensions_of_Zerocoin">Extensions of Zerocoin</h2>
+
+<p>Recognizing that Bitcoin was unlikely to be implement Zerocoin, the authors of Zerocoin expressed hope that other cryptocurrencies would incorporate Zerocoin anonymity features. (2.1) Currently, Zerocoin is being implemented in the alternative cryptocurrency Anoncoin. (4.1)</p>
+
+<h2 id="References">References</h2>
+
+<p>2.1: <a href="http://www.coindesk.com/how-anonymous-is-bitcoin/">How anonymous is Bitcoin?</a> CoinDesk Ltd. 7 June 2013 Danny Bradbury Work: CoinDesk<br />
+<span class="ref-label">3.1:
+<span class="ref-column">
+ <a href="http://spar.isi.jhu.edu/~mgreen/ZerocoinOakland.pdf">Zerocoin: Anonymous Distributed E-Cash from Bitcoin</a> I. Miers, C. Garman, M. Green, and A. D. Rubin (2013).  Zerocoin: Anonymous Distributed E-Cash from Bitcoin, 2013 IEEE Symposium on Security and Privacy, IEEE Computer Society
+Conference Publishing Services, 397&ndash;411,  doi:10.1109/SP.2013.34</span><br />
+3.2: <a href="http://spectrum.ieee.org/computing/networks/whos-who-in-bitcoin-zerocoin-hero-matthew-green">Who&rsquo;s who in Bitcoin: Zerocoin hero Matthew Green</a> Institute of Electrical and Electronics Engineers 24 October 2013 Morgan E. Peck Work: IEEE Spectrum<br />
+4.1: <a href="http://anoncoin.net">Anoncoin</a></span></p>
+
+<h2 id="See_also">See also</h2>
+
+<ul>
+<li><a href="http://zerocoin.org">Official Zerocoin website</a></li>
+<li><a href="https://bitcointalk.org/index.php?topic=152786.0">Zerocoin forum at bitcointalk.org</a></li>
+<li><a href="http://research.microsoft.com/apps/video/default.aspx?id=192058">Zerocoin presentation (Microsoft research)</a></li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Anonymity/" rel="tag">Anonymity</a>
+
+</nav>
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2014-08-18T21:40:10Z">Mon 18 Aug 2014 09:40:10 PM Europe</time>
+<!-- Created <time datetime="2013-04-13T16:42:44Z" pubdate="pubdate">Sat 13 Apr 2013 04:42:44 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

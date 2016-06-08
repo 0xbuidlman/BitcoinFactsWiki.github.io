@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Adaptive difficulty</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Adaptive difficulty
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Adaptive_difficulty" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p><strong>Adaptive difficulty</strong> is a Bitcoin protocol change proposal by <a>Iain Stewart</a>, with the goal of letting the typical time interval from one block to the next adjust smoothly to prevailing network latency, while not compromising the strength of the blockchain, or the decentralized character of the network.</p>
+
+<p><em><strong>EDIT 2012-11-22:</strong> My idea is essentially the same as that proposed by <a href="http://en.wikipedia.org/wiki/User:Meni_Rosenfeld">Meni Rosenfeld</a> on the <a href="https://bitcointalk.org/index.php?board=6.0">Bitcoin forums</a>. Please read and enjoy and critique <a href="https://bitcointalk.org/index.php?topic=79837.0">his adaptive difficulty proposal</a>! (I&#39;ll leave this page here for historical completeness, but not continue working on it.) <a>Iain Stewart</a> 01:00, 23 November 2012 (GMT)</em></p>
+
+<h2 id="Background">Background</h2>
+
+<p>The world is being wired up with ever faster connectivity. A merchant location in particular, where any kind of online transaction is desired, will usually have a fast link to either the net or specific counterparty bank(s), with paid-for higher bandwidth and lower latency than the usual domestic speeds. All but the smallest businesses where an internet presence is de rigeur now routinely choose to pay for a fast connection, sometimes choosing to pay a little extra for a guarantee of quick repair (&quot;five nines&quot; cover and the like).</p>
+
+<p>It will therefore remain an expectation of customers that a merchant can process their transaction quickly as a matter of course. (With Bitcoin, we do have the sub-community of users who desire strong anonymity and may use Tor/i2p, coin mixing services, and the like. They are tech-savvy and accept that these choices cause slowness. We can&#39;t expect that to become the broader expectation, however.)</p>
+
+<p>The average 10-minute interval between blocks, and the need to wait a few blocks (6 is often cited) to achieve acceptable closeness to irreversibility of one&#39;s transaction, will likely be a barrier to ease of use in cases where an expectation of speed is firmly embedded in customers&#39; and merchants&#39; culture. (Even people who choose to slow down the <em>submission</em> of their transaction, in exchange for better anonymity for example, would still benefit from fast <em>handling</em> of their transaction once it has been submitted. They too may well grumble at the tens of minutes&#39; to hours&#39; delay on top of that of their own choosing.)</p>
+
+<p>The 10-minute target interval could of course be changed, by sufficient consensus among miners and the community, to some other fixed value. Miners could boldly assert that the network latency between them &quot;has reliably been such-and-such&quot; (likely pleasantly short, since serious miners with their ASICs or whatever would want to pay for a fast net connection like any other net-centric business); and they could propose some multiple of this as a block interval. A change from one fixed value to another has its problems, though. A danger of choosing too short a value is that the network (of miners) fragments, into clusters who wastefully work on what they each sincerely believe is the most up-to-date block, and only later collectively purges the proliferation of short chains. The community&#39;s justified fear of this scenario would likely mean any future fixed target interval would always have to err on the side of caution (slowness).</p>
+
+<p>But why have a <em>fixed</em> value at all? Can a protocol be fashioned where miners discover <em>dynamically</em> the interval that&#39;s in some sense the &quot;best&quot; choice, given the prevailing network latency between them? Such a protocol would have to avoid perverse incentives for any individual miner to influence the discovery process in a way that was good for that miner, but bad for the security of the blockchain.</p>
+
+<p>One could imagine all sorts of formulae for deciding which way difficulty &quot;should&quot; go on a very fine scale (even from one block to the next) - whether similar or not-so-similar to the fortnightly difficulty adjustment already in place. The fortnightly (2016-block) adjustment is of course intended as a regulator of the impact of <em>gradual</em> network-wide growth or shrinkage of <em>hash-rate</em>, and not of <em>moment-to-moment</em> network <em>latency</em> (or of moment-to-moment anything else for that matter). But one could imagine similar attempts to measure, and adjust to, latency changes, by some clever formula.</p>
+
+<p>Adaptive difficulty is <strong>not</strong> an attempt at such a formula. There are good grounds for believing that the (or a candidate) block<em>chain</em> - as opposed to the block<em>tree</em> held at any instant by any particular miner - simply cannot contain enough information to assist with latency discovery. Only the tree, and not any one chain, contains the kind of evidence that could assist with noticing the sort of wasteful fragmentation discussed above, for example. But to compute a network-influencing parameter according to the properties of a whole blocktree, and then embed it in any one would-be winning blockchain, would be dangerous. Even ignoring the fact that the blocktree differs from miner to miner, there would be no way, later, when the rest of the tree had died by neglect, to verify that the information embedded in the winning blockchain was correctly computed from a tree prevailing at the time - and not, for example, just made up by an attacker, who can later create a spurious tree (with false timestamps), at leisure, with bits and pieces dangling off various winning-chain blocks in whatever style it takes to make the attacker&#39;s made-up information <em>seem</em> to have been computed from that spurious tree.</p>
+
+<p>What adaptive difficulty <strong>is</strong>, is something more radical than any such formula: a scheme where miners <em>choose</em>, and announce in the header, the difficulty of <em>every block they proceed to try to solve</em>. To those despairing that such anarchy could ever work, please read on! The regulatory function of the network - the assurance that it converges on a consensus best chain, with good immunity from attacks other than a 51% attack - is achieved by other aspects of the protocol. Out of anarchy, order will emerge.</p>
+
+<h2 id="Anarchy_in_the_blockchain">Anarchy in the blockchain</h2>
+
+<p>Some general remarks first. The proof of work measure of a blockchain is its sum of difficulties, not its mere number of blocks. (The expected work cost of solving two blocks of difficulty <em>d</em> is the same as that of solving one block of difficulty 2<em>d</em>.) If, for example, generally prevailing difficulty is halved (by whatever means), the network will solve blocks of the new difficulty at twice the previous rate; and the average value of transaction fees available for reaping in the latest block will be halved. (The adaptive difficulty protocol will scale the coin-minting block reward to the difficulty too.) A chain of such new, cheaper blocks will grow at the same expected speed <em>in sum-of-difficulty terms</em> as ever; it is just the <em>style</em> of growth which will be different (twice as many blocks, of half the difficulty and average miner reward each). The economics of block solving will change in two, mutually cancelling, ways from a miner&#39;s perspective: each hash has twice the probability of solving a block, but the reward has halved. Miners should thus be broadly indifferent (ignoring network latency issues for now) to difficulty changes in either direction, so long as they are done in that reward-scaling style.</p>
+
+<p>(.....<em>got to here</em>.....)</p>
+
+<p><em>(uh, and now a pause folks, while I slowly learn &quot;everything I never wanted to know about how to type in mathematical notation to a wiki but have been forced to find out&quot;!)</em></p>
+
+<h2 id="z-.27...and_now_for_something_completely_different.21_.28unpolished_teaser_for_now....29.27.27">&#39;&#39;...and now for something completely different! (unpolished teaser for now...)&#39;&#39;</h2>
+
+<p><em>(Just to explain - I&#39;m neglecting this adaptive difficulty stuff for a while <span class="createlink"><a href="/ikiwiki.cgi?from=Adaptive_difficulty&amp;page=sorry%21&amp;do=create" rel="nofollow">?</a>sorry!</span> because I <strong>seem</strong> to have almost accidentally invented <a href="the">bare beginnings of</a> a different system which protects against even a <strong>considerably-greater-than-50% attack</strong>! I don&#39;t want to create a page on it just yet before I thoroughly check that I&#39;m not making a fool of myself... <a href="../Proof_of_blockchain_fair_sharing/">proof of blockchain fair sharing</a>&quot; ...but as a teaser description: it&#39;s of proof-of-stake flavour <a href="which">makes me nervous in some ways, but that&#39;s another story</a>, and it relies on the fact that stakeholders are <strong>pseudonymously trackable</strong>, unlike proof-of-work contributors, and therefore a formula for blockchain height can reward <strong>closeness to fair-share proportions</strong> in such a way that a 90% attacker finds they can&#39;t stop the honest 10% contributing too-expensive-for-attacker-to-reverse blocks which, to the attacker&#39;s chagrin, <strong>incorporate</strong> the accumulated transactions the attacker has been endlessly reversing and re-excluding in an effort to ruin the credibility of Bitcoin. <a href="And">any change to the attacker&#39;s pseudonymous identity/identities destroys their bitcoin-days&#39; stake and takes them out of the running as a big attacker for a long time.</a> - More to follow real soon now hopefully!)</em></p>
+
+<p><em>(To expand a little on the above teaser: One might think that by reductio ad absurdum <strong>no</strong> system can protect against a &gt;50% attack, because in a purported proof of immunity of the honest &lt;50% from the malicious &gt;50%, the labels &quot;honest&quot; and &quot;malicious&quot; ultimately have no technical meaning, and so just swapping the labels would, absurdly, give a second proof, saying that the &lt;50% community can&#39;t &quot;attack&quot; <a href="i.e.">save us all from</a> the &gt;50% community, in contradiction to the first proof. That reductio argument is false here - <strong>there is an asymmetry</strong> between the two communities&#39; goals, as follows. <a href="I&#39;m">talking about an attack to destroy the usability of Bitcoin. An attack to achieve double spending is a much lower-impact event, the analysis of which I&#39;m therefore postponing, although on general grounds the situation is probably neither especially better nor worse than with other protocols.</a> The &gt;50% &quot;community&quot; <a href="the">attacker(s)</a> is trying to exclude transactions - perhaps all of them, perhaps those of specific people it wants to harass, perhaps random ones just to create fear that &quot;I could be next&quot; - from entering the winning blockchain. Thus it has to achieve <strong>total</strong> exclusion of the would-be blocks originating from the &lt;50% community, who keep including the transactions to try and earn an honest profit from the fees. By contrast, the &lt;50% community <a href="the">just-trying-to-earn-a-living honest miners</a> <strong>doesn&#39;t</strong> have to achieve exclusion of the attacker&#39;s blocks - they&#39;re happy with a mixed blockchain where, reasonably often, another honest block gets in and stays in. So long as they can get transactions bedded down into the blockchain, they&#39;ve avoided the ruining of Bitcoin as a usable system. It&#39;s this crucial asymmetry between the two communities which lets the honest miners win - a chain height formula which suitably rewards diversity of pseudonymous composition will stop even a 90% attacker &quot;community&quot; from achieving its, tougher, goal. I hope this indicates the general direction I&#39;m headed. <a>Iain Stewart</a> 02:15, 21 May 2012 (GMT))</em></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Proof_of_Stake/talk/">Proof of Stake/talk</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2012-11-25T02:51:07Z">Sun 25 Nov 2012 02:51:07 AM Europe</time>
+<!-- Created <time datetime="2012-05-06T22:36:23Z" pubdate="pubdate">Sun 06 May 2012 10:36:23 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

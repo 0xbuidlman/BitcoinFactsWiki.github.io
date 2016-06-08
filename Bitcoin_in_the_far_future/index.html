@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Bitcoin in the far future</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Bitcoin in the far future
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Bitcoin_in_the_far_future" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>Bitcoin as it exists today can be used for transactions at any distance and therefore can be used in space or on other planets. However, some effects of latency are amplified due to the way mining and the <a href="../Block_chain/">block chain</a> work, and mining will need to be centralized to the neighborhood of one planet. For improved latency, each planet should have its own currency or <span class="createlink"><a href="/ikiwiki.cgi?from=Bitcoin_in_the_far_future&amp;do=create&amp;page=sidechain" rel="nofollow">?</a>sidechain</span>.</p>
+
+<h3 id="Mining">Mining</h3>
+
+<p>In Bitcoin, a block is produced every 10 minutes on average. (This is called Bitcoin&#39;s <em>block interval</em>.) This value is just fine for mining on Earth, but it is too low for mining on more than one planet at the same time.</p>
+
+<p>Say that some colonists go to Mars, bringing with them mining hardware equal to 20% of Bitcoin&#39;s mining power. But when they start mining there, they find that their rate of stales (blocks that end up getting rejected) is very huge, probably nearly 100%. What&#39;s going on?</p>
+
+<p>This happens because there is a communications delay of up to 20 minutes between Earth and Mars, so by the time the Mars-mined blocks reach Earth, Earth will usually have already solved a block at that height long ago. The longest chain wins, so the Mars chain is rejected on both Earth and (eventually) Mars. In fact, Mars could even generate three or more blocks before they learn that Earth has produced 4+ conflicting blocks, wiping out tons of Martian mining effort and bringing Martian transactions with three or fewer confirmations back down to zero.</p>
+
+<p>If the colonists instead bring mining hardware equal to 80% of Bitcoin&#39;s mining power, then the same situation will happen, but in reverse: Earth miners will start mining almost all stales.</p>
+
+<p>If the two planets have roughly the same mining power, then both sides will experience a lot of stales. In some cases the two sides might have chains that differ by many blocks. When one side finally pulls ahead of the other by a few blocks, the other side loses all of their blocks since the fork. This also makes confirmations less reliable: you might have to wait 30 or more confirmations to get the same security as 2 confirmations today.</p>
+
+<p>In practice, no one would actually try mining on Mars because they&#39;d just lose money. Mining will stay on Earth unless someone is pretty sure that they&#39;ll be able to single-handedly set up a mining operation worth around 60% of the network. This is pretty unlikely to happen even if Mars becomes quite well-developed.</p>
+
+<p>Incidentally, the same problem as above can exist on Earth. If Bitcoin&#39;s block interval was 10 seconds, for example, then mining would probably only be reasonably possible in the geographical area with the most mining (as of this writing, China).</p>
+
+<p>To avoid the above problems, the block interval needs to be set such that it makes the latency between all possible miners <em>entirely insignificant</em>. So if you wanted to allow mining by anyone in our galaxy, which is about 100,000 light years across, then you&#39;d need a block interval of something like 1 million years.</p>
+
+<h3 id="Transactions">Transactions</h3>
+
+<p>If someone on Mars sends a Bitcoin transaction to someone on Earth, then it will take around 20 minutes to reach Earth due to speed-of-light delay, depending on the distance between the planets, at which point the recipient will see it as having 0 confirmations. Then it will take the usual amount of time for it to get into a block and get several confirmations, though the sender will not learn of these confirmations until around 20 minutes after they occur. Usually it is only the recipient who cares about confirmations, so in practice the additional latency is usually just the speed-of-light communications delay: around 20 extra minutes in the case of Mars.</p>
+
+<p>If someone on Earth sends a Bitcoin transaction to someone on Mars, then there&#39;s the usual 20 minutes of latency to see the 0-confirmation transaction. But because mining is centralized on Earth, a recipient on Mars also has to wait an extra 20 minutes for each confirmation due to latency.</p>
+
+<h3 id="Improved_ET_mining.2Ftransactions">Improved ET mining/transactions</h3>
+
+<h4 id="Separate_currencies">Separate currencies</h4>
+
+<p>Mars might create its own cryptocurrency with similar parameters as Bitcoin, but with a different proof-of-work algorithm to discourage Bitcoin miners on Earth from mining &quot;MarsCoin&quot;. Using <a href="../Contracts/">Bitcoin smart contracts</a>, it is possible to do a cryptocurrency-to-cryptocurrency trade without any risk on either side, so this might work pretty well in general.</p>
+
+<p>Normally the currency that is used the most is the most useful and tends to win on the market and push out all competitors, but due to the previously-mentioned latency-related issues, it might be the case that Bitcoin is the most useful currency on Earth and MarsCoin is the  most useful on Mars. This would lead to a stable situation where each planet uses its own currency internally, but trades and uses the other planet&#39;s currency for trade between planets.</p>
+
+<p>The exchange rate between the two currencies would float on the market and probably depend on the export strength of its planet. For example, if Mars only ever imported things and never exported anything of value (not even information, etc.), then its currency would be nearly useless to people on Earth, and you&#39;d have to pay tons of MarsCoins for any bitcoins.</p>
+
+<h4 id="Sidechains">Sidechains</h4>
+
+<p>Mars could use Bitcoin, but on a <span class="createlink"><a href="/ikiwiki.cgi?from=Bitcoin_in_the_far_future&amp;page=sidechain&amp;do=create" rel="nofollow">?</a>sidechain</span>. This is roughly the same as creating a separate MarsCoin currency, but enforcing as a protocol rule in both Bitcoin and MarsCoin that you can always get 1 bitcoin by burning 1 MarsCoin, you can always get 1 MarsCoin by burning 1 bitcoin, and there are no other ways of getting MarsCoins.</p>
+
+<p>While it might be more convenient to have just one currency in the Universe, it may be the case that there are economic advantages to having a different currency for each planet, with floating exchange rates between them, since it embodies the import/export imbalances. This requires further study.</p>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="http://bitcoin.stackexchange.com/questions/30001/how-do-you-create-a-planet-specific-cryptocurrency-that-will-ignore-longer-block">How do you create a planet-specific cryptocurrency that will ignore longer block chains from other planets?</a> (Bitcoin StackExchange)</li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-08-02T03:47:23Z">Sun 02 Aug 2015 03:47:23 AM Europe</time>
+<!-- Created <time datetime="2015-02-08T20:18:52Z" pubdate="pubdate">Sun 08 Feb 2015 08:18:52 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

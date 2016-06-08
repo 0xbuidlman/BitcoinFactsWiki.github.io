@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>QBitcoin</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+QBitcoin
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>QBitcoin is a Qt-based C++ bitcoin client written to provide a better API and internals.</p>
+
+<p>Current version: <em>None</em> (status: coding)</p>
+
+<p>Support address: <a href="http://blockexplorer.com/q/getreceivedbyaddress/1MGQF37NYdpGnPdJXKksb4uHCQSSJrL86R">1MGQF37NYdpGnPdJXKksb4uHCQSSJrL86R</a></p>
+
+<h2 id="Structure">Structure</h2>
+
+<ul>
+<li><a href="../QBitcoin_Wallet/">Wallet</a>: a separate process (maybe a separate binary) that will handle wallet operations through a dedicated line (create address, delete address, etc)</li>
+<li>CORE: The bitcoin core itself, handling P2P connections/etc</li>
+<li>CLI: A cli version of bitcoin with optional interactive terminal</li>
+<li>GUI: The GUI</li>
+<li>API Client: a really simple program that will send commands over JSON-RPC or binary api, will also be made available in various languages such as C/C++/PHP and whatever people feel like contributing</li>
+<li>Miners: the client should be compatible with most common bitcoin miners, however I&#39;ll try to at least provide an example CPU miner using the binary API</li>
+</ul>
+
+
+<h2 id="Features">Features</h2>
+
+<h3 id="Version_0.1.0">Version 0.1.0</h3>
+
+<p><strong>Please note</strong>: this version is planned for mid-january 2011</p>
+
+<ul>
+<li>API/GUI/CORE: Use Qt API, for networking and GUI. The CLI version will also depend on Qt (just not on QtGui, so no depency on X/etc)</li>
+<li>CORE: No included miner (instead we may have an external miner)</li>
+<li>API: JSON-RPC api compatible with existing API, both in CLI and GUI versions (can be disabled)</li>
+<li>API: binary api for faster calls (useful for gpu miners, for example)</li>
+<li>API: Improved API functions (in both binary &amp; JSON-RPC) for coins manipulation</li>
+<li>CORE: OpenSSL optional, only if you want to enable API SSL (uses Qt&#39;s dynamic linking to openssl for binary version, compiling yourself will * depend on how you configured Qt)</li>
+<li>CORE: DB format will be sqlite3 (using QtSql, except for the wallet)</li>
+<li>CORE: Wallet DB will be handled by a separate process using a limited internal API (protects the wallet against unauthorized accesses). Also this process will not depend on any external library (everything will be compiled in). The following components will be compiled in:
+
+<ul>
+<li>sqlite3 library (public domain) for wallet database handling</li>
+<li>libtomcrypt/libtommath (public domain/WTFPL) for bitcoin address handling/generation/signing/etc and PRNG (fortuna)</li>
+</ul>
+</li>
+<li>API/GUI: Automatic update process for binary builds (disabled if compiled from source). Updates will be signed using a RSA key known to the client (or maybe an EC key? to be defined)</li>
+<li>CORE/API/GUI: Support for multiple chains/wallets in same process (ie. access testnet without starting another bitcoin client)</li>
+<li>API/GUI: Fee setting interface (configure your own fees as you wish)</li>
+<li>GUI: Better transactions listing</li>
+<li>GUI: Ability to re-order history columns</li>
+<li>GUI: Documentation</li>
+<li>WALLET: Private key password encryption (AES256), makes the wallet require a password to sign a transaction</li>
+</ul>
+
+
+<h3 id="Future">Future</h3>
+
+<ul>
+<li>API/GUI: Ability to choose which addresses to send coins from</li>
+<li>CORE: Support for loadable plugins (bitDNS, etc)</li>
+<li>CORE: <a href="http://en.wikipedia.org/wiki/Internet_Gateway_Device_Protocol">uPnP support</a></li>
+<li>CORE: Port randomization</li>
+<li>CORE: Append <a href="http://www.shoup.net/papers/iso-2_1.pdf">ECIES</a> encrypted messages to transactions</li>
+<li>GUI: Bitcoin URL support</li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Clients/" rel="tag">Clients</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Bitcoin_Core/">Bitcoin Core</a>
+
+<a href="../Infrastructure/">Infrastructure</a>
+
+<a href="../QBitcoin_Wallet/">QBitcoin Wallet</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2014-08-17T22:40:45Z">Sun 17 Aug 2014 10:40:45 PM Europe</time>
+<!-- Created <time datetime="2010-12-16T12:03:59Z" pubdate="pubdate">Thu 16 Dec 2010 12:03:59 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

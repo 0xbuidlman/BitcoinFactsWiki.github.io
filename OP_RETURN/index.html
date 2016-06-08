@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>OP RETURN</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+OP RETURN
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=OP_RETURN&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p><strong>OP_RETURN</strong> is a <a href="../Script/">script</a> opcode used to mark a transaction output as invalid. Since the data after OP_RETURN are irrelevant to Bitcoin payments, arbitrary data can be added into the output after an OP_RETURN. Since any outputs with OP_RETURN are provably unspendable, OP_RETURN outputs can be used to <a href="../Proof_of_burn/">burn</a> bitcoins.</p>
+
+<p>Currently, the default Bitcoin client relays OP_RETURN transactions up to 80 bytes <a href="https://github.com/bitcoin/bitcoin/search?utf8=%E2%9C%93&amp;q=MAX_OP_RETURN_RELAYa">(1)</a>, but does not provide a way for users to create OP_RETURN transactions.</p>
+
+<h2 id="Is_storing_data_in_the_blockchain_acceptable.3F">Is storing data in the blockchain acceptable?</h2>
+
+<p>Some members of the Bitcoin community believe that use of OP_RETURN violates the contract of Bitcoin, because Bitcoin was intended to provide a record for financial transactions, not a record for arbitrary data. Despite this, use of OP_RETURN may continue unabated because there is no easy way to stop people from embedding arbitrary data in the blockchain if they want to, and OP_RETURN is reasonably efficient in terms of <a href="http://i.imgur.com/VAGZWBK.png">data bytes stored as a fraction of blockchain space consumed</a>. Compared to some other ways of storing data in the blockchain, OP_RETURN has the advantage of not creating bogus UTXO entries. <a href="https://github.com/bitcoin/bitcoin/pull/5286">Discussion on GitHub pull request</a></p>
+
+<p>From <a href="https://bitcoin.org/en/release/v0.9.0#opreturn-and-data-in-the-block-chain">Bitcoin Core release 0.9.0</a>:</p>
+
+<blockquote>
+This change is not an endorsement of storing data in the blockchain. The OP_RETURN change creates a provably-prunable output, to avoid data storage schemes &ndash; some of which were already deployed &ndash; that were storing arbitrary data such as images as forever-unspendable TX outputs, bloating bitcoin&#39;s UTXO database.
+
+Storing arbitrary data in the blockchain is still a bad idea; it is less costly and far more efficient to store non-currency data elsewhere.
+</blockquote>
+
+
+<h2 id="OP_RETURN_applications">OP_RETURN applications</h2>
+
+<p>OP_RETURN is used for writing human-language messages, digital asset proof-of-ownership, and storing data. Its use has been proposed for P2P application discovery. See the &quot;prefixes&quot; table below.</p>
+
+<h2 id="OP_RETURN_prefixes">OP_RETURN prefixes</h2>
+
+<p>Often, OP_RETURN transactions include a prefix to identify which protocol they belong to. There is no standardized method of claiming OP_RETURN prefixes, and not all OP_RETURN transactions use prefixes. At the time of writing, this wiki page is probably the most complete list of OP_RETURN prefixes. Note that this table is an attempt to catalog OP_RETURN prefixes that are already in use, <em>not</em> a system for reserving OP_RETURN prefixes!</p>
+
+<table>
+<thead>
+<tr>
+<th>Prefix </th>
+<th>Protocol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SPK </td>
+<td><a href="http://coinspark.org/developers/">CoinSpark</a></td>
+</tr>
+<tr>
+<td>DOCPROOF </td>
+<td><a href="http://www.proofofexistence.com/">Proof of Existence</a></td>
+</tr>
+<tr>
+<td>CryptoTests- </td>
+<td><a href="http://crypto-copyright.com/">Crypto Copyright</a></td>
+</tr>
+<tr>
+<td>CryptoProof- </td>
+<td><a href="http://crypto-copyright.com/">Crypto Copyright</a></td>
+</tr>
+<tr>
+<td>BS </td>
+<td><a href="http://blocksignit.com/">BlockSign</a></td>
+</tr>
+<tr>
+<td>OA </td>
+<td><a href="https://github.com/OpenAssets/open-assets-protocol/blob/master/specification.mediawiki">Open Assets</a></td>
+</tr>
+<tr>
+<td>STAMPD## </td>
+<td><a href="http://stampd.io/">stampd</a></td>
+</tr>
+<tr>
+<td>Factom</td>
+<td><a href="http://factom.org/">Factom</a></td>
+</tr>
+<tr>
+<td>FACTOM00 </td>
+<td><a href="http://factom.org/">Factom</a></td>
+</tr>
+<tr>
+<td>Fa </td>
+<td><a href="http://factom.org/">Factom</a></td>
+</tr>
+<tr>
+<td>FA </td>
+<td><a href="http://factom.org/">Factom</a></td>
+</tr>
+<tr>
+<td>tradle </td>
+<td><a href="http://tradle.io/">Tradle</a></td>
+</tr>
+<tr>
+<td>LaPreuve </td>
+<td><a href="http://www.lapreuve.net/">LaPreuve</a></td>
+</tr>
+<tr>
+<td>hex:5888 </td>
+<td><a href="http://blog.onename.com/blockstore-bitcoin/">Blockstore</a></td>
+</tr>
+<tr>
+<td>hex:5808 </td>
+<td><a href="http://blog.onename.com/blockstore-bitcoin/">Blockstore</a></td>
+</tr>
+<tr>
+<td>id </td>
+<td><a href="http://blog.onename.com/blockstore-bitcoin/">Blockstore</a></td>
+</tr>
+<tr>
+<td>BITPROOF </td>
+<td><a href="https://bitproof.io/">Bitproof</a></td>
+</tr>
+<tr>
+<td>S1 </td>
+<td><a href="https://stampery.co/">Stampery</a></td>
+</tr>
+<tr>
+<td>S2 </td>
+<td><a href="https://stampery.co/">Stampery</a></td>
+</tr>
+<tr>
+<td>S3 </td>
+<td><a href="https://stampery.co/">Stampery</a></td>
+</tr>
+<tr>
+<td>S4 </td>
+<td><a href="https://stampery.co/">Stampery</a></td>
+</tr>
+<tr>
+<td>S5 </td>
+<td><a href="https://stampery.co/">Stampery</a></td>
+</tr>
+<tr>
+<td>ASCRIBE </td>
+<td><a href="https://www.ascribe.io/">Ascribe</a></td>
+</tr>
+<tr>
+<td>ProveBit </td>
+<td><a href="https://github.com/thereal1024/ProveBit">ProveBit</a></td>
+</tr>
+<tr>
+<td>EW  </td>
+<td><a href="http://eternitywall.it/">Eternity Wall</a></td>
+</tr>
+<tr>
+<td>CC </td>
+<td><a href="http://colu.co/">Colu</a></td>
+</tr>
+<tr>
+<td>omni </td>
+<td><a href="http://www.omnilayer.org/">Omni Layer</a></td>
+</tr>
+<tr>
+<td>MG </td>
+<td><a href="http://monegraph.com/">Monegraph</a></td>
+</tr>
+<tr>
+<td>RMBd </td>
+<td><a href="https://app.remembr.io/">Remembr</a></td>
+</tr>
+<tr>
+<td>RMBe </td>
+<td><a href="https://app.remembr.io/">Remembr</a></td>
+</tr>
+<tr>
+<td>ORIGMY </td>
+<td><a href="http://originalmy.com/">OriginalMy</a></td>
+</tr>
+</tbody>
+</table>
+
+
+<h2 id="External_resources_on_OP_RETURN">External resources on OP_RETURN</h2>
+
+<h3 id="Viewing_OP_RETURN">Viewing OP_RETURN</h3>
+
+<ul>
+<li><a href="http://coinsecrets.org/">coinsecrets.org</a>: An OP_RETURN transaction explorer</li>
+<li><a href="http://bitcoinstrings.com/">bitcoinstrings.com</a>: A site showing raw strings in Bitcoin transactions</li>
+</ul>
+
+
+<h3 id="Explaining_OP_RETURN">Explaining OP_RETURN</h3>
+
+<ul>
+<li><a href="https://github.com/coinspark/python-OP_RETURN">python-OP_RETURN</a></li>
+<li><a href="http://bitcoin.stackexchange.com/questions/29554/explanation-of-what-an-op-return-transaction-looks-like">StackExchange: Explanation of what an OP_RETURN transaction looks like</a></li>
+<li><a href="http://www.slideshare.net/coinspark/bitcoin-2-and-opreturns-the-blockchain-as-tcpip">Metadata in the Blockchain: The OP_RETURN Explosion</a></li>
+<li><a href="http://wlangiewicz.com/blog/2014/10/24/how-to-put-custom-messages-into-bitcoin-blockchain-op-return/">How to Put Custom Messages Into Bitcoin Blockchain - OP_RETURN</a></li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Script/">Script</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-05-04T08:58:07Z">Wed 04 May 2016 08:58:07 AM Europe</time>
+<!-- Created <time datetime="2015-12-29T01:35:12Z" pubdate="pubdate">Tue 29 Dec 2015 01:35:12 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

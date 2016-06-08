@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Gocoin</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Gocoin
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Gocoin&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>An open-source Bitcoin solution written in Go language (golang).
+It can be built for every platform that has a working Go compiler.
+It uses a proprietary license, though is free to use for non-commercial purposes.</p>
+
+<h2 id="Architecture">Architecture</h2>
+
+<p>Gocoin&#39;s architecture is quite different from the reference implementation (of the Satoshi client).</p>
+
+<h3 id="Libraries">Libraries</h3>
+
+<h4 id="btc_.2F_chain_.2F_script">btc / chain / script</h4>
+
+<p>The core of the software is a library that essentially provides the blockchain protocol parser. That includes script parsing, ECDSA signature verification, but also things like address encoding, parsing of canonical signatures or extracting hashes that need to be signed for specific inputs of a given transaction.</p>
+
+<p>It is a relatively big library, that contains many useful bitcoin function.</p>
+
+<p>Inside the package, there is also a blocks persistent storage database (blockdb.go) - it is just a simple plain storage (that can only grow), with an index. It uses snappy compression, allowing to save about 30% of the disk space.</p>
+
+<h4 id="qdb">qdb</h4>
+
+<p>The core library interfaces directly with a UTXO database backed.
+For this purpose Gocoin uses its own database engine, that has been designed to deal with the specific characteristics of bitcoin&#39;s UTXO database.</p>
+
+<h4 id="secp256k1">secp256k1</h4>
+
+<p>To speed up the Elliptic Curve operations <a href="https://github.com/bitcoin/secp256k1">the secp256k1 library by sipa</a> has been ported to Go.</p>
+
+<h3 id="Online_client">Online client</h3>
+
+<p>The online client is a kind of a server software (or a peer-to-peer node) that is meant to be running all the time.</p>
+
+<p>It handles the network related communication, feeds the core lib with new incoming blockchain data, monitors balances on the wallets&#39; addresses,  manages transaction memory pool and the peers database. It also provides an interactive user interface.</p>
+
+<h3 id="Offline_wallet">Offline wallet</h3>
+
+<p>The wallet application is responsible for creating private keys (from a seed password) and for signing transactions with them.
+It can also sign text messages with private keys and decode raw transactions.</p>
+
+<p>Unlike the client, the wallet is not an app that is meant te be running continuously.
+A user runs it with the requested task - the wallet does the job and exits (back to the command prompt).</p>
+
+<h3 id="Blockchain_downloader">Blockchain downloader</h3>
+
+<p>For optimized initial blockchain download, Gocoin has a dedicated application called <strong>downloader</strong>.</p>
+
+<p>Among other optimizations, the downloader allows a user to skip verification of all the blocks up to a certain one that he defines as trusted. This can speed up the bootstrap process significantly (e.g. from days to hours).</p>
+
+<p>After it finishes downloading of all the blocks, it will exit automatically. In that moment the client should be started and it will keep up with all the new blocks, that will  appear in the network.</p>
+
+<h3 id="Other_tools">Other tools</h3>
+
+<p>There is also a set of more and less useful tools (<em>github.com/piotrnar/gocoin/tools</em>) that are an integral part of the Gocoin bitcoin software.</p>
+
+<p>For instance <strong>btcversig</strong> can verify a validity of a bitcoin signature - it is the substitute of the reference client&#39;s <strong>verifymessage</strong> RPC-API.</p>
+
+<p>The tool <strong>type2determ</strong> can, at the other hand, calculate Type-2 deterministic addresses, without a need to access the wallet (the private keys).</p>
+
+<h2 id="Features">Features</h2>
+
+<p>Gocoin has a several unique features, that distinguish it from the original bitcoin client.</p>
+
+<h3 id="Node_.2F_Client">Node / Client</h3>
+
+<ul>
+<li>All the unspent outputs are kept in memory, which makes switching between different wallets, as well as checking a balance of any address, relatively fast (few seconds max).</li>
+<li>Allows a user to limit the upload and download network bandwidth used by the client.</li>
+<li>Can be monitored and controlled through a web interface (from a web browser).</li>
+<li>Works with its own implementation of a cold storage wallet.</li>
+<li>Web interface allows a user to create raw transactions from specific inputs (<span class="createlink"><a href="/ikiwiki.cgi?from=Gocoin&amp;do=create&amp;page=Coin_Control" rel="nofollow">?</a>Coin Control</span>), as well as multisig transactions (<a href="../P2SH/">P2SH</a>)</li>
+<li>The blocks are stored on the disk in a compressed form (using <a href="https://code.google.com/p/snappy/">snappy</a> compression) which saves 20-30% of space.</li>
+<li>Supports monitoring and fetching balance of own stealth addresses (the ones implemented in <a href="../Dark_Wallet/">Dark Wallet</a>)</li>
+</ul>
+
+
+<h3 id="Wallet">Wallet</h3>
+
+<ul>
+<li>For security reasons, it is supposed to be used with a PC that has never been (and will never be) connected to a network.</li>
+<li>The wallet is deterministic and a seed-password based. As long as you can remember the password, there is no need for any backups.</li>
+<li>Additionally it can import private keys from an existing bitcoin wallet (must be in  <a href="../Private_key/#Base_58_Wallet_Import_format">Base 58 Wallet Import format</a> format).</li>
+<li>Has very low hardware requirements. Can be run on i.e. Raspberry Pi</li>
+<li>Can generate <a href="https://bitcointalk.org/index.php?topic=19137.0">Type-2</a> deterministic keys/addresses</li>
+<li>Supports (partial) signing of <a href="../P2SH/">P2SH</a> multisig transactions (the ones that use  <a href="../Script/#Crypto">OP CHECKMULTISIG opcode</a>).</li>
+<li>Supports spending to stealth addresses as implemented in Dark Wallet</li>
+</ul>
+
+
+<h3 id="Node-less_mode">Node-less mode</h3>
+
+<p>It is possible to use Gocoin&#39;s wallet, without a need to have a running client node, which may come handy since the node requires quite a decent hardware and the block chain takes  a lot of time for the initial download.</p>
+
+<p>In such a case the required balance files are fetched with a tool called <strong>balio</strong>, from a popular block explorer <strong>blockr.io</strong></p>
+
+<p><em>Note: using this tool you will not be able to monitor balance on your stealth addresses.</em></p>
+
+<h2 id="Requirements">Requirements</h2>
+
+<h3 id="Client">Client</h3>
+
+<p>Requires 64-bit platform and at least 4GB of system memory.</p>
+
+<p>The file system that stores the blockchain data must be able to handle files larger than 4GB.</p>
+
+<h3 id="Wallet">Wallet</h3>
+
+<p>The wallet app has very little hardware requirements. As long as you can build it for a specific architecture, it should work there.</p>
+
+<p>Gocoin wallet has been even used on Raspberry Pi model A.</p>
+
+<p>For security reasons it is strongly recommended to run the wallet on an encrypted file system, with an encrypted swap file.</p>
+
+<h2 id="Limitations">Limitations</h2>
+
+<ul>
+<li>No GUI, though the online node has web interface which acts like a GUI</li>
+<li>No IPv6</li>
+<li>No UPnP</li>
+<li>No support for non-confirmed transactions (they are invisible in the balance)</li>
+<li>No support for  <a href="../Protocol_specification/#filterload,_filteradd,_filterclear,_merkleblock">bloom filters</a> protocol (<a href="../BIP_0037/">BIP 0037</a>) and the  <a href="../Protocol_specification/#mempool">mempool</a> command</li>
+<li>No routing of  <a href="../Protocol_specification/#alert">alert</a> messages</li>
+<li>No support for multisig stealth addresses (yet)</li>
+</ul>
+
+
+<h2 id="History">History</h2>
+
+<p>Gocoin was written by a single person for a private purposes.</p>
+
+<p>The software&#39;s first public release was announced in May 2013 on Bitcointalk forum. (19.1)
+Ever since then, the software has been actively maintained and further developed, being armed with new features, further optimized and cleaned up from issues.</p>
+
+<p>It happened twice that the client wasn&#39;t able to catch up with the blockchain, because of the implementation difference of the chain parsing protocol that was causing it to reject a block (transaction) that the reference implementation would accept. In both cases the issue was fixed within single days. The fist case happened in July 2013 and the fix was introduced in version 0.5.7. The second time was in March 2014 - the fix came with release 0.9.3.</p>
+
+<h2 id="External_Links">External Links</h2>
+
+<ul>
+<li><a href="http://gocoin.pl">Homepage</a></li>
+<li><a href="https://github.com/piotrnar/gocoin">Github repo</a></li>
+<li><a href="https://bitcointalk.org/index.php?topic=199306.0">Bitcointalk forum topic</a></li>
+</ul>
+
+
+<h2 id="References">References</h2>
+
+<p>19.1: https://bitcointalk.org/index.php?topic=199306.0</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Clients/" rel="tag">Clients</a>
+
+<a href="../tags/Google_Go/" rel="tag">Google Go</a>
+
+<a href="../tags/Open_Source/" rel="tag">Open Source</a>
+
+<a href="../tags/Software/" rel="tag">Software</a>
+
+<a href="../tags/Wallets/" rel="tag">Wallets</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Clients/">Clients</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-05-17T13:12:43Z">Tue 17 May 2016 01:12:43 PM Europe</time>
+<!-- Created <time datetime="2013-05-13T17:11:13Z" pubdate="pubdate">Mon 13 May 2013 05:11:13 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

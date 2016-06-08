@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>How bitcoin works</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+How bitcoin works
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<center>
+
+
+|**This article requires cleanup to meet the Bitcoin Wiki&#39;s quality standards.**
+
+</center>
+
+
+<p>This page explains the basic framework of Bitcoin&#39;s functionality.</p>
+
+<h2 id="Cryptography">Cryptography</h2>
+
+<p>There are several cryptographic technologies that make up the essence of Bitcoin.</p>
+
+<p>First is <a href="http://en.wikipedia.org/wiki/Public-key_cryptography">public key cryptography</a>. Each coin is associated with its current owner&#39;s public <a href="../ECDSA/">ECDSA</a> key. When you send some bitcoins to someone, you create a message (<a href="../Transaction/">transaction</a>), attaching the new owner&#39;s public key to this amount of coins, and sign it with your private key. When this transaction is broadcast to the bitcoin network, this lets everyone know that the new owner of these coins is the owner of the new key. Your signature on the message verifies for everyone that the message is authentic. The complete history of transactions is kept by everyone, so anyone can verify who is the current owner of any particular group of coins.</p>
+
+<p>This complete record of transactions is kept in the <a href="../Block_chain/">block chain</a>, which is a sequence of records called <a href="../Block/">blocks</a>. All computers in the network have a copy of the block chain, which they keep updated by passing along new blocks to each other. Each block contains a group of transactions that have been sent since the previous block. In order to preserve the integrity of the block chain, each block in the chain confirms the integrity of the previous one, all the way back to the first one, the <a href="../Genesis_block/">genesis block</a>. Record insertion is costly because each block must meet certain requirements that make it <a href="../Difficulty/">difficult</a> to generate a valid block. This way, no party can overwrite previous records by just forking the chain.</p>
+
+<p>To make generating bitcoins difficult the <a href="http://en.wikipedia.org/wiki/Hashcash">Hashcash</a> cost-function is used.  Hashcash is the first secure efficiently verifiable cost-function or proof-of-work function.  The beauty of hashcash is that is is non-interactive and has no secret keys that have to be managed by a central server or relying party; hashcash is as a result fully distributed and infinitely scalable.  (Hashcash uses symmetric key cryptogaphy, namely a one-way hashcash function - typically either SHA1 or SHA-256).</p>
+
+<p>In bitcoin, integrity, block-chaining, and the hashcash cost-function all use <a href="http://en.wikipedia.org/wiki/SHA-2">SHA256</a> as the underlying <a href="http://en.wikipedia.org/wiki/Cryptographic_hash_function">cryptographic hash function</a>.</p>
+
+<p>A cryptographic hash function essentially takes input data which can be of practically any size, and transforms it, in an effectively-impossible to reverse or to predict way, into a relatively compact string (in the case of SHA-256 the hash is 32 bytes). Making the slightest change to the input data changes its hash unpredictably, so nobody can create a different block of data that gives exactly the same hash. Therefore, by being given a compact hash, you can confirm that it matches only a particular input datum, and in bitcoin the input data being a block-chain is significantly larger than the SHA-256 hash. This way, Bitcoin blocks don&#39;t have to contain serial numbers, as blocks can be identified by their hash, which serves the dual purpose of identification as well as integrity verification.  An identification string that also provides its own integrity is called a self-certifying identifier.</p>
+
+<p>The hashcash <a href="../Difficulty/">difficulty</a> factor is achieved by requiring that the hash output has a number of leading zeros.  Technically, to allow more fine-grained control than Hashcash number of leading 0-bits method, Bitcoin extends the hashcash solution definition by treating the hash as a large big-endian integer, and checking that the integer is below a certain threshold.  The hashcash cost-function iterates by perturbing data in the block by a <a href="../Nonce/">nonce</a> value, until the data in the block hashes to produce an integer below the threshold - which takes a lot of processing power. This low hash value for the block serves as an easily-verifiable <a href="../Proof_of_work/">proof of work</a> - every node on the network can instantly verify that the block meets the required criteria.</p>
+
+<p>With this framework, we are able to achieve the essential functions of the Bitcoin system. We have verifiable ownership of bitcoins, and a distributed database of all transactions, which prevents <span class="createlink"><a href="/ikiwiki.cgi?from=How_bitcoin_works&amp;do=create&amp;page=double%20spending__124__" rel="nofollow">?</a>double spending|</span>.</p>
+
+<h2>Bitcoin <a href="../Mining/">Mining</a></h2>
+
+<p>We have mentioned in the previous section that adding a block to the block chain is difficult, requiring time and processing power to accomplish. The incentive to put forth this time and electricity is that the person who manages to produce a block gets a reward. This reward is two-fold. First, the block producer gets a bounty of some number of bitcoins, which is agreed-upon by the network. (Currently this bounty is 25 bitcoins; this value will halve every 210,000 blocks.) Second, any <a href="../Transaction_fees/">transaction fees</a> that may be present in the transactions included in the block, get claimed by the block producer.</p>
+
+<p>This gives rise to the activity known as &quot;Bitcoin <a href="../Mining/">mining</a>&quot; - using processing power to try to produce a valid block, and as a result &#39;mine&#39; some bitcoins. The network rules are such that the <a href="../Difficulty/">difficulty</a> is adjusted to keep block production to approximately 1 block per 10 minutes. Thus, the more miners engage in the mining activity, the more difficult it becomes for each individual miner to produce a block. The higher the total difficulty, the harder it is for an attacker to overwrite the tip of the block chain with his own blocks (which enables him to double-spend his coins. See the <a href="../Weaknesses/">weaknesses</a> page for more details).</p>
+
+<p>Besides being important for maintaining the transaction database, mining is also the mechanism by which bitcoins get created and distributed among the people in the bitcoin economy. The network rules are such that over the next hundred years, give or take a few decades, a total of 21 million bitcoins will be created. See <a href="../Controlled_Currency_Supply/">Controlled Currency Supply</a>. Rather than dropping money out of a helicopter, the bitcoins are awarded to those who contribute to the network by creating <a href="../Block/">block</a>s in the <a href="../Block_chain/">block chain</a>.</p>
+
+<h2 id="Double_spending">Double spending</h2>
+
+<p>The <a href="../Block_chain/">block chain</a> is a common ledger shared by all Bitcoin nodes which details the owner of each bitcoin, or fraction thereof. Unlike conventional banking systems, there is no central place where this ledger of transactions is stored. This is accomplished through the broadcasting of small pieces (&quot;blocks&quot;), each stating that it is a continuation of a previous block. It is possible for the block chain to split; that is, it is possible for two blocks to both point to the same parent block and contain some, but not all, of the same transactions. When this happens, each computer in the network must decide for itself which branch is the &quot;correct&quot; one that should be accepted and extended further.</p>
+
+<p>The rule in this case is to accept the &quot;longest&quot; valid branch. Choose from the branches of blocks that you have received, the path, the total &quot;difficulty&quot; of which is the highest. This is the sequence of blocks that is assumed to have required the most work (CPU time) to generate. For Bitcoin, this will be the &quot;true&quot; order of events, and this is what it will take into account when calculating the balance to show to the user.</p>
+
+<p>It is still possible that, as new blocks are constantly being generated, at some later time, some other branch will become the longest branch. However, it takes significant effort to extend a branch, and nodes work to extend the branch that they have received and accepted (which is normally the longest one). So, the longer this branch becomes compared to the second-longest branch, the more effort it will take for the second-longest branch to catch up and overcome the first in length. Also, the more nodes in the network hear about the longest branch, the more unlikely it becomes for other branches to be extended the next time a block is generated, since the nodes will accept the longest chain.</p>
+
+<p>Therefore, the more time a transaction has been part of the longest block chain, the more likely it is to remain part of the chain indefinitely. This is what makes transactions non-reversible and this is what prevents people from <a href="../Double-spending/">double-spending</a> their coins. What the receiver of each transaction does, after money has been supposedly transferred to him/her is to check how long the block chain following the said transaction has become, because the more blocks are added to the longest branch after the transaction, the less likely is it that some other branch will overcome it.</p>
+
+<p>When the block chain after the transaction has become long enough, it becomes near-impossible for another branch to overcome it, and so people can start accepting the transaction as true. This is why &#39;blocks&#39; also serve as &#39;confirmations&#39; for a transaction. Even if another branch does overcome the one with the transaction, most of the blocks will have been generated by people who have no affiliation with the sender of the coins, as a large number of people are working to generate blocks. Since transactions are broadcasted to all nodes in the network, these blocks are just as likely to contain the transaction as the blocks in the previously-accepted branch.</p>
+
+<p>Bitcoin relies on the fact that no single entity can control most of the CPU power on the network for any significant length of time, since, if they could, they would be able to extend any branch of the tree they chose, and faster than any other branch can be extended, making it the longest branch, and then permanently controlling which transactions appear in it.</p>
+
+<h2 id="See_also">See also</h2>
+
+<ul>
+<li><a href="../Introduction/">Introduction</a></li>
+<li><a href="../Getting_started/">Getting started</a></li>
+<li><a href="../Using_Bitcoin/">Using Bitcoin</a></li>
+<li>Bitcoin <a href="../FAQ/">FAQ</a></li>
+<li><a href="../Double-spending/">Double-spending</a></li>
+<li><a href="../Prohibited_changes/">Prohibited changes</a></li>
+</ul>
+
+
+<h2 id="External_Links">External Links</h2>
+
+<ul>
+<li>http://bitcointalk.org/index.php?topic=2487.0 A forum thread with some good &#39;for-the-layperson&#39; explanations of how bitcoin works.</li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Introduction/" rel="tag">Introduction</a>
+
+</nav>
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-04-25T11:34:51Z">Mon 25 Apr 2016 11:34:51 AM Europe</time>
+<!-- Created <time datetime="2011-01-02T08:10:23Z" pubdate="pubdate">Sun 02 Jan 2011 08:10:23 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

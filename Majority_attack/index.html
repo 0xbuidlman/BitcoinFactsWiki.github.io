@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Majority attack</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Majority attack
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Majority_attack&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>A <strong>majority attack</strong> (usually labeled <strong>51% attack</strong> or <strong>&gt;50% attack</strong>) is an attack on the network. This attack has a chance to work even if the merchant waits for some confirmations, but requires extremely high relative hashrate.</p>
+
+<p>The attacker submits to the merchant/network a transaction which pays the merchant, while privately mining a blockchain fork in which a <a href="../Double-spending/">double-spending transaction</a> is included instead. After waiting for <em>n</em> confirmations, the merchant sends the product. If the attacker happened to find more than <em>n</em> blocks at this point, he releases his fork and regains his coins; otherwise, he can try to continue extending his fork with the hope of being able to catch up with the network. If he never manages to do this, the attack fails and the payment to the merchant will go through. The work done mining will also go to waste, as any new bitcoins would be overwritten by the longest chain.</p>
+
+<p>The probability of success is a function of the attacker&#39;s hashrate (as a proportion of the total network hashrate) and the number of confirmations the merchant waits for. For example, if the attacker controls 10% of the network hashrate but the merchant waits for 6 confirmations, the success probability is on the order of 0.1%. If the attacker controls more than half of the network hashrate, this has a probability of 100% to succeed. Since the attacker can generate blocks faster than the rest of the network, he can simply persevere with his private fork until it becomes longer than the branch built by the honest network, from whatever disadvantage.</p>
+
+<p>No amount of confirmations can prevent this attack; however, waiting for confirmations does increase the aggregate resource cost of performing the attack, which could make it unprofitable or delay it long enough for the circumstances to change or slower-acting synchronization methods to kick in. A majority attack was more feasible in the past when most transactions were worth significantly more than the block reward and when the network hashrate was much lower and prone to reorganization with the advent of new mining technologies.</p>
+
+<p>A majority attack has never been executed on the Bitcoin network.</p>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="https://people.xiph.org/~greg/attack_success.html">Attack success probability calculator</a></li>
+<li><a href="../Double_spending/">Double spending</a></li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Attack_vectors/" rel="tag">Attack vectors</a>
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Double-spending/">Double-spending</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-07-08T16:37:14Z">Wed 08 Jul 2015 04:37:14 PM Europe</time>
+<!-- Created <time datetime="2015-03-15T01:07:31Z" pubdate="pubdate">Sun 15 Mar 2015 01:07:31 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

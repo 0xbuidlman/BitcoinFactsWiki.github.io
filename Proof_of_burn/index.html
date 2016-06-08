@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Proof of burn</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Proof of burn
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=Proof_of_burn" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p><strong>Proof of burn</strong> is a method for distributed consensus and an alternative to <a href="../Proof_of_Work/">Proof of Work</a> and <a href="../Proof_of_Stake/">Proof of Stake</a>. It can also be used for bootstrapping one cryptocurrency off of another.</p>
+
+<p>The idea is that miners should show proof that they <em>burned</em> some coins - that is, sent them to a verifiably unspendable address. This is expensive from their individual point of view, just like proof of work; but it consumes no resources other than the burned underlying asset.  To date, all proof of burn cryptocurrencies work by burning proof-of-work-mined cryptocurrencies, so the ultimate source of scarcity remains the proof-of-work-mined &quot;fuel&quot;.</p>
+
+<p>There are likely many possible variants of proof of burn. This page currently describes <a>Iain Stewart</a>&#39;s version. Other people can add variant versions that still belong to the broad proof of burn idea.</p>
+
+<h2 id="Iain_Stewart.27s_version_of_proof_of_burn">Iain Stewart&#39;s version of proof of burn</h2>
+
+<p><em>(<strong>Note:</strong> Iain Stewart&#39;s version of proof of burn is an attempt at a protocol which could be used <strong>within one cryptocurrency</strong> for ongoing generation of its blockchain (i.e. mining). For the much simpler task of burning one currency to create another, any reasonable algorithm for creating units of the second currency upon detection of fresh burns of the first will suffice. The subtleties of this version - in particular, the simulation of mining rigs, and the reliance on low-bit-rate external randomness - will not be necessary.)</em></p>
+
+<h3 id="Introduction_and_motivation">Introduction and motivation</h3>
+
+<p>The key idea of proof-of-burn (this would also apply to proof-of-stake, by the way) is that when choosing the thing which is to qualify as a &quot;difficulty&quot;, i.e. to require miners to exhibit proof that they&#39;ve &quot;done something that&#39;s tough to do&quot;, all that matters is that <em>an individual miner</em> finds the task expensive. (Well... it also matters that everyone else should find it cheap to verify that it has been done.) It doesn&#39;t need to be the case that real resources are consumed in the real economy.</p>
+
+<p>With proof-of-work, it so happens that real resources are indeed consumed - mining rigs are produced, with human labour and materials as input, electricity is used, and all these things have to be bid away from their real-economy best alternative uses. (Or, if they&#39;re produced <em>in addition</em> to what would have been produced, the total of leisure time is less than it could have been. Something real is grabbed as input.) And while a cryptocurrency is being set up (i.e. <a href="the">fast early phase of</a> its initial distribution) - or, more precisely, while <em>the first</em> cryptocurrency is being set up; more on this distinction later! - no good alternative has been proposed. (And I&#39;m not proposing one.) But once a cryptocurrency is up and running, with its initial distribution close to completed, new possibilities arise, for tasks to &quot;feel expensive&quot; to a miner but not actually &quot;be expensive&quot; from a god-like whole-economy perspective.</p>
+
+<p>Proof-of-stake (of the &quot;Cunicula variety&quot;, I mean) is in fact arguably already an example of such a task. It feels awfully expensive, to a miner, to save up a lot of bitcoins and become a big stakeholder; but from a whole-economy viewpoint, this is a swapping of assets&#39; ownership labels around, it&#39;s not a burning of electricity or the like. However, I thought it would be interesting to invent a task that is absolutely, nakedly, unambiguously an example of the contrast between the two viewpoints. And yes, there is one: burning the currency!</p>
+
+<p>By &quot;burning&quot; a tranche of bitcoins I just mean sending them to an address which is unspendable. The precise technical details of this will vary from cryptocurrency to cryptocurrency. With Bitcoin, any address which is <a href="the">RIPEMD160/SHA256 hash of</a> a script that evaluates to false will do. So, the script should do a &quot;deliberately silly&quot; thing - instead of things like &quot;check such-and-such signature, and put the validity result on the stack&quot;, it should do something like &quot;add 2 and 2, and now check if what&#39;s on top of the stack is equal to 5&quot;. (Or just &quot;push 4, and check if it&#39;s equal to 5&quot;. Anything of that sort.) There are thus an unbounded number of such scripts, with entropy saturating RIPEMD160 since you can choose big numbers to taste. So, bitcoins sent to such a txout can never be redeemed on a future txin. (Barring the cracking of RIPEMD160 and the finding of an alternative matching script, that is. If <em>that</em> happens, the cryptocurrency is in big trouble anyway!)</p>
+
+<p>With this definition of burning, it&#39;s not obvious to blockchain-watchers that some bitcoins <em>have</em> been burnt, at the time of burning. They&#39;ve been sent to an address which doesn&#39;t stand out from any other. It&#39;s only later, when a miner who burned them earlier now wants to exhibit proof that &quot;yes, these coins are burnt&quot;, that blockchain-watchers get their proof. (Which basically consists of exhibiting the script that manifestly always evaluates to false, and hashes to the address.) If it&#39;s thought desirable that the act of burning should be obvious right away, rather than later, then this can be achieved: burning merely needs to be defined as sending to some <em>fixed</em> unspendable address, with no variation - e.g. we could settle on the hash of &quot;push 4, and check if it&#39;s equal to 5&quot;.</p>
+
+<p>So, miners are creating candidate winning blocks by saying to the listening world, not &quot;Look! I&#39;ve done this many trillion hashes! <a href="or">struck lucky with fewer: you, the listening world, wouldn&#39;t know the difference... but this doesn&#39;t matter...</a>&quot;, but rather &quot;Look! Two months ago I burned this many bitcoins!&quot;. In both cases, &quot;this many&quot; means an adjustable difficulty parameter, which the network adjusts from time to time (fortnightly, in today&#39;s Bitcoin) to squeeze out marginal miners (and keep more-efficient-than-marginal ones in profit) to just the extent needed to regulate block creation to a preferred pace (one per 10 minutes, in today&#39;s Bitcoin).</p>
+
+<p>Why that phrase &quot;Two months ago&quot;? The broad principle is as follows. A miner mustn&#39;t be able to just burn some bitcoins <em>right now</em> and say &quot;OK, I&#39;ve burned them! Now let me have all those latest juicy transaction fees that have arrived in the past few minutes! Thanks!&quot; That extremely recent act of burning could be undone in a block chain reorganisation; and then the same miner would be able to &quot;re-burn&quot; those same coins in an attempt to grab a block afresh, post-reorganisation. That would constitute a breakdown in the analogy of burning with proof-of-work hashing. A trillion proof-of-work hashes on a pre-reorg block are of no value on the post-reorg chain. A proof-of-work miner must simply shrug and say &quot;Oh well, that&#39;s those expenses <a href="electricity,">mining rig rental / imputed rental,...</a> lost and gone... time to try again!&quot; And that&#39;s the way things should be, for security - it <strong>should not</strong> be as cheap to extend the height of two or more competing chains as it is to focus on one. (And having decided to focus on one, a miner <em>should</em> incur a risk of lost expense if their choice turns out to be &quot;the wrong one&quot; in network consensus terms.)</p>
+
+<p>The above point makes it clear why the act of burning should be a decent interval earlier than the act of exhibiting proof. Two months may be overdoing it, but the protocol should require it to be sufficiently far back that there&#39;s no practical possibility of it being undone. There are in fact some further issues, to do with making sure it&#39;s not cheap for a miner to <em>re-exhibit</em> their proof (of having performed a suitably substantial burn a suitably long time ago) on multiple competing chains. Details to follow.</p>
+
+<p>Now then! How much burning will actually happen, under this protocol? The answer is straightforward enough, though its implications are quite broad and in some ways surprising. Miners will burn bitcoins at an average rate <strong>very close to</strong> the average rate that ordinary users are sending them fees (and any coin-minting still going on too of course), minus the miners&#39; true real-resource costs (i.e. the hardware and electricity and the like for handling transactions and blocks and burn proofs - these costs will be far lower than the hashing costs incurred under proof-of-work, but of course still non-zero). This follows by the same sort of &quot;approach to equilibrium&quot; reasoning that tells us that miners will <em>expend real resources on proof-of-work</em> to roughly that extent - if they didn&#39;t, mining would be supra-normally profitable, and new entrants would be attracted into the trade. If burning coins, rather than buying a lot of kit from a mining rig supplier, is the expense incurred by a miner to compete for the revenue stream, the same economic principles apply.</p>
+
+<h3 id="Technical_sketch_of_proof_of_burn.3A_Burnt_coins_are_mining_rigs.21">Technical sketch of proof of burn: &quot;Burnt coins are mining rigs!&quot;</h3>
+
+<p><em>Iain Stewart writes:</em> In this subsection I give a provisional technical sketch of the operational details of the proof-of-burn protocol I&#39;ve currently settled on. It can be summed up in the following pithy slogan:</p>
+
+<pre><code>***&quot;Burnt coins are mining rigs!&quot;***
+</code></pre>
+
+<p>What that slogan means will become clear as I go on. Basically, proof-of-work is so elegant, in so many different ways, excepting its high real-resource cost, that I decided my attempt at an alternative to it, avoiding its real-resource cost, should mimic it as faithfully as possible in every other aspect. Well, only readers can judge whether I&#39;ve succeeded!</p>
+
+<p>The key is to use a <strong>stream of true randomness</strong> - see below for where <em>that</em> comes from! - to simulate the generating of random hashes that a real proof-of-work mining rig would produce. Now, obviously we don&#39;t want to &quot;simulate&quot; every actual hash! A &quot;simulation&quot; of proof-of-work at <em>that</em> level of detail would just <em>be</em> proof-of-work! Rather, we want to mimic the statistical properties of a mining rig&#39;s stream of hashes, to just the level of detail required to give the same sort of pattern of meeting / not meeting a moving difficulty target, and all the rest of it, that we get with the real thing.</p>
+
+<p>So: first of all, what exactly is my &quot;stream of true randomness&quot;? Chop up time into units considerably shorter than the intended inter-block time, but with no need to go much finer than general network latency. (Seconds will do, I think.) For each second, t, we need a uniform random number between 0 and 1 assigned to it, RAND(t). This sounds as if we need some awful dependency on a fragile central source - some high-powered laser at NASA pouring out quantum noise every second, or something - with all the trust and failure issues that would imply. Fortunately, for simulating mining rigs, we don&#39;t need anything like that. All that matters is that, to someone &quot;buying a simulated mining rig&quot; (burning some bitcoins, that is!) at time t, they can&#39;t predict the value of RAND(any t&#39; 2 months or more to the future of t). <a href="Where">&quot;2 months&quot; means the dead time a burnt coin must wait before it becomes a simulated active mining rig. See introductory motivating section above. It&#39;s basically just a generous waiting period to make sure a burnt coin is truly definitely burnt, and won&#39;t have any chance of being &quot;unburnt&quot; in a chain reorg, by the time it comes into use in mining.</a> We do <strong>not</strong> need fresh statistical independence of RAND(t) w.r.t. all of RAND(t-1), RAND(t-2), RAND(t-3), etc. (And we don&#39;t mind if the stream is known a &quot;short&quot; time into the future - e.g. a week or two; at any rate a small portion of the waiting period.)</p>
+
+<p>Such a lesser goal can, I believe, be achieved with just a few tens of bits of true randomness per week. Quality is what matters, not quantity! I suggest tapping into the world&#39;s most highly-audited source of low-bit-rate true randomness: lotteries. These (the big reputable ones anyway) are already subject to elaborate inspection of the machinery that tosses the balls around and draws some of them out. And the results are publicised so widely, in so many newspapers, TV channels, websites etc, as to make it impossible for anyone to lie about them.</p>
+
+<p>Roughly weekly, a config-file (lottery-results.dat or whatever) should get &quot;the latest lottery results&quot; appended to it. There is no hurry about this, it doesn&#39;t need to be exactly every week, or even the same lottery every time, it just needs several tens of bits of fresh lottery data added roughly weekly. I believe there would be no trouble propagating this to all nodes, by out-of-band means if necessary. The format should be utterly simple and transparent, a 1-line plain text description of the results and the timestamp (t in RAND(t)) from which they are to be paid attention to, onwards. Like this:</p>
+
+<pre><code>.
+.
+.
+for use from 2013-06-24 00:00:00 onwards: UK national lottery 2013-06-12: 4 9 20 22 37 42, bonus ball 19
+for use from 2013-07-01 00:00:00 onwards: UK national lottery 2013-06-19: 7 12 14 19 33 41, bonus ball 28
+</code></pre>
+
+<p>(Obviously the meta-level words &quot;for use from... onwards&quot; aren&#39;t really needed - I just put them in for clarity.) Each line is added in a leisurely, unhurried fashion, at some time (it doesn&#39;t matter when) between the draw and the intended start-paying-attention-to-it date. (Some time between 2013-06-19 and 2013-07-01 00:00:00, in the case of the example last line above.) This gives plenty of time for people to add it themselves, from their favourite news source, and check by out-of-band means that they&#39;ve added what everybody else has added, right down to spelling and punctuation. (Which in practice probably means copying it from somewhere. The point is, the &quot;somewhere&quot; doesn&#39;t need to be trusted - a lie, or an unexpected variation in format or spelling or punctuation, would be called out well within the leisurely timescale.)</p>
+
+<p>RAND(t) is then HASH(config-file ** <a href="onwards" title="">of course</a>, plus t itself <a href="in">some standard format, e.g. 2013-07-02 23:14:05, or just the Unix numeric time</a> as a final line). - Or if you like, HASH(HASH(config-file) ++ t), for efficiency. (Where &quot;++&quot; means &quot;append together in some standard fashion&quot;.) &quot;HASH()&quot; is your favourite hash function, e.g. SHA256(SHA256()). Thus RAND(t) is a 256-bit integer, which we regard conceptually as a real number between 0 and 1 by putting a binary point in front.</p>
+
+<p>(I&#39;m aware that people on the forums are coming up with randomness protocols for proof-of-stake, proof-of-activity and the like which <em>don&#39;t</em> involve external true randomness like lotteries - they just hash the last hundred blocks&#39; hashes together, or something like that. I don&#39;t think this is good enough. <a href="For">their application or for mine!</a> Someone producing the latest block, given the previous 99, can privately produce billions of cheap variations on it, by varying the order the transactions are listed etc, until they find, and publish, the one that &quot;games&quot; the randomness in their favour. However, if I&#39;m wrong about this, and hashing the last hundred blocks is in fact fine, then good! We can drop the lottery rigmarole! Anyway, for the rest of this description, I&#39;ll simply assume that RAND(t) becomes available for all t, but remains unknown until a week or two before t, and in particular, RAND(2 months or more from now) is &quot;massively unknown&quot; right now - unknown with many tens to hundreds of bits of unknowable future entropy. That&#39;s all that matters for turning burnt coins into simulated mining rigs.)</p>
+
+<p>Right then! What do we do with this RAND(t) stream? We simulate the capricious behaviour of a true proof-of-work mining rig! Let us assume that, in the real proof-of-work world, you can buy an h hashes/second mining rig for b=c*h BTC. (c varies with technical progress, BTC price fluctuations, etc; but in the simulated world it can just be left constant.) Or, inverting this, if you spend b BTC, you acquire a mining rig of h=b/c hashes/s power. Now, what does it actually mean for your rig to perform h hashes during 1 second? It means you&#39;re producing h uniform random numbers between 0 and 1. (That binary point again!) But you don&#39;t really care what they all are individually - how well you did during that 1 second is defined as &quot;what was the <strong>lowest</strong> hash value you produced during that 1 second?&quot;. This is then inspected for whether it beats <a href="is">lower than</a> the network&#39;s current target; or, perhaps, whether it beats the lesser <a href="i.e.">numerically greater</a> target of a pooled mining operation. If it&#39;s good enough, that precious lowest hash is published to the network (or mining pool), and the others are just thrown away (not published). If it&#39;s not good enough, even the <span class="createlink"><a href="/ikiwiki.cgi?from=Proof_of_burn&amp;page=not-so-&amp;do=create" rel="nofollow">?</a>not-so-</span>precious lowest hash isn&#39;t published - and certainly not the others. So, in the simulation, we only need to produce, for each second, a simulated &quot;lowest hash for that 1 second&quot;. The &quot;others&quot; don&#39;t have to exist at all!</p>
+
+<p>For reproducing (statistically) the pattern of hits and misses w.r.t. targets tough enough to not be achieving several hits within 1 second, and for h&gt;&gt;1, we can take the simulated lowest hash for time t to be (1/h) * HASH(signatures-of-the-act-of-burning-the-b-BTC ++ RAND(t)). ** <a href="lowest">(or any other!) hashes can ever actually be: it turns out this surreal behaviour is just what&#39;s needed to degrade the probability of beating the target by just the right amount. Values &gt;1 in effect represent &quot;I didn&#39;t generate any hashes at all during this particular 1-second window&quot;.</a></p>
+
+<p>Two further subtleties. First of all, it turns out to be desirable to include the block number (chain height @ 1 per block) in the formula - just to keep the owners of simulated mining rigs &quot;on their toes&quot; and not be able to tell a week or so in advance when they&#39;ll be lucky. (This encourages them to run a continuous full node. Maybe that&#39;s not in fact that important.) So we take simulated-lowest-hash = (1/h) * HASH(signatures-of-the-act-of-burning-the-b-BTC ++ block-number-of-would-be-block ++ RAND(t)). (We should <strong>not</strong> include finer details of the block, to avoid &quot;gaming&quot; a la the hundred blocks business I mentioned earlier. - Or if I&#39;m wrong about that, then OK, by all means mix in finer details of the block!)</p>
+
+<p>Secondly, it turns out that to keep the burning process going forever, rather than a pulse of initial burning that no-one ever again wants to contribute further burning to, we should simulate one more property of real-world mining rigs: they break down! That is, we should demurrage away the strength of a simulated mining rig. (A plea to the reader: Don&#39;t be alarmed by the word &quot;demurrage&quot;. This is <strong>burnt</strong> coins I&#39;m talking about - they <em>should</em> be treated &quot;harshly&quot;, in whatever style mimics real-world mining rigs to the required fidelity. Ordinary unburnt coins are not being demurraged! <a href="Unless">that&#39;s independently desirable as a policy matter, e.g. if it&#39;s felt that network strength can only be achieved via more revenue for miners than fees alone will ever provide.</a>) A real mining rig likely works at full tilt for a few years and then conks out. We <em>could</em> demurrage each burnt coin in that style - it abruptly expires E years after its creation - but I think a smooth exponential demurrage is nicer, i.e. its burnt value after y years is b&#39;=b<em>exp(-y/E). Thus h = b&#39;/c = (b/c)</em>exp(-y/E). <a href="And">1/h = c/b&#39; = (c/b)*exp(y/E).</a></p>
+
+<p>Taking these two further subtleties into account, we get the following formula:</p>
+
+<pre><code>simulated-lowest-hash(t) = (c/b)*exp([- t_burning](t)/E) * HASH(signatures-of-the-act-of-burning-the-b-BTC ++ block-number-of-would-be-block ++ RAND(t)).
+</code></pre>
+
+<p>So there you have it! With this formula, life as a miner is spookily similar to the real proof-of-work case. You &quot;buy a mining rig&quot; - you burn coins, and that hits <em>you</em> in exactly the way sending off money to a chip supplier would have hit you, even though over the whole economy, no real resources have been expended - and you then hope that, by submitting lucky hashes to the network in the form of blocks, you can make more back in fees over time than you spent initially. If you don&#39;t keep connected to the network, you won&#39;t know what transactions are eligible for including in your next would-be block, and your next lucky hash will run to waste. Meanwhile, other people are &quot;buying mining rigs&quot; (burning coins) too, either freshly or to make up for the &quot;wearing out&quot; of their existing ones; and the network is adjusting its target hash value <a href="reciprocal">difficulty</a> to regulate the rate all this mining effort is producing blocks at, to some preferred average rate. All spookily normal, in other words!</p>
+
+<p>Now, I&#39;m being a little bit disingenuous to say that <em>everything</em> is normal. We need protection against certain things (use of a lucky hash on two or more competing chains; timestamp-falsification abuse) which either do not exist at all under true proof-of-work - the former - or exist but with the consequences and mitigation strategy being different in detail - the latter. I believe I have a way of standing up to the various forms of malice we need to worry about of those kinds. More to follow soon hopefully!</p>
+
+<h3 id="Economic_implications">Economic implications</h3>
+
+<p>The key insight is that verifiably, publicly burning some coins of a known-total-stock-issued currency is the same as &quot;remurrage&quot; (opposite of &quot;demurrage&quot; - it may not be a correct word, but it&#39;s a nice back-formation) on the remainder. That is, if there are verifiably 21 million issued-and-not-burned coins, and then you go to sleep and wake up later and there are now only 20 million issued-and-not-burned coins, that&#39;s the same as if some magic genie multiplied all wake-up-time nominal bitcoin figures by 21/20. Another way to see the identity of real effect would be to redefine &quot;burning n bitcoins&quot; to mean, not &quot;sending n to an unspendable address&quot;, but rather &quot;scattering&quot; the n bitcoins, i.e. sending them to <strong>every existing</strong> <span class="createlink"><a href="/ikiwiki.cgi?page=non-zero-balance&amp;do=create&amp;from=Proof_of_burn" rel="nofollow">?</a>non-zero-balance</span> address, in proportion to the balance <a href="sum">of unspent txouts</a> already stored in each. This would be a horribly gigantic transaction to actually do explicitly, but the point is, burning can be thought of &quot;as if&quot; done that way. (Slogan: Quantity-deflation is remurrage in disguise, in exactly the same way that quantity-inflation is demurrage in disguise.)</p>
+
+<p>So, what <em>that</em> means is, if while you&#39;re sleeping you (a non-miner) hold 1 bitcoin purely passively, i.e. it just sits undisturbed on the blockchain, well, when you wake up, it&#39;s as if you&#39;ve received a &quot;dividend&quot; (of 5% in the particular numeric example above) on top of the general economy-tracking price we expect of a constant-quantity currency. In a world with actual, visibly performed remurrage, this is made explicit - your balance is now 21/20, with the nominal circulation <a href="issued-and-not-burned,">and remurraged for good measure</a> constant at 21 million. You can go and spend the 1/20 &quot;dividend&quot; on some treat, and still have the same fraction (1 out of 21 million) of the money stock as when you went to sleep.</p>
+
+<p>In a world <em>without</em> any attempt at explicit remurrage, the real facts of the situation are (of course!) the same, but their nominal expression is not perhaps so instantly obvious. Your nominal holding is unchanged at 1; but this is now 1 part in 20 million of the whole money stock, not the 1 part in 21 million it was before. So, you can go and spend 1/21 of it on some treat, taking your nominal balance down to 20/21, and <em>that</em> nominal balance is the same (1 out of 21 million) fraction of the money stock as when you went to sleep.</p>
+
+<p>So, basically, if you&#39;re holding bitcoins and trying to hold an &quot;economy-tracking amount&quot;, no more and no less, you find you can go out into the market and use the fraction of your holdings that counts as &quot;dividend above and beyond economy-tracking&quot; on some treat or other. (Indeed, &quot;you can go out...&quot; should read &quot;you <em>must</em> go out...&quot;, if you&#39;re really determined to pursue precisely that tracking strategy.)</p>
+
+<p>Who&#39;s selling you the real resources embodied in the &quot;treat&quot;? And what&#39;s <em>their</em> motive? Well, transaction fee payers presumably like to re-stock their bitcoin real balances to roughly the same <span class="createlink"><a href="/ikiwiki.cgi?page=economy-tracking&amp;do=create&amp;from=Proof_of_burn" rel="nofollow">?</a>economy-tracking</span> level as before, on average - they&#39;re paying for the transaction processing as a service. These fees are then burned by miners. (Well, not literally the fees themselves - the fees themselves are <em>collected</em> by miners, but the way they achieve this is to burn an approximately equal amount, as explained earlier.) So, ordinary Bitcoin users, to achieve their desired re-stocking, have to either produce slightly more, or consume slightly less, or a proper or improper mixture thereof, than they would have needed to in a hypothetical (presumably impracticable) alternative world where they pay no fees for their everyday transactions (and some magic mining-god just altruistically and reliably creates a blockchain out of all the transactions, without charging anybody anything). <a href="This">follows directly from their re-stocking desire, and has nothing to do with proof-of-burn specifically. That is, they have to do this regardless of whether the protocol is proof-of-work, proof-of-stake, proof-of-burn or whatever.</a> It&#39;s that extra gap between production and consumption - &quot;extra&quot; on top of whatever gap people are already choosing as a real saving<span class="createlink"><a href="/ikiwiki.cgi?page=%2Fdis-saving&amp;do=create&amp;from=Proof_of_burn" rel="nofollow">?</a>dis-saving</span> strategy - that goes on to the market, for you and all other bitcoin holders to bid off the market by spending on your &quot;treat&quot;.</p>
+
+<p>This whole stable pattern of spending habits is, perhaps surprisingly, the same pattern of real resource allocation as would have happened if Cunicula&#39;s proof of stake (with close to 100% stake / 0% work admixture) had been in operation, and all bitcoin holders, large and small, had enthusiastically thrown their bitcoins (that is, their stream of bitcoin days destroyed) into the stake-claiming process. The fraction of fees they&#39;d collect if they did that would be just like the &quot;dividend&quot; as I called it above - it would be like explicit remurrage, except instead of being automatic, it would require each holder&#39;s active participation (i.e. they couldn&#39;t just go to sleep, unless they left some sort of &quot;trusted bot&quot; running and using their private keys to sign their stream of bitcoin days destroyed). So, if you like, proof-of-burn is like automated, 100%-stakeholder-participation Cunicula-style proof-of-stake!</p>
+
+<p>Incidentally, it&#39;s also fascinating to consider what happens if the community does decide a demurraging of <a href="ordinary,">unburnt</a> coins, the revenue being added as a coin-<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=re-&amp;from=Proof_of_burn" rel="nofollow">?</a>re-</span>minting stream to the flow of fees, <em>is</em> necessary to continue with forever, for the sake of network strength. The amazing answer, as far as I can honestly work out, is that in long-run equilibrium, the burn rate is just such as <strong>to make hardly any of this demurrage <em>real</em> demurrage at all!</strong> <span class="createlink"><a href="/ikiwiki.cgi?from=Proof_of_burn&amp;do=create&amp;page=re-" rel="nofollow">?</a>re-</span>minting! (Or if you like, the implicit demurrage of inflationary fresh-coin-minting.) Either way, we <em>seem</em> to get the possibility of amazing network strength &quot;for free&quot;! This opens up the shocking possibility of turning up the demurrage/inflation rate to startlingly high levels - 5% of money stock / year, 10% of money stock / year... levels that would bring the whole cryptocurrency into disrepute in the true proof-of-work case, since coin-holders really would suffer that actual amount of explicit or implicit demurrage - and yet <strong>not</strong> hitting coin-holders with more than a frictional residual fraction of that <em>in real terms</em> at all, because of the way burning simulates remurrage! Extraordinary stuff! I plan to say more about this soon - but this quick teaser description should already be food for thought.</p>
+
+<h3 id="Coin-burning_as_a_tool_for_transition_between_cryptocurrencies">Coin-burning as a tool for transition between cryptocurrencies</h3>
+
+<p>Proof of burn may also be of interest as a tool for managing an orderly transition from one cryptocurrency (&quot;oldcoin&quot;, let&#39;s call it) to another (&quot;newcoin&quot;). If the developers of newcoin are looking for a way of avoiding proof-of-work&#39;s real resource consumption <strong>even in newcoin&#39;s initial distribution phase</strong>, they can&#39;t use proof of newcoin-burn: newcoins don&#39;t exist yet. But they <em>can</em> use proof of oldcoin-burn! (Assuming their reason for creating newcoin is <strong>not</strong> a doubting of oldcoin&#39;s security model, anyway. - Or at least, not a doubting severe enough to affect sufficiently deeply buried oldcoins, these being the candidates for burning.)</p>
+
+<p>The newcoin blockchain would thus start with (at least a hash referring to) a complete catalogue of all the <a href="sufficiently">deeply buried</a> unspent txouts of oldcoin. Miners would then exhibit burning events within oldcoin up to a certain date; after which, the protocol would switch to burning of newcoin itself (and the dependency on oldcoin could even be thrown away entirely, if a checkpoint of that transition moment was promulgated and accepted by the newcoin community).</p>
+
+<p>This has the nice consequence that, if people throughout the broader economy are gradually deserting oldcoin (as newcoin catches on), <strong><em>its value need not collapse!</em></strong> Instead, oldcoin gets burnt in the transition process, neatly reducing its nominal supply in just such a way as to roughly keep pace with its declining real demand. Meanwhile, those same acts of burning are minting fresh newcoins, at just the pace required to keep up with newcoin&#39;s <em>growing</em> real demand. (At least, that&#39;s the case if miners anticipate the transition speed correctly, and enter / exit the coins&#39; respective mining trades at a pace that competes away supra-normal profits. We also have to assume that the <em>total</em> real demand for both<span class="createlink"><a href="/ikiwiki.cgi?from=Proof_of_burn&amp;page=%2Fall...&amp;do=create" rel="nofollow">?</a>all...</span> cryptocurrencies is roughly stable in &quot;economy-tracking&quot; terms; or at least, that miners anticipate the time path of the size of total real demand, and of its currency-by-currency composition, correctly, or near enough correctly.)</p>
+
+<p><strong>To sum up:</strong> proof of burn <em>could</em>, just maybe, qualify as a new tool to greatly assist overall (multi-cryptocurrency) economic robustness and stability!</p>
+
+<h2 id="Earlier_work_suggesting_a_role_for_the_burning_of_coins">Earlier work suggesting a role for the burning of coins</h2>
+
+<p><a href="https://bitcointalk.org/index.php?topic=131139.msg1404195#msg1404195">Forum member ripper234 points out</a> an earlier work by forum member <a href="https://bitcointalk.org/index.php?action=profile;u=3313">dacoinminster</a> suggesting coins could be burnt as one component of a broader protocol. <a href="https://bitcointalk.org/index.php?topic=56901.0">The earlier work</a> is <a href="http://bitcoin.stackexchange.com/questions/2458/is-dacoinminsters-second-bitcoin-whitepaper-logically-economically-consistent">discussed on StackExchange</a>. It revolves around a centralised &quot;trusted entity&quot; system, and so is not directly comparable to decentralised proof-of-burn mining; but it may be of interest to some readers.</p>
+
+<h2 id="Implementations">Implementations</h2>
+
+<h3 id="Slimcoin">Slimcoin</h3>
+
+<p>Slimcoin (9.1), an alternative cryptocurrency based on Peercoin, uses Proof of burn as part of its consensus algorithm and alternative mining/minting method.</p>
+
+<p>Participants with full Slimcoin nodes can earn coins finding <em>Proof of Burn blocks</em>. The probability of a participant (identified by its address or public key) to find a block is being determined by a score called <em>Effective Burnt Coins</em> based on the amount of coins burnt from its address. Burnt coins <em>decay</em> over time: the <em>Effective Burnt Coins</em> score is reduced every block, dropping to zero after about a year.</p>
+
+<h3 id="Other_implementations">Other implementations</h3>
+
+<p>Another cryptocurrency using Proof of burn was TGCoin or <em>Third Generation Coin</em> (<a href="https://bitcointalk.org/index.php?topic=643300.0">see Bitcointalk</a>), an <em>altcoin</em> actually not maintained or traded.</p>
+
+<h3 id="Use_for_bootstrapping">Use for bootstrapping</h3>
+
+<p>The auxiliary currency for Counterparty, a Bitcoin software extension with colored coins functionality, was distributed via a proof of burn process. Participants had to send Bitcoins to an unspendable Bitcoin address and received <em>Counterparty</em> tokens in exchange.</p>
+
+<h2 id="See_also">See also</h2>
+
+<ul>
+<li><a href="../Proof_of_work/">Proof of work</a></li>
+<li><a href="../Proof_of_Stake/">Proof of stake</a></li>
+</ul>
+
+
+<h2 id="References">References</h2>
+
+<p>9.1: <a href="http://www.slimcoin.club/whitepaper.pdf">Slimcoin Whitepaper</a></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Mining/" rel="tag">mining</a>
+
+<a href="../tags/Proof-of-x/" rel="tag">proof-of-x</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../OP_RETURN/">OP RETURN</a>
+
+<a href="../Proof_of_Stake/">Proof of Stake</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-11-13T23:01:31Z">Fri 13 Nov 2015 11:01:31 PM Europe</time>
+<!-- Created <time datetime="2012-12-16T21:29:23Z" pubdate="pubdate">Sun 16 Dec 2012 09:29:23 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

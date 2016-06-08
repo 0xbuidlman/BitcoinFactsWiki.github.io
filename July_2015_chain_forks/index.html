@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>July 2015 chain forks</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+July 2015 chain forks
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>The July 2015 forks were two block chain forks with two or more invalid blocks.  They were caused by miners who didn&#39;t properly validate blocks before mining on top of them. (1.1)</p>
+
+<h2 id="Wallet_Advice">Wallet Advice</h2>
+
+<ul>
+<li><p>If you use Bitcoin Core, <a href="https://bitcoin.org/en/download">upgrade to 0.10.2</a> to ensure you don&#39;t see invalid confirmations.</p></li>
+<li><p>If you use a peer-to-peer lightweight wallet (also called a P2P SPV wallet), you must wait for additional confirmations unless you can tie it to a single trusted and up-to-date node (as is the case with Electrum - see below).  See the <a href="https://bitcoin.org/spv-mining">Bitcoin.org alert</a> for the currently recommended number of additional confirmations.</p></li>
+<li><p>If you use web wallet or an exchange, you should wait for additional confirmations unless you know they are running an up-to-date node.  See the <a href="https://bitcoin.org/spv-mining">Bitcoin.org alert</a> for the currently recommended number of additional confirmations.</p></li>
+</ul>
+
+
+<h3 id="Electrum">Electrum</h3>
+
+<p>Electrum is a SPV client that uses a non-standard protocol to communicate with a single node. As with all SPV clients, if that node is trustworthy, you can rely on it to perform the proper validation for you.</p>
+
+<p>Electrum allows you to specify a specific server that your client uses.
+If a server is running a recent version of Bitcoin Core, and you are okay trusting it with your security, you can take action to use it exclusively. (3.1)</p>
+
+<ol>
+<li>Go to Tools &rarr; Network and unclick <em>Auto-connect</em>.  This prevents Electrum from automatically changing to servers that have the longest block chain (which, during these invalid chain forks, may be the wrong chain).  Note that Electrum will warn you when you&#39;re not on the longest chain&mdash;you must ignore these warnings until this fork event is over or use the plugin mentioned at the bottom of this section to determine whether you&#39;re on the valid chain.</li>
+<li>Go to the console tab</li>
+<li>It should display a message (called a banner) from the server operator.</li>
+<li>If the message includes a line that says &quot;Bitcoin Core 0.10.2&quot; or &quot;bitcoind 0.10.2&quot;, then confirmations reported by the server are likely to be accurate. The only other safe versions are 0.9.5, 0.10.0, and 0.10.1.</li>
+<li>If the message does not indicate that the server is running Bitcoin Core 0.10.2, you can change servers by going to Tools &rarr; Network, unclicking <em>Auto-connect</em>, and choosing a server from the list. After connecting, a new message will be displayed; use the instructions in step #3 again.</li>
+<li>You should also ensure you are using TLS encryption, and with a known certificate of your trusted server.</li>
+</ol>
+
+
+<p>Please note that this information is provided voluntarily by the server administrators.  It is not validated.</p>
+
+<p>The following Electrum servers have a safe Bitcoin Core version in their banner:</p>
+
+<ul>
+<li>electrum.no-ip.org (version 0.10.2)</li>
+<li>electrum.jdubya.info (version 0.10.2)</li>
+<li>vps.hsmiths.com (version 0.10.2)</li>
+<li>erbium1.sytes.net (version 0.10.0)</li>
+<li>electrum.dragonzone.net (version 0.10.0)</li>
+<li>electrum.be (version 0.10.2)</li>
+<li>us.electrum.be (version 0.10.2)</li>
+<li>ecdsa.net (version 0.10.99, changeset 3c60937ce6a251e565e169715ebb2f3dd76825c4)</li>
+</ul>
+
+
+<p>During a fork, it is possible to use the Get Block Header custom plugin (3.2) to authoritatively determine which side of the fork an Electrum server is on.  Bitcoin Core 0.10.x servers should always be on the valid side of the fork.
+Note that this, too, relies on trusting the server you are using.</p>
+
+<h2 id="Invalid_Block_Hashes">Invalid Block Hashes</h2>
+
+<p>From the July 4th fork:</p>
+
+<ol>
+<li>0000000000000000009cc829aa25b40b2cd4eb83dd498c12ad0d26d90c439d99 mined by BTC Nuggets (98 non-coinbase transactions)</li>
+<li>0000000000000000155f2519d35cd5d2869900bcc5093594b27763a0315390b4 mined by F2Pool (0 non-coinbase transactions)</li>
+<li>00000000000000000cb7a20ee4e199e347ad7369936abae53a1518efa531ec61 mined by F2Pool (0 non-coinbase transactions)</li>
+<li>00000000000000000966d65e0fd87d1d5a8f154a2c955816c28e2006e381aa18 mined by AntPool (0 non-coinbase transactions)</li>
+<li>00000000000000001301bfd6f566a421c7eeba103d09b312032ca065cb185de7 mined by F2Pool (0 non-coinbase transactions)</li>
+<li>000000000000000013fe26675faa8f7dccd55ce5485bb6d0373fa66345901436 mined by F2Pool (0 non-coinbase transactions)</li>
+</ol>
+
+
+<p>From the July 5th fork:</p>
+
+<ol>
+<li>000000000000000003ae1223f4926ec86100885cfe1484dc52fd67e042a19b12 mined by MegaBigPower (255 non-coinbase transactions)</li>
+<li>00000000000000000063f97f292fb559773437fb3558c474efec6053a7b0d5a2 mined by an unknown miner (0 non-coinbase transactions)</li>
+<li>000000000000000012dbd422d7bf1c4b55982c37b390d4613dcee00d31741c6a mined by an unknown miner (1,597 non-coinbase transactions)</li>
+</ol>
+
+
+<h2 id="References">References</h2>
+
+<p>1.1: <a href="http://bitcoin.org/spv-mining">Some miners creating invalid blocks</a> , Bitcoin.org, 4 July 2015<br />
+3.1: <a href="https://www.reddit.com/r/Bitcoin/comments/3c305f/if_you_are_using_any_wallet_other_than_bitcoin/cssqykx">Electrum servers run Bitcoin Core</a> , /u/etmetm, 5 July 2015<br />
+3.2: <a href="https://bitcointalk.org/index.php?topic=1110912.msg11800126">Get block header electrum plugin</a> , Belcher, 6 July 2015</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Clearing_Up_Misconceptions_About_Full_Nodes/">Clearing Up Misconceptions About Full Nodes</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-08-02T12:14:54Z">Sun 02 Aug 2015 12:14:54 PM Europe</time>
+<!-- Created <time datetime="2015-07-06T01:44:01Z" pubdate="pubdate">Mon 06 Jul 2015 01:44:01 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

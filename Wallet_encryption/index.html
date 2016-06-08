@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Wallet encryption</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Wallet encryption
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=Wallet_encryption" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>This page describes the algorithm used for encrypting the <strong><a href="../Wallet/#Bitcoin_Qt">wallet.dat</a></strong> file used in the original <a href="../Bitcoin_client/">Bitcoin client</a>.</p>
+
+<p>Wallet encryption uses <span title="Advanced Encryption Standard with 256 bit key and Cipher Block Chaining"></span><span class="createlink"><a href="/ikiwiki.cgi?from=Wallet_encryption&amp;page=AES-256-CBC&amp;do=create" rel="nofollow">?</a>AES-256-CBC</span> to encrypt only the private keys that are held in a wallet.  The keys are encrypted with a master key
+which is entirely random.  This master key is then encrypted with
+AES-256-CBC with a key derived from the passphrase using <a href="https://en.wikipedia.org/wiki/SHA-512">SHA-512</a> and
+OpenSSL&#39;s <code>EVP_BytesToKey</code> and a dynamic number of rounds determined by
+the speed of the machine which does the initial encryption (and is
+updated based on the speed of a computer which does a subsequent
+passphrase change).  Although the underlying code supports multiple
+encrypted copies of the same master key (and thus multiple passphrases)
+the client does not yet have a method to add additional passphrases.</p>
+
+<p>At runtime, the client loads the wallet as it normally would, however
+the keystore stores the keys in encrypted form.  When the passphrase
+is required (to top up keypool or send coins) it will either be queried
+by a GUI prompt, or must first be entered with the <code>walletpassphrase</code>
+<a href="../Original_Bitcoin_client/API_calls_list/#Full_list">RPC command</a>.  This will change the wallet to &quot;unlocked&quot; state where the
+unencrypted master key is stored in memory (in the case of GUI, only for
+long enough to complete the requested operation, in RPC, for as long as
+is specified by the second parameter to <code>walletpassphrase</code>).  The wallet is
+then locked (or can be manually locked using the <code>walletlock</code> RPC command)
+and the unencrypted master key is removed from memory.</p>
+
+<h2 id="Implementation_details_of_wallet_encryption">Implementation details of wallet encryption</h2>
+
+<p>When the wallet is locked, calls to <code>sendtoaddress</code>, <code>sendfrom</code>, <code>sendmany</code>, and <code>keypoolrefill</code> will return <em>Error -13: &quot;Error: Please enter the wallet passphrase with walletpassphrase first.&quot;</em></p>
+
+<p>When the wallet is unlocked, calls to <code>walletpassphrase</code> will fail.</p>
+
+<p>When a wallet is encrypted, the passphrase is required to top up the
+keypool, thus, if the passphrase is rarely entered, it is possible that
+keypool might run out.  In this case, the default key will be used as the
+target for payouts for mining, and calls to <code>getnewaddress</code> and <code>getaccount</code>
+address will return an error.  In order to prevent such cases, the keypool
+is automatically refilled when <code>walletpassphrase</code> is called with a correct
+passphrase and when <code>topupkeypool</code> is called (while the wallet is unlocked).
+Note that the keypool continues to be topped up on various occasions when
+a new key from pool is used and the wallet is unlocked (or unencrypted).</p>
+
+<p>When wallet passphrase enrcyption becomes enabled, any unused keys from the keypool are flushed (marked as used) and new keys protected with encyption are added.  <span>For this reason, make a new backup of your wallet so that you will be able to recover the keys from the new key pool should access to your backups be necessary.</span></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Myths/">Myths</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-04-06T19:54:58Z">Wed 06 Apr 2016 07:54:58 PM Europe</time>
+<!-- Created <time datetime="2012-01-19T20:09:54Z" pubdate="pubdate">Thu 19 Jan 2012 08:09:54 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

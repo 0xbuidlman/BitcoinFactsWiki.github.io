@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Clients</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Clients
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<h2 id="Overview">Overview</h2>
+
+<p>A bitcoin client is the end-user software that facilitates <a href="../Private_key/">private key</a> generation and security, payment sending on behalf of a private key, and optionally provides:</p>
+
+<ul>
+<li>Useful information about the state of the network and transactions.</li>
+<li>Information related to the private keys under its management.</li>
+<li>Syndication of network events to other peer clients.</li>
+</ul>
+
+
+<p>This table compares the features of the different clients. All of the listed clients are open-source.</p>
+
+<h3 id="Feature_key">Feature key</h3>
+
+<p> Wallet Security : How well the client protects your <a href="../Private_key/">private key</a>s from people with access to the machine the wallet is stored on. The private keys can be encrypted, for example. The private keys can also be either stored on your device or on a remote server.
+ Network Security : Clients which more fully implement the Bitcoin network protocol are safer -- they can&#39;t be as easily tricked by powerful attackers. A client which <em>fully</em> implements the protocol will always use the correct <a href="../Block_chain/">block chain</a> and will never allow <a href="../Double-spending/">double-spends</a> or invalid transactions to exist in the block chain under any circumstances. Clients which only <em>partially</em> implement the protocol typically trust that 50% or more of the network&#39;s mining power is honest. Some clients trust one or more <em>remote servers</em> to protect them from double-spends and other network attacks.
+ Setup Time : Some clients require that you download and verify a large amount of data before you can send or receive BTC.
+ Maturity : When the project was started.</p>
+
+<h3 id="Table">Table</h3>
+
+
+
+
+<p>|<span class="createlink"><a href="/ikiwiki.cgi?from=Clients&amp;do=create&amp;page=Airbitz" rel="nofollow">?</a>Airbitz</span>|<a href="https://airbitz.co/app">Download</a>|||Partial ||||Oct 2014 ||
+|---
+<a href="../Armory/">Armory</a>|<a href="https://bitcoinarmory.com/download">Download</a>|Power users ||Addon ||||||
+<a href="../Bitcoin_Core/">Bitcoin Core</a>|<a href="http://sourceforge.net/projects/bitcoin/files/Bitcoin/">Download</a>||||Manual ||||No |
+<a href="../Bitcoind/">bitcoind</a>|<a href="http://sourceforge.net/projects/bitcoin/files/Bitcoin/">Download</a>|Programmers |||Manual |||||
+<a href="../Bitcoin_Explorer/">Bitcoin Explorer</a>|<a href="https://github.com/libbitcoin/libbitcoin-explorer/wiki/Download-BX">Download</a>|Power Users ||||||||
+<a href="../Libbitcoin_Explorer/">libbitcoin-explorer</a>|<a href="https://github.com/libbitcoin/libbitcoin-explorer/wiki/Build-BX">Build It Yourself</a>|Programmers ||||||||
+<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Bitcoin_Wallet&amp;from=Clients" rel="nofollow">?</a>Bitcoin Wallet</span>|<a href="https://play.google.com/store/apps/details?id=de.schildbach.wallet">Google Play</a><a href="https://appworld.blackberry.com/webstore/content/23952882/">BlackBerry World</a>|||Partial |Manual ||||on JB tablets |<img alt="ico-blackberry.png" src="../Ico-blackberry.png" />
+<span class="createlink"><a href="/ikiwiki.cgi?page=Blocktrail&amp;do=create&amp;from=Clients" rel="nofollow">?</a>Blocktrail</span>|<a href="https://www.blocktrail.com/">Download</a>|||Remote ||||Sep 2015 |No |
+<a href="../Electrum/">Electrum</a>|<a href="https://electrum.org/download.html">Download</a>|Power users ||Minimal |||||No |
+<a href="../Gocoin/">Gocoin</a>|<a href="https://github.com/piotrnar/gocoin">Build It Yourself</a>|Power users |Designated offline PC |||||May 2013 ||
+<span class="createlink"><a href="/ikiwiki.cgi?page=GreenAddress&amp;do=create&amp;from=Clients" rel="nofollow">?</a>GreenAddress</span>|<a href="https://greenaddress.it">Web</a><a href="https://chrome.google.com/webstore/detail/greenaddressit/dgbimgjoijjemhdamicmljbncacfndmp">ChromeApp</a><a href="https://play.google.com/store/apps/details?id=it.greenaddress.cordova&amp;hl=en">Google Play</a>||||Memorized/Manual |||Apr 2013 ||
+<a href="../Multibit/">MultiBit</a>|<a href="https://multibit.org/releases.html">Download</a>|||Partial |||50 MB |||
+<span class="createlink"><a href="/ikiwiki.cgi?from=Clients&amp;page=Mycelium&amp;do=create" rel="nofollow">?</a>Mycelium</span>|<a href="https://mycelium.com/download">Download</a><a href="https://play.google.com/store/apps/details?id=com.mycelium.wallet">Google Play</a>|||Partial |Manual, encrypted |||Sep 2013 |No |
+<span class="createlink"><a href="/ikiwiki.cgi?page=BlockChain.info&amp;do=create&amp;from=Clients" rel="nofollow">?</a>My Wallet</span>|<a href="https://blockchain.info/wallet/new">Web-based</a>|||||||||</p>
+
+
+
+
+<h2 id="For_developers">For developers</h2>
+
+<p>This table shows additional information about various Bitcoin clients that may be relevant to developers.</p>
+
+<p>|Armory|<a href="http://bitcoinarmory.com/">Link</a>|<a href="https://github.com/etotheipi/BitcoinArmory/">Github</a>|AGPLv3 |<a href="https://bitcointalk.org/index.php?board=97.0">Bitcointalk</a>|Integrated with <a href="../Thin_Client_Security/#Full_Node_Clients">Full Node</a>
+|---
+Bitcoin Core (Satoshi)|<a href="http://bitcoin.org/">Link</a>|<a href="https://github.com/bitcoin/bitcoin">Github</a>|MIT |<a href="https://lists.sourceforge.net/lists/listinfo/bitcoin-development">Sourceforge</a>|Integrated with <a href="../Thin_Client_Security/#Full_Node_Clients">Full Node</a>
+libbitcoin-explorer|<a href="https://github.com/libbitcoin/libbitcoin-explorer/wiki">Link</a>|<a href="https://github.com/libbitcoin/libbitcoin-explorer">Github</a>|AGPLv3 |<a href="https://lists.dyne.org/lurker/list/libbitcoin.en.html">Listserv</a>, <a href="https://bitcointalk.org/index.php?topic=30646.0">Bitcointalk</a>|<a href="../Thin_Client_Security/#Server-Trusting_Clients">Server-Client</a>or Integrated with <a href="../Thin_Client_Security/#Full_Node_Clients">Full Node</a>
+Bitcoin Wallet|<a href="http://wallet.schildbach.de">Link</a>|<a href="https://github.com/bitcoin-wallet/bitcoin-wallet">Github</a>|GPLv3 |<a href="https://plus.google.com/b/101256420499771441772/communities/105515929887248493912">Google+</a>, <a href="https://bitcointalk.org/index.php?board=100.0">Bitcointalk</a>|<a href="../Thin_Client_Security/#Simplified_Payment_Verification_(SPV)">SPV</a>
+Electrum|<a href="https://electrum.org/">Link</a>|<a href="https://github.com/spesmilo/electrum">Github</a>|MIT |<a href="https://electrum.org/#community">Community</a>|<a href="../Thin_Client_Security/#Simplified_Payment_Verification_(SPV)">SPV</a>
+Gocoin|<a href="http://www.assets-otc.com/gocoin">Link</a>|<a href="https://github.com/piotrnar/gocoin">Github</a>|proprietary |<a href="https://bitcointalk.org/index.php?topic=199306.0">Bitcointalk</a>|Integrated with <a href="../Thin_Client_Security/#Full_Node_Clients">Full Node</a>
+GreenAddress|<a href="https://greenaddress.it/">Link</a>|<a href="https://github.com/greenaddress/">Github</a>|LGPLv3 |<a href="https://bitcointalk.org/index.php?topic=521988.0">Bitcointalk</a>|<a href="../Thin_Client_Security/#Server-Trusting_Clients">Server-Client</a>
+MultiBit|<a href="http://multibit.org/">Link</a>|<a href="https://github.com/jim618/multibit">Github</a>|MIT |<a href="https://groups.google.com/forum/?fromgroups#!forum/bitcoin-multibit">Google Groups</a>|<a href="../Thin_Client_Security/#Simplified_Payment_Verification_(SPV)">SPV</a>
+My Wallet|<a href="https://blockchain.info/wallet/">Link</a>|<a href="https://github.com/blockchain/My-Wallet/">Github</a>|BSD* |None |<a href="../Thin_Client_Security/#Server-Trusting_Clients">Server-Client</a>
+bits of proof|<a href="http://bitsofproof.com">Link</a>|<a href="https://github.com/bitsofproof/supernode">Github</a>|Apache 2.0 |<a href="https://bitcointalk.org/index.php?topic=122013.0">Bitcointalk</a>|<a href="../Thin_Client_Security/#Server-Trusting_Clients">Server-Client</a>
+btcd|<a href="https://github.com/btcsuite/btcd">Link</a>|<a href="https://github.com/btcsuite/btcd">Github</a>|ISC |<a href="https://github.com/btcsuite/btcd#irc">IRC</a>|<a href="../Thin_Client_Security/#Server-Trusting_Clients">Server-Client</a></p>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../Software/#Bitcoin_clients">List of clients</a></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Clients&amp;page=Bitcoin_Ladder&amp;do=create" rel="nofollow">?</a>Bitcoin Ladder</span></li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Bitcoin_Core/">Bitcoin Core</a>
+
+<a href="../Bitcoind/">Bitcoind</a>
+
+<a href="../Help:Getting_started/">Help:Getting started</a>
+
+<a href="../Original_Bitcoin_client/">Original Bitcoin client</a>
+
+<a href="../Software/">Software</a>
+
+<a href="../Wallet/">Wallet</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-04-06T21:14:52Z">Wed 06 Apr 2016 09:14:52 PM Europe</time>
+<!-- Created <time datetime="2012-07-09T22:48:34Z" pubdate="pubdate">Mon 09 Jul 2012 10:48:34 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

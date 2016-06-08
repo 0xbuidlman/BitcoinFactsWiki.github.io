@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Man page</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Man page
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Man_page" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>This page is for frequently asked questions that do not yet appear in the main <a href="../FAQ/">FAQ</a>.</p>
+
+<p>It&#39;s also a place for questions in progress, so feel free to ask new questions, or answer and/or refine existing answers.</p>
+
+<h2 id="Ask_your_question_here.3A">Ask your question here:</h2>
+
+<p>How much electrical energy per transaction is projected?</p>
+
+<h2 id="Answered_Questions">Answered Questions</h2>
+
+<h3 id="How_does_it_work_.28for_non-geeks.29">How does it work (for non-geeks)</h3>
+
+<h4 id="Why_can.27t_somebody_just_create_a_version_of_the_software_that_gives_you_extra_bitcoins.3F">Why can&#39;t somebody just create a version of the software that gives you extra bitcoins?</h4>
+
+<p>When you spend some bitcoins, the software on your machine has to prove to the software running on everybody else&#39;s machine that those bitcoins are valid.</p>
+
+<p>How does it do that?  Well, it is a little bit complicated; you&#39;ve got to understand how bitcoins are created, and how they are traded.</p>
+
+<p>First, how they&#39;re created:  25 bitcoins are created approximately every 10 minutes.  Everybody who is trying to create bitcoins is in a race to try to find those 25 bitcoins; they are really hard to find, but, once found, it is easy to verify that, yes, indeed, your bitcoin software found them, so you get to spend them.</p>
+
+<p>Second, how they&#39;re traded:  Imagine you did find 25 bitcoins (well, your computer found them by running the bitcoin software for a few months or a year-- they are not easy to find, and are harder to find the more people who are looking for them).  You trade them to me by sending them to my bitcoin address.  Inside the software, a messages is created and then broadcast to everybody that says &quot;These 25 bitcoins that we all agree are valid are hereby officially traded to somebody else (me-- well, one of my bitcoin receiving addresses, actually).&quot;</p>
+
+<p>Now I&#39;ve got them.  If you try to trade those same 25 bitcoins to somebody else, it won&#39;t work-- everybody running Bitcoin sees all the trades, so if you try to spend the same coins a second time everybody else&#39;s software will reject your attempt to cheat.</p>
+
+<p>And that&#39;s it-- that&#39;s how it works.  Bitcoins are scarce because only about 25 are created every ten minutes.  And you can&#39;t claim to have more than you really have because everybody else can check to see if your coins really were created by the &quot;race&quot; process, or if they were from valid trades.</p>
+
+<h3 id="Uncatagorized">Uncatagorized</h3>
+
+<h4 id="Why_did_this_generation_give_me_more_bitcoins_than_normal_.28like_25.075.29.3F">Why did this generation give me more bitcoins than normal (like 25.075)?</h4>
+
+<p>You collected a <a href="../Transaction_Fee/">transaction fee</a>.</p>
+
+<h4 id="Why_must_users_back_up_their_wallets_every_100_actions.3F">Why must users back up their wallets every 100 actions?</h4>
+
+<p>Bitcoin transactions send bitcoins to a specific public key. A Bitcoin address is an encoded hash of a public key. In order to use received bitcoins, you need to have the private key matching the public key you received with. This is sort of like a super long password associated with an account (public key). Your Bitcoin wallet contains all of the private keys necessary for spending your received transactions. If you delete your wallet without a backup, then you no longer have the authorization information necessary to claim your coins, and the coins associated with those keys are lost forever.</p>
+
+<p>Creating a new address generates a new pair of public and private keys, which are added to your wallet. Each keypair is mostly random numbers, so they cannot be known prior to generation. If you backup your wallet and then create a new address, the keypair associated with the new address will not be in the old wallet because the new keypair is only know <em>after</em> creating it. Any coins received at this address will be lost if you restore from the backup.</p>
+
+<p>The situation is made somewhat more confusing because the receiving addresses shown in the UI are not the only keys in your wallet. Each Bitcoin generation is given a new public key, and, more importantly, each sent transaction also sends a random number of bitcoins back to yourself at a new key. When sending bitcoins to anyone, you generate a new keypair for yourself and simultaneously send bitcoins to your new public key and the actual recipient&#39;s public key. This is an anonymity feature -- it makes tracking Bitcoin transactions much more difficult.</p>
+
+<p>So if you create a backup, send some bitcoins, and then restore from the backup, some bitcoins will be lost. Bitcoin has not deleted any keys (keys are <em>never</em> deleted) -- it has created a new key that is not in your old backup and then sent bitcoins to it.</p>
+
+<p>To mitigate this problem, the wallet contains a pool of 100 queued keys. When you need an address for whatever reason (send, &quot;new address&quot;, generation, etc.), the key is not actually generated freshly, but taken from this pool. A brand new address is generated to fill the pool back to 100. So when a backup is first created, it has all of your old keys plus 100 unused keys. After sending a transaction, it has 99 unused keys. After a total of 100 new-key actions, you will start using keys that are not in your backup. Since the backup does not have the private keys necessary for authorizing spends of these coins, restoring from the old backup will cause you to lose bitcoins.</p>
+
+<p>Linux users can setup cron by running &#39;crontab -e&#39; and adding this line:
+    01 */1 * * * /usr/local/bin/backupwallet.sh</p>
+
+<p>backupwallet.sh:</p>
+
+<pre>#!/usr/bin/env bash
+
+GPGU=&quot;My GPG User&quot;
+
+TS=$(date &quot;+%Y%m%d-%H-%M&quot;)
+
+WALLET=/tmp/wallet${TS}
+WALLET_E=/tmp/wallet${TS}.crypt
+
+~/bin/bitcoind backupwallet $WALLET
+/usr/bin/gpg -r &quot;$GPGU&quot; --output $WALLET_E --encrypt $WALLET
+~/bin/s3cmd put $WALLET_E s3://NAME_OF_MY_S3_BUCKET
+rm $WALLET $WALLET_E</pre>
+
+
+<p>The shell script does:</p>
+
+<ul>
+<li>Call bitcoind backupwallet to create a time/date-stamped wallet file.</li>
+<li>GPG encrypt the wallet with my public key.</li>
+<li>Copy the result to an off-machine backup location.</li>
+</ul>
+
+
+<p>It&#39;s using Amazon S3, which is itself redundantly backed up to multiple geographic locations automatically. Replace the s3cmd with an scp to copy somewhere if you&#39;re not an S3 user; you could even ftp somewhere, since the wallet is encrypted it doesn&#39;t matter if somebody is eavesdropping</p>
+
+<h4 id="How_many_nodes_are_there.3F">How many nodes are there?</h4>
+
+<p>You can get a rough estimate by counting the number of users on the <a href="irc://irc.lfnet.org/bitcoin">#bitcoin</a> channel at irc.lfnet.org. Most Bitcoin nodes are constantly connected to this channel while running, though Bitcoin can be configured not to do so. A more accurate number can be gotten by running Bitcoin nonstop for a few days and then using <a href="https://github.com/gavinandresen/bitcointools">bitcointools</a> to analyze your addr.dat file. This shows the &quot;last seen&quot; times for <em>all</em> Bitcoin nodes.</p>
+
+<h3 id="Economics">Economics</h3>
+
+<h4 id="I.27ve_lost_my_wallet.2C_is_there_a_way_to_recreate_the_lost_coins_in_the_system.3F">I&#39;ve lost my wallet, is there a way to recreate the lost coins in the system?</h4>
+
+<p>No, coins that are lost are lost forever.
+The lost coins will not be recovered or regenerated at any time.</p>
+
+<h4 id="Where_does_the_value_of_Bitcoin_stem_from.3F_What_backs_up_Bitcoin.3F">Where does the value of Bitcoin stem from? What backs up Bitcoin?</h4>
+
+<p>Bitcoin has value because it is accepted as payment by many. The initial market value was achieved when people speculated, that because of its properties, the currency would be accepted by others later on.</p>
+
+<p>When we say that a currency is backed up by gold, we mean that there&#39;s a promise in place that you can exchange the currency for gold. In a sense, you could say that Bitcoin is &quot;backed up&quot; by the price tags of merchants and currency exchangers - a price tag is a promise to exchange goods for a specified amount of currency. Of course, price tags may or may not be as long-term promises as those made by central banks or governments.</p>
+
+<p>It&#39;s a common misconception that Bitcoins gain their value from the cost of electricity required to generate them. Cost doesn&#39;t equal value - hiring 1,000 men to shovel a big hole in the ground may be costly, but not valuable. Also, even though scarcity is a critical requirement for a currency to be useful, it alone doesn&#39;t make anything valuable. Your fingerprints are scarce, but that doesn&#39;t mean they have any exchange value.</p>
+
+<p>At the time of this writing, Bitcoin&#39;s chain of proof is the result of over 6 quadrillion cryptographically secure, verified calculations carried out by many independent computers. This large and growing input of energy and technology is part of Bitcoin&#39;s value, and represents a substantial investment of resources by Bitcoin users in creating the benefits of a trustworthy medium of exchange.</p>
+
+<h4 id="Isn.27t_the_minting_process_a_waste_of_resources.3F">Isn&#39;t the minting process a waste of resources?</h4>
+
+<p>All currencies need a method for regulating the money supply and creating circulation. To make Bitcoin secure, a large amount of computer work is required. The Bitcoin process for introducing new coins into circulation is designed to make the currency secure by encouraging users to perform the necessary computational work by awarding the role of introducing new coins into circulation in rough proportion the amount of computer power contributed to this goal.</p>
+
+<h3 id="Technical">Technical</h3>
+
+<h4 id="Can_generating_nodes_charge_different_transaction_fees.2C_or_is_this_enforced_by_the_network.3F">Can generating nodes charge different transaction fees, or is this enforced by the network?</h4>
+
+<p>Currently a generating node can charge whatever <a href="../Transaction_Fee/">transaction fee</a> they want. A transaction that doesn&#39;t pay the fee won&#39;t be included in any blocks produced by that node, but it will appear in later blocks by cheaper generators.</p>
+
+<p>It is <a href="https://bitcointalk.org/index.php?topic=165.msg1595#msg1595">possible</a> for the network to enforce a fee rate, but this is not currently implemented. If <a href="../Satoshi/">Satoshi</a> tried to implement this, only <em>generating</em> nodes would have a vote in whether the change would be accepted, so the change would have to be beneficial in some way to generators (ie, not too low).</p>
+
+<h4 id="Does_including_more_transactions_in_your_block_slow_down_your_hashing_rate.3F">Does including more transactions in your block slow down your hashing rate?</h4>
+
+<p>Not at all. You&#39;re hashing the block header, which contains only a fixed-size hash of all the transactions.</p>
+
+<h4 id="Why_is_it_using_so_much_CPU.3F">Why is it using so much CPU?</h4>
+
+<p>If you have &quot;Generate coins&quot; turned on, Bitcoin will calculate millions of <a href="../Hash/">hashes</a> per second in an attempt to solve the current <a href="../Block/">block</a>. This will use all of your idle CPU time, but Bitcoin runs at a low priority, so none of your other programs should be slowed down. Turning off coin generation should eliminate most CPU usage.</p>
+
+<h4 id="Why_can.27t_it_be_doing_something_useful_for_humanity_instead.3F">Why can&#39;t it be doing something useful for humanity instead?</h4>
+
+<p><a href="../Hash/">SHA-256 hashing</a> has very specific properties that we need. In particular, it generates (with predictable CPU required) numbers that are for all practical purposes purely random, but in a way that is easily verifiable. There are no known &quot;beneficial&quot; calculations that could replace this.</p>
+
+<p>This CPU time and electricity is not entirely wasted, though: it helps protect the network from attack.</p>
+
+<h4 id="How_much_network_traffic_does_the_bitcoin_client_generate.3F">How much network traffic does the bitcoin client generate?</h4>
+
+<p>Almost none. These statistics were recorded before the outgoing connection limit was reduced from 15 to 8, so the current usage is probably even lower:</p>
+
+<ul>
+<li>Bytes sent without Bitcoin: 2475590 (2.4MiB) per day</li>
+<li>Bytes received without Bitcoin: 2798454 (2.7MiB) per day</li>
+<li>Bytes sent with Bitcoin (not port forwarded): 2210854 (2.1MiB) per day</li>
+<li>Bytes received with Bitcoin (not port forwarded): 4699445 (4.5MiB) per day</li>
+<li>Bytes sent with Bitcoin (port forwarded): 20879040 (19.9MiB) per day</li>
+<li>Bytes received with Bitcoin (port forwarded): 10954438 (10.4MiB) per day</li>
+</ul>
+
+
+<h4 id="Can_we_expand_the_transaction_protocol_so_it_includes_a_message_as_well_as_an_amount.3F">Can we expand the transaction protocol so it includes a message as well as an amount?</h4>
+
+<p>The current protocol is scripted and could already be used with arbitrary comment-like data. However:</p>
+
+<ul>
+<li>This is considered an abuse of the system, as the transactions/blockchain are intended only for the actual financial exchange.</li>
+<li>Your transaction will be non-standard.</li>
+<li>Even if miners accept your transaction, they will probably expect a larger fee.</li>
+<li><a href="../ECDSA/">ECDSA</a> (the public-key algorithm used by Bitcoin) doesn&#39;t support encryption, so you&#39;ll have to use something else if you want encryption.</li>
+</ul>
+
+
+<p>There has been some work toward a <a href="https://gist.github.com/4120476">payment protocol</a> to make transactions more user-friendly including message support, but it has not reached maturity yet.</p>
+
+<h4 id="What_happens_when_two_nodes_generate_a_block_at_the_same_time.3F">What happens when two nodes generate a block at the same time?</h4>
+
+<p>This is very unlikely to happen but if it does: The tiebreak is which block the NEXT block builds on.</p>
+
+<p>Each node sends out it&#39;s &#39;winning&#39; block. Some nodes on the network will hear about &#39;block A&#39; first and assume it is the winning block, and some will hear about &#39;block B&#39; first and assume it is the winning block. Then each &#39;half&#39; will proceed hashing from there trying to generate the next block as normal.
+If a machine with &#39;block B&#39; as its predecessor wins the next race by generating &#39;block C&#39;, it becomes the official winner, and the nodes who were working on A give up and start on C. (In this case the generator of &#39;block A&#39; might be disappointed, because he thought he generated some coins, but he didn&#39;t because the network decided his block was no longer valid.)</p>
+
+<p>Note: block A and block B will usually contain the same list of transactions.  Transactions not included will be made available to other future blocks for inclusion into the chain.</p>
+
+<h4 id="What_happens_if_someone_sends_me_some_coins_but_I_am_not_connected.3F">What happens if someone sends me some coins but I am not connected?</h4>
+
+<p>Any transfer to a &#39;valid&#39; address should be successful.
+You don&#39;t need to have a client running to receive bitcoins.
+Once you create an address, any coins sent to it will just sit there waiting for you to spend them.</p>
+
+<h4 id="Can_I_start_bitcoind_without_it_becoming_a_daemon_process.3F">Can I start bitcoind without it becoming a daemon process?</h4>
+
+<p>No.  That is expected to be added to the client at some point.</p>
+
+<h3 id="Technical_.28Windows.29">Technical (Windows)</h3>
+
+<h4 id="Why_am_I_not_downloading_any_blocks.3F">Why am I not downloading any blocks?</h4>
+
+<p>Add bitcoin.exe to the &quot;Excluded processes&quot; list of Microsoft Security Essentials.</p>
+
+<h3 id="Developing">Developing</h3>
+
+<h4 id="Is_there_a_mailing_list.3F">Is there a mailing list?</h4>
+
+<p>Yes. http://sourceforge.net/mailarchive/forum.php?forum_name=bitcoin-list</p>
+
+<h4 id="Is_there_a_test_network.3F">Is there a test network?</h4>
+
+<p>Yes, run Bitcoin or bitcoind with the -testnet switch (beginning with version 0.3.14).</p>
+
+<p>There is a -testnet version of the Bitcoin Faucet at https://freebitcoins.appspot.com/TEST/.</p>
+
+<p>Note that there are 3 versions of the testnet (which are tied to specific client versions), and the Faucet uses only the most recent.</p>
+
+<h4 id="How_do_I_build_bitcoin.3F">How do I build bitcoin?</h4>
+
+<p>Forum thread on building v0.3: https://bitcointalk.org/index.php?topic=298.msg2366#msg2366
+There are some <a href="http://heliacal.net/~solar/bitcoin/bitcoin-linuxbuild.pdf">Build notes for linux type systems (pdf)</a></p>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../FAQ/">FAQ</a></li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Help:FAQ/">Help:FAQ</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-12-11T20:19:07Z">Fri 11 Dec 2015 08:19:07 PM Europe</time>
+<!-- Created <time datetime="2010-12-19T21:10:17Z" pubdate="pubdate">Sun 19 Dec 2010 09:10:17 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>BIP 0017 QA</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+BIP 0017 QA
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=BIP_0017_QA" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>This page is a Quality Assurance test plan for <a href="../BIP_0017/">BIP 17</a>.  If you see a test missing, please add it.
+If you can help test, please edit this page to sign-off on it.</p>
+
+<p>|Testnet |Mainnet |Test Procedure |Tested by
+|---|---|---|---
+style=&quot;background:#90ff90&quot;||&#x2713;|Run BIP-17-capable Bitcoin 0.6<br />Send coins using GUI, RPC sendtoaddress, and RPC sendmany commands<br />Result: coins sent in all cases|Luke Dashjr (<a href="http://blockexplorer.com/b/164676">block 164676</a>)
+style=&quot;background: #90ff90&quot;|&#x2713; |&#x2713;|Test multisig 1-of-1<br />Run 0.6 bitcoind, get a public key with: ./bitcoind validateaddress $(./bitcoind getnewaddress)<br />Generate a multisig 1-of-1 address: ./bitcoind addmultisigaddress 1 {public key from above}<br />Send-to-self some bitcoins using that address<br />Result: transaction is confirmed by network, displays properly in listtransactions.<br />Result: balance is unaffected|Luke Dashjr (<a href="http://blockexplorer.com/b/163685">block 163685</a>)
+style=&quot;background:#90ff90&quot;||&#x2713;|Test multisig 1-of-2<br />Run 0.6 bitcoind, get 2 new bitcoin addresses<br />Generate a multisig 1-of-2 address: ./bitcoind addmultisigaddress 1 {address1}{address2}<br />Send-to-self some bitcoins using that address<br />Result: transaction is confirmed by network, displays properly in listtransactions.<br />Result: bitcoin balance is unaffected.|Luke Dashjr (<a href="http://blockexplorer.com/b/164676">block 164676</a>)
+style=&quot;background:#90ff90&quot;||&#x2713;|Test multisig 1-of-3, 2-of-3, 3-of-3<br />Repeat test procedures above, with the other new multisignature transaction types|Luke Dashjr (<a href="http://blockexplorer.com/b/164676">block 164676</a>)
+style=&quot;background:#90ff90&quot;||&#x2713;|Test multisig send-to-other<br />Repeat test procedures above, but use two bitcoinds, prepared as follows:<br />bitcoind 1 : Run getnewaddress and addmultisigaddress<br />bitcoind 2 : Just addmultisigaddress<br />Send coins from 2 to 1 using the address<br />Result: transaction is accepted/confirmed by network<br />Result: balance for 2 goes down, listtransactions for 2 displays correct result<br />Result: balance for 1 goes up, listtransactions for 1 displays correct result<br />|Luke Dashjr (<a href="http://blockexplorer.com/b/164676">block 164676</a>)
+style=&quot;background:#90ff90&quot;||&#x2713;|Test redeeming multisignature transactions<br />Fund a new, empty wallet entirely with multisig transactions<br />Wait for transactions to confirm<br />Use sendtoaddress and sendmany to generate spend-from-multisig transactions<br />Spend to both single-address and multisig address, and test send-to-other and send-to-self<br />Result: transactions are accepted/confirmed by network<br />Result: balance decreases, listtransactions displays correct information<br />|Luke Dashjr (<a href="http://blockexplorer.com/b/164676">block 164676</a>)
+style=&quot;background:#90ff90&quot;||&#x2713;|Run 0.6 Bitcoin-Qt GUI on one of the test wallets from above<br />Result: balance and transactions displayed correctly|Luke Dashjr
+style=&quot;background:#90ff90&quot;|&#x2713; |&#x2713;|Run BIP-17-capable backport Bitcoin 0.3.19 through 0.5.1<br />Send coins using GUI, RPC sendtoaddress, and RPC sendmany commands<br />Result: coins sent in all cases|Luke Dashjr
+style=&quot;background:#90ff90&quot;|&#x2713; |n/a|Run BIP-17-capable Bitcoin 0.6.0<br />Mine coins using built-in miner<br />Result: blocks accepted, show up on pre-BIP17 clients<br />Result: mined blocks&#39; coinbase contains p2sh/CHV string|Luke Dashjr
+style=&quot;background:#ffff90&quot;|&#x2713; ||Run BIP-17-capable Bitcoin 0.6.0<br />Mine coins using getwork interface<br />Result: blocks accepted, show up on pre-BIP17 clients<br />Result: mined blocks&#39; coinbase contains p2sh/CHV string|Luke Dashjr
+style=&quot;background:#90ff90&quot;|&#x2713; |&#x2713;|Run BIP-17-capable Bitcoin 0.6.0<br />Mine coins using getmemorypool interface<br />Result: blocks accepted, show up on pre-BIP17 clients<br />|Luke Dashjr (<a href="http://blockexplorer.com/b/164895">block 164895</a>)
+style=&quot;background:#90ff90&quot;|&#x2713; |n/a|Run BIP-17-capable Bitcoin 0.3.19 through 0.5.1 backports<br />Mine coins using built-in miner<br />Result: blocks accepted, show up on pre-BIP17 clients<br />Result: mined blocks&#39; coinbase contains p2sh/CHV string|Luke Dashjr
+style=&quot;background:#90ff90&quot;|&#x2713; |&#x2713;|Run BIP-17-capable Bitcoin 3.19 through 0.5.1 backports<br />Mine coins using getwork interface<br />Result: blocks accepted, show up on pre-BIP17 clients<br />Result: mined blocks&#39; coinbase contains p2sh/CHV string|Luke Dashjr (<a href="http://blockexplorer.com/b/164676">block 164676</a>)
+style=&quot;background:#90ff90&quot;|&#x2713; |&#x2713;|Run BIP-17-capable Bitcoin 3.19 through 0.5.1 backports<br />Mine coins using getmemorypool interface<br />Result: blocks accepted, show up on pre-BIP17 clients<br />|Luke Dashjr (<a href="http://blockexplorer.com/b/164733">block 164733</a>)
+style=&quot;background:#90ff90&quot;|&#x2713; |n/a|Create/run unit tests for:<br />multisignature signing/verification<br />multisignature invalid signature failure<br />multisignature IsStandard() success/failure<br />extraction of addresses from multisignature transactions<br />BIP 17 IsStandard() success/failure<br />BIP 17 AreInputsStandard() success/failure<br />BIP 17 compatibility with other 3 standard transaction types<br />BIP 17 switchover date logic<br />|Luke Dashjr, Gavin Andresen
+style=&quot;background:#ff9090&quot;|||Create/run &#39;transaction fuzzer&#39; to stress-test BIP 17 transactions|</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2012-02-01T20:34:14Z">Wed 01 Feb 2012 08:34:14 PM Europe</time>
+<!-- Created <time datetime="2012-01-30T17:34:04Z" pubdate="pubdate">Mon 30 Jan 2012 05:34:04 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

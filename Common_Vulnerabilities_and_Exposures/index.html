@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Common Vulnerabilities and Exposures</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Common Vulnerabilities and Exposures
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>|<span class="createlink"><a href="/ikiwiki.cgi?from=Common_Vulnerabilities_and_Exposures&amp;page=CVE-2010-5137__124__&amp;do=create" rel="nofollow">?</a>CVE-2010-5137|</span>|2010-07-28|wxBitcoin and bitcoind|bgcolor=yellowDoS (1.1)|bgcolor=pinkEasy|OP_LSHIFT crash|bgcolor=lime100%
+|<span class="createlink"><a href="/ikiwiki.cgi?from=Common_Vulnerabilities_and_Exposures&amp;do=create&amp;page=CVE-2010-5141__124__" rel="nofollow">?</a>CVE-2010-5141|</span>|2010-07-28|wxBitcoin and bitcoind|bgcolor=pinkTheft (1.2)|bgcolor=pinkEasy||bgcolor=lime100%
+|<span class="createlink"><a href="/ikiwiki.cgi?from=Common_Vulnerabilities_and_Exposures&amp;page=CVE-2010-5138__124__&amp;do=create" rel="nofollow">?</a>CVE-2010-5138|</span>|2010-07-29|wxBitcoin and bitcoind|bgcolor=yellowDoS (1.1)|bgcolor=pinkEasy|Unlimited SigOp DoS|bgcolor=lime100%
+|<strong><a href="../CVE-2010-5139/">CVE-2010-5139</a></strong>|2010-08-15|wxBitcoin and bitcoind|bgcolor=pinkTheft (1.2)|bgcolor=pinkEasy|Combined output overflow|bgcolor=lime100%
+|<span class="createlink"><a href="/ikiwiki.cgi?page=CVE-2010-5140__124__&amp;do=create&amp;from=Common_Vulnerabilities_and_Exposures" rel="nofollow">?</a>CVE-2010-5140|</span>|2010-09-29|wxBitcoin and bitcoind|bgcolor=yellowDoS (1.1)|bgcolor=pinkEasy|Never confirming transactions|bgcolor=lime100%
+|<span class="createlink"><a href="/ikiwiki.cgi?from=Common_Vulnerabilities_and_Exposures&amp;do=create&amp;page=CVE-2011-4447__124__" rel="nofollow">?</a>CVE-2011-4447|</span>|2011-11-11|wxBitcoin and bitcoind|bgcolor=pinkExposure (1.3)|bgcolor=limeHard|Wallet non-encryption|bgcolor=lime<a href="http://luke.dashjr.org/programs/bitcoin/files/charts/CVE-2011-4447.html">100%</a>
+|<span class="createlink"><a href="/ikiwiki.cgi?from=Common_Vulnerabilities_and_Exposures&amp;page=CVE-2012-1909__124__&amp;do=create" rel="nofollow">?</a>CVE-2012-1909|</span>|2012-03-07|Bitcoin protocol and all clients|bgcolor=pinkNetsplit (1.4)|bgcolor=limeVery hard|Transaction overwriting|bgcolor=lime<a href="http://luke.dashjr.org/programs/bitcoin/files/charts/CVE-2012-1909.html">99%</a>
+|<span class="createlink"><a href="/ikiwiki.cgi?from=Common_Vulnerabilities_and_Exposures&amp;do=create&amp;page=CVE-2012-1910__124__" rel="nofollow">?</a>CVE-2012-1910|</span>|2012-03-17|bitcoind &amp; Bitcoin-Qt for Windows|bgcolor=pinkUnknown (1.5)|bgcolor=limeHard|MingW non-multithreading|bgcolor=lime<a href="http://luke.dashjr.org/programs/bitcoin/files/charts/CVE-2012-1910.html">100%</a>
+|<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=BIP%200016__124__&amp;from=Common_Vulnerabilities_and_Exposures" rel="nofollow">?</a>BIP 0016|</span>|2012-04-01|All Bitcoin clients|bgcolor=yellowFake Conf (1.6)|bgcolor=yellowMiners (1.7)|Mandatory P2SH protocol update|bgcolor=lime<a href="http://luke.dashjr.org/programs/bitcoin/files/charts/BIP-0016.html">99%</a>
+|<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=CVE-2012-2459__124__&amp;from=Common_Vulnerabilities_and_Exposures" rel="nofollow">?</a>CVE-2012-2459|</span>|2012-05-14|bitcoind and Bitcoin-Qt|bgcolor=pinkNetsplit (1.4)|bgcolor=pinkEasy|Block hash collision (via merkle root)|bgcolor=lime<a href="http://luke.dashjr.org/programs/bitcoin/files/charts/CVE-2012-2459.html">99%</a>
+|<strong><a href="../CVE-2012-3789/">CVE-2012-3789</a></strong>|2012-06-20|bitcoind and Bitcoin-Qt|bgcolor=yellowDoS (1.1)|bgcolor=pinkEasy|(Lack of) orphan txn resource limits|bgcolor=lime<a href="http://luke.dashjr.org/programs/bitcoin/files/charts/CVE-2012-3789">99%</a>
+|<span class="createlink"><a href="/ikiwiki.cgi?page=CVE-2012-4682__124__&amp;do=create&amp;from=Common_Vulnerabilities_and_Exposures" rel="nofollow">?</a>CVE-2012-4682|</span>||bitcoind and Bitcoin-Qt|bgcolor=yellowDoS (1.1)|||bgcolor=lime<a href="http://luke.dashjr.org/programs/bitcoin/files/charts/CVE-2012-4682.html">98%</a>
+|<strong><a href="../CVE-2012-4683/">CVE-2012-4683</a></strong>|2012-08-23|bitcoind and Bitcoin-Qt|bgcolor=yellowDoS (1.1)|bgcolor=pinkEasy|Targeted DoS by CPU exhaustion using alerts|bgcolor=lime<a href="http://luke.dashjr.org/programs/bitcoin/files/charts/CVE-2012-4683.html">98%</a>
+|<strong><a href="../CVE-2012-4684/">CVE-2012-4684</a></strong>|2012-08-24|bitcoind and Bitcoin-Qt|bgcolor=yellowDoS (1.1)|bgcolor=pinkEasy|Network-wide DoS using malleable signatures in alerts|bgcolor=lime<a href="http://luke.dashjr.org/programs/bitcoin/files/charts/security.html?20124684">98%</a>
+|<span class="createlink"><a href="/ikiwiki.cgi?from=Common_Vulnerabilities_and_Exposures&amp;page=CVE-2013-2272__124__&amp;do=create" rel="nofollow">?</a>CVE-2013-2272|</span>|2013-01-11|bitcoind and Bitcoin-Qt|bgcolor=yellowExposure (1.3)|bgcolor=pinkEasy|Remote discovery of node&#39;s wallet addresses|bgcolor=lime<a href="http://luke.dashjr.org/programs/bitcoin/files/charts/security.html?20132272">97%</a>
+|<span class="createlink"><a href="/ikiwiki.cgi?from=Common_Vulnerabilities_and_Exposures&amp;page=CVE-2013-2273__124__&amp;do=create" rel="nofollow">?</a>CVE-2013-2273|</span>|2013-01-30|bitcoind and Bitcoin-Qt|bgcolor=limeExposure (1.3)|bgcolor=yellowEasy|Predictable change output|bgcolor=lime<a href="http://luke.dashjr.org/programs/bitcoin/files/charts/security.html?20132273">97%</a>
+|<span class="createlink"><a href="/ikiwiki.cgi?from=Common_Vulnerabilities_and_Exposures&amp;page=CVE-2013-2292__124__&amp;do=create" rel="nofollow">?</a>CVE-2013-2292|</span>|2013-01-30|bitcoind and Bitcoin-Qt|bgcolor=yellowDoS (1.1)|bgcolor=limeHard|A transaction that takes at least 3 minutes to verify|bgcolor=pink<a href="http://luke.dashjr.org/programs/bitcoin/files/charts/security.html?20132292">0%</a>
+|<strong><a href="../CVE-2013-2293/">CVE-2013-2293</a></strong>|2013-02-14|bitcoind and Bitcoin-Qt|bgcolor=yellowDoS (1.1)|bgcolor=pinkEasy|Continuous hard disk seek|bgcolor=lime<a href="http://luke.dashjr.org/programs/bitcoin/files/charts/security.html?20132293">97%</a>
+|<span class="createlink"><a href="/ikiwiki.cgi?page=CVE-2013-3219__124__&amp;do=create&amp;from=Common_Vulnerabilities_and_Exposures" rel="nofollow">?</a>CVE-2013-3219|</span>|2013-03-11|bitcoind and Bitcoin-Qt 0.8.0|bgcolor=pinkFake Conf (1.6)|bgcolor=yellowMiners (1.7)|Unenforced block protocol rule|bgcolor=lime<a href="http://luke.dashjr.org/programs/bitcoin/files/charts/security.html?20133219">100%</a>
+|<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=CVE-2013-3220__124__&amp;from=Common_Vulnerabilities_and_Exposures" rel="nofollow">?</a>CVE-2013-3220|</span>|2013-03-11|bitcoind and Bitcoin-Qt|bgcolor=pinkNetsplit (1.4)|bgcolor=limeHard|Inconsistent BDB lock limit interactions|bgcolor=lime<a href="http://luke.dashjr.org/programs/bitcoin/files/charts/security.html?20133220">97%</a>
+|<span class="createlink"><a href="/ikiwiki.cgi?from=Common_Vulnerabilities_and_Exposures&amp;do=create&amp;page=BIP%200034__124__" rel="nofollow">?</a>BIP 0034|</span>|2013-03-25|All Bitcoin clients|bgcolor=yellowFake Conf (1.6)|bgcolor=yellowMiners (1.8)|Mandatory block protocol update|bgcolor=lime<a href="http://luke.dashjr.org/programs/bitcoin/files/charts/BIP-0034.html">99%</a>
+|<span class="createlink"><a href="/ikiwiki.cgi?page=BIP%200050__124__&amp;do=create&amp;from=Common_Vulnerabilities_and_Exposures" rel="nofollow">?</a>BIP 0050|</span>|2013-05-15|All Bitcoin clients|bgcolor=pinkNetsplit (1.4)|bgcolor=pinkImplicit (1.9)|Hard fork to remove txid limit protocol rule|bgcolor=lime<a href="http://luke.dashjr.org/programs/bitcoin/files/charts/security.html?50">97%</a>
+|<span class="createlink"><a href="/ikiwiki.cgi?from=Common_Vulnerabilities_and_Exposures&amp;page=CVE-2013-4627__124__&amp;do=create" rel="nofollow">?</a>CVE-2013-4627|</span>|2013-06-??|bitcoind and Bitcoin-Qt|bgcolor=yellowDoS (1.1)|bgcolor=yellowEasy|Memory exhaustion with excess tx message data|bgcolor=pink<a href="http://luke.dashjr.org/programs/bitcoin/files/charts/security.html?20134627">57%</a>
+|<span class="createlink"><a href="/ikiwiki.cgi?from=Common_Vulnerabilities_and_Exposures&amp;do=create&amp;page=CVE-2013-4165__124__" rel="nofollow">?</a>CVE-2013-4165|</span>|2013-07-20|bitcoind and Bitcoin-Qt|bgcolor=pinkTheft (1.2)|bgcolor=limeLocal|Timing leak in RPC authentication|bgcolor=pink<a href="http://luke.dashjr.org/programs/bitcoin/files/charts/security.html?20134165">57%</a>
+|<span class="createlink"><a href="/ikiwiki.cgi?from=Common_Vulnerabilities_and_Exposures&amp;page=CVE-2013-5700__124__&amp;do=create" rel="nofollow">?</a>CVE-2013-5700|</span>|2013-09-04|bitcoind and Bitcoin-Qt 0.8.x|bgcolor=yellowDoS (1.1)|bgcolor=pinkEasy|Remote p2p crash via bloom filters|bgcolor=pink<a href="http://luke.dashjr.org/programs/bitcoin/files/charts/security.html?20135700">61%</a>
+|<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=CVE-2014-0160__124__&amp;from=Common_Vulnerabilities_and_Exposures" rel="nofollow">?</a>CVE-2014-0160|</span>|2014-04-07|Anything using OpenSSL for TLS|bgcolor=pinkUnknown (1.5)|bgcolor=pinkEasy|Remote memory leak via payment protocol|Unknown
+|CVE-2015-3641|2014-07-07|Bitcoind and QT prior to 0.10.2|bgcolor=yellowDoS (1.1)|bgcolor=pinkEasy|(Yet) Unspecified DoS|</p>
+
+<p>1.1: Attacker can disable some functionality, for example by crashing clients<br />
+1.2: Attacker can take or create money outside known network rules<br />
+1.3: Attacker can access user data outside known acceptable methods<br />
+1.4: Attacker can create multiple views of the network, enabling <a href="../Double-spending/">double-spending</a> with over 1 confirmation<br />
+1.5: Extent of possible abuse is unknown<br />
+1.6: Attacker can double-spend with 1 confirmation<br />
+1.7: Attacking requires mining block(s)<br />
+1.8: Attacking requires mining block(s)<br />
+1.9: This is a protocol &quot;hard-fork&quot; that old clients will reject as invalid and must therefore not be used.</p>
+
+<h2 id="CVE-2010-5137">CVE-2010-5137</h2>
+
+<pre><code>&lt;b&gt;Date:&lt;/b&gt; 2010-07-28
+&lt;b&gt;Summary:&lt;/b&gt; OP_LSHIFT crash
+&lt;b&gt;Fix Deployment:&lt;/b&gt; 100%
+</code></pre>
+
+<p>|bitcoind<br />wxBitcoin |* - 0.3.4 |0.3.5</p>
+
+<p>On July 28 2010, two bugs were discovered and demonstrated on the test network. One caused bitcoin to crash on some machines when processing a transaction containing an OP_LSHIFT. This was never exploited on the main network, and was fixed by Bitcoin version 0.3.5.</p>
+
+<p>After these bugs were discovered, many currently-unused script words were disabled for safety.</p>
+
+<h3 id="References">References</h3>
+
+<ul>
+<li><a href="http://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2010-5137">US-CERT/NIST</a></li>
+</ul>
+
+
+<h2 id="CVE-2010-5141">CVE-2010-5141</h2>
+
+<pre><code>&lt;b&gt;Date:&lt;/b&gt; 2010-07-28
+&lt;b&gt;Summary:&lt;/b&gt; ?
+&lt;b&gt;Fix Deployment:&lt;/b&gt; 100%
+</code></pre>
+
+<p>|bitcoind<br />wxBitcoin |* - 0.3.4 |0.3.5</p>
+
+<p>On July 28 2010, two bugs were discovered and demonstrated on the test network. One exploited a bug in the transaction handling code and allowed an attacker to spend coins that they did not own. This was never exploited on the main network, and was fixed by Bitcoin version 0.3.5.</p>
+
+<p>After these bugs were discovered, many currently-unused script words were disabled for safety.</p>
+
+<h3 id="References">References</h3>
+
+<ul>
+<li><a href="http://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2010-5141">US-CERT/NIST</a></li>
+</ul>
+
+
+<h2 id="CVE-2010-5138">CVE-2010-5138</h2>
+
+<pre><code>&lt;b&gt;Date:&lt;/b&gt; 2010-07-29
+&lt;b&gt;Summary:&lt;/b&gt; Unlimited SigOp DoS
+&lt;b&gt;Fix Deployment:&lt;/b&gt; 100%
+</code></pre>
+
+<p>|bitcoind<br />wxBitcoin |* - 0.3.? |0.3.?</p>
+
+<p>On July 29 2010, it was discovered that block <a href="http://blockexplorer.com/block/00000000000997f9fd2fe1ee376293ef8c42ad09193a5d2086dddf8e5c426b56">71036</a> contained several transactions with a ton of OP_CHECKSIG commands. There should only ever be one such command. This caused every node to do extra unnecessary work, and it could have been used as a denial-of-service attack. A new version of Bitcoin was quickly released. The new version did not cause a fork on the main network, though it did cause one on the test network (where someone had played around with the attack more).</p>
+
+<h3 id="References">References</h3>
+
+<ul>
+<li><a href="http://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2010-5138">US-CERT/NIST</a></li>
+</ul>
+
+
+<h2 id="CVE-2010-5139">CVE-2010-5139</h2>
+
+<p> <em>Main article: <a href="../CVE-2010-5139/">CVE-2010-5139</a></em></p>
+
+<pre><code>&lt;b&gt;Date:&lt;/b&gt; 2010-08-15
+&lt;b&gt;Summary:&lt;/b&gt; Combined output overflow
+&lt;b&gt;Fix Deployment:&lt;/b&gt; 100%
+</code></pre>
+
+<p>|bitcoind<br />wxBitcoin |* - 0.3.10 |0.3.11</p>
+
+<p>On August 15 2010, it was <a href="http://bitcointalk.org/index.php?topic=822.0">discovered</a> that block 74638 contained a transaction that created over 184 billion bitcoins for two different addresses. This was possible because the code used for checking transactions before including them in a block didn&#39;t account for the case of outputs so large that they overflowed when summed. A new version was published within a few hours of the discovery. The block chain had to be forked. Although many unpatched nodes continued to build on the &quot;bad&quot; block chain, the &quot;good&quot; block chain overtook it at a block height of 74691. The bad transaction no longer exists for people using the longest chain.</p>
+
+<p>The block and transaction:</p>
+
+<pre>CBlock(hash=0000000000790ab3, ver=1, hashPrevBlock=0000000000606865, hashMerkleRoot=618eba,
+nTime=1281891957, nBits=1c00800e, nNonce=28192719, vtx=2)
+  CTransaction(hash=012cd8, ver=1, vin.size=1, vout.size=1, nLockTime=0)
+    CTxIn(COutPoint(000000, -1), coinbase 040e80001c028f00)
+    CTxOut(nValue=50.51000000, scriptPubKey=0x4F4BA55D1580F8C3A8A2C7)
+  CTransaction(hash=1d5e51, ver=1, vin.size=1, vout.size=2, nLockTime=0)
+    CTxIn(COutPoint(237fe8, 0), scriptSig=0xA87C02384E1F184B79C6AC)
+    CTxOut(nValue=92233720368.54275808, scriptPubKey=OP_DUP OP_HASH160 0xB7A7)
+    CTxOut(nValue=92233720368.54275808, scriptPubKey=OP_DUP OP_HASH160 0x1512)
+  vMerkleTree: 012cd8 1d5e51 618eba
+
+Block hash: 0000000000790ab3f22ec756ad43b6ab569abf0bddeb97c67a6f7b1470a7ec1c
+Transaction hash: 1d5e512a9723cbef373b970eb52f1e9598ad67e7408077a82fdac194b65333c9</pre>
+
+
+<h3 id="References">References</h3>
+
+<ul>
+<li><a href="https://bitcointalk.org/index.php?topic=822.0">Discovery</a></li>
+<li><a href="http://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2010-5139">US-CERT/NIST</a></li>
+</ul>
+
+
+<h2 id="CVE-2010-5140">CVE-2010-5140</h2>
+
+<pre><code>&lt;b&gt;Date:&lt;/b&gt; 2010-09-29
+&lt;b&gt;Summary:&lt;/b&gt; Never confirming transactions
+&lt;b&gt;Fix Deployment:&lt;/b&gt; 100%
+</code></pre>
+
+<p>|bitcoind<br />wxBitcoin |* - 0.3.12 |0.3.13</p>
+
+<p>Around September 29, 2010, people started <a href="https://bitcointalk.org/index.php?topic=1306.0">reporting</a> that their sent transactions would not confirm. This happened because people modified Bitcoin to send sub-0.01 transactions without any fees. A 0.01 fee was at that time required by the network for such transactions (essentially prohibiting them), so the transactions remained at 0 confirmations forever. This became a more serious issue because Bitcoin would send transactions using bitcoins gotten from transactions with 0 confirmations, and these resulting transactions would also never confirm. Because Bitcoin tends to prefer sending smaller coins, these invalid transactions quickly multiplied, contaminating the wallets of everyone who received them.</p>
+
+<p>Bitcoin was changed to only select coins with at least 1 confirmation. The remaining sub-0.01 transactions were cleared by generators who modified their version of Bitcoin to not require the micropayment fee. It took a while for everything to get cleared, though, because many of the intermediate transactions had been forgotten by the network by this point and had to be rebroadcast by the original senders.</p>
+
+<h3 id="References">References</h3>
+
+<ul>
+<li><a href="https://bitcointalk.org/index.php?topic=1306.0">Initial reports</a></li>
+<li><a href="http://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2010-5140">US-CERT/NIST</a></li>
+</ul>
+
+
+<h2 id="CVE-2011-4447">CVE-2011-4447</h2>
+
+<pre><code>&lt;b&gt;Date:&lt;/b&gt; 2011-11-11
+&lt;b&gt;Summary:&lt;/b&gt; Wallet non-encryption
+&lt;b&gt;Fix Deployment:&lt;/b&gt; 100%
+</code></pre>
+
+<p>|bitcoind<br />wxBitcoin |0.4.0 - 0.4.1rc6 |0.4.1<br />0.5.0</p>
+
+<h3 id="References">References</h3>
+
+<ul>
+<li><a href="https://bitcointalk.org/index.php?topic=51604.0">Announcement</a></li>
+<li><a href="https://bitcointalk.org/index.php?topic=51474.0">Finding</a></li>
+<li><a href="http://bitcoin.org/releases/2011/11/21/v0.5.0.html">0.5.0</a></li>
+<li><a href="http://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2011-4447">US-CERT/NIST</a></li>
+</ul>
+
+
+<h2 id="CVE-2012-1909">CVE-2012-1909</h2>
+
+<pre><code>&lt;b&gt;Date:&lt;/b&gt; 2012-03-07
+&lt;b&gt;Summary:&lt;/b&gt; Transaction overwriting
+&lt;b&gt;Fix Deployment:&lt;/b&gt; 99%
+</code></pre>
+
+<p>|Bitcoin protocol |Before March 15th, 2012 |BIP 30
+|Bitcoin-Qt<br />bitcoind |* - 0.4.4rc2<br />0.5.0rc1 - 0.5.0.4rc2<br />0.5.1rc1 - 0.5.3rc2<br />0.6.0rc1 - 0.6.0rc2 |0.4.4<br />0.5.0.4<br />0.5.3<br />0.6.0rc3
+|wxBitcoin |ALL |NONE</p>
+
+<h3 id="References">References</h3>
+
+<ul>
+<li><a href="https://bitcointalk.org/index.php?topic=67738.0">Announcement</a></li>
+<li><a href="https://en.bitcoin.it/wiki/BIP_0030">Fix</a></li>
+<li><a href="https://bugs.gentoo.org/show_bug.cgi?id=407793">Gentoo bug tracker</a></li>
+<li><a href="http://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2012-1909">US-CERT/NIST</a></li>
+</ul>
+
+
+<h2 id="CVE-2012-1910">CVE-2012-1910</h2>
+
+<pre><code>&lt;b&gt;Date:&lt;/b&gt; 2012-03-17
+&lt;b&gt;Summary:&lt;/b&gt; MingW non-multithreading
+&lt;b&gt;Fix Deployment:&lt;/b&gt; 100%
+</code></pre>
+
+<p>|bitcoind for Windows<br />Bitcoin-Qt for Windows |0.5.0rc1 - 0.5.0.4<br />0.5.1rc1 - 0.5.3.0<br />0.6.0rc1 - 0.6.0rc3 |0.5.0.5<br />0.5.3.1<br />0.5.4<br />0.6.0rc4</p>
+
+<h3 id="References">References</h3>
+
+<ul>
+<li><a href="https://bitcointalk.org/index.php?topic=69120.0">Announcement</a></li>
+<li><a href="http://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2012-1910">US-CERT/NIST</a></li>
+</ul>
+
+
+<h2 id="BIP-0016">BIP-0016</h2>
+
+<pre><code>&lt;b&gt;Date:&lt;/b&gt; 2012-04-01
+&lt;b&gt;Summary:&lt;/b&gt; Mandatory P2SH protocol update
+&lt;b&gt;Deployment:&lt;/b&gt; 99%
+</code></pre>
+
+<p>|Bitcoin-Qt<br />bitcoind |* - 0.4.4<br />0.5.0rc1 - 0.5.0.5<br />0.5.1rc1 - 0.5.3<br />0.6.0rc1 |0.4.5<br />0.5.0.6<br />0.5.4rc1<br />0.6.0rc2
+|wxBitcoin |ALL |NONE</p>
+
+<h3 id="References">References</h3>
+
+<ul>
+<li><a href="../BIP_0016/">BIP 0016</a></li>
+</ul>
+
+
+<h2 id="CVE-2012-2459">CVE-2012-2459</h2>
+
+<pre><code>&lt;b&gt;Date:&lt;/b&gt; 2012-05-14
+&lt;b&gt;Summary:&lt;/b&gt; Block hash collision (via merkle tree)
+&lt;b&gt;Fix Deployment:&lt;/b&gt; 99%
+</code></pre>
+
+<p>|Bitcoin-Qt<br />bitcoind |* - 0.4.6rc1<br />0.5.0rc1 - 0.5.5rc1<br />0.6.0rc1 - 0.6.0.7rc1<br />0.6.1rc1 - 0.6.1rc1 |0.4.6<br />0.5.5<br />0.6.0.7<br />0.6.1rc2</p>
+
+<p>Block hash collisions can easily be made by duplicating transactions in the merkle tree.
+Such a collision is invalid, but if recorded (as Bitcoin-Qt and bitcoind prior to 0.6.1 did) would prevent acceptance of the legitimate block with the same hash.
+This could be used to fork the blockchain, including deep double-spend attacks.</p>
+
+<h3 id="References">References</h3>
+
+<ul>
+<li><a href="https://bitcointalk.org/?topic=81749">Announcement</a></li>
+<li><a href="https://bugs.gentoo.org/show_bug.cgi?id=415973">Gentoo bug tracker</a></li>
+<li><a href="http://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2012-2459">US-CERT/NIST</a></li>
+<li><a href="https://bitcointalk.org/?topic=102395">Full Disclosure</a></li>
+</ul>
+
+
+<h2 id="CVE-2012-3789">CVE-2012-3789</h2>
+
+<p> <em>Main article: <a href="../CVE-2012-3789/">CVE-2012-3789</a></em></p>
+
+<pre><code>&lt;b&gt;Date:&lt;/b&gt; 2012-06-20
+&lt;b&gt;Summary:&lt;/b&gt; (Lack of) orphan txn resource limits
+&lt;b&gt;Fix Deployment:&lt;/b&gt; 99%
+</code></pre>
+
+<p>|Bitcoin-Qt<br />bitcoind |* - 0.4.7rc2<br />0.5.0rc1 - 0.5.6rc2<br />0.6.0rc1 - 0.6.0.8rc2<br />0.6.1rc1 - 0.6.2.2 |0.4.7rc3<br />0.5.6rc3<br />0.6.0.9rc1<br />0.6.3rc1</p>
+
+<h3 id="References">References</h3>
+
+<ul>
+<li><a href="../CVE-2012-3789/">CVE-2012-3789</a></li>
+<li><a href="https://bitcointalk.org/?topic=88734">0.6.3rc1 Announcement</a></li>
+<li><a href="http://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2012-3789">US-CERT/NIST</a></li>
+</ul>
+
+
+<h2 id="CVE-2012-4682">CVE-2012-4682</h2>
+
+<pre><code>&lt;b&gt;Date:&lt;/b&gt; 
+&lt;b&gt;Summary:&lt;/b&gt; 
+&lt;b&gt;Fix Deployment:&lt;/b&gt; 98%
+</code></pre>
+
+<p>|Bitcoin-Qt<br />bitcoind |* - 0.4.7rc2<br />0.5.0rc1 - 0.5.6rc2<br />0.6.0rc1 - 0.6.0.8rc2<br />0.6.1rc1 - 0.6.2.2 |0.4.7rc3<br />0.5.6rc3<br />0.6.0.9rc1<br />0.6.3rc1</p>
+
+<h3 id="References">References</h3>
+
+<ul>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Common_Vulnerabilities_and_Exposures&amp;page=CVE-2012-4682&amp;do=create" rel="nofollow">?</a>CVE-2012-4682</span></li>
+<li><a href="https://bugs.gentoo.org/show_bug.cgi?id=435216">Gentoo bug</a></li>
+</ul>
+
+
+<h2 id="CVE-2012-4683">CVE-2012-4683</h2>
+
+<p> <em>Main article: <a href="../CVE-2012-4683/">CVE-2012-4683</a></em></p>
+
+<pre><code>&lt;b&gt;Date:&lt;/b&gt; 2012-08-23
+&lt;b&gt;Summary:&lt;/b&gt; Targeted DoS by CPU exhaustion using alerts
+&lt;b&gt;Fix Deployment:&lt;/b&gt; 98%
+</code></pre>
+
+<p>|Bitcoin-Qt<br />bitcoind |* - 0.4.7rc2<br />0.5.0rc1 - 0.5.6rc2<br />0.6.0rc1 - 0.6.0.8rc2<br />0.6.1rc1 - 0.6.2.2 |0.7.0</p>
+
+<h3 id="References">References</h3>
+
+<ul>
+<li><a href="../CVE-2012-4683/">CVE-2012-4683</a></li>
+<li><a href="https://bitcointalk.org/index.php?topic=148038.0">Announcement</a></li>
+<li><a href="https://bugs.gentoo.org/show_bug.cgi?id=435216">Gentoo bug</a></li>
+</ul>
+
+
+<h2 id="CVE-2012-4684">CVE-2012-4684</h2>
+
+<p> <em>Main article: <a href="../CVE-2012-4684/">CVE-2012-4684</a></em></p>
+
+<pre><code>&lt;b&gt;Date:&lt;/b&gt; 2012-08-24
+&lt;b&gt;Summary:&lt;/b&gt; Network-wide DoS using malleable signatures in alerts
+&lt;b&gt;Fix Deployment:&lt;/b&gt; 98%
+</code></pre>
+
+<p>|Bitcoin-Qt<br />bitcoind |* - 0.4.7rc2<br />0.5.0rc1 - 0.5.6rc2<br />0.6.0rc1 - 0.6.0.8rc2<br />0.6.1rc1 - 0.6.2.2 - 0.6.3rc1 |0.7.0</p>
+
+<h3 id="References">References</h3>
+
+<ul>
+<li><a href="../CVE-2012-4684/">CVE-2012-4684</a></li>
+<li><a href="https://bitcointalk.org/index.php?topic=148109.0">Announcement</a></li>
+</ul>
+
+
+<h2 id="CVE-2013-2272">CVE-2013-2272</h2>
+
+<pre><code>&lt;b&gt;Date:&lt;/b&gt; 2013-01-11
+&lt;b&gt;Summary:&lt;/b&gt; Remote discovery of node&#39;s wallet addresses
+&lt;b&gt;Fix Deployment:&lt;/b&gt; 97%
+</code></pre>
+
+<p>|Bitcoin-Qt<br />bitcoind |* - 0.4.8rc4<br />0.5.0rc1 - 0.5.7<br />0.6.0rc1 - 0.6.0.10rc4<br />0.6.1rc1 - 0.6.4rc4<br />0.7.0rc1 - 0.7.2 |0.4.9rc1<br />0.5.8rc1<br />0.6.0.11rc1<br />0.6.5rc1<br />0.7.3rc1</p>
+
+<h3 id="References">References</h3>
+
+<ul>
+<li><a href="https://bitcointalk.org/?topic=135856">Announcement</a></li>
+<li><a href="https://bugs.gentoo.org/show_bug.cgi?id=462046">Gentoo bug</a></li>
+</ul>
+
+
+<h2 id="CVE-2013-2273">CVE-2013-2273</h2>
+
+<pre><code>&lt;b&gt;Date:&lt;/b&gt; 2013-01-30
+&lt;b&gt;Summary:&lt;/b&gt; Predictable change output
+&lt;b&gt;Fix Deployment:&lt;/b&gt; 97%
+</code></pre>
+
+<p>|Bitcoin-Qt<br />bitcoind |* - 0.4.8rc4<br />0.5.0rc1 - 0.5.7<br />0.6.0rc1 - 0.6.0.10rc4<br />0.6.1rc1 - 0.6.4rc4<br />0.7.0rc1 - 0.7.2 |0.4.9rc1<br />0.5.8rc1<br />0.6.0.11rc1<br />0.6.5rc1<br />0.7.3rc1</p>
+
+<h3 id="References">References</h3>
+
+<ul>
+<li><a href="https://bugs.gentoo.org/show_bug.cgi?id=462046">Gentoo bug</a></li>
+</ul>
+
+
+<h2 id="CVE-2013-2292">CVE-2013-2292</h2>
+
+<pre><code>&lt;b&gt;Date:&lt;/b&gt; 2013-01-30
+&lt;b&gt;Summary:&lt;/b&gt; A transaction that takes at least 3 minutes to verify
+&lt;b&gt;Fix Deployment:&lt;/b&gt; 0%
+</code></pre>
+
+<p>|Bitcoin-Qt<br />bitcoind |All versions |No fix yet</p>
+
+<h3 id="References">References</h3>
+
+<ul>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Common_Vulnerabilities_and_Exposures&amp;page=CVE-2013-2292&amp;do=create" rel="nofollow">?</a>CVE-2013-2292</span></li>
+<li><a href="https://bitcointalk.org/?topic=140078">Announcement</a></li>
+<li><a href="https://bugs.gentoo.org/show_bug.cgi?id=462046">Gentoo bug</a></li>
+</ul>
+
+
+<h2 id="CVE-2013-2293">CVE-2013-2293</h2>
+
+<p> <em>Main article: <a href="../CVE-2013-2293/">CVE-2013-2293</a></em></p>
+
+<pre><code>&lt;b&gt;Date:&lt;/b&gt; 2013-02-14
+&lt;b&gt;Summary:&lt;/b&gt; Continuous hard disk seek
+&lt;b&gt;Fix Deployment:&lt;/b&gt; 97%
+</code></pre>
+
+<p>|Bitcoin-Qt<br />bitcoind |* - 0.7.3rc1 |No fix yet (0.8.0 unaffected)</p>
+
+<h3 id="References">References</h3>
+
+<ul>
+<li><a href="../CVE-2013-2293/">CVE-2013-2293</a></li>
+<li><a href="https://bitcointalk.org/?topic=144122">Announcement</a></li>
+<li><a href="https://bugs.gentoo.org/show_bug.cgi?id=462046">Gentoo bug</a></li>
+</ul>
+
+
+<h2 id="CVE-2013-3219">CVE-2013-3219</h2>
+
+<pre><code>&lt;b&gt;Date:&lt;/b&gt; 2013-03-11
+&lt;b&gt;Summary:&lt;/b&gt; Unenforced block protocol rule
+&lt;b&gt;Fix Deployment:&lt;/b&gt; 100%
+</code></pre>
+
+<p>|Bitcoin-Qt<br />bitcoind |0.8.0rc1 - 0.8.0 |0.8.1</p>
+
+<h3 id="References">References</h3>
+
+<ul>
+<li><a href="../BIP_0050/">BIP 50</a></li>
+</ul>
+
+
+<h2 id="CVE-2013-3220">CVE-2013-3220</h2>
+
+<pre><code>&lt;b&gt;Date:&lt;/b&gt; 2013-03-11
+&lt;b&gt;Summary:&lt;/b&gt; Inconsistent BDB lock limit interactions
+&lt;b&gt;Fix Deployment:&lt;/b&gt; 97%
+</code></pre>
+
+<p>|Bitcoin-Qt<br />bitcoind |* - 0.4.9rc1<br />0.5.0rc1 - 0.5.8rc1<br />0.6.0rc1 - 0.6.5rc1<br />0.7.0rc1 - 0.7.3rc1 |0.4.9rc2<br />0.5.8rc2<br />0.6.5rc2<br />0.7.3rc2
+|wxBitcoin |ALL |NONE</p>
+
+<h3 id="References">References</h3>
+
+<ul>
+<li><a href="../BIP_0050/">BIP 50</a></li>
+</ul>
+
+
+<h2 id="BIP-0034">BIP-0034</h2>
+
+<pre><code>&lt;b&gt;Date:&lt;/b&gt; 2013-03-25
+&lt;b&gt;Summary:&lt;/b&gt; Mandatory block protocol update
+&lt;b&gt;Deployment:&lt;/b&gt; 99%
+</code></pre>
+
+<p>|Bitcoin-Qt<br />bitcoind |* - 0.4.7<br />0.5.0rc1 - 0.5.7<br />0.6.0rc1 - 0.6.0.9<br />0.6.1rc1 - 0.6.3 |0.4.8rc1<br />0.5.7rc1<br />0.6.0.10rc1<br />0.6.4rc1
+|wxBitcoin |ALL |NONE</p>
+
+<h3 id="References">References</h3>
+
+<ul>
+<li><a href="../BIP_0034/">BIP 0034</a></li>
+</ul>
+
+
+<h2 id="BIP-0050">BIP-0050</h2>
+
+<pre><code>&lt;b&gt;Date:&lt;/b&gt; 2013-05-15
+&lt;b&gt;Summary:&lt;/b&gt; Hard fork to remove txid limit protocol rule
+&lt;b&gt;Deployment:&lt;/b&gt; 97%
+</code></pre>
+
+<p>|Bitcoin-Qt<br />bitcoind |* - 0.4.9rc1<br />0.5.0rc1 - 0.5.8rc1<br />0.6.0rc1 - 0.6.5rc1<br />0.7.0rc1 - 0.7.3rc1 |0.4.9rc2<br />0.5.8rc2<br />0.6.5rc2<br />0.7.3rc2
+|wxBitcoin |ALL |NONE</p>
+
+<h3 id="References">References</h3>
+
+<ul>
+<li><a href="../BIP_0050/">BIP 0050</a></li>
+</ul>
+
+
+<h2 id="CVE-2013-4627">CVE-2013-4627</h2>
+
+<pre><code>&lt;b&gt;Date:&lt;/b&gt; 2013-06-??
+&lt;b&gt;Summary:&lt;/b&gt; Memory exhaustion with excess tx message data
+&lt;b&gt;Fix Deployment:&lt;/b&gt; 57%
+</code></pre>
+
+<p>|Bitcoin-Qt<br />bitcoind |* - 0.4.9rc3<br />0.5.0rc1 - 0.5.8rc3<br />0.6.0rc1 - 0.6.5rc3<br />0.7.0rc1 - 0.7.3rc3<br />0.8.0rc1 - 0.8.3 |0.4.9rc4<br />0.5.8rc4<br />0.6.5rc4<br />0.7.3rc4<br />0.8.4
+|wxBitcoin |ALL |NONE</p>
+
+<h3 id="References">References</h3>
+
+<h2 id="CVE-2013-4165">CVE-2013-4165</h2>
+
+<pre><code>&lt;b&gt;Date:&lt;/b&gt; 2013-07-20
+&lt;b&gt;Summary:&lt;/b&gt; Timing leak in RPC authentication
+&lt;b&gt;Fix Deployment:&lt;/b&gt; 57%
+</code></pre>
+
+<p>|Bitcoin-Qt<br />bitcoind |* - 0.4.9rc3<br />0.5.0rc1 - 0.5.8rc3<br />0.6.0rc1 - 0.6.5rc3<br />0.7.0rc1 - 0.7.3rc3<br />0.8.0rc1 - 0.8.3 |0.4.9rc4<br />0.5.8rc4<br />0.6.5rc4<br />0.7.3rc4<br />0.8.4rc1
+|wxBitcoin |ALL |NONE</p>
+
+<h3 id="References">References</h3>
+
+<ul>
+<li><a href="https://bitcointalk.org/index.php?topic=287351">Bitcoin-Qt 0.8.4 release notes</a></li>
+</ul>
+
+
+<h2 id="CVE-2013-5700">CVE-2013-5700</h2>
+
+<pre><code>&lt;b&gt;Date:&lt;/b&gt; 2013-09-04
+&lt;b&gt;Summary:&lt;/b&gt; Remote p2p crash via bloom filters
+&lt;b&gt;Fix Deployment:&lt;/b&gt; 61%
+</code></pre>
+
+<p>|Bitcoin-Qt<br />bitcoind |0.8.0rc1 - 0.8.3 |0.8.4rc1</p>
+
+<h3 id="References">References</h3>
+
+<ul>
+<li><a href="https://bitcointalk.org/index.php?topic=287351">Bitcoin-Qt 0.8.4 release notes</a></li>
+</ul>
+
+
+<h2 id="Definitions">Definitions</h2>
+
+<p>A critical vulnerability is one that will have disastrous consequences if it is exploited.  A serious vulnerability is one that will have serious consequences if it is exploited (52.1).</p>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../Changelog/">Changelog</a></li>
+</ul>
+
+
+<h2 id="References">References</h2>
+
+<p>52.1: <a href="http://bitcointalk.org/index.php?topic=88892.0">http://bitcointalk.org/index.php?topic=88892.0</a></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Security/" rel="tag">Security</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../CVE-2012-3789/">CVE-2012-3789</a>
+
+<a href="../CVE-2012-4683/">CVE-2012-4683</a>
+
+<a href="../CVE-2012-4684/">CVE-2012-4684</a>
+
+<a href="../CVE-2013-2293/">CVE-2013-2293</a>
+
+<a href="../Value_overflow_incident/">Value overflow incident</a>
+
+<a href="../Weaknesses/">Weaknesses</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-08-17T16:08:45Z">Mon 17 Aug 2015 04:08:45 PM Europe</time>
+<!-- Created <time datetime="2012-03-26T21:13:40Z" pubdate="pubdate">Mon 26 Mar 2012 09:13:40 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Sweepprivkey proposal</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Sweepprivkey proposal
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Sweepprivkey_proposal&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p><strong>sweepprivkey</strong> is a PROPOSED Bitcoin RPC command that, given a Bitcoin private key, allows sweeping of some or all of the funds to another address.
+Despite this specification, this proposal has never been implemented, and cannot be considered for inclusion until it is.</p>
+
+<p>This function is useful for merchants who wish to accept typed or scanned Bitcoin private keys as payments, without imposing any specific methodology on how the payments must be processed.  <em>sweepprivkey</em> has no direct effect on anything in the local wallet or transaction history -- the function simply generates a transaction in real-time to sweep the funds to another address, and broadcasts it.  That destination address may or may not be in the local wallet.</p>
+
+<p>The local wallet is only affected if the destination address is in the wallet, and only in an indirect sense: the wallet reacts to the sudden presence of a new transaction referencing it, just the same as if that transaction had been received from a peer.</p>
+
+<p>This allows merchants to offer a &quot;deposit by private key&quot; method with trivial effort, specifically without having to create a separate deposit implementation for accepting the keys.  The merchant can simply expose a way for users to submit private keys, which can then be passed to <em>sweepprivkey</em> with minimal validation along with the same deposit address that the merchant would normally have given to their customer in anticipation of payment.</p>
+
+<p>Once the customer has entered a private key and allowed a sweep to take place, the merchant from its perspective will see what looks like a deposit with zero confirmations, and can treat it exactly the same as a normal deposit from outside (including requiring the customer to wait for confirmations as usual, where applicable).</p>
+
+<h2 id="Usage">Usage</h2>
+
+<p>The syntax of <em>sweepprivkey</em> is as follows:</p>
+
+<pre><code>sweepprivkey &lt;privkey&gt; &lt;minconfirms&gt; &lt;destinationtype&gt; &lt;destination&gt;[] &lt;fee&gt;[] &lt;amount&gt; &lt;changeaddress&gt;[]
+</code></pre>
+
+<ul>
+<li><em>privkey</em> is required.  It can be in any private key format normally accepted for wallet imports with the <a href="../Importprivkey/">importprivkey</a> function.</li>
+<li><em>minconfirms</em> determines how many confirmations the private key&#39;s prior transactions must have before they are considered eligible for being swept.  Transactions having less than the minimum confirmations will be ignored.  If this is 0, then <em>sweepprivkey</em> will also attempt to sweep unconfirmed transactions from the in-memory pool.</li>
+<li><em>destinationtype</em> is either the word <em>&quot;address&quot;</em> or <em>&quot;account&quot;</em>, and indicates what <em>destination</em> is.  <em>&quot;address&quot;</em> means sweep funds to another Bitcoin address, and <em>&quot;account&quot;</em> will perform a <em><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=getnewaddress&amp;from=Sweepprivkey_proposal" rel="nofollow">?</a>getnewaddress</span></em> operation to get an address on the local wallet and sweep the funds there.  <em>destinationtype</em> and <em>destination</em> are optional, but must both be present together when used.  If these are absent, the command is treated as a simple query which returns the total funds available to the private key.</li>
+<li><em>destination</em> is either a Bitcoin address (if <em>destinationtype</em> is <em>&quot;address&quot;</em>), or is an account name (if <em>destinationtype</em> is <em>&quot;account&quot;</em>).  Funds are sent here.</li>
+<li><em>fee</em> is optional, but must be provided if <em>amount</em> is provided (so that the command knows which parameter is which).  This determines how much of a transaction fee to pay.  This can be either an amount, or the word <em>&quot;default&quot;</em>, or the word <em>&quot;minimum&quot;</em>.  <em>Default</em> means to pay the transaction fee configured in the bitcoin client, and is the choice assumed if omitted.  <em>Minimum</em> means to pay the minimum fee that the client believes will be required to ensure that the transaction is relayed by the network (which is based on the transaction&#39;s age, size, and other factors - see <span class="createlink"><a href="/ikiwiki.cgi?from=Sweepprivkey_proposal&amp;page=GetMinFee&amp;do=create" rel="nofollow">?</a>GetMinFee</span>).  In many cases, the fee may be zero.  If you specify an amount but it is below the minimum, or the private key doesn&#39;t have a balance large enough to meet the minimum, the command reports failure.  Fees are always paid from the funds held by the swept private key, not the wallet.</li>
+<li><em>amount</em> and <em>changeaddress</em> are optional.  When not present, the command will attempt to sweep all funds available via the private key to the extent those funds have enough confirmations to satisfy <em>minconfirms</em>.  If an amount is present, the command will only sweep that amount, reporting a failure if amount (plus fee) is greater than the funds available.  If the private key contains funds that satisfy <em>minconfirms</em> as well as funds that do not, only the sufficiently confirmed funds are swept.  If a specific amount is requested and a transaction fee must be paid, it will be deducted out of the change rather than the requested transfer amount (FIXME: this seems irrational). <em>changeaddress</em> address specifies a destination for any leftover change that may be the result of sweeping a partial amount.  Not all partial-balance transactions will generate change, particularly if the private key&#39;s received amount satisfies exactly the sweep amount.  If there is no change, the change address is ignored.</li>
+</ul>
+
+
+<h2 id="Proposed_flowchart">Proposed flowchart</h2>
+
+<p>The <em>sweepprivkey</em> function depends on the ability to quickly find transactions in the UTXO set controlled by a given private key; simply, a UTXO index on scriptPubKey.</p>
+
+<p>When the <em>sweepprivkey</em> command is run, bitcoind will:</p>
+
+<ol>
+<li>Ensure the necessary UTXO index is being maintained.  If not, it will be built before continuing.</li>
+<li>Find the UTXO which is assigned to a standard scriptPubKey redeemable with only the given private key, and ensure it is buried under enough blocks to satisfy the desired level of <em>minconfirms</em>.</li>
+<li>Confirm that, if <em>amount</em> is specified, the amount received is equal to or greater than it.</li>
+<li>Do getnewaddress if a wallet account was specified.</li>
+<li>Construct a new transaction in memory that spends funds from the found UTXO to the destination address and, if necessary, the change address.  Sign the transaction with <em>privkey</em>.</li>
+<li>Treat the signed transaction the same as if it had come from a peer, including relaying it to all connected peers.</li>
+<li>Return success with the txid and (if applicable) the new address that was gathered via <em>getnewaddress</em>.</li>
+</ol>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Importprivkey/">Importprivkey</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2014-05-01T21:03:23Z">Thu 01 May 2014 09:03:23 PM Europe</time>
+<!-- Created <time datetime="2011-09-24T16:16:38Z" pubdate="pubdate">Sat 24 Sep 2011 04:16:38 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

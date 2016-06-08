@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Smart Property</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Smart Property
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=Smart_Property" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p><strong>Smart property</strong> is property whose ownership is controlled via the Bitcoin <a href="../Block_chain/">block chain</a>, using <a href="../Contracts/">contracts</a>. Examples could include physical property such as cars, phones or houses. Smart property also includes non-physical property like shares in a company or access rights to a remote computer. Making property smart allows it to be traded with radically less trust. This reduces fraud, mediation fees and allows trades to take place that otherwise would never have happened. For example, it allows strangers to loan you money over the internet taking your smart property as collateral, which should make lending more competitive and thus credit cheaper.</p>
+
+<p>Smart property was first proposed by <span class="createlink"><a href="/ikiwiki.cgi?from=Smart_Property&amp;do=create&amp;page=Nick_Szabo" rel="nofollow">?</a>Nick Szabo</span> in his 1997 paper, <a href="http://szabo.best.vwh.net/idea.html">&quot;The idea of smart contracts&quot;</a>.</p>
+
+<h2 id="Background">Background</h2>
+
+<p>Primitive forms of smart property are already common - if you own a car, it probably comes with an immobilizer. Immobilizers augment the physical key with a protocol exchange ensuring only the holders of the correct cryptographic token can activate the engine. They have dramatically reduced car theft, for example, immobilisers are fitted to around 45% of all cars in Australia, but account for only 7% of the cars that are stolen.</p>
+
+<p>Many other forms of modern property are protected against theft using cryptography, for example, some smartphones will refuse to release certain keys if the correct PIN unlock isn&#39;t entered, and cryptography not only renders a stolen device fairly useless but makes it impossible to steal someone&#39;s phone number as well.</p>
+
+<p>Although these are victories for cryptography, the potential of cryptographically activated property has not been fully explored. The private key is usually itself held in a physical container (like a key or SIM card) and can&#39;t be easily transferred or manipulated. Smart property changes this, allowing ownership to be intermediated by Bitcoin miners.</p>
+
+<h2 id="Theory">Theory</h2>
+
+<p>This section assumes you are familiar with the Bitcoin protocol, and have a good understanding of <a href="../Contracts/">contracts</a>.</p>
+
+<p>Let&#39;s start with the example of a car. The cars computer requires authentication using an <em>ownership key</em>. The ownership key is a regular Bitcoin ECDSA-256 key. The car starts its life at the factory gate with the public part of a newly created ownership key. A small token amount of Bitcoins are deposited on that key, call the amount T (it could be 0.0001 BTC for example). Additionally the car has a digital certificate from its manufacturer, and an <em>identification key</em> which has the public part in the certificate. This allows the car to prove things like its existence, age or mileage to third parties.</p>
+
+<p>When the car is sold, the following protocol is used:</p>
+
+<ol>
+<li>The buyer generates a nonce (random number) and asks the seller to send them the car data.</li>
+<li>The seller gives the car that nonce, and the car returns a data structure signed with its identification key. The data contains the nonce, the cars public cert, data about the car, the public key of the current owner, and the transaction+merkle branch which transferred ownership last time. This ensures the buyer knows what they are getting and that it came from the real seller (it&#39;s not a replay).</li>
+<li>The seller selects a key to receive the payment, k1, and names their price P.</li>
+<li>The buyer generates a new ownership key, k2.</li>
+<li>The buyer creates a transaction with two inputs and two outputs. The first input signs for P coins. The second input is connected to the output holding T coins for the ownership address. The first output sends P coins to k1 and the second output sends T coins to k2. This transaction is not valid because only the first input can be signed. The buyer passes this partially complete transaction to the seller, who then signs the second input with the car&#39;s current ownership key and broadcasts the transaction.</li>
+<li>They wait for some confirmations.</li>
+<li>The buyer presents the car with the Bitcoin transaction, a merkle branch linking it to the block header and then enough block headers to fill in the gap from the cars current ownership transaction. The car sees that the new transaction re-assigns ownership and is further along in the chain than its current one, plus it has enough work piled on top to be sure the tx won&#39;t be reversed. It then updates its ownership information. The car does not need to keep a full record of the chain nor all headers, but rather just enough data to be able to connect future block headers to the one it was previously presented with.</li>
+</ol>
+
+
+<p>In practice this process would likely be handled using smartphones with NFC hardware -- the act of touching the phone containing the ownership key to the dashboard would start your wallet app in a special mode that knows how to do smart property trades, after inputting the price the buyer and seller would then touch their phones together to finalize the deal. Although the cryptography is complex they would never need to know anything about it. The phone could double as a way to start the car as well.</p>
+
+<h2 id="Loans_and_collateral">Loans and collateral</h2>
+
+<p>Being able to trade physical property without fraud risk is useful, but we can add an extra layer to allow for secured low-trust loans. Consider a loan with which to start a small business. Rather than deal with a bank, you decide to allow people from around the world bid on your debt so you can get the best rates. For this to work, the strangers need some assurance that if the loan is not repaid, they get to keep the collateral - yet you still need to be able to use the car to set up the business.</p>
+
+<p>We can do this by adding <em>access keys</em> to the ownership key. By signing a message with the ownership key, access keys can be added or removed. Access keys can be temporary in nature. This means that for the duration of the loan, you can re-assign ownership of the vehicle to the creditor whilst keeping an access key for yourself.</p>
+
+<p>It would be best if the debtor had an assurance that, on repaying his debt, the cars ownership would indeed revert to his control. We can implement this as follows:</p>
+
+<ol>
+<li>The creditor generates k1, which is used to receive the loan repayments. The loan size is L.</li>
+<li>The creditor signs Tx1 that has an input/output re-assigning ownership of the car back to the debtor which is signed with SIGHASH_ALL  SIGHASH_ANYONECANPAY, and an output for L coins to k1. This transaction is not valid because the loan has not yet been repaid, so the output sums to more value than the inputs. The creditor sends this transaction to the debtor who keeps it.</li>
+<li>As the debtor re-earns the money they spent, they add inputs to Tx1 to increase its value. This doesn&#39;t break the signature on the ownership key input/output pair because it was signed with SIGHASH_ANYONECANPAY so is independent of other inputs. They can&#39;t adjust the outputs or anything else about the transaction because that would invalidate the ownership input/output (SIGHASH_ALL).</li>
+<li>Once the transaction has enough inputs to sum to L, the debtor broadcasts the transaction, thus repaying their debt and simultaneously retaking ownership of the vehicle.</li>
+</ol>
+
+
+<p>Because access keys can be given time limits, if the debtor does not repay the loan by its maturity period his access key expires and the car will no longer start for him. The new owner can now either come and pick it up himself, or if he doesn&#39;t want to (eg he is in another country), he can sell it using the low-trust sales protocol described above and collect the money that way.</p>
+
+<p>Most loans are repaid in multiple installments. The same protocol as above can work in this case by embedding some control data in the extra input/output pair, the ownership key would not change but the signature would cover a command that extends the lifetime of the access key for another month. The vehicle would know how to parse the data out of the transaction.</p>
+
+<h2 id="Implementation_details">Implementation details</h2>
+
+<p>For expiring access keys, the device must have a trustable source of time. Some devices like cars and phones keep time by themselves. In other cases where that&#39;s not practical for some reason, a secure timestamping service can be used. This is a service that signs a message containing the current time and a nonce. The device generates a nonce, and as part of the activation/switch-on protocol, a network connected device like a smartphone sends the nonce to the timestamping service then hands back the signed message. The block chain itself cannot be used as a source of time because there&#39;s no challenge/response aspect - the device has no way of knowing if you&#39;ve handed it the latest blocks or not. Signing the time with a nonce solves this.</p>
+
+<p>Smart phones play a key role in smart property because they have the ability to bridge devices without network access to the network, using Bluetooth or NFC radio. For instance, requiring internet access for a smart lock on a house door is too expensive and impractical. However, a lock with an NFC touchpoint that understands how to check block header progression is quite feasible. The only operations needed to implement Bitcoin-linked smart property is hashing, ECDSA and a small amount of storage. Smartcard chips that implement everything required are common and cheap.</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Agent/">Agent</a>
+
+<a href="../Contract/">Contract</a>
+
+<a href="../Distributed_markets/">Distributed markets</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-05-10T17:19:53Z">Tue 10 May 2016 05:19:53 PM Europe</time>
+<!-- Created <time datetime="2011-09-04T19:31:12Z" pubdate="pubdate">Sun 04 Sep 2011 07:31:12 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

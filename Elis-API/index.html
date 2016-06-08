@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Elis-API</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Elis-API
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Elis-API&amp;page=Talk&amp;do=create" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>Bitcoin API call list (as of version 0.3.20.2) with code samples and returned values.</p>
+
+<h2 id="API_Calls">API Calls</h2>
+
+<p>API Calls to JSON-RPC are sent using POST method and parameters are sent as JSON object.</p>
+
+<h3 id="Example_Request">Example Request</h3>
+
+<p>When requesting something from the JSON-RPC server the request is sent to the server with the following URL: <tt>http://user:pass@localhost:8332/</tt> with post data that looks something like this:</p>
+
+<p>{&quot;method&quot;:&quot;listreceivedbyaccount&quot;,&quot;params&quot;:<span class="createlink"><a href="/ikiwiki.cgi?page=0&amp;do=create&amp;from=Elis-API" rel="nofollow">?</a>0</span>,&quot;id&quot;:&quot;listreceivedbyaccount&quot;}:</p>
+
+<p>The Bitcoind server uses JSON notation instead of using regular POST parameters which can cause confusions sometime. Note the trailing colon on the post data above.</p>
+
+<p>The JSON object that is being sent to the server is composed of 3 elements: <tt>method</tt>, <tt>params</tt>, and <tt>id</tt>.</p>
+
+<p><strong><tt>method</tt></strong> is what method you want to invoke, this is a simple string representing the method you&#39;re invoking.</p>
+
+<p><strong><tt>params</tt></strong> is the <strong><tt>Array</tt></strong> parameters that you&#39;re sending with the method invocation. Note that these parameters are sent as an <tt>Array</tt> notation and not <tt>Object</tt> notation.</p>
+
+<p><strong><tt>id</tt></strong> is used by the app requesting, and I usually just send the method name as the ID</p>
+
+<h2 id="Calls_List">Calls List</h2>
+
+<p>Required arguments are denoted inside &lt; and &gt; Optional arguments are inside  <span class="createlink"><a href="/ikiwiki.cgi?page=and&amp;do=create&amp;from=Elis-API" rel="nofollow">?</a>and</span>.</p>
+
+<h3 id="backupwallet">backupwallet</h3>
+
+<p>Safely copies wallet.dat to destination, which can be a directory or a path with filename.</p>
+
+<h4 id="Arguments">Arguments</h4>
+
+<p><tt><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=0&amp;from=Elis-API" rel="nofollow">?</a>0</span></tt> <strong></strong> <tt>String</tt> The destination of the wallet file it will be copied to. This needs to be a valid <tt>directory</tt> in your file system passed in linux style (forward slashes (<tt>/</tt>) as separators - linux style, not backward slashes (<tt>\</tt>) - windows style). The directory <strong>must not have a file named <tt>wallet.dat</tt></strong> otherwise the operation will fail. Example: <tt>&quot;d:/wallet-backup/&quot;</tt></p>
+
+<h4 id="Example_Request">Example Request</h4>
+
+<p>{&quot;method&quot;:&quot;backupwallet&quot;,&quot;params&quot;:<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=__34__d%3A%2Fwallet-backup%2F__34__&amp;from=Elis-API" rel="nofollow">?</a>&quot;</span>,&quot;id&quot;:&quot;backupwallet&quot;}:</p>
+
+<h4 id="Result">Result</h4>
+
+<h5 id="Success">Success</h5>
+
+<p><tt>result</tt> = <tt>null</tt></p>
+
+<p>{
+    &quot;result&quot;: null,
+    &quot;error&quot;: null,
+    &quot;id&quot;: &quot;backupwallet&quot;
+}</p>
+
+<h5 id="Error">Error</h5>
+
+<p>{
+    &quot;result&quot;: null,
+    &quot;error&quot;: {
+    &quot;code&quot;: -1,
+    &quot;message&quot;: &quot;boost::filesystem::copy_file: The file exists: \&quot;C:\Users\Eli\AppData\Roaming\Bitcoin\testnet\wallet.dat\&quot;, \&quot;d:\wallet-backup\wallet.dat\&quot;&quot;
+    },
+    &quot;id&quot;: &quot;backupwallet&quot;
+}</p>
+
+<p>There are other errors that can occur, for example if the directory provided is incorrect.</p>
+
+<h3 id="getaccount">getaccount</h3>
+
+<p>Returns the account associated with the given address.</p>
+
+<h4 id="Arguments">Arguments</h4>
+
+<p><tt><span class="createlink"><a href="/ikiwiki.cgi?from=Elis-API&amp;do=create&amp;page=0" rel="nofollow">?</a>0</span></tt> <strong></strong> <tt>String</tt> The address being checked. Example: <tt>&quot;n3CoNg6qBkJauJq5558PrfEHJd8f1emkQZ</tt>&quot; (note that this a <tt>testnet</tt> address), <tt>&quot;&quot;</tt></p>
+
+<h4 id="Example_Request">Example Request</h4>
+
+<p>{&quot;method&quot;:&quot;getaccount&quot;,&quot;params&quot;:<a title="n3CoNg6qBkJauJq5558PrfEHJd8f1emkQZ">(1)</a>,&quot;id&quot;:&quot;getaccount&quot;}:</p>
+
+<h4 id="Result">Result</h4>
+
+<p><tt>result</tt> = <tt>String</tt> the account that the address is associated with.</p>
+
+<p>Note that some addresses in a bitcoin wallet are not associated with any given account and in those cases the <tt>result</tt> will be an empty string (i.e. the global account).</p>
+
+<h5 id="Success">Success</h5>
+
+<p>{
+    &quot;result&quot;: &quot;Testnet Faucet&quot;,
+    &quot;error&quot;: null,
+    &quot;id&quot;: &quot;getaccount&quot;
+}</p>
+
+<h5 id="Error">Error</h5>
+
+<p>The only time that this method returns an error is when the first argument (<tt><span class="createlink"><a href="/ikiwiki.cgi?page=0&amp;do=create&amp;from=Elis-API" rel="nofollow">?</a>0</span></tt> <strong>Bitcoin Address</strong>) is not supplied. </p><ins>In any other case the method will return a successful result</ins> with an empty <tt>&quot;result&quot;</tt> value indicating that the address belongs to the global account, <ins>even if no address supplied</ins> (i.e. empty string: <tt>&quot;&quot;</tt>) or a bad address altogether (i.e. <tt>&quot;eli&quot;</tt>).
+
+<p>{
+    &quot;result&quot;: null,
+    &quot;error&quot;: {
+    &quot;code&quot;: -1,
+    &quot;message&quot;: &quot;getaccount \nReturns the account associated with the given address.&quot;
+    },
+    &quot;id&quot;: &quot;getaccount&quot;
+}</p>
+
+<h3 id="getaccountaddress">getaccountaddress</h3>
+
+<p>Returns the current bitcoin address for receiving payments to this account.</p>
+
+<h4 id="Arguments">Arguments</h4>
+
+<p><tt><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=0&amp;from=Elis-API" rel="nofollow">?</a>0</span></tt> <strong></strong> <tt>String</tt> The account that you want to get an address for. An empty string is considered as the <tt>global</tt> account and will return a valid address. Example: <tt>&quot;Testnet Faucet&quot;</tt>, <tt>&quot;&quot;</tt></p>
+
+<h4 id="Example_Request">Example Request</h4>
+
+<p>{&quot;method&quot;:&quot;getaccountaddress&quot;,&quot;params&quot;:<a href="%22Testnet">Faucet&quot;</a>,&quot;id&quot;:&quot;getaccountaddress&quot;}:</p>
+
+<h4 id="Result">Result</h4>
+
+<h5 id="Success">Success</h5>
+
+<p><tt>result</tt> = <tt>String</tt> an address associated with this account.</p>
+
+<p>{
+    &quot;result&quot;: &quot;mpFrRfLZRWCKzG2VmmxajJLcGpchsYiFQo&quot;,
+    &quot;error&quot;: null,
+    &quot;id&quot;: &quot;getaccountaddress&quot;
+}</p>
+
+<h5 id="Error">Error</h5>
+
+<p>{
+    &quot;result&quot;: null,
+    &quot;error&quot;: {
+    &quot;code&quot;: -1,
+    &quot;message&quot;: &quot;getaccountaddress \nReturns the current bitcoin address for receiving payments to this account.&quot;
+    },
+    &quot;id&quot;: &quot;getaccountaddress&quot;
+}</p>
+
+<p>This error is only returned if no arguments supplied at all (not even an empty string).</p>
+
+<h3 id="getaddressesbyaccount">getaddressesbyaccount</h3>
+
+<p>Returns the list of addresses for the given account.</p>
+
+<h4 id="Arguments">Arguments</h4>
+
+<p><tt><span class="createlink"><a href="/ikiwiki.cgi?page=0&amp;do=create&amp;from=Elis-API" rel="nofollow">?</a>0</span></tt> <strong></strong> <tt>String</tt> The account that you want to get addresses for. An empty string is considered as the <tt>global</tt> account and will return a valid address. Example: <tt>&quot;Testnet Faucet&quot;</tt>, <tt>&quot;&quot;</tt></p>
+
+<h4 id="Example_Request">Example Request</h4>
+
+<p>{&quot;method&quot;:&quot;getaddressesbyaccount&quot;,&quot;params&quot;:<a href="%22Testnet">Faucet&quot;</a>,&quot;id&quot;:&quot;getaddressesbyaccount&quot;}:</p>
+
+<h4 id="Result">Result</h4>
+
+<h5 id="Success">Success</h5>
+
+<p><tt>result</tt> = <tt>Array</tt> An array of addresses associated with the account.</p>
+
+<p>{
+    &quot;result&quot;:           <a title="mv97croRs1krPoTXsfoSnxT7YhUn4zECUs">(1)</a>,
+    &quot;error&quot;: null,
+    &quot;id&quot;: &quot;getaddressesbyaccount&quot;
+}</p>
+
+<h5 id="Error">Error</h5>
+
+<p>{
+    &quot;result&quot;: null,
+    &quot;error&quot;: {
+    &quot;code&quot;: -1,
+    &quot;message&quot;: &quot;getaddressesbyaccount \nReturns the list of addresses for the given account.&quot;
+    },
+    &quot;id&quot;: &quot;getaddressesbyaccount&quot;
+}</p>
+
+<p>This error is only returned if no arguments supplied at all (not even an empty string).</p>
+
+<h3 id="getbalance">getbalance</h3>
+
+<p>If <span class="createlink"><a href="/ikiwiki.cgi?from=Elis-API&amp;do=create&amp;page=Account" rel="nofollow">?</a>Account</span> is not specified, returns the server&#39;s total available balance. If <span class="createlink"><a href="/ikiwiki.cgi?from=Elis-API&amp;page=Account&amp;do=create" rel="nofollow">?</a>Account</span> is specified, returns the balance in the account.</p>
+
+<h4 id="Arguments">Arguments</h4>
+
+<p><tt><span class="createlink"><a href="/ikiwiki.cgi?from=Elis-API&amp;do=create&amp;page=0" rel="nofollow">?</a>0</span></tt> <strong><span class="createlink"><a href="/ikiwiki.cgi?from=Elis-API&amp;do=create&amp;page=Account" rel="nofollow">?</a>Account</span></strong> <tt>String</tt> The account that you want to balance. An empty string is considered as the <tt>global</tt> account and will return a the balance of the <tt>global</tt> account. A <tt>null</tt> value will return the entire balance available for the server. Example: <tt>&quot;Testnet Faucet&quot;</tt>, <tt>&quot;&quot;</tt>, <tt>null</tt></p>
+
+<p><tt><span class="createlink"><a href="/ikiwiki.cgi?from=Elis-API&amp;do=create&amp;page=1" rel="nofollow">?</a>1</span></tt> <strong><a href="Minimum">Confirmations</a></strong> <tt>Integer</tt> The minimum confirmations you want to consider when requesting balance. Default value is <tt>1</tt>. If <tt>0</tt> is supplied even unconfirmed transactions will be considered and will show in the balance. Example: <tt>1</tt>, <tt>0</tt>, <tt>null</tt></p>
+
+<h4 id="Example_Request">Example Request</h4>
+
+<p>{&quot;method&quot;:&quot;getbalance&quot;,&quot;params&quot;:[],&quot;id&quot;:&quot;getbalance&quot;}:</p>
+
+<h4 id="Result">Result</h4>
+
+<h5 id="Success">Success</h5>
+
+<p><tt>result</tt> = <tt>Float</tt> A float representing the balance that the <tt>account</tt> or the <tt>server</tt> has to it&#39;s disposal.</p>
+
+<p>{
+    &quot;result&quot;: 256.4985,
+    &quot;error&quot;: null,
+    &quot;id&quot;: &quot;getbalance&quot;
+}</p>
+
+<h5 id="Error">Error</h5>
+
+<p>No error should be returned with this method.</p>
+
+<h3 id="getblockbycount">getblockbycount</h3>
+
+<p>Dumps the block existing at specified height. <strong>Note: this is not available in the official release</strong></p>
+
+<h4 id="Arguments">Arguments</h4>
+
+<p><tt><span class="createlink"><a href="/ikiwiki.cgi?page=0&amp;do=create&amp;from=Elis-API" rel="nofollow">?</a>0</span></tt> <strong>Height</strong></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Original_Bitcoin_client/API_calls_list/">Original Bitcoin client/API calls list</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2011-09-14T01:40:05Z">Wed 14 Sep 2011 01:40:05 AM Europe</time>
+<!-- Created <time datetime="2011-09-11T09:36:19Z" pubdate="pubdate">Sun 11 Sep 2011 09:36:19 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

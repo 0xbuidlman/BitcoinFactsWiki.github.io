@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Zero Knowledge Contingent Payment</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Zero Knowledge Contingent Payment
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Zero_Knowledge_Contingent_Payment&amp;page=Talk&amp;do=create" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>It&#39;s possible to make payments using Bitcoin which are released if and only if some knowledge is disclosed by the payee and to do this in a trustless manner where neither the payer or payee can cheat. This is accomplished using the combination of a hash-locked transaction and a bitcoin-external protocol to set things up so that the data revealed in the hashlock release is the data they need.</p>
+
+<h2 id="Protocol_outline">Protocol outline</h2>
+
+<h3 id="Hash_locked_transactions">Hash locked transactions</h3>
+
+<p>Its possible to author a payment in the existing Bitcoin system that requires the redeemer to provide a &quot;secret&quot; which hashes to a specified value. <a href="https://blockexplorer.com/tx/9969603dca74d14d29d1d5f56b94c7872551607f8c2d6837ab9715c60721b50e">The 0.01 output here with the SHA256 opcode</a> is an example of such a transaction.  &quot;To collect these funds your transaction must provide a value that hashes to this other value.&quot;</p>
+
+<p>Used directly, like in the above example, this is insecure: Once you&#39;ve published the spending transaction another node could just drop your transaction and use the password in a new transaction that pays him instead.</p>
+
+<p>So&mdash; the advice is that you shouldn&#39;t use a password alone, you should require a signature and a password.  But then what is the use of that?</p>
+
+<p>There are a couple uses but I&#39;ll give an example here of one of the more impressive and far-out ones:</p>
+
+<h3 id="Zero_knowledge_proof_to_binding">Zero knowledge proof to binding</h3>
+
+<p>Let H() be a complicated computer program. For some H(X)=Y you want to know some X that gives you a particular Y.</p>
+
+<p>Say I happen to <em>know</em> some X that answers your question... and I&#39;d like to sell it to you. But we don&#39;t trust each other at all, and because we&#39;re computer geeks we have no friends who can act as trusted mediators. Can we make this exchange using Bitcoin with zero trust?  The answer turns out to be yes.</p>
+
+<p>Here are some examples of what H() could be:</p>
+
+<ul>
+<li>H() could be a password hashing algorithm and you&#39;re looking for the password that gives you a particular hash in order to crack it.</li>
+<li>Perhaps H() is a complicated program that decides if a piece of music is one you would find beautiful (i.e. Y is a true/false output)</li>
+<li>H() could be a program that verifies possession of a valid <a href="http://en.wikipedia.org/wiki/Biometric_passport">machine readable travel document</a> issued to a particular person. In this case, you would be able to define a payment to someone based on some arbitrary attributes about them, such as their name + date of birth, or perhaps by providing a photo of their face that&#39;s then matched against the travel document using the Eigenfaces algorithm. There would be no need to obtain a public key from them ahead of time meaning that, for example, you could send money to someone who was only just born and doesn&#39;t yet have a wallet.</li>
+<li>H() could be a program that interprets another program on some secret input and yields true if the input data manages to put the program into a corrupted state. This would allow security researchers to sell exploits to software developers so they can be fixed, but in an anonymous and low trust way.</li>
+</ul>
+
+
+<p>A <a href="https://en.wikipedia.org/wiki/Zero-knowledge_proof">zero-knowledge proof</a> lets someone prove a mathematical fact to another person without teaching them anything about the fact itself. It has been proven that you can convert any computer program into a zero-knowledge proof (this is referred to mathematically as <a href="http://en.wikipedia.org/wiki/IP_%28complexity%29#PSPACE_is_a_subset_of_IP">PSPACE&sub;IP</a> ).  So, using a zero-knowledge proof I could prove to you that I know some X such that H(X)=Y ... which is helpful but it&#39;s not enough because you could pay me and I could not tell you the answer (or I could tell you and then you don&#39;t pay). Here is where the password locked transactions come in.</p>
+
+<p>First I encrypt X with random key K, Ex=AES(X,K).
+then I construct the program:</p>
+
+<pre>
+Program(K,Ex,H()) =&gt;  [Ex,Hk,Y] {
+  Hk=SHA256(K);
+  Y=H(UNAES(Ex,K));
+  return [Ex,Hk,Y];
+}
+</pre>
+
+
+<p>In English: The program takes the encrypted solution and the key to decrypt it, and outputs the encrypted solution, the hash of the decryption key, and the result of running the program on the solution.</p>
+
+<p>I convert that program into a zero knowledge proof. Externally to Bitcoin I tell you Ex,Hk,Y and then prove that I executed the program faithfully.</p>
+
+<p>You then form a Bitcoin payment which requires both my public key and password K.  In order to redeem this transaction I must disclose K, the key you need to decrypt Ex and give you your solution. So neither of us can cheat, so no trust is required.</p>
+
+<p>The <a href="https://bitcoincore.org/en/2016/02/26/zero-knowledge-contingent-payments-announcement/">first ZKCP</a> was performed on the Bitcoin network in 2016, after waiting almost 5 years for sufficiently powerful general purpose ZKPs to become practically available.</p>
+
+<h2 id="But_what_if_they.27re_just_anti-social_and_don.27t_redeem_the_txn.3F">But what if they&#39;re just anti-social and don&#39;t redeem the txn?</h2>
+
+<p>If you&#39;re concerned that they might rather leave the funds unspent rather than disclose their password, perhaps an effort to extort you, you could construct the payment so that it can alternatively be spent by a &quot;refund transaction&quot; which has a signature from both you and the other party.</p>
+
+<p>You first create the ZKP payment transaction which requires (Password+Their_signature) OR (Their signature plus Your signature).  You keep this transaction private. You then write a new transaction, the refund transaction, which spends the payment back to you but has an nlocktime set in the future (e.g. 1000 blocks from now). You sign it, and give it to the other party to sign. He is able to sign it without actually seeing the payment transaction (he only sees its hash). When he returns it, you then release the payment transaction.  If he does not redeem the payment transaction before the locktime expires you transmit the refund and recover it yourself. Because of the locktime you are unable to steal the payment back right after sending it to him.</p>
+
+<p>Alternatively, you could construct the payment as an anyone can pay transaction where the output is greater than the input you provide. You would give him this transaction, then he would add funds of his own and announce it and wait for it to be mined before announcing the key in the transaction spending it. This way he could not lock up your funds without locking up funds of his own.</p>
+
+<h2 id="Further_improving_privacy">Further improving privacy</h2>
+
+<p>Many other transaction types also use the same hash locked pattern, but privacy can be further improved:
+A ZK-payment can be transformed using the <a href="https://bitcointalk.org/index.php?topic=321228.0">CoinSwap</a> approach where the payer first pays into an ordinary 2-of-2 escrow+refund with the payee. They then would perform the ZK-payment transactions described above externally to the Bitcoin network, and if everything goes through without cheating the payer just signs a 2-of-2 release to pay the payee directly, without disclosing to the network that a hashlocked transaction was used. If the payer fails to release the escrow directly, the payee can just release it by announcing the hashlock and hashlock redeem.</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Contract/">Contract</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-02-27T04:06:44Z">Sat 27 Feb 2016 04:06:44 AM Europe</time>
+<!-- Created <time datetime="2011-11-28T00:32:11Z" pubdate="pubdate">Mon 28 Nov 2011 12:32:11 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

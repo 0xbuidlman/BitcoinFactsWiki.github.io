@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Getblocktemplate</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Getblocktemplate
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Getblocktemplate&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>getblocktemplate is the new decentralized Bitcoin mining protocol, openly developed by the Bitcoin community over mid 2012.
+It supercedes the old <a href="../Getwork/">getwork</a> mining protocol.</p>
+
+<h2 id="Why_change_something_that_works.3F">Why change something that works?</h2>
+
+<h3 id="Decentralization">Decentralization</h3>
+
+<p>The original getwork mining protocol simply issues block headers for a miner to solve.
+The miner is kept in the dark as to what is actually in this block, and has no influence over it.
+In effect, the authority of the miner to decide which transactions are accepted, etc, is all transferred blindly to the pool operator.
+A corrupt (or compromised) pool operator could use the combined hash power of all the miners to execute double spend attacks or other similar attacks.</p>
+
+<p>getblocktemplate moves block creation to the miner, while giving pools a way to set down the rules for participation.
+While pools can do just as much as they could before by expressing it in these rules, miners can not be kept in the dark and are enabled to freely choose what they participate in mining.
+This improves the security of the Bitcoin network by making blocks decentralized again.</p>
+
+<h3 id="ASICs">ASICs</h3>
+
+<p>The original getwork protocol only provides a single block header, which is sufficient for a total of about 4 GH of mining.
+With the &quot;rollntime&quot; extension, this can be extended to 4 GH <em>per second</em>, but even that is far from sufficient for the next generation of mining equipment (ASICs) which are capable of 1000 GH/s on the high end.</p>
+
+<p>By moving block creation to the miners, they are enabled to create as much work as they need locally, thus overcoming this limitation.</p>
+
+<h3 id="Scalability">Scalability</h3>
+
+<p>Due to scalability problems, bitcoind&#39;s JSON-RPC stack has not been able to keep up with the hashrates needed for solo mining today.
+Since getblocktemplate drastically reduces the load required to a single request per new block on the network, direct solo mining on bitcoind is again possible.
+Poolservers likewise benefit from having to meet much lower demands of miners who can make their own blocks.</p>
+
+<h3 id="Extensible">Extensible</h3>
+
+<p>The original getwork protocol was designed in a way that was very incompatible with extensions.
+As a result, as new functionality was needed, extensions were &quot;hacked in&quot; out-of-band using HTTP headers.
+getblocktemplate is designed from the start to be flexible for future extensions, and the <a href="../BIP_0023/">BIP 23</a> specification already covers how the established getwork extensions can be implemented cleanly, regardless of transport protocol.</p>
+
+<h2 id="How_to_use_it">How to use it</h2>
+
+<h3 id="For_miners">For miners</h3>
+
+<p>Mining software with GBT support:</p>
+
+<ul>
+<li><a href="https://bitcointalk.org/?topic=78192.msg870395#msg870395">BFGMiner 2.8+</a></li>
+<li><a href="https://bitcointalk.org/?topic=28402.msg357369#msg357369">cgminer 2.9+</a></li>
+<li><a href="http://ufasoft.com/open/bitcoin/">Ufasoft Bitcoin Miner 0.39+</a></li>
+<li><a href="http://www.butterflylabs.com/drivers/">Butterfly Labs&#39;s EasyMiner</a></li>
+</ul>
+
+
+<p>To take advantage of getblocktemplate, you also need a compatible pool:</p>
+
+<ul>
+<li><a href="https://bitminter.com">BitMinter</a></li>
+<li><a href="https://eclipsemc.com/">EclipseMC</a></li>
+<li><a href="http://eligius.st">Eligius</a></li>
+<li><a href="https://pool.itzod.ru/">itzod.ru</a></li>
+<li><a href="http://polmine.pl">PolMine</a></li>
+<li>Encourage your favourite pool(s) to support decentralized mining!</li>
+</ul>
+
+
+<h3 id="For_pool_operators">For pool operators</h3>
+
+<p>See also: <span class="createlink"><a href="/ikiwiki.cgi?from=Getblocktemplate&amp;page=Poolservers&amp;do=create" rel="nofollow">?</a>Poolservers</span></p>
+
+<p>If you are implementing your own pool server, see the <span class="createlink"><a href="/ikiwiki.cgi?page=section%20for%20poolserver%20development__124__&amp;do=create&amp;from=Getblocktemplate" rel="nofollow">?</a>section for poolserver development|</span>.</p>
+
+<h3 id="For_developers">For developers</h3>
+
+<h4 id="Mining_software">Mining software</h4>
+
+<h5 id="Using_libblkmaker_.28C_library.29">Using libblkmaker (C library)</h5>
+
+<p>If your miner can include C libraries, you can harness <a href="https://gitlab.com/bitcoin/libblkmaker">libblkmaker</a> to do all the GBT interpretation for you:
+all your miner needs to do then is handle the networking (libblkmaker can prepare the JSON for you) and ask libblkmaker for data (block headers to search).
+Note that libblkmaker does not provide a SHA256 implementation, and your miner needs to provide one for it to work.
+libblkmaker currently only supports the <a href="../API_reference_(JSON-RPC)/#C">Jansson JSON library</a>, but was designed such that it can easily be ported to others;
+<a>Luke Dashjr</a> is willing to do this porting to other JSON libraries free of charge on request.</p>
+
+<h5 id="Using_python-blkmaker">Using python-blkmaker</h5>
+
+<p>If your miner is written in Python, you can harness <a href="https://gitlab.com/bitcoin/python-blkmaker">python-blkmaker</a>, a native Python port of libblkmaker, to do all the GBT interpretation for you:
+all your miner needs to do then is handle the networking (python-blkmaker can prepare the JSON for you) and ask the blkmaker module for data (block headers to search).
+A short example Python script is included that finds a prepared share using CPU mining.</p>
+
+<h5 id="From_scratch">From scratch</h5>
+
+<p>======Miner requests block template======</p>
+
+<p>To start participating, the miner contacts the pool and requests an initial template:
+    {&quot;id&quot;: 0, &quot;method&quot;: &quot;getblocktemplate&quot;, &quot;params&quot;: {<a href="%22coinbasetxn%22,">&quot;workid&quot;, &quot;coinbase/append&quot;</a>}}</p>
+
+<p>The server will respond with the full details needed to immediately begin mining blocks:
+    {
+    &quot;error&quot;: null,
+    &quot;result&quot;: {
+    &quot;coinbasetxn&quot;: {
+    &quot;data&quot;: &quot;0100000001000000000000000000000000000000000000000000000000000000
+    0000000000ffffffff1302955d0f00456c6967697573005047dc66085fffffffff02fff1052a01
+    0000001976a9144ebeb1cd26d6227635828d60d3e0ed7d0da248fb88ac01000000000000001976
+    a9147c866aee1fa2f3b3d5effad576df3dbf1f07475588ac00000000&quot;
+    },
+    &quot;previousblockhash&quot;: &quot;000000004d424dec1c660a68456b8271d09628a80cc62583e5904f5894a2483c&quot;,
+    &quot;transactions&quot;: [],
+    &quot;expires&quot;: 120,
+    &quot;target&quot;: &quot;00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff&quot;,
+    &quot;longpollid&quot;: &quot;some gibberish&quot;,
+    &quot;height&quot;: 23957,
+    &quot;version&quot;: 2,
+    &quot;curtime&quot;: 1346886758,
+    &quot;mutable&quot;: <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=__34__coinbase%2Fappend__34__&amp;from=Getblocktemplate" rel="nofollow">?</a>append&quot;</span>,
+    &quot;bits&quot;: &quot;ffff001d&quot;
+    },
+    &quot;id&quot;: 0
+    }</p>
+
+<p>======How to build coinbase transaction======
+If the pool allows the &quot;coinbase/append&quot; mutation by including it in the &quot;mutable&quot; key, you can rebuild the coinbase transaction to append any data your miner wants, such as an extranonce - you can use as much space as you need so long as the coinbase data does not overflow the 100 byte hard limit.
+If the server does <em>not</em> allow &quot;coinbase/append&quot;, or you don&#39;t care to change it, you can skip this step entirely :)</p>
+
+<p>The coinbase data always begins after exactly 42 bytes of the coinbase transaction.
+The 42nd byte (that is, the byte immediately before the data) is the length of the data.
+So when/if you want to add on to the coinbase data, simply insert it 42+DataLen bytes into the transaction, and increment the 42nd byte by the length of your inserted data.</p>
+
+<p>Python example:
+    import binascii
+    coinbase = binascii.a2b_hex(template<span class="createlink"><a href="/ikiwiki.cgi?from=Getblocktemplate&amp;do=create&amp;page=__39__coinbasetxn__39__" rel="nofollow">?</a>&#39;coinbasetxn&#39;</span><span class="createlink"><a href="/ikiwiki.cgi?page=__39__data__39__&amp;do=create&amp;from=Getblocktemplate" rel="nofollow">?</a>&#39;data&#39;</span>)
+    extradata = b&#39;my block&#39;
+    # The following can be done better in both Python 2 and Python 3, but this way works with both
+    origLen = ord(coinbase<span class="createlink"><a href="/ikiwiki.cgi?from=Getblocktemplate&amp;page=41%3A42&amp;do=create" rel="nofollow">?</a>41:42</span>)
+    newLen = origLen + len(extradata)
+    coinbase = coinbase<span class="createlink"><a href="/ikiwiki.cgi?from=Getblocktemplate&amp;page=0%3A41&amp;do=create" rel="nofollow">?</a>0:41</span> + chr(newLen).encode(&#39;ascii&#39;) + coinbase<a>+ origLen</a> + extradata + coinbase<a href="42">+ origLen:</a></p>
+
+<p>======How to build merkle root======
+Collect your coinbase transaction (modified or not) at the front of the &quot;transactions&quot; list provided by the server.
+Apply a double-SHA256 hash to each transaction in the list.</p>
+
+<p>Now, as long as the list has more than 1 hash remaining, go through each pair and hash them together.
+That is, concatenate the first two, double-SHA256 that, repeat for the next two, and so on.
+If you encounter an odd pair (that is, the hash list ends with a single item and no pairing), concatenate it with itself and hash that.
+Continue to do that until there is only one hash left:
+that is your merkle root.</p>
+
+<p>Python example:
+    import hashlib
+    def dblsha(data):
+    return hashlib.sha256(hashlib.sha256(data).digest()).digest()</p>
+
+<pre><code>txnlist = &lt;a href=&quot;../Coinbase/&quot;&gt;coinbase&lt;/a&gt; + &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Getblocktemplate&amp;amp;page=__39__data__39__&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;&amp;#39;data&amp;#39;&lt;/span&gt;) for a in template&lt;a href=&quot;../Transactions/&quot;&gt;transactions&lt;/a&gt;
+merklehashes = [for t in txnlist](dblsha(t))
+while len(merklehashes) &gt; 1:
+if len(merklehashes) % 2:
+merklehashes.append(merklehashes&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=-1&amp;amp;from=Getblocktemplate&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;-1&lt;/span&gt;)
+merklehashes = &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=i&amp;amp;from=Getblocktemplate&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;i&lt;/span&gt; + merklehashes[+ 1](i)) for i in range(0, len(merklehashes), 2)
+merkleroot = merklehashes&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=0&amp;amp;do=create&amp;amp;from=Getblocktemplate&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;0&lt;/span&gt;
+</code></pre>
+
+<p>======How to build block header======
+Assemble the block header as laid out in the Bitcoin <a href="../Block_hashing_algorithm/">block hashing algorithm</a>, using the data provided in the block template along with your very own merkle root.
+Note that miners are expected to check the &quot;version&quot; number, and should not create blocks with versions they do not understand unless the server instructs them to do so with the &quot;version/force&quot; or &quot;version/reduce&quot; mutations - you don&#39;t need to support those, but if you don&#39;t support the version the server has provided, understand that the server may reject submissions if they don&#39;t meet some unknown future rules.
+As of this time, the current Bitcoin block version is 3.</p>
+
+<p>Python example:
+    import struct
+    blkheader = struct.pack(&#39;&lt;I&#39;, template<span class="createlink"><a href="/ikiwiki.cgi?page=__39__version__39__&amp;do=create&amp;from=Getblocktemplate" rel="nofollow">?</a>&#39;version&#39;</span>) + \
+    binascii.a2b_hex(template<span class="createlink"><a href="/ikiwiki.cgi?page=__39__previousblockhash__39__&amp;do=create&amp;from=Getblocktemplate" rel="nofollow">?</a>&#39;previousblockhash&#39;</span>) + \
+    merkleroot + \
+    struct.pack(&#39;&lt;I&#39;, template<span class="createlink"><a href="/ikiwiki.cgi?page=__39__curtime__39__&amp;do=create&amp;from=Getblocktemplate" rel="nofollow">?</a>&#39;curtime&#39;</span>) + \
+    binascii.a2b_hex(template<span class="createlink"><a href="/ikiwiki.cgi?from=Getblocktemplate&amp;page=__39__bits__39__&amp;do=create" rel="nofollow">?</a>&#39;bits&#39;</span>) + \
+    b&#39;NONC&#39;</p>
+
+<p>======While you&#39;re mining======
+Since you&#39;re making all the blocks yourself, you really don&#39;t ever need to get another template... until it&#39;s invalid.
+Generally, it&#39;s a good idea to refresh more often anyway to get more transactions, but it&#39;s better to let the pool decide when to do that, since it knows what&#39;s changed in the meantime already.</p>
+
+<p>If your template included a &quot;longpollid&quot; key, you can queue a request for a new template to be executed as soon as the pool decides you should change.
+This is the same as any other template request, except that you include the &quot;longpollid&quot; parameter that the pool provided in your request.
+If there is already a new template, the pool might respond immediately, so be sure not to depend on a delay!</p>
+
+<p>So to amend the template request we used initially, now we use:
+    {&quot;id&quot;: 0, &quot;method&quot;: &quot;getblocktemplate&quot;, &quot;params&quot;: { <a href="%22coinbasetxn%22,">&quot;workid&quot;, &quot;coinbase/append&quot;</a>,
+    &quot;longpollid&quot;: &quot;some gibberish&quot;,
+    }}</p>
+
+<p>======Submitting shares======
+When miner find the job which meets requested difficulty, it can submit the block to the server as a share:
+    {&quot;id&quot;: 0, &quot;method&quot;: &quot;submitblock&quot;, &quot;params&quot;:                            <a href="147c866aee1fa2f3b3d5effad576df3dbf1f07475588ac00000000" title="">(1)</a>}</p>
+
+<p>To assemble the block data, simply concatenate your block header, number of transactions encoded in <a href="../Protocol_specification/#Variable_length_integer">Bitcoin varint format</a>, followed by each of the transactions in your block (beginning with the coinbase).
+If the server has listed &quot;submit/coinbase&quot; in its &quot;mutable&quot; key, you may opt to omit the transactions after the coinbase.</p>
+
+<p>Python example:
+    def varintEncode(n):
+    if n &lt; 0xfd:
+    return struct.pack(&#39;&lt;B&#39;, n)
+    # NOTE: Technically, there are more encodings for numbers bigger than
+    # 16-bit, but transaction counts can&#39;t be that high with version 2 Bitcoin
+    # blocks
+    return b&#39;\xfd&#39; + struct.pack(&#39;&lt;H&#39;, n)
+    blkdata = blkheader + varintEncode(len(txnlist)) + coinbase
+    if &#39;submit/coinbase&#39; not in template.get(&#39;mutable&#39;, ()):
+    for txn in txnlist<span class="createlink"><a href="/ikiwiki.cgi?page=1%3A&amp;do=create&amp;from=Getblocktemplate" rel="nofollow">?</a>1:</span>:
+    blkdata += txn</p>
+
+<h4 id="Poolserver_software">Poolserver software</h4>
+
+<p>Recommended standards to start with (in order of importance):</p>
+
+<ul>
+<li><a href="../BIP_0022/">BIP 22 (non-optional sections)</a></li>
+<li><a href="../BIP_0022/#Optional:_Long_Polling">BIP 22 Long Polling</a></li>
+<li><a href="../BIP_0023/#Basic_Pool_Extensions">BIP 23 Basic Pool Extensions</a></li>
+<li><a href="../BIP_0023/#Mutations">BIP 23 Mutation &quot;coinbase/append&quot;</a> (required for miner extranonce rolling)</li>
+<li><a href="../BIP_0023/#Submission_Abbreviation">BIP 23 Submission Abbreviation &quot;submit/coinbase&quot;</a></li>
+<li><a href="../BIP_0023/#Mutations">BIP 23 Mutation &quot;time/increment&quot;</a> (be sure to specify &quot;maxtime&quot; or &quot;maxtimeoff&quot;!)</li>
+</ul>
+
+
+<h2 id="Technical_specifications">Technical specifications</h2>
+
+<ul>
+<li><a href="../BIP_0022/">BIP 22: getblocktemplate - Fundamentals</a></li>
+<li><a href="../BIP_0023/">BIP 23: getblocktemplate - Pooled Mining</a></li>
+</ul>
+
+
+<h2 id="History">History</h2>
+
+<p>Getblocktemplate&#39;s origins trace back to forrestv&#39;s getmemorypool JSON-RPC method for bitcoind.
+He created it so that his pool (<span class="createlink"><a href="/ikiwiki.cgi?from=Getblocktemplate&amp;do=create&amp;page=P2Pool" rel="nofollow">?</a>P2Pool</span>) could piggy-back on bitcoind so as to avoid harming the Bitcoin network (up to this point, it mined only empty blocks that never confirmed transactions).
+Having been fighting with scalability problems in pushpool/bitcoind for months on his pool (<span class="createlink"><a href="/ikiwiki.cgi?page=Eligius&amp;do=create&amp;from=Getblocktemplate" rel="nofollow">?</a>Eligius</span>), Luke-Jr set out to implement a fast pool server using getmemorypool to do its own block production (this became <span class="createlink"><a href="/ikiwiki.cgi?page=Eloipool&amp;do=create&amp;from=Getblocktemplate" rel="nofollow">?</a>Eloipool</span>, this first open source makes-its-own-blocks poolserver).
+Other poolservers also implemented block creation using getmemorypool over the months following.</p>
+
+<p>At about the same time, interest in decentralizing pooled mining became a hot topic.
+While <span class="createlink"><a href="/ikiwiki.cgi?page=BitPenny&amp;do=create&amp;from=Getblocktemplate" rel="nofollow">?</a>BitPenny</span> had initially released its own decentralized mining proxy months prior, <span class="createlink"><a href="/ikiwiki.cgi?from=Getblocktemplate&amp;page=P2Pool&amp;do=create" rel="nofollow">?</a>P2Pool</span>&#39;s implementation became rapidly popular.
+Anyone involved in Bitcoin mining protocols could see the need to move control of block creation back into the hands of the miners.
+Unfortunately, both <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=BitPenny&amp;from=Getblocktemplate" rel="nofollow">?</a>BitPenny</span> and <span class="createlink"><a href="/ikiwiki.cgi?from=Getblocktemplate&amp;page=P2Pool&amp;do=create" rel="nofollow">?</a>P2Pool</span> had used very pool-specific proprietary protocols to implement their decentralization.
+On the other hand, getmemorypool was <em>almost</em> a perfect fit for the task - it just lacked support for the now-ubiquitous pooled mining extensions that had developed around the getwork protocol over time.</p>
+
+<p>In February of 2012, Luke implemented and <a href="https://bitcointalk.org/?topic=23768.msg774497#msg774497">deployed</a> a first draft of getmemorypool mining support in <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Eloipool&amp;from=Getblocktemplate" rel="nofollow">?</a>Eloipool</span> (and on <span class="createlink"><a href="/ikiwiki.cgi?from=Getblocktemplate&amp;do=create&amp;page=Eligius" rel="nofollow">?</a>Eligius</span>) along with a proof-of-concept getwork proxy (now known as gmp-proxy), adding revisions as needed to function as a general-purpose decentralized mining protocol.
+After he had confirmed it was working, he documented and proposed it on the <span class="createlink"><a href="/ikiwiki.cgi?from=Getblocktemplate&amp;page=Bitcoin_development_mailing_list&amp;do=create" rel="nofollow">?</a>Bitcoin development mailing list</span> for review on February 28th, where discussion began on what was missing and what needed to be changed or clarified.
+During the following few months, a number of others, both developers and testers, provided constructive criticism and suggestions, which were integrated into the standard.
+Luke also actively encouraged participation in the development of the standard among pool operators and poolserver authors, especially as it became necessary to move forward into the ASIC &quot;mining generation&quot;.
+Eventually, it was decided it would be best to rename it to the more appropriate &quot;getblocktemplate&quot; name and drop backward compatibility with getmemorypool for simplicity.
+The standard was split into two pieces and the technical specification can be found in <a href="../BIP_0022/">BIP 22</a> and <a href="../BIP_0023/">BIP 23</a>.</p>
+
+<h2 id="See_also">See also</h2>
+
+<ul>
+<li><a href="https://bitcointalk.org/?topic=108854">BitcoinTalk forum thread</a></li>
+<li><a href="../BIP_0022/">BIP 22: getblocktemplate - Fundamentals</a> (technical)</li>
+<li><a href="../BIP_0023/">BIP 23: getblocktemplate - Pooled Mining</a> (technical)</li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Getwork/">Getwork</a>
+
+<a href="../Protocol_documentation/">Protocol documentation</a>
+
+<a href="../Software/">Software</a>
+
+<a href="../Stratum_mining_protocol/">Stratum mining protocol</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-11-02T13:16:45Z">Mon 02 Nov 2015 01:16:45 PM Europe</time>
+<!-- Created <time datetime="2012-09-17T23:27:02Z" pubdate="pubdate">Mon 17 Sep 2012 11:27:02 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

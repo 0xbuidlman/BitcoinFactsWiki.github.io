@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>BIP MinerHardwareBinaryProtocol</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+BIP MinerHardwareBinaryProtocol
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=BIP_MinerHardwareBinaryProtocol" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<pre>
+  BIP: ?
+  Title: Protocol for Dedicated Mining Hardware
+  Author: Luke Dashjr 
+  Status: Draft
+  Type: Standards Track
+  Created: 08-06-2012
+</pre>
+
+
+<h2 id="Abstract">Abstract</h2>
+
+<h2 id="Specification">Specification</h2>
+
+<p>This protocol is designed to be spoken only over a reliable (including error correction) lower-level protocol, such as USB-Serial or USB-CDC, to a local device.</p>
+
+<h3 id="Packet_Format">Packet Format</h3>
+
+<ul>
+<li>1 byte: always FE</li>
+<li>1 byte: packet length/type</li>
+<li>N bytes: packet data</li>
+<li>4 bytes: packet data CRC32 (only for data packets)</li>
+</ul>
+
+
+<p>Packet length/types:</p>
+
+<ul>
+<li><tt>00</tt> -- Abort</li>
+<li><tt>01</tt> to <tt>ef</tt> -- Data packet length (1 to 239 bytes)</li>
+<li><tt>f0</tt> to <tt>fc</tt> -- Reserved</li>
+<li><tt>fd</tt> -- Bad packet (command aborted)</li>
+<li><tt>fe</tt> -- ACK</li>
+<li><tt>ff</tt> -- End of command</li>
+</ul>
+
+
+<p>ACK should be sent in response to each 250-byte packet. Bulk data transfers, such as bitstream uploads, should wait until ACK is received before sending more packets (maybe? or does USB handle this for us too?).</p>
+
+<p>CRC32 must include the string &quot;mhbp&quot; plus the packet length/type byte and all data; this is not used to prevent corruption (USB already guarantees that), but rather to avoid acting when something foreign sends stuff. If the CRC32 does not match, the device should send a &quot;<tt>fd</tt>&quot; packet back and abort the command.</p>
+
+<p>Null-length commands (ie, &quot;<tt>ff</tt>&quot; without any valid data packets preceding it) must be ACK&#39;d and ignored.</p>
+
+<p>Anything up to the initial FE is ignored.</p>
+
+<h3 id="Command_Format">Command Format</h3>
+
+<ul>
+<li>1 byte: request id</li>
+<li>1 byte: command id
+
+<ul>
+<li><tt>Cx</tt> -- Modification commands (potentially dangerous)</li>
+<li><tt>Dx</tt> -- Replies to Modification commands</li>
+<li><tt>Ex</tt> -- Informational commands</li>
+<li><tt>Fx</tt> -- Replies to Informational commands</li>
+</ul>
+</li>
+<li>1 byte: device number (ignored for some commands)
+
+<ul>
+<li><tt>00</tt> is the controller</li>
+<li><tt>01</tt> to <tt>fe</tt> are mining devices</li>
+<li><tt>ff</tt> for &quot;all mining devices&quot;</li>
+</ul>
+</li>
+<li>1 byte: status (should always be <tt>00</tt> for requests)
+
+<ul>
+<li><tt>00</tt> -- success</li>
+<li><tt>80</tt> -- failure</li>
+</ul>
+</li>
+<li>N bytes: data</li>
+</ul>
+
+
+<p>Commands less than 4 bytes should be ignored.
+Additional data beyond what is expected should be ignored.</p>
+
+<h3 id="Commands">Commands</h3>
+
+<h4><tt>c1</tt> -- program software</h4>
+
+<p>Data:</p>
+
+<ul>
+<li>4 bytes: hardware version (big endian)</li>
+<li>2 bytes: hardware manuf/authority</li>
+<li>2 bytes: hardware model number</li>
+<li>4 bytes: hardware specific information (&quot;ID Code&quot;)</li>
+<li>2 bytes: hardware component
+
+<ul>
+<li><tt>0000</tt> -- FPGA Bitstream</li>
+<li><tt>0100</tt> -- JTAG abstraction interface</li>
+</ul>
+</li>
+<li>4 bytes: software size</li>
+<li><p>N bytes: software data</p>
+
+<h4><tt>c2</tt> -- get/set clock speed</h4>
+
+<p>Data:</p></li>
+<li><p>4 bytes: new clock speed in Hz (omit to read only)</p>
+
+<ul>
+<li><tt>00000000</tt> -- minimum allowed</li>
+<li><tt>ffffffff</tt> -- maximum allowed
+Reply (for both get and set):</li>
+</ul>
+</li>
+<li><p>4 bytes: current/new clock speed</p>
+
+<h4><tt>c3</tt> -- start new job</h4>
+
+<p>Data:</p></li>
+<li><p>1 byte: busy behaviour (what to do if there&#39;s already a job running)</p>
+
+<ul>
+<li><tt>00</tt> -- cancel it (and all pending queued jobs) and start new job immediately</li>
+<li><tt>01</tt> -- error</li>
+<li><tt>02</tt> -- queue to run after current job finishes</li>
+</ul>
+</li>
+<li>(data may end here to cancel all jobs and halt)</li>
+<li>1 byte: job id
+
+<ul>
+<li><tt>00</tt> -- Unusable</li>
+</ul>
+</li>
+<li><p>N bytes: job data</p>
+
+<ul>
+<li>For standard Bitcoin kernels (but may be different for other kernels!):
+
+<ul>
+<li>32 bytes: SHA256 midstate</li>
+<li>4 bytes: final 32 bits of transaction merkle root</li>
+<li>4 bytes: block time header</li>
+<li>4 bytes: block target in compact format (&quot;bits&quot;)</li>
+<li>4 bytes (optional): first valid nonce (if omitted, <tt>00000000</tt>)</li>
+<li>4 bytes (optional): last valid nonce (if omitted, <tt>ffffffff</tt>)</li>
+<li>2 bytes (optional): how many times to roll the time header (if omitted, <tt>0000</tt>)
+
+<h4><tt>c4</tt> -- get/set register</h4>
+
+<p>Data:</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>2 bytes: register number</p>
+
+<ul>
+<li><tt>ffff</tt> -- valid share nonce
+
+<ul>
+<li>Value:
+
+<ul>
+<li>1 byte: job id
+
+<ul>
+<li><tt>00</tt> -- Unknown</li>
+</ul>
+</li>
+<li>N bytes: nonce (4 bytes for standard Bitcoin kernels)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>N bytes: new value (omitted to read)
+Reply (if reading):</p></li>
+<li><p>N bytes: current value</p>
+
+<h4><tt>c5</tt> -- watch register</h4>
+
+<p>Data:</p></li>
+<li><p>2 bytes: register number</p></li>
+<li><p>1 byte: how long to watch, in seconds</p>
+
+<ul>
+<li><tt>00</tt> -- cancel watch</li>
+<li><tt>ff</tt> -- never expire
+Reply (immediately):</li>
+</ul>
+</li>
+<li><p>N bytes: current value
+Notification (when condition met, with command=<tt>ff</tt> and same request id):</p></li>
+<li><p>2 bytes: register number</p></li>
+<li><p>N bytes: new value</p>
+
+<h4><tt>e0</tt> -- ping</h4>
+
+Device number ignored.
+Replies with same data given
+
+<h4><tt>e1</tt> -- get mining device count</h4>
+
+<p>Device number ignored.
+Reply:</p></li>
+<li><p>1 byte: number of mining devices</p>
+
+<h4><tt>e2</tt> -- hardware version</h4>
+
+<p>Reply:</p></li>
+<li><p>4 bytes: hardware version (big endian)</p></li>
+<li>2 bytes: hardware manuf/authority</li>
+<li>2 bytes: hardware model number</li>
+<li>4 bytes: hardware specific information (&quot;ID Code&quot;)</li>
+<li>2 bytes: number of programmable hardware components</li>
+<li>2*N bytes: hardware component ids</li>
+<li>1 byte: length of hardware serial number</li>
+<li>N bytes: hardware serial number</li>
+<li>1 byte: length of hardware model number</li>
+<li>N bytes: hardware model number (EUI-64 when available)</li>
+<li>1 byte: length of human-readable hardware model</li>
+<li>N bytes: human-readable hardware model/version string (UTF-8)</li>
+</ul>
+
+
+<h4><tt>e3</tt> -- software version</h4>
+
+<p>Reply:</p>
+
+<ul>
+<li>4 bytes: software version (big endian)</li>
+<li>1 byte: length of software-specific unique identifier (git commit?)</li>
+<li>N bytes: software-specific unique identifier</li>
+<li>1 byte: length of human-readable software name</li>
+<li>N bytes: human-readable hardware model/version string (UTF-8)</li>
+<li>2 byte: number of MHBP features supported</li>
+<li>2*N bytes: MHBP features supported
+
+<ul>
+<li><tt>c310</tt> -- standard Bitcoin kernel interface</li>
+<li><tt>c311</tt> -- standard Bitcoin kernel interface: nonce range</li>
+<li><tt>c312</tt> -- standard Bitcoin kernel interface: roll time</li>
+<li><tt>c400</tt> -- general register access</li>
+<li><tt>c410</tt> -- &quot;job id&quot; tracking</li>
+<li><tt>c500</tt> -- general register watching</li>
+<li><tt>c501</tt> -- nonce register watching</li>
+</ul>
+</li>
+</ul>
+
+
+<h4><tt>e4</tt> -- get temperature</h4>
+
+<p>Reply:</p>
+
+<ul>
+<li>1 byte: temperature in celcius</li>
+</ul>
+
+
+<h2 id="Examples">Examples</h2>
+
+<p><strong> Needs updating </strong></p>
+
+<h4 id="Get_temperature_of_FPGA_.232">Get temperature of FPGA #2</h4>
+
+<pre><code>&gt; 04  00 44 02 00  ff
+&lt; 05  00 c4 02 00 30  ff
+</code></pre>
+
+<h4 id="Mine_a_bitcoin_share_.28with_proper_bitstream.2C_on_FPGA_.231.29">Mine a bitcoin share (with proper bitstream, on FPGA #1)</h4>
+
+<pre><code>&gt; 34  00 03 01 00 0000 000b &lt;32:midstate&gt; &lt;12:taildata&gt;  ff  (assign job to registers)
+&gt; 09  01 04 01 00 000e 0001 ff  ff  (setup watch on nonce-found register)
+&lt; 04  00 83 01 00  ff
+&lt; 09  01 84 01 00 20 ffffffff  ff
+...
+&lt; 0c  01 ff 01 00 0001 000e &lt;4:nonce&gt;  ff  (nonce-found got updated)
+&gt; 09  02 04 01 00 000e 0001 00  ff  (clear nonce-found watch)
+&lt; 09  02 84 01 00 20 &lt;4:nonce&gt;  ff
+</code></pre>
+
+<h4 id="Reset_the_command_queue">Reset the command queue</h4>
+
+<p>To reset the command queue, send 244 zero bytes; this will pad-out any &quot;open&quot; packet, and send a zero-length for the next one to abort the command.</p>
+
+<h2 id="Motivation">Motivation</h2>
+
+<h2 id="Rationale">Rationale</h2>
+
+<h2 id="Backwards_Compatibility">Backwards Compatibility</h2>
+
+<h2 id="Reference_Implementation">Reference Implementation</h2>
+
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2012-07-14T20:27:44Z">Sat 14 Jul 2012 08:27:44 PM Europe</time>
+<!-- Created <time datetime="2012-06-08T18:31:54Z" pubdate="pubdate">Fri 08 Jun 2012 06:31:54 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

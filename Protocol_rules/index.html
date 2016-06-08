@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Protocol rules</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Protocol rules
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p><strong>Rules</strong> for <a href="../tags/Clients/">clients</a>.</p>
+
+<p>The wiki substantially documents the <a href="../Protocol_specification/">Bitcoin protocol</a>, but equally important are the rules used by the client to process messages. It&#39;s crucial that clients follow certain rules in order to maintain consistency across the network, and to protect the Bitcoin security guarantees.</p>
+
+<p>Here, the focus is on handling tx and block messages, because that is the tricky logic. This will skip over the method of requesting and forwarding these messages for now, and describe what to do when they are received. Also, this will describe the minimal data structures in rather abstract terms, ignoring the client&#39;s various indexes, maps and hash tables used for efficiency. This will be a conceptual description. This is all based on a fairly literal reading of the source code.</p>
+
+<p>Mining (block generation) rules are not yet presented.</p>
+
+<h2 id="Data_structures">Data structures</h2>
+
+<p>The main data structures are <a href="../Transaction/">transaction</a>s and <a href="../Block/">block</a>s. Blocks are composed of the <em>block header</em> followed by transactions in the block. Transactions are identified by their hash; blocks by the hash of their header. Blocks have prev pointers that link them into a graph.</p>
+
+<p>Conceptually, the client has the following data structures:</p>
+
+<h3 id="Transactions">Transactions</h3>
+
+<p>There are two collections of transactions:</p>
+
+<p>transaction pool</p>
+
+<blockquote><p> an unordered collection of transactions that are not in blocks in the main chain, but for which we have input transactions</p></blockquote>
+
+<p>orphan transactions</p>
+
+<blockquote><p> transactions that can&#39;t go into the pool due to one or more missing input transactions</p></blockquote>
+
+<h3 id="Blocks">Blocks</h3>
+
+<p>There are 3 categories of blocks:</p>
+
+<p>blocks in the main branch</p>
+
+<blockquote><p> the transactions in these blocks are considered at least tentatively confirmed</p></blockquote>
+
+<p>blocks on side branches off the main branch</p>
+
+<blockquote><p> these blocks have at least tentatively lost the race to be in the main branch</p></blockquote>
+
+<p>orphan blocks</p>
+
+<blockquote><p> these are blocks which don&#39;t link into the main branch, normally because of a missing predecessor or nth-level predecessor</p></blockquote>
+
+<p>Blocks in the first two categories form a tree rooted at the <a href="../Genesis_block/">genesis block</a>, linked by the prev pointer, which points toward the root. (It is a very linear tree with few and short branches off the main branch.) The main branch is defined as the branch with highest total difficulty, summing the difficulties for each block in the branch.</p>
+
+<p>See also <a href="../Block_Status/">Block Status</a>.</p>
+
+<h2 id="Difficulty_change">Difficulty change</h2>
+
+<p>The difficulty changes every 2016 blocks.  This choice is designed to occur approximately every two weeks.</p>
+
+<blockquote><p> 2 weeks / 10 minutes = 14 * 24 * 60 / 10 = 2016</p></blockquote>
+
+<p>Once 2016 blocks has been reached we loop back until we hit the 2016th block before the current one. We find the difference in time between the current block and that one. This difference (called the actual timespan) is limited in bounds between <a href="2">weeks/4, 2 weeks*4</a>.</p>
+
+<p>Then we get the last target for this old 2 week window and multiply it by the ratio of the actual timespan / the target timespan (2 weeks in secs).</p>
+
+<blockquote><p> new target = old target * time for 2016 blocks / 2 weeks.</p></blockquote>
+
+<p>If the old set of blocks completed too fast then the target is lowered (difficulty goes up) ensuring it takes longer to solve these new blocks... and vice versa. This way the difficulty oscillates around the ideal of 2 weeks (and 10 mins per block).</p>
+
+<h2 id="Block_creation_fee">Block creation fee</h2>
+
+<p>The block creation fee changes at every 210000 blocks.
+The block creation fee is a function of block height on the chain (genesis=0), and is calculated using 64 bit integer operations
+(in satoshis) as:</p>
+
+<p>(50 * 100000000) &gt;&gt; (height / 210000)</p>
+
+<p>The block creation fee started with 50 BTC, has fallen to 25 BTC at block 210000, will fall to 12.5 BTC at block 420000, and finally down to 0 satoshi with block 6930000.
+The block creation fee of all coinbase transactions will sum up to  2099999997690000 satoshis, practically 21million BTC.</p>
+
+<h2><a href="../Protocol_specification/#tx">&quot;tx&quot;</a> messages</h2>
+
+<p>These messages hold a single <a href="../Transaction/">transaction</a>.</p>
+
+<ol>
+<li>Check syntactic correctness</li>
+<li>Make sure neither in or out lists are empty</li>
+<li>Size in bytes &lt; MAX_BLOCK_SIZE</li>
+<li>Each output value, as well as the total, must be in legal money range</li>
+<li>Make sure none of the inputs have hash=0, n=-1 (<em>coinbase</em> transactions)</li>
+<li>Check that nLockTime &lt;= INT_MAX (7.1), size in bytes &gt;= 100 (7.2), and sig opcount &lt;= 2 (7.3)</li>
+<li>Reject &quot;nonstandard&quot; transactions: scriptSig doing anything other than pushing numbers on the stack, or scriptPubkey not matching the two usual forms (7.4)</li>
+<li>Reject if we already have matching tx in the pool, or in a block in the main branch</li>
+<li>For each input, if the referenced output exists in any other tx in the pool, reject this transaction. (7.5)</li>
+<li>For each input, look in the main branch and the transaction pool to find the referenced output transaction. If the output transaction is missing for any input, this will be an orphan transaction. Add to the orphan transactions, if a matching transaction is not in there already.</li>
+<li>For each input, if the referenced output transaction is coinbase (i.e. only 1 input, with hash=0, n=-1), it must have at least COINBASE_MATURITY (100) confirmations; else reject this transaction</li>
+<li>For each input, if the referenced output does not exist (e.g. never existed or has already been spent), reject this transaction (7.6)</li>
+<li>Using the referenced output transactions to get input values, check that each input value, as well as the sum, are in legal money range</li>
+<li>Reject if the sum of input values &lt; sum of output values</li>
+<li>Reject if transaction fee (defined as sum of input values minus sum of output values) would be too low to get into an empty block</li>
+<li>Verify the <a href="../Script/">scriptPubKey</a> accepts for each input; reject if any are bad</li>
+<li>Add to transaction pool (7.7)</li>
+<li>&quot;Add to wallet if mine&quot;</li>
+<li>Relay transaction to peers</li>
+<li>For each orphan transaction that uses this one as one of its inputs, run all these steps (including this one) recursively on that orphan</li>
+</ol>
+
+
+<h3 id="Explanation_of_Some_Rules">Explanation of Some Rules</h3>
+
+<p>Most rules are self-explanatory. This section explains why some of the less obvious rules are in place.</p>
+
+<h2><a href="../Protocol_specification/#block">&quot;block&quot;</a> messages</h2>
+
+<p>These messages hold a single <a href="../Block/">block</a>.</p>
+
+<ol>
+<li>Check syntactic correctness</li>
+<li>Reject if duplicate of block we have in any of the three categories</li>
+<li>Transaction list must be non-empty</li>
+<li>Block hash must satisfy claimed <em>nBits</em> proof of work</li>
+<li>Block timestamp must not be more than two hours in the future</li>
+<li>First transaction must be coinbase (i.e. only 1 input, with hash=0, n=-1), the rest must not be</li>
+<li>For each transaction, apply &quot;tx&quot; checks 2-4</li>
+<li>For the coinbase (first) transaction, scriptSig length must be 2-100</li>
+<li>Reject if sum of transaction sig opcounts &gt; MAX_BLOCK_SIGOPS</li>
+<li>Verify Merkle hash</li>
+<li>Check if prev block (matching <em>prev</em> hash) is in main branch or side branches. If not, add this to orphan blocks, then query peer we got this from for 1st missing orphan block in <em>prev</em> chain; done with block</li>
+<li>Check that <em>nBits</em> value matches the difficulty rules</li>
+<li>Reject if timestamp is the median time of the last 11 blocks or before</li>
+<li>For certain old blocks (i.e. on initial block download) check that hash matches known values</li>
+<li>Add block into the tree. There are three cases: 1. block further extends the main branch; 2. block extends a side branch but does not add enough difficulty to make it become the new main branch; 3. block extends a side branch and makes it the new main branch.</li>
+<li>For case 1, adding to main branch:
+
+<ol>
+<li>For all but the coinbase transaction, apply the following:
+
+<ol>
+<li>For each input, look in the main branch to find the referenced output transaction. Reject if the output transaction is missing for any input.</li>
+<li>For each input, if we are using the <em>n</em>th output of the earlier transaction, but it has fewer than n+1 outputs, reject.</li>
+<li>For each input, if the referenced output transaction is coinbase (i.e. only 1 input, with hash=0, n=-1), it must have at least COINBASE_MATURITY (100) confirmations; else reject.</li>
+<li>Verify crypto signatures for each input; reject if any are bad</li>
+<li>For each input, if the referenced output has already been spent by a transaction in the main branch, reject</li>
+<li>Using the referenced output transactions to get input values, check that each input value, as well as the sum, are in legal money range</li>
+<li>Reject if the sum of input values &lt; sum of output values</li>
+</ol>
+</li>
+<li>Reject if coinbase value &gt; sum of block creation fee and transaction fees</li>
+<li>(If we have not rejected):</li>
+<li>For each transaction, &quot;Add to wallet if mine&quot;</li>
+<li>For each transaction in the block, delete any matching transaction from the transaction pool</li>
+<li>Relay block to our peers</li>
+<li>If we rejected, the block is not counted as part of the main branch</li>
+</ol>
+</li>
+<li>For case 2, adding to a side branch, we don&#39;t do anything.</li>
+<li>For case 3, a side branch becoming the main branch:
+
+<ol>
+<li>Find the <em>fork</em> block on the main branch which this side branch forks off of</li>
+<li>Redefine the main branch to only go up to this <em>fork</em> block</li>
+<li>For each block on the side branch, from the child of the <em>fork</em> block to the leaf, add to the main branch:
+
+<ol>
+<li>Do &quot;branch&quot; checks 3-11</li>
+<li>For all but the coinbase transaction, apply the following:
+
+<ol>
+<li>For each input, look in the main branch to find the referenced output transaction. Reject if the output transaction is missing for any input.</li>
+<li>For each input, if we are using the <em>n</em>th output of the earlier transaction, but it has fewer than n+1 outputs, reject.</li>
+<li>For each input, if the referenced output transaction is coinbase (i.e. only 1 input, with hash=0, n=-1), it must have at least COINBASE_MATURITY (100) confirmations; else reject.</li>
+<li>Verify crypto signatures for each input; reject if any are bad</li>
+<li>For each input, if the referenced output has already been spent by a transaction in the main branch, reject</li>
+<li>Using the referenced output transactions to get input values, check that each input value, as well as the sum, are in legal money range</li>
+<li>Reject if the sum of input values &lt; sum of output values</li>
+</ol>
+</li>
+<li>Reject if coinbase value &gt; sum of block creation fee and transaction fees</li>
+<li>(If we have not rejected):</li>
+<li>For each transaction, &quot;Add to wallet if mine&quot;</li>
+</ol>
+</li>
+<li>If we reject at any point, leave the main branch as what it was originally, done with block</li>
+<li>For each block in the old main branch, from the leaf down to the child of the <em>fork</em> block:
+
+<ol>
+<li>For each non-coinbase transaction in the block:
+
+<ol>
+<li>Apply &quot;tx&quot; checks 2-9, except in step 8, only look in the transaction pool for duplicates, not the main branch</li>
+<li>Add to transaction pool if accepted, else go on to next transaction</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>For each block in the new main branch, from the child of the <em>fork</em> node to the leaf:
+
+<ol>
+<li>For each transaction in the block, delete any matching transaction from the transaction pool</li>
+</ol>
+</li>
+<li>Relay block to our peers</li>
+</ol>
+</li>
+<li>For each orphan block for which this block is its <em>prev</em>, run all these steps (including this one) recursively on that orphan</li>
+</ol>
+
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../Protocol_specification/">Protocol specification</a></li>
+<li><a href="../Bitcoin_Improvement_Proposals/">Bitcoin Improvement Proposals</a></li>
+<li><a href="../Hardfork_Wishlist/">Hardfork Wishlist</a></li>
+</ul>
+
+
+<h2 id="References">References</h2>
+
+<p>7.1: nLockTime must not exceed 31 bits, as some clients will interpret it incorrectly<br />
+7.2: A valid transaction requires at least 100 bytes. If it&#39;s any less, the transaction is not valid<br />
+7.3: The number of signature operands in the signature (no, that is not redundant) for standard transactions will never exceed two<br />
+7.4: Note that this is not a hard requirement on clients.<br />
+7.5: Note that this is not a hard requirement on clients.  The network-enforced rule is that only <i>one</i> transaction spending a particular output can be in the blockchain, thus preventing double-spending.  Technically miners can choose which one they want to put into the block they&#39;re working on as long as no other transaction has spent that output either previously in the blockchain, or in the same block.  The in-memory transaction pool can technically be managed in whatever way the miner is willing to implement.<br />
+7.6: This is the protection against double-spending<br />
+7.7: Note that when the transaction is accepted into the memory pool, an additional check is made to ensure that the coinbase value does not exceed the transaction fees plus the expected BTC value (25BTC as of this writing).</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Developer/" rel="tag">Developer</a>
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Block/">Block</a>
+
+<a href="../Hardfork_Wishlist/">Hardfork Wishlist</a>
+
+<a href="../Invalid_block/">Invalid block</a>
+
+<a href="../Protocol_documentation/">Protocol documentation</a>
+
+<a href="../Satoshi_Client_Block_Exchange/">Satoshi Client Block Exchange</a>
+
+<a href="../Softfork_wishlist/">Softfork wishlist</a>
+
+<a href="../Thin_Client_Security/">Thin Client Security</a>
+
+<a href="../Thin_Client_Security/talk/">Thin Client Security/talk</a>
+
+<a href="../Transaction/">Transaction</a>
+
+<a href="../tags/Clients/">tags/Clients</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-03-04T19:27:37Z">Fri 04 Mar 2016 07:27:37 PM Europe</time>
+<!-- Created <time datetime="2011-03-13T22:59:34Z" pubdate="pubdate">Sun 13 Mar 2011 10:59:34 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

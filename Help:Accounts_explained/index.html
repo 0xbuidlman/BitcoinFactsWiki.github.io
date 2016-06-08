@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Help:Accounts explained</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Help:Accounts explained
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<h2 id="Introduction">Introduction</h2>
+
+<p>Think about what happens when you give a bank teller some cash and ask that it be deposited into your account. You tell them your account number, and they credit your account with that amount of money.</p>
+
+<p>The money itself is mixed up with all of the other money in the bank, and is given out to other customers with other account numbers.</p>
+
+<p>With the Bitcoin &quot;accounts&quot; feature, you are the bank. The balance you see is the total balance for all accounts, and you can create an arbitrary number of accounts.</p>
+
+<p>When you receive bitcoins, they are always assigned to one of your accounts, and you can change which account is credited based on which bitcoin address receives the coins, just like you tell a bank teller which account to credit when you deposit cash in your bank. However, sending bitcoins is like withdrawing cash from the bank; the coins that are sent out and debited from an account are almost always not the same coins that were deposited into that account.</p>
+
+<h2 id="Accounts">Accounts</h2>
+
+<p>Bitcoin version 0.3.18 and later implements several RPC methods to maintain separate account balances in a single Bitcoin wallet.  The accounts feature makes it easy to keep track of how much money you have received from different sources or to keep track of how much money you have spent on different things.</p>
+
+<h2 id="Account_Weaknesses">Account Weaknesses</h2>
+
+<p>Since the accounts feature was introduced, several services have used it to keep track of customer&#39;s bitcoin balances and have had the following problems:</p>
+
+<ul>
+<li>Wallet backups are an issue; if you rely on a good backup of wallet.dat then a backup must be done every time an address is associated with an account and every time the &#39;move&#39; command is used.</li>
+<li>The accounts code does not scale up to thousands of accounts with tens of thousands of transactions, because by-account (and by-account-by-time) indices are not implemented. So many operations (like computing an account balance) require accessing every wallet transaction.</li>
+<li>Most applications already have a customer database, implemented with MySQL or some other relational database technology. It is awkward at best to keep the bitcoin-maintained Berkely DB wallet database and the application database backed up and synchronized at all times.</li>
+</ul>
+
+
+<h2 id="Account_Names">Account Names</h2>
+
+<p>Accounts are named with arbitrary strings; you may use any <a href="http://www.json.org/">JSON</a> string other than &quot;*&quot; (JSON strings are sent and returned as UTF-8 encoded Unicode).</p>
+
+<p>Bitcoin creates two accounts automatically:  it implicitly creates a default account with the empty string as its name, and it explicitly creates an account named <strong>Your Address</strong> when a new wallet is created.</p>
+
+<h2 id="The_Default_Account">The Default Account</h2>
+
+<p>The default account is named with the empty string (&quot;&quot; in JSON).  Generated coins are always credited to the default account, and the <em>sendtoaddress</em> method always debits the default account.</p>
+
+<h2 id="Accounts_and_Receiving_Addresses">Accounts and Receiving Addresses</h2>
+
+<p>Each account is associated with zero or more receiving addresses, and every receiving address is associated with exactly one account.  Coins sent to a receiving address in the wallet are credited to the associated account.</p>
+
+<p>Accounts are associated with receiving addresses by using the <em>getaccountaddress</em>, <em>getnewaddress</em> or <em>setaccount</em> methods.</p>
+
+<p><em>getaccountaddress</em> will return the same address until coins are received on that address; once coins have been received, it will generate and return a new address.</p>
+
+<p><em>getnewaddress</em> always generates and returns a new address.</p>
+
+<p><em>setaccount</em> changes the account associated with an existing address.  Coins previously received on that address (if any) will be debited from the previous account&#39;s balance and credited to the address&#39; new account.  Note that doing so may make the previous account&#39;s balance negative.</p>
+
+<p>Use the <em>getaddressesbyaccount</em> method to list all addresses associated with an account.</p>
+
+<h2 id="Sending">Sending</h2>
+
+<p>The <em>sendfrom</em> method sends coins and debits the specified account.  It does <strong>not</strong> change Bitcoin&#39;s algorithm for selecting which coins in the wallet are sent-- you should think of the coins in the wallet as being mixed together when they are received.  There is no way to ask Bitcoin to &quot;create a payment transaction using the coins received from these previously received transactions&quot; without using the raw transactions API(which is not part of the account system.)</p>
+
+<p>The <em>sendtoaddress</em> method works like <em>sendfrom</em>, but always debits the default account.</p>
+
+<p>The send will fail if the account has insufficient funds, with two exceptions:</p>
+
+<ul>
+<li><p>&#39;sendtoaddress&#39; always succeeds if there are sufficient funds in the
+server&#39;s wallet.  For example, if your wallet account balances were 100 BTC in account
+&#39;foo&#39; and 0 BTC in the default account, then the balances after <em>sendtoaddress
+1PC9aZC4hNX2rmmrt7uHTfYAS3hRbph4UN 10.00</em> would be 100 in account &#39;foo&#39; and -10.00 in
+the default account (and the overall server balance would go from 100 to 90 BTC).  On
+the other hand, using &#39;sendfrom&#39; to send from the default account with a zero balance
+will fail with message &quot;Account has insufficient funds&quot;.</p></li>
+<li><p>The check for sufficient funds is done before paying transaction fees (if any); if a
+<a href="../Transaction_Fee/">transaction fee</a> is needed, and there are sufficient funds in the wallet, then the
+transaction fee will be paid and debited from the account.  For example, if account
+&#39;foo&#39; contains 10 bitcoins, you <em>sendfrom foo 15VjRaDX9zpbA8LVnbrCAFzrVzN7ixHNsC 10</em>,
+and the transaction costs 0.01, &#39;foo&#39;s balance will be -0.01 bitcoins.</p></li>
+</ul>
+
+
+<h2>Account -&gt; Account Transfers</h2>
+
+<p>Use the <em>move</em> method to transfer balances from one account to another. Moves are not broadcast to the network, and never incur transaction fees; they just adjust account balances in the wallet.</p>
+
+<h2 id="Account_Balance_and_History">Account Balance and History</h2>
+
+<p>The <em>getbalance</em> method returns the bitcoin balance for either the entire wallet (if no argument is given) or for a particular account.</p>
+
+<p>The <em>listtransactions &lt;account&gt; [N]</em> method returns the last N (default 10) transactions that affected the account&#39;s balance.  &quot;listtransactions &#39;*&#39; [N]&quot; will return the last N transactions for all accounts.</p>
+
+<h2 id="Typical_Uses">Typical Uses</h2>
+
+<p>This section describes how typical web site code running on a web server uses the JSON-RPC API to keep track of customers&#39; accounts.</p>
+
+<ul>
+<li>Customer <strong>creates an account</strong> on the website:  web server either assigns them a unique customer id number or uses their email address or other unique identifier, calls <em>getaccountaddress &quot;userid&quot;</em> and tells the customer to send to that address to fund their account.</li>
+<li>Customer <strong>receives coins</strong> to fund their account: web server isn&#39;t involved.</li>
+<li>Customer is shown their <strong>current balance</strong>:  <em>getbalance &quot;userid&quot; 6</em> to get their &#39;confirmed&#39; balance, and subtracts it from <em>getbalance &quot;userid&quot; 0</em> to get their &#39;unconfirmed&#39; balance.</li>
+<li>Show the customer an <strong>itemized list</strong> of transactions:  <em>listtransactions &quot;userid&quot;</em></li>
+<li>Customer <strong>sends coins</strong> to another bitcoin address: <em>sendfrom &quot;userid&quot; <address> </address></em></li>
+<li>Customer <strong>transfers coins</strong> to another customer:  <em>move &quot;userid1&quot; &quot;userid2&quot; </em></li>
+<li>You <strong>make a sale</strong>, paid for with bitcoins in the customer&#39;s account:  <em>move &quot;userid&quot; &quot;&quot;  6 &quot;purchased item&quot;</em>, and if it succeeds, send them the product.</li>
+<li>Customer is <strong>charged a fee</strong> for use of the service:  <em>move &quot;userid&quot; &quot;FEES&quot; </em>  (using special accounts like &quot;FEES&quot; can make your application&#39;s logic much simpler)</li>
+<li>Customer <strong>purchases bitcoins</strong> from you:  <em>move &quot;AVAILABLE&quot; &quot;userid&quot; </em> (assuming the bitcoins you are selling are kept track of in an &quot;AVAILABLE&quot; account)</li>
+</ul>
+
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../Original_Bitcoin_client/API_Calls_list/">API Calls list</a></li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Developer/" rel="tag">Developer</a>
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+</nav>
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-06-07T14:24:02Z">Tue 07 Jun 2016 02:24:02 PM Europe</time>
+<!-- Created <time datetime="2010-12-20T14:44:20Z" pubdate="pubdate">Mon 20 Dec 2010 02:44:20 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

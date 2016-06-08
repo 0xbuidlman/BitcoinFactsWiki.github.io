@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Pooled mining</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Pooled mining
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p><strong>Pooled mining</strong> is a <a href="../Mining/">mining</a> approach where multiple generating clients contribute to the generation of a block, and then split the block reward according the contributed processing power. Pooled mining effectively reduces the granularity of the block generation reward, spreading it out more smoothly over time.</p>
+
+<h2 id="Introduction">Introduction</h2>
+
+<p>With increasing generation difficulty, mining with lower-performance devices can take a very long time before block generation, on average. For example, with a mining speed of 1000 Khps, at a difficulty of 14484 (which was in effect at the end of December, 2010), the average time to generate a block is almost 2 years.</p>
+
+<p>To provide a more smooth incentive to lower-performance miners, several pooled miners, using different approaches, have been created. With a mining pool, a lot of different people contribute to generating a block, and the reward is then split among them according to their processing contribution. This way, instead of waiting for years to generate 50btc in a block, a smaller miner may get a fraction of a Bitcoin on a more regular basis.</p>
+
+<p>A <strong>share</strong> is awarded by the mining pool to the clients who present a valid <a href="../Proof_of_work/">proof of work</a> of the same type as the proof of work that is used for creating <a href="../Block/">blocks</a>, but of lesser difficulty, so that it requires less time on average to generate.</p>
+
+<h2 id="Pooled_mining_approaches">Pooled mining approaches</h2>
+
+<p>The problem with pooled mining is that steps must be taken to prevent cheating by the clients and the server. Currently there are several different approaches used.</p>
+
+<h3 id="The_slush_approach">The slush approach</h3>
+
+<p><span class="createlink"><a href="/ikiwiki.cgi?from=Pooled_mining&amp;do=create&amp;page=Bitcoin_Pooled_Mining" rel="nofollow">?</a>Bitcoin Pooled Mining</span> (BPM), sometimes referred to as &quot;slush&#39;s pool&quot;, follows a score-based method.  Older shares (from beginning of the round) have lower weight than more recent shares, which reduces the motivation to cheat by switching between pools within a round.</p>
+
+<h3 id="The_Pay-per-Share_approach">The Pay-per-Share approach</h3>
+
+<p>The Pay-per-Share (PPS) approach, first described by <span class="createlink"><a href="/ikiwiki.cgi?page=BitPenny&amp;do=create&amp;from=Pooled_mining" rel="nofollow">?</a>BitPenny</span>, is to offer an instant flat payout for each share that is solved.  The payout is offered from the pool&#39;s existing balance and can therefore be withdrawn immediately, without waiting for a block to be solved or confirmed.  The possibility of cheating the miners by the pool operator and by timing attacks is thus completely eliminated.</p>
+
+<p>This method results in the least possible variance for miners while transferring all risk to the pool operator.  The resulting possibility of loss for the server is offset by setting a payout lower than the full expected value.</p>
+
+<h3>Luke-Jr&#39;s approach (&quot;<span class="createlink"><a href="/ikiwiki.cgi?from=Pooled_mining&amp;page=Eligius&amp;do=create" rel="nofollow">?</a>Eligius</span>&quot;)</h3>
+
+<p><a>Luke</a> came up with a third approach borrowing strengths from the earlier two.
+Like slush&#39;s approach, miners submit proofs-of-work to earn shares.
+Like puddinpop&#39;s approach, the pool pays out immediately via block generation.
+When distributing block rewards, it is divided equally among all shares since the last valid block.
+Unlike any preexisting pool approach, this means that the shares contributed toward stale blocks are recycled into the next block&#39;s shares.
+In order to spare participating miners from transaction fees, rewards are only paid out if a miner has earned at least 0.67108864 BTC (400 <span class="createlink"><a href="/ikiwiki.cgi?page=Tonal_Bitcoin&amp;do=create&amp;from=Pooled_mining" rel="nofollow">?</a>TBC</span>). If the amount owed is less, it will be added to the earnings of a later block (which may then total over the threshold amount).
+If a miner does not submit a share for over a week, the pool sends any balance remaining, regardless of its size.</p>
+
+<h3 id="P2Pool_approach">P2Pool approach</h3>
+
+<p><span class="createlink"><a href="/ikiwiki.cgi?from=Pooled_mining&amp;page=P2Pool&amp;do=create" rel="nofollow">?</a>P2Pool</span> mining nodes work on a chain of shares similar to Bitcoin&rsquo;s blockchain. When a block is found, the reward is divided among the most recent shares in this share-blockchain. Like the puddinpop and Luke-Jr approaches, p2pool pays via generation.</p>
+
+<h3 id="Comparison">Comparison</h3>
+
+<p>The cooperative mining approach (slush and Luke-Jr) uses a lot less resources on the pool server, since rather than continuously checking metahashes, all that has to be checked is the validity of submitted shares. The number of shares sent can be adjusted by adjusting the artificial difficulty level.</p>
+
+<p>Further, the cooperative mining approach allows the clients to use existing miners without any modification, while the puddinpop approach requires the custom pool miner, which are as of now not as efficient on GPU mining as the existing GPU miners.
+<span class="createlink"><a href="/ikiwiki.cgi?from=Pooled_mining&amp;page=Smallgeneration.png&amp;do=create" rel="nofollow">?</a>Smallgeneration.png</span></p>
+
+<p>Additionally, the puddinpop and Luke-Jr approaches of distributing the earnings by way of including precise sub-cent amounts in the generation transaction for the participants, results in the presence of sub-cent bitcoin amounts in your wallet, which are liable to disappear (as unnecessary fees) later due to a bug in old (before 0.3.21) bitcoin nodes. (E.g., if you have a transaction with 0.052 in your wallet, and you later send .05 to someone, your .002 will disappear.).</p>
+
+<p>Puddinpop and Luke-Jr miners receive coins directly, which eliminates the delay in receiving earnings that is required on slush-based mining servers. However, using some <a href="../EWallet/">eWallet</a> services for generated coin will cause those coins to be lost.</p>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=tags%2FMiners&amp;do=create&amp;from=Pooled_mining" rel="nofollow">?</a>Miners</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Pooled_mining&amp;page=Poolservers&amp;do=create" rel="nofollow">?</a>Poolservers</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Pooled_mining&amp;page=Comparison_of_mining_pools&amp;do=create" rel="nofollow">?</a>Comparison of mining pools</span></li>
+<li><a href="../tags/Pool_Operators/">Pool Operators</a></li>
+<li><a href="../Why_a_GPU_mines_faster_than_a_CPU/">Why a GPU mines faster than a CPU</a></li>
+<li><a href="../Why_pooled_mining/">Why pooled mining</a></li>
+<li><a href="../Mining_pool_reward_FAQ/">Mining pool reward FAQ</a></li>
+</ul>
+
+
+<h2 id="External_links">External links</h2>
+
+<ul>
+<li><a href="http://www.bitcoin.org/smf/index.php?topic=1458.0">puddinpop&#39;s mining pool thread</a></li>
+<li><a href="http://blockexplorer.com/block/00000000000233334b157d901714baf59e5b9236227b2878844e52244da4195e">example puddinpop block</a></li>
+</ul>
+
+
+<h2 id="References">References</h2>
+
+<ul>
+<li><a href="https://www.bitcoinmining.com/">Bitcoin Mining</a></li>
+<li><a href="https://www.youtube.com/watch?v=GmOzih6I1zs">Video: What is Bitcoin Mining</a></li>
+<li><a href="http://bitcoinminer.com">Bitcoin Miner</a></li>
+</ul>
+
+
+<p><span class="createlink"><a href="/ikiwiki.cgi?page=ru%3A%D0%BC%D0%B0%D0%B9%D0%BD%D0%B8%D0%BD%D0%B3%20%D0%B2%20%D0%BF%D1%83%D0%BB%D0%B0%D1%85&amp;do=create&amp;from=Pooled_mining" rel="nofollow">?</a>ru:&#x43C;&#x430;&#x439;&#x43D;&#x438;&#x43D;&#x433; &#x432; &#x43F;&#x443;&#x43B;&#x430;&#x445;</span></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Mining/" rel="tag">Mining</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Bitcoin/">Bitcoin</a>
+
+<a href="../Help:FAQ/">Help:FAQ</a>
+
+<a href="../Merge_Mining_Pool/">Merge Mining Pool</a>
+
+<a href="../Mining/">Mining</a>
+
+<a href="../Triplemining/">Triplemining</a>
+
+<a href="../tags/Pool_Operators/">tags/Pool Operators</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-12-08T03:32:02Z">Tue 08 Dec 2015 03:32:02 AM Europe</time>
+<!-- Created <time datetime="2010-12-24T00:26:15Z" pubdate="pubdate">Fri 24 Dec 2010 12:26:15 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

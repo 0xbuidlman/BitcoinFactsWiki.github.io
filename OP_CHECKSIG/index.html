@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>op_checksig</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+op_checksig
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p><strong>OP_CHECKSIG</strong> is <a href="../Script/">script</a> opcode used to verify that the signature for a tx input is valid. OP_CHECKSIG expects two values to be on the stack.  These are, in order of stack depth, the public key and the signature of the script. These two values are normally obtained by running the scriptSig script of the transaction input we are attempting to validate. The scriptSig script is deleted after it is run, but the stack is left as is.  Then, the scriptPubKey script from the previous transaction output that is now being spent is run, generally concluding in an OP_CHECKSIG.</p>
+
+<p>The standard scriptPubKey checks that the public key (actually a hash of) is a particular value, and that OP_CHECKSIG passes.</p>
+
+<p>For normal transaction inputs, if the creator of the current transaction can successfully create a ScriptSig signature that uses the right public key for the ScriptPubKey of the transaction output they are attempting to spend, that transaction input is considered valid.</p>
+
+<h2 id="Parameters">Parameters</h2>
+
+<p>In addition to the stack parameters and the script code itself, in order to operate correctly OP_CHECKSIG needs to know the current transaction and the index of current transaction input.</p>
+
+<h2 id="How_it_works">How it works</h2>
+
+<p>Firstly always this (the default) procedure is applied:
+<a href="../Bitcoin_OpCheckSig_InDetail.png"><img class="right" height="267" src="./200x400-Bitcoin_OpCheckSig_InDetail.png" title="Signature verification process of the default procedure" width="200" /></a></p>
+
+<ol>
+<li>the public key and the signature are popped from the stack, in that order. Signature format is &lt;DER signature&gt; [byte hash-type&gt;](&lt;1). Hashtype value is last byte of the sig.</li>
+<li>A new subscript is created from the instruction from the most recently parsed OP_CODESEPARATOR (last one in script) to the end of the script. If there is no OP_CODESEPARATOR the entire script becomes the subscript (hereby referred to as subScript)</li>
+<li>The sig is deleted from subScript.</li>
+<li>All OP_CODESEPARATORS are removed from subScript</li>
+<li>The hashtype is removed from the last byte of the sig and stored</li>
+<li>A copy is made of the current transaction (hereby referred to txCopy)</li>
+<li>The scripts for all transaction inputs in txCopy are set to empty scripts (exactly 1 byte 0x00)</li>
+<li>The script for the current transaction input in txCopy is set to subScript (lead in by its length as a var-integer encoded!)</li>
+</ol>
+
+
+<p>Now depending on the hashtype various things can happen to txCopy, these will be discussed individually.</p>
+
+<p><strong>Hashtype Values (from script.h):</strong></p>
+
+<table>
+<thead>
+<tr>
+<th>Name </th>
+<th> Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SIGHASH_ALL </td>
+<td>0x00000001</td>
+</tr>
+<tr>
+<td>SIGHASH_NONE </td>
+<td>0x00000002</td>
+</tr>
+<tr>
+<td>SIGHASH_SINGLE </td>
+<td>0x00000003</td>
+</tr>
+<tr>
+<td>SIGHASH_ANYONECANPAY </td>
+<td>0x00000080</td>
+</tr>
+</tbody>
+</table>
+
+
+<ol>
+<li> If (hashtype&amp;31) = SIGHASH_NONE then apply the SIGHASH_NONE-procedure
+</li><li> If (hashtype&amp;31) = SIGHASH_SINGLE then apply the SIGHASH_SINGLE-procedure
+</li><li> If hashtype &amp; SIGHASH_ANYONECANPAY then apply the SIGHASH_ANYONECANPAY-procedure
+</li></ol>
+
+
+<p>Hence, hashtype SIGHASH_ANYONECANPAY may be applied also after any other hashtype-procedure (3.1). Besides the four listed hashtypes only a hashtype of value 0 appears a few times in the (main) block chain (and is handled like SIGHASH_ALL).</p>
+
+<h3 id="Hashtype_SIGHASH_ALL_.28default.29">Hashtype SIGHASH_ALL (default)</h3>
+
+<p>No special further handling occurs in the default case.  Think of this as &quot;sign <strong>all</strong> of the outputs.&quot; Which is already done by the default procedure.</p>
+
+<h3 id="Procedure_for_Hashtype_SIGHASH_NONE">Procedure for Hashtype SIGHASH_NONE</h3>
+
+<ol>
+<li>The output of txCopy is set to a vector of zero size.</li>
+<li>All other inputs aside from the current input in txCopy have their nSequence index set to zero</li>
+</ol>
+
+
+<p>Think of this as &quot;sign <strong>none</strong> of the outputs-- I don&#39;t care where the bitcoins go.&quot;</p>
+
+<h3 id="Procedure_for_Hashtype_SIGHASH_SINGLE">Procedure for Hashtype SIGHASH_SINGLE</h3>
+
+<ol>
+<li>The output of txCopy is resized to the size of the current input index+1.</li>
+<li>All other txCopy outputs aside from the output that is the same as the current input index are set to a blank script and a value of (long) -1.</li>
+<li>All other txCopy inputs aside from the current input are set to have an nSequence index of zero.</li>
+</ol>
+
+
+<p>Think of this as &quot;sign <strong>one</strong> of the outputs-- I don&#39;t care where the other outputs go&quot;.</p>
+
+<p>Note: The transaction that uses SIGHASH_SINGLE type of signature should not have more inputs than outputs.
+However if it does (because of the pre-existing implementation), it shall not be rejected, but instead for every &quot;illegal&quot; input (meaning: an input that has an index bigger than the maximum output index) the node should still verify it, though assuming the hash of 0000000000000000000000000000000000000000000000000000000000000001 <a href="https://bitcointalk.org/index.php?topic=260595.0">(1)</a></p>
+
+<h3 id="Procedure_for_Hashtype_SIGHASH_ANYONECANPAY">Procedure for Hashtype SIGHASH_ANYONECANPAY</h3>
+
+<ol>
+<li>The txCopy input vector is resized to a length of one.</li>
+<li>The subScript (lead in by its length as a var-integer encoded!) is set as the first and only member of this vector.</li>
+</ol>
+
+
+<p>Think of this as &quot;Let other people add inputs to this transaction, I don&#39;t care where the rest of the bitcoins come from.&quot;</p>
+
+<h3 id="Final_signature_check">Final signature check</h3>
+
+<p>An array of bytes is constructed from the serialized txCopy appended by four bytes for the hash type. This array is sha256 hashed twice, then the public key is used to check the supplied signature against the hash.
+The secp256k1 elliptic curve is used for the verification with the given public key.</p>
+
+<h2 id="Return_values">Return values</h2>
+
+<p>OP_CHECKSIG will push true to the stack if the check passed, false otherwise.
+OP_CHECKSIG_VERIFY leaves nothing on the stack but will cause the script eval to fail immediately if the check does not pass.</p>
+
+<h2 id="Code_samples_and_raw_dumps">Code samples and raw dumps</h2>
+
+<p>Taking the first transaction in Bitcoin which is in block number 170, we would get after serialising the transaction but before we hash+sign (or verify) it:</p>
+
+<ul>
+<li><a href="http://blockexplorer.com/block/00000000d1145790a8694403d4063f323d499e655c83426834d4ce2f8dd4a2ee">http://blockexplorer.com/block/00000000d1145790a8694403d4063f323d499e655c83426834d4ce2f8dd4a2ee</a></li>
+<li><a href="http://blockexplorer.com/tx/f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16">http://blockexplorer.com/tx/f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16</a></li>
+</ul>
+
+
+<p>See also <a href="https://gitorious.org/libbitcoin/libbitcoin">libbitcoin</a> for code samples.</p>
+
+<pre>
+01 00 00 00              version
+01                       number of inputs (var_uint)
+
+input 0:
+c9 97 a5 e5 6e 10 41 02  input address hash
+fa 20 9c 6a 85 2d d9 06
+60 a2 0b 2d 9c 35 24 23
+ed ce 25 85 7f cd 37 04
+00 00 00 00              input index
+
+48                       size of script (var_uint)
+47                       push 71 bytes to stack
+30 44 02 20 4e 45 e1 69
+32 b8 af 51 49 61 a1 d3
+a1 a2 5f df 3f 4f 77 32
+e9 d6 24 c6 c6 15 48 ab
+5f b8 cd 41 02 20 18 15
+22 ec 8e ca 07 de 48 60
+a4 ac dd 12 90 9d 83 1c
+c5 6c bb ac 46 22 08 22
+21 a8 76 8d 1d 09 01
+ff ff ff ff              sequence
+
+02                       number of outputs (var_uint)
+
+output 0:
+00 ca 9a 3b 00 00 00 00  amount = 10.00000000
+43                       size of script (var_uint)
+script for output 0:
+41                       push 65 bytes to stack
+04 ae 1a 62 fe 09 c5 f5
+1b 13 90 5f 07 f0 6b 99
+a2 f7 15 9b 22 25 f3 74
+cd 37 8d 71 30 2f a2 84
+14 e7 aa b3 73 97 f5 54
+a7 df 5f 14 2c 21 c1 b7
+30 3b 8a 06 26 f1 ba de
+d5 c7 2a 70 4f 7e 6c d8
+4c
+ac                       OP_CHECKSIG
+
+output 1:
+00 28 6b ee 00 00 00 00  amount = 40.00000000
+43                       size of script (var_uint)
+script for output 1:
+41                       push 65 bytes to stack
+04 11 db 93 e1 dc db 8a
+01 6b 49 84 0f 8c 53 bc
+1e b6 8a 38 2e 97 b1 48
+2e ca d7 b1 48 a6 90 9a
+5c b2 e0 ea dd fb 84 cc
+f9 74 44 64 f8 2e 16 0b
+fa 9b 8b 64 f9 d4 c0 3f
+99 9b 86 43 f6 56 b4 12
+a3
+ac                       OP_CHECKSIG
+
+00 00 00 00              locktime
+01 00 00 00              hash_code_type (added on)
+
+result =
+01 00 00 00 01 c9 97 a5 e5 6e 10 41 02 fa 20 9c 6a 85 2d d9 06 60 a2 0b 2d 9c 35
+24 23 ed ce 25 85 7f cd 37 04 00 00 00 00 43 41 04 11 db 93 e1 dc db 8a 01 6b 49
+84 0f 8c 53 bc 1e b6 8a 38 2e 97 b1 48 2e ca d7 b1 48 a6 90 9a 5c b2 e0 ea dd fb
+84 cc f9 74 44 64 f8 2e 16 0b fa 9b 8b 64 f9 d4 c0 3f 99 9b 86 43 f6 56 b4 12 a3
+ac ff ff ff ff 02 00 ca 9a 3b 00 00 00 00 43 41 04 ae 1a 62 fe 09 c5 f5 1b 13 90
+5f 07 f0 6b 99 a2 f7 15 9b 22 25 f3 74 cd 37 8d 71 30 2f a2 84 14 e7 aa b3 73 97
+f5 54 a7 df 5f 14 2c 21 c1 b7 30 3b 8a 06 26 f1 ba de d5 c7 2a 70 4f 7e 6c d8 4c
+ac 00 28 6b ee 00 00 00 00 43 41 04 11 db 93 e1 dc db 8a 01 6b 49 84 0f 8c 53 bc
+1e b6 8a 38 2e 97 b1 48 2e ca d7 b1 48 a6 90 9a 5c b2 e0 ea dd fb 84 cc f9 74 44
+64 f8 2e 16 0b fa 9b 8b 64 f9 d4 c0 3f 99 9b 86 43 f6 56 b4 12 a3 ac 00 00 00 00
+01 00 00 00
+</pre>
+
+
+<p>To understand where that raw dump has come from, it may be useful to examine tests/ec-key.cpp in <a href="https://gitorious.org/libbitcoin/libbitcoin">libbitcoin</a>,</p>
+
+<p><a href="https://gitorious.org/libbitcoin/libbitcoin">libbitcoin</a> has a unit test under tests/ec-key.cpp (make ec-key &amp;&amp; ./bin/tests/ec-key). There is also a working OP_CHECKSIG implementation in src/script.cpp under script::op_checksig(). See also the unit test: tests/script-test.cpp</p>
+
+<div class="highlight-cpp"><pre class="hl"><span class="hl ppc">#include &lt;iostream&gt;</span>
+<span class="hl ppc">#include &lt;iomanip&gt;</span>
+<span class="hl ppc">#include &lt;bitcoin/util/serializer.hpp&gt;</span>
+<span class="hl ppc">#include &lt;bitcoin/util/elliptic_curve_key.hpp&gt;</span>
+<span class="hl ppc">#include &lt;bitcoin/util/sha256.hpp&gt;</span>
+<span class="hl ppc">#include &lt;bitcoin/util/assert.hpp&gt;</span>
+<span class="hl ppc">#include &lt;bitcoin/util/logger.hpp&gt;</span>
+<span class="hl ppc">#include &lt;bitcoin/types.hpp&gt;</span>
+<span class="hl ppc">#include &lt;openssl/ecdsa.h&gt;</span>
+<span class="hl ppc">#include &lt;openssl/obj_mac.h&gt;</span>
+<span class="hl kwa">using</span> libbitcoin<span class="hl opt">::</span>elliptic_curve_key<span class="hl opt">;</span>
+<span class="hl kwa">using</span> libbitcoin<span class="hl opt">::</span>serializer<span class="hl opt">;</span>
+<span class="hl kwa">using</span> libbitcoin<span class="hl opt">::</span>hash_digest<span class="hl opt">;</span>
+<span class="hl kwa">using</span> libbitcoin<span class="hl opt">::</span>data_chunk<span class="hl opt">;</span>
+<span class="hl kwa">using</span> libbitcoin<span class="hl opt">::</span>log_info<span class="hl opt">;</span>
+<span class="hl kwa">using</span> libbitcoin<span class="hl opt">::</span>log_fatal<span class="hl opt">;</span>
+ 
+<span class="hl kwb">int</span> <span class="hl kwd">main</span><span class="hl opt">()</span>
+<span class="hl opt">{</span>
+    serializer ss<span class="hl opt">;</span>
+    <span class="hl slc">// blk number 170, tx 1, input 0</span>
+    <span class="hl slc">// version = 1</span>
+    ss<span class="hl opt">.</span><span class="hl kwd">write_4_bytes</span><span class="hl opt">(</span><span class="hl num">1</span><span class="hl opt">);</span>
+    <span class="hl slc">// 1 inputs</span>
+    ss<span class="hl opt">.</span><span class="hl kwd">write_var_uint</span><span class="hl opt">(</span><span class="hl num">1</span><span class="hl opt">);</span>
+ 
+    <span class="hl slc">// input 0</span>
+    <span class="hl slc">// prevout hash</span>
+    ss<span class="hl opt">.</span><span class="hl kwd">write_hash</span><span class="hl opt">(</span>hash_digest<span class="hl opt">{</span><span class="hl num">0x04</span><span class="hl opt">,</span> <span class="hl num">0x37</span><span class="hl opt">,</span> <span class="hl num">0xcd</span><span class="hl opt">,</span> <span class="hl num">0x7f</span><span class="hl opt">,</span> <span class="hl num">0x85</span><span class="hl opt">,</span> <span class="hl num">0x25</span><span class="hl opt">,</span> <span class="hl num">0xce</span><span class="hl opt">,</span> <span class="hl num">0xed</span><span class="hl opt">,</span> <span class="hl num">0x23</span><span class="hl opt">,</span> <span class="hl num">0x24</span><span class="hl opt">,</span> <span class="hl num">0x35</span><span class="hl opt">,</span> <span class="hl num">0x9c</span><span class="hl opt">,</span> <span class="hl num">0x2d</span><span class="hl opt">,</span> <span class="hl num">0x0b</span><span class="hl opt">,</span> <span class="hl num">0xa2</span><span class="hl opt">,</span> <span class="hl num">0x60</span><span class="hl opt">,</span> <span class="hl num">0x06</span><span class="hl opt">,</span> <span class="hl num">0xd9</span><span class="hl opt">,</span> <span class="hl num">0x2d</span><span class="hl opt">,</span> <span class="hl num">0x85</span><span class="hl opt">,</span> <span class="hl num">0x6a</span><span class="hl opt">,</span> <span class="hl num">0x9c</span><span class="hl opt">,</span> <span class="hl num">0x20</span><span class="hl opt">,</span> <span class="hl num">0xfa</span><span class="hl opt">,</span> <span class="hl num">0x02</span><span class="hl opt">,</span> <span class="hl num">0x41</span><span class="hl opt">,</span> <span class="hl num">0x10</span><span class="hl opt">,</span> <span class="hl num">0x6e</span><span class="hl opt">,</span> <span class="hl num">0xe5</span><span class="hl opt">,</span> <span class="hl num">0xa5</span><span class="hl opt">,</span> <span class="hl num">0x97</span><span class="hl opt">,</span> <span class="hl num">0xc9</span><span class="hl opt">});</span>
+    <span class="hl slc">// prevout index </span>
+    ss<span class="hl opt">.</span><span class="hl kwd">write_4_bytes</span><span class="hl opt">(</span><span class="hl num">0</span><span class="hl opt">);</span>
+ 
+    <span class="hl slc">// input script after running OP_CHECKSIG for this tx is a single</span>
+    <span class="hl slc">// OP_CHECKSIG opcode</span>
+    data_chunk raw_data<span class="hl opt">;</span>
+    raw_data <span class="hl opt">= {</span><span class="hl num">0x04</span><span class="hl opt">,</span> <span class="hl num">0x11</span><span class="hl opt">,</span> <span class="hl num">0xdb</span><span class="hl opt">,</span> <span class="hl num">0x93</span><span class="hl opt">,</span> <span class="hl num">0xe1</span><span class="hl opt">,</span> <span class="hl num">0xdc</span><span class="hl opt">,</span> <span class="hl num">0xdb</span><span class="hl opt">,</span> <span class="hl num">0x8a</span><span class="hl opt">,</span> <span class="hl num">0x01</span><span class="hl opt">,</span> <span class="hl num">0x6b</span><span class="hl opt">,</span> <span class="hl num">0x49</span><span class="hl opt">,</span> <span class="hl num">0x84</span><span class="hl opt">,</span> <span class="hl num">0x0f</span><span class="hl opt">,</span> <span class="hl num">0x8c</span><span class="hl opt">,</span> <span class="hl num">0x53</span><span class="hl opt">,</span> <span class="hl num">0xbc</span><span class="hl opt">,</span> <span class="hl num">0x1e</span><span class="hl opt">,</span> <span class="hl num">0xb6</span><span class="hl opt">,</span> <span class="hl num">0x8a</span><span class="hl opt">,</span> <span class="hl num">0x38</span><span class="hl opt">,</span> <span class="hl num">0x2e</span><span class="hl opt">,</span> <span class="hl num">0x97</span><span class="hl opt">,</span> <span class="hl num">0xb1</span><span class="hl opt">,</span> <span class="hl num">0x48</span><span class="hl opt">,</span> <span class="hl num">0x2e</span><span class="hl opt">,</span> <span class="hl num">0xca</span><span class="hl opt">,</span> <span class="hl num">0xd7</span><span class="hl opt">,</span> <span class="hl num">0xb1</span><span class="hl opt">,</span> <span class="hl num">0x48</span><span class="hl opt">,</span> <span class="hl num">0xa6</span><span class="hl opt">,</span> <span class="hl num">0x90</span><span class="hl opt">,</span> <span class="hl num">0x9a</span><span class="hl opt">,</span> <span class="hl num">0x5c</span><span class="hl opt">,</span> <span class="hl num">0xb2</span><span class="hl opt">,</span> <span class="hl num">0xe0</span><span class="hl opt">,</span> <span class="hl num">0xea</span><span class="hl opt">,</span> <span class="hl num">0xdd</span><span class="hl opt">,</span> <span class="hl num">0xfb</span><span class="hl opt">,</span> <span class="hl num">0x84</span><span class="hl opt">,</span> <span class="hl num">0xcc</span><span class="hl opt">,</span> <span class="hl num">0xf9</span><span class="hl opt">,</span> <span class="hl num">0x74</span><span class="hl opt">,</span> <span class="hl num">0x44</span><span class="hl opt">,</span> <span class="hl num">0x64</span><span class="hl opt">,</span> <span class="hl num">0xf8</span><span class="hl opt">,</span> <span class="hl num">0x2e</span><span class="hl opt">,</span> <span class="hl num">0x16</span><span class="hl opt">,</span> <span class="hl num">0x0b</span><span class="hl opt">,</span> <span class="hl num">0xfa</span><span class="hl opt">,</span> <span class="hl num">0x9b</span><span class="hl opt">,</span> <span class="hl num">0x8b</span><span class="hl opt">,</span> <span class="hl num">0x64</span><span class="hl opt">,</span> <span class="hl num">0xf9</span><span class="hl opt">,</span> <span class="hl num">0xd4</span><span class="hl opt">,</span> <span class="hl num">0xc0</span><span class="hl opt">,</span> <span class="hl num">0x3f</span><span class="hl opt">,</span> <span class="hl num">0x99</span><span class="hl opt">,</span> <span class="hl num">0x9b</span><span class="hl opt">,</span> <span class="hl num">0x86</span><span class="hl opt">,</span> <span class="hl num">0x43</span><span class="hl opt">,</span> <span class="hl num">0xf6</span><span class="hl opt">,</span> <span class="hl num">0x56</span><span class="hl opt">,</span> <span class="hl num">0xb4</span><span class="hl opt">,</span> <span class="hl num">0x12</span><span class="hl opt">,</span> <span class="hl num">0xa3</span><span class="hl opt">};</span>
+    data_chunk raw_script<span class="hl opt">;</span>
+    raw_script <span class="hl opt">=</span> <span class="hl kwd">data_chunk</span><span class="hl opt">();</span>
+    raw_script<span class="hl opt">.</span><span class="hl kwd">push_back</span><span class="hl opt">(</span>raw_data<span class="hl opt">.</span><span class="hl kwd">size</span><span class="hl opt">());</span>
+    libbitcoin<span class="hl opt">::</span><span class="hl kwd">extend_data</span><span class="hl opt">(</span>raw_script<span class="hl opt">,</span> raw_data<span class="hl opt">);</span>
+    raw_script<span class="hl opt">.</span><span class="hl kwd">push_back</span><span class="hl opt">(</span><span class="hl num">172</span><span class="hl opt">);</span>
+    ss<span class="hl opt">.</span><span class="hl kwd">write_var_uint</span><span class="hl opt">(</span>raw_script<span class="hl opt">.</span><span class="hl kwd">size</span><span class="hl opt">());</span>
+    ss<span class="hl opt">.</span><span class="hl kwd">write_data</span><span class="hl opt">(</span>raw_script<span class="hl opt">);</span>
+    <span class="hl slc">// sequence</span>
+    ss<span class="hl opt">.</span><span class="hl kwd">write_4_bytes</span><span class="hl opt">(</span><span class="hl num">0xffffffff</span><span class="hl opt">);</span>
+ 
+    <span class="hl slc">// 2 outputs for this tx</span>
+    ss<span class="hl opt">.</span><span class="hl kwd">write_var_uint</span><span class="hl opt">(</span><span class="hl num">2</span><span class="hl opt">);</span>
+ 
+    <span class="hl slc">// output 0</span>
+    ss<span class="hl opt">.</span><span class="hl kwd">write_8_bytes</span><span class="hl opt">(</span><span class="hl num">1000000000</span><span class="hl opt">);</span>
+    <span class="hl slc">// script for output 0</span>
+    raw_data <span class="hl opt">= {</span><span class="hl num">0x04</span><span class="hl opt">,</span> <span class="hl num">0xae</span><span class="hl opt">,</span> <span class="hl num">0x1a</span><span class="hl opt">,</span> <span class="hl num">0x62</span><span class="hl opt">,</span> <span class="hl num">0xfe</span><span class="hl opt">,</span> <span class="hl num">0x09</span><span class="hl opt">,</span> <span class="hl num">0xc5</span><span class="hl opt">,</span> <span class="hl num">0xf5</span><span class="hl opt">,</span> <span class="hl num">0x1b</span><span class="hl opt">,</span> <span class="hl num">0x13</span><span class="hl opt">,</span> <span class="hl num">0x90</span><span class="hl opt">,</span> <span class="hl num">0x5f</span><span class="hl opt">,</span> <span class="hl num">0x07</span><span class="hl opt">,</span> <span class="hl num">0xf0</span><span class="hl opt">,</span> <span class="hl num">0x6b</span><span class="hl opt">,</span> <span class="hl num">0x99</span><span class="hl opt">,</span> <span class="hl num">0xa2</span><span class="hl opt">,</span> <span class="hl num">0xf7</span><span class="hl opt">,</span> <span class="hl num">0x15</span><span class="hl opt">,</span> <span class="hl num">0x9b</span><span class="hl opt">,</span> <span class="hl num">0x22</span><span class="hl opt">,</span> <span class="hl num">0x25</span><span class="hl opt">,</span> <span class="hl num">0xf3</span><span class="hl opt">,</span> <span class="hl num">0x74</span><span class="hl opt">,</span> <span class="hl num">0xcd</span><span class="hl opt">,</span> <span class="hl num">0x37</span><span class="hl opt">,</span> <span class="hl num">0x8d</span><span class="hl opt">,</span> <span class="hl num">0x71</span><span class="hl opt">,</span> <span class="hl num">0x30</span><span class="hl opt">,</span> <span class="hl num">0x2f</span><span class="hl opt">,</span> <span class="hl num">0xa2</span><span class="hl opt">,</span> <span class="hl num">0x84</span><span class="hl opt">,</span> <span class="hl num">0x14</span><span class="hl opt">,</span> <span class="hl num">0xe7</span><span class="hl opt">,</span> <span class="hl num">0xaa</span><span class="hl opt">,</span> <span class="hl num">0xb3</span><span class="hl opt">,</span> <span class="hl num">0x73</span><span class="hl opt">,</span> <span class="hl num">0x97</span><span class="hl opt">,</span> <span class="hl num">0xf5</span><span class="hl opt">,</span> <span class="hl num">0x54</span><span class="hl opt">,</span> <span class="hl num">0xa7</span><span class="hl opt">,</span> <span class="hl num">0xdf</span><span class="hl opt">,</span> <span class="hl num">0x5f</span><span class="hl opt">,</span> <span class="hl num">0x14</span><span class="hl opt">,</span> <span class="hl num">0x2c</span><span class="hl opt">,</span> <span class="hl num">0x21</span><span class="hl opt">,</span> <span class="hl num">0xc1</span><span class="hl opt">,</span> <span class="hl num">0xb7</span><span class="hl opt">,</span> <span class="hl num">0x30</span><span class="hl opt">,</span> <span class="hl num">0x3b</span><span class="hl opt">,</span> <span class="hl num">0x8a</span><span class="hl opt">,</span> <span class="hl num">0x06</span><span class="hl opt">,</span> <span class="hl num">0x26</span><span class="hl opt">,</span> <span class="hl num">0xf1</span><span class="hl opt">,</span> <span class="hl num">0xba</span><span class="hl opt">,</span> <span class="hl num">0xde</span><span class="hl opt">,</span> <span class="hl num">0xd5</span><span class="hl opt">,</span> <span class="hl num">0xc7</span><span class="hl opt">,</span> <span class="hl num">0x2a</span><span class="hl opt">,</span> <span class="hl num">0x70</span><span class="hl opt">,</span> <span class="hl num">0x4f</span><span class="hl opt">,</span> <span class="hl num">0x7e</span><span class="hl opt">,</span> <span class="hl num">0x6c</span><span class="hl opt">,</span> <span class="hl num">0xd8</span><span class="hl opt">,</span> <span class="hl num">0x4c</span><span class="hl opt">};</span>
+    <span class="hl slc">// when data &lt; 75, we can just write it&#39;s length as a single byte (&#39;special&#39;</span>
+    <span class="hl slc">// opcodes)</span>
+    raw_script <span class="hl opt">=</span> <span class="hl kwd">data_chunk</span><span class="hl opt">();</span>
+    raw_script<span class="hl opt">.</span><span class="hl kwd">push_back</span><span class="hl opt">(</span>raw_data<span class="hl opt">.</span><span class="hl kwd">size</span><span class="hl opt">());</span>
+    libbitcoin<span class="hl opt">::</span><span class="hl kwd">extend_data</span><span class="hl opt">(</span>raw_script<span class="hl opt">,</span> raw_data<span class="hl opt">);</span>
+    <span class="hl slc">// OP_CHECKSIG</span>
+    raw_script<span class="hl opt">.</span><span class="hl kwd">push_back</span><span class="hl opt">(</span><span class="hl num">172</span><span class="hl opt">);</span>
+    <span class="hl slc">// now actually write the script</span>
+    ss<span class="hl opt">.</span><span class="hl kwd">write_var_uint</span><span class="hl opt">(</span>raw_script<span class="hl opt">.</span><span class="hl kwd">size</span><span class="hl opt">());</span>
+    ss<span class="hl opt">.</span><span class="hl kwd">write_data</span><span class="hl opt">(</span>raw_script<span class="hl opt">);</span>
+ 
+    <span class="hl slc">// output 1</span>
+    ss<span class="hl opt">.</span><span class="hl kwd">write_8_bytes</span><span class="hl opt">(</span><span class="hl num">4000000000</span><span class="hl opt">);</span>
+    <span class="hl slc">// script for output 0</span>
+    raw_data <span class="hl opt">= {</span><span class="hl num">0x04</span><span class="hl opt">,</span> <span class="hl num">0x11</span><span class="hl opt">,</span> <span class="hl num">0xdb</span><span class="hl opt">,</span> <span class="hl num">0x93</span><span class="hl opt">,</span> <span class="hl num">0xe1</span><span class="hl opt">,</span> <span class="hl num">0xdc</span><span class="hl opt">,</span> <span class="hl num">0xdb</span><span class="hl opt">,</span> <span class="hl num">0x8a</span><span class="hl opt">,</span> <span class="hl num">0x01</span><span class="hl opt">,</span> <span class="hl num">0x6b</span><span class="hl opt">,</span> <span class="hl num">0x49</span><span class="hl opt">,</span> <span class="hl num">0x84</span><span class="hl opt">,</span> <span class="hl num">0x0f</span><span class="hl opt">,</span> <span class="hl num">0x8c</span><span class="hl opt">,</span> <span class="hl num">0x53</span><span class="hl opt">,</span> <span class="hl num">0xbc</span><span class="hl opt">,</span> <span class="hl num">0x1e</span><span class="hl opt">,</span> <span class="hl num">0xb6</span><span class="hl opt">,</span> <span class="hl num">0x8a</span><span class="hl opt">,</span> <span class="hl num">0x38</span><span class="hl opt">,</span> <span class="hl num">0x2e</span><span class="hl opt">,</span> <span class="hl num">0x97</span><span class="hl opt">,</span> <span class="hl num">0xb1</span><span class="hl opt">,</span> <span class="hl num">0x48</span><span class="hl opt">,</span> <span class="hl num">0x2e</span><span class="hl opt">,</span> <span class="hl num">0xca</span><span class="hl opt">,</span> <span class="hl num">0xd7</span><span class="hl opt">,</span> <span class="hl num">0xb1</span><span class="hl opt">,</span> <span class="hl num">0x48</span><span class="hl opt">,</span> <span class="hl num">0xa6</span><span class="hl opt">,</span> <span class="hl num">0x90</span><span class="hl opt">,</span> <span class="hl num">0x9a</span><span class="hl opt">,</span> <span class="hl num">0x5c</span><span class="hl opt">,</span> <span class="hl num">0xb2</span><span class="hl opt">,</span> <span class="hl num">0xe0</span><span class="hl opt">,</span> <span class="hl num">0xea</span><span class="hl opt">,</span> <span class="hl num">0xdd</span><span class="hl opt">,</span> <span class="hl num">0xfb</span><span class="hl opt">,</span> <span class="hl num">0x84</span><span class="hl opt">,</span> <span class="hl num">0xcc</span><span class="hl opt">,</span> <span class="hl num">0xf9</span><span class="hl opt">,</span> <span class="hl num">0x74</span><span class="hl opt">,</span> <span class="hl num">0x44</span><span class="hl opt">,</span> <span class="hl num">0x64</span><span class="hl opt">,</span> <span class="hl num">0xf8</span><span class="hl opt">,</span> <span class="hl num">0x2e</span><span class="hl opt">,</span> <span class="hl num">0x16</span><span class="hl opt">,</span> <span class="hl num">0x0b</span><span class="hl opt">,</span> <span class="hl num">0xfa</span><span class="hl opt">,</span> <span class="hl num">0x9b</span><span class="hl opt">,</span> <span class="hl num">0x8b</span><span class="hl opt">,</span> <span class="hl num">0x64</span><span class="hl opt">,</span> <span class="hl num">0xf9</span><span class="hl opt">,</span> <span class="hl num">0xd4</span><span class="hl opt">,</span> <span class="hl num">0xc0</span><span class="hl opt">,</span> <span class="hl num">0x3f</span><span class="hl opt">,</span> <span class="hl num">0x99</span><span class="hl opt">,</span> <span class="hl num">0x9b</span><span class="hl opt">,</span> <span class="hl num">0x86</span><span class="hl opt">,</span> <span class="hl num">0x43</span><span class="hl opt">,</span> <span class="hl num">0xf6</span><span class="hl opt">,</span> <span class="hl num">0x56</span><span class="hl opt">,</span> <span class="hl num">0xb4</span><span class="hl opt">,</span> <span class="hl num">0x12</span><span class="hl opt">,</span> <span class="hl num">0xa3</span><span class="hl opt">};</span>
+    <span class="hl slc">// when data &lt; 75, we can just write it&#39;s length as a single byte (&#39;special&#39;</span>
+    raw_script<span class="hl opt">.</span><span class="hl kwd">push_back</span><span class="hl opt">(</span>raw_data<span class="hl opt">.</span><span class="hl kwd">size</span><span class="hl opt">());</span>
+    libbitcoin<span class="hl opt">::</span><span class="hl kwd">extend_data</span><span class="hl opt">(</span>raw_script<span class="hl opt">,</span> raw_data<span class="hl opt">);</span>
+    <span class="hl slc">// OP_CHECKSIG</span>
+    raw_script<span class="hl opt">.</span><span class="hl kwd">push_back</span><span class="hl opt">(</span><span class="hl num">172</span><span class="hl opt">);</span>
+    <span class="hl slc">// now actually write the script</span>
+    ss<span class="hl opt">.</span><span class="hl kwd">write_var_uint</span><span class="hl opt">(</span>raw_script<span class="hl opt">.</span><span class="hl kwd">size</span><span class="hl opt">());</span>
+    ss<span class="hl opt">.</span><span class="hl kwd">write_data</span><span class="hl opt">(</span>raw_script<span class="hl opt">);</span>
+ 
+    <span class="hl slc">// End of 2 outputs</span>
+ 
+    <span class="hl slc">// locktime</span>
+    ss<span class="hl opt">.</span><span class="hl kwd">write_4_bytes</span><span class="hl opt">(</span><span class="hl num">0</span><span class="hl opt">);</span>
+ 
+    <span class="hl slc">// write hash_type_code</span>
+    ss<span class="hl opt">.</span><span class="hl kwd">write_4_bytes</span><span class="hl opt">(</span><span class="hl num">1</span><span class="hl opt">);</span>
+ 
+    <span class="hl slc">// Dump hex to screen</span>
+    <span class="hl kwd">log_info</span><span class="hl opt">() &lt;&lt;</span> <span class="hl str">&quot;hashing:&quot;</span><span class="hl opt">;</span>
+    <span class="hl opt">{</span>
+        <span class="hl kwc">auto</span> log_obj <span class="hl opt">=</span> <span class="hl kwd">log_info</span><span class="hl opt">();</span>
+        log_obj <span class="hl opt">&lt;&lt;</span> std<span class="hl opt">::</span>hex<span class="hl opt">;</span>
+        <span class="hl kwa">for</span> <span class="hl opt">(</span><span class="hl kwb">int</span> val<span class="hl opt">:</span> ss<span class="hl opt">.</span><span class="hl kwd">get_data</span><span class="hl opt">())</span>
+            log_obj <span class="hl opt">&lt;&lt;</span> std<span class="hl opt">::</span><span class="hl kwd">setfill</span><span class="hl opt">(</span><span class="hl str">&#39;0&#39;</span><span class="hl opt">) &lt;&lt;</span> std<span class="hl opt">::</span><span class="hl kwd">setw</span><span class="hl opt">(</span><span class="hl num">2</span><span class="hl opt">) &lt;&lt;</span> val <span class="hl opt">&lt;&lt;</span> <span class="hl str">&#39; &#39;</span><span class="hl opt">;</span>
+    <span class="hl opt">}</span>
+    <span class="hl kwd">log_info</span><span class="hl opt">();</span>
+ 
+    data_chunk raw_tx <span class="hl opt">= {</span><span class="hl num">0x01</span><span class="hl opt">,</span> <span class="hl num">0x00</span><span class="hl opt">,</span> <span class="hl num">0x00</span><span class="hl opt">,</span> <span class="hl num">0x00</span><span class="hl opt">,</span> <span class="hl num">0x01</span><span class="hl opt">,</span> <span class="hl num">0xc9</span><span class="hl opt">,</span> <span class="hl num">0x97</span><span class="hl opt">,</span> <span class="hl num">0xa5</span><span class="hl opt">,</span> <span class="hl num">0xe5</span><span class="hl opt">,</span> <span class="hl num">0x6e</span><span class="hl opt">,</span> <span class="hl num">0x10</span><span class="hl opt">,</span> <span class="hl num">0x41</span><span class="hl opt">,</span> <span class="hl num">0x02</span><span class="hl opt">,</span> <span class="hl num">0xfa</span><span class="hl opt">,</span> <span class="hl num">0x20</span><span class="hl opt">,</span> <span class="hl num">0x9c</span><span class="hl opt">,</span> <span class="hl num">0x6a</span><span class="hl opt">,</span> <span class="hl num">0x85</span><span class="hl opt">,</span> <span class="hl num">0x2d</span><span class="hl opt">,</span> <span class="hl num">0xd9</span><span class="hl opt">,</span> <span class="hl num">0x06</span><span class="hl opt">,</span> <span class="hl num">0x60</span><span class="hl opt">,</span> <span class="hl num">0xa2</span><span class="hl opt">,</span> <span class="hl num">0x0b</span><span class="hl opt">,</span> <span class="hl num">0x2d</span><span class="hl opt">,</span> <span class="hl num">0x9c</span><span class="hl opt">,</span> <span class="hl num">0x35</span><span class="hl opt">,</span> <span class="hl num">0x24</span><span class="hl opt">,</span> <span class="hl num">0x23</span><span class="hl opt">,</span> <span class="hl num">0xed</span><span class="hl opt">,</span> <span class="hl num">0xce</span><span class="hl opt">,</span> <span class="hl num">0x25</span><span class="hl opt">,</span> <span class="hl num">0x85</span><span class="hl opt">,</span> <span class="hl num">0x7f</span><span class="hl opt">,</span> <span class="hl num">0xcd</span><span class="hl opt">,</span> <span class="hl num">0x37</span><span class="hl opt">,</span> <span class="hl num">0x04</span><span class="hl opt">,</span> <span class="hl num">0x00</span><span class="hl opt">,</span> <span class="hl num">0x00</span><span class="hl opt">,</span> <span class="hl num">0x00</span><span class="hl opt">,</span> <span class="hl num">0x00</span><span class="hl opt">,</span> <span class="hl num">0x43</span><span class="hl opt">,</span> <span class="hl num">0x41</span><span class="hl opt">,</span> <span class="hl num">0x04</span><span class="hl opt">,</span> <span class="hl num">0x11</span><span class="hl opt">,</span> <span class="hl num">0xdb</span><span class="hl opt">,</span> <span class="hl num">0x93</span><span class="hl opt">,</span> <span class="hl num">0xe1</span><span class="hl opt">,</span> <span class="hl num">0xdc</span><span class="hl opt">,</span> <span class="hl num">0xdb</span><span class="hl opt">,</span> <span class="hl num">0x8a</span><span class="hl opt">,</span> <span class="hl num">0x01</span><span class="hl opt">,</span> <span class="hl num">0x6b</span><span class="hl opt">,</span> <span class="hl num">0x49</span><span class="hl opt">,</span> <span class="hl num">0x84</span><span class="hl opt">,</span> <span class="hl num">0x0f</span><span class="hl opt">,</span> <span class="hl num">0x8c</span><span class="hl opt">,</span> <span class="hl num">0x53</span><span class="hl opt">,</span> <span class="hl num">0xbc</span><span class="hl opt">,</span> <span class="hl num">0x1e</span><span class="hl opt">,</span> <span class="hl num">0xb6</span><span class="hl opt">,</span> <span class="hl num">0x8a</span><span class="hl opt">,</span> <span class="hl num">0x38</span><span class="hl opt">,</span> <span class="hl num">0x2e</span><span class="hl opt">,</span> <span class="hl num">0x97</span><span class="hl opt">,</span> <span class="hl num">0xb1</span><span class="hl opt">,</span> <span class="hl num">0x48</span><span class="hl opt">,</span> <span class="hl num">0x2e</span><span class="hl opt">,</span> <span class="hl num">0xca</span><span class="hl opt">,</span> <span class="hl num">0xd7</span><span class="hl opt">,</span> <span class="hl num">0xb1</span><span class="hl opt">,</span> <span class="hl num">0x48</span><span class="hl opt">,</span> <span class="hl num">0xa6</span><span class="hl opt">,</span> <span class="hl num">0x90</span><span class="hl opt">,</span> <span class="hl num">0x9a</span><span class="hl opt">,</span> <span class="hl num">0x5c</span><span class="hl opt">,</span> <span class="hl num">0xb2</span><span class="hl opt">,</span> <span class="hl num">0xe0</span><span class="hl opt">,</span> <span class="hl num">0xea</span><span class="hl opt">,</span> <span class="hl num">0xdd</span><span class="hl opt">,</span> <span class="hl num">0xfb</span><span class="hl opt">,</span> <span class="hl num">0x84</span><span class="hl opt">,</span> <span class="hl num">0xcc</span><span class="hl opt">,</span> <span class="hl num">0xf9</span><span class="hl opt">,</span> <span class="hl num">0x74</span><span class="hl opt">,</span> <span class="hl num">0x44</span><span class="hl opt">,</span> <span class="hl num">0x64</span><span class="hl opt">,</span> <span class="hl num">0xf8</span><span class="hl opt">,</span> <span class="hl num">0x2e</span><span class="hl opt">,</span> <span class="hl num">0x16</span><span class="hl opt">,</span> <span class="hl num">0x0b</span><span class="hl opt">,</span> <span class="hl num">0xfa</span><span class="hl opt">,</span> <span class="hl num">0x9b</span><span class="hl opt">,</span> <span class="hl num">0x8b</span><span class="hl opt">,</span> <span class="hl num">0x64</span><span class="hl opt">,</span> <span class="hl num">0xf9</span><span class="hl opt">,</span> <span class="hl num">0xd4</span><span class="hl opt">,</span> <span class="hl num">0xc0</span><span class="hl opt">,</span> <span class="hl num">0x3f</span><span class="hl opt">,</span> <span class="hl num">0x99</span><span class="hl opt">,</span> <span class="hl num">0x9b</span><span class="hl opt">,</span> <span class="hl num">0x86</span><span class="hl opt">,</span> <span class="hl num">0x43</span><span class="hl opt">,</span> <span class="hl num">0xf6</span><span class="hl opt">,</span> <span class="hl num">0x56</span><span class="hl opt">,</span> <span class="hl num">0xb4</span><span class="hl opt">,</span> <span class="hl num">0x12</span><span class="hl opt">,</span> <span class="hl num">0xa3</span><span class="hl opt">,</span> <span class="hl num">0xac</span><span class="hl opt">,</span> <span class="hl num">0xff</span><span class="hl opt">,</span> <span class="hl num">0xff</span><span class="hl opt">,</span> <span class="hl num">0xff</span><span class="hl opt">,</span> <span class="hl num">0xff</span><span class="hl opt">,</span> <span class="hl num">0x02</span><span class="hl opt">,</span> <span class="hl num">0x00</span><span class="hl opt">,</span> <span class="hl num">0xca</span><span class="hl opt">,</span> <span class="hl num">0x9a</span><span class="hl opt">,</span> <span class="hl num">0x3b</span><span class="hl opt">,</span> <span class="hl num">0x00</span><span class="hl opt">,</span> <span class="hl num">0x00</span><span class="hl opt">,</span> <span class="hl num">0x00</span><span class="hl opt">,</span> <span class="hl num">0x00</span><span class="hl opt">,</span> <span class="hl num">0x43</span><span class="hl opt">,</span> <span class="hl num">0x41</span><span class="hl opt">,</span> <span class="hl num">0x04</span><span class="hl opt">,</span> <span class="hl num">0xae</span><span class="hl opt">,</span> <span class="hl num">0x1a</span><span class="hl opt">,</span> <span class="hl num">0x62</span><span class="hl opt">,</span> <span class="hl num">0xfe</span><span class="hl opt">,</span> <span class="hl num">0x09</span><span class="hl opt">,</span> <span class="hl num">0xc5</span><span class="hl opt">,</span> <span class="hl num">0xf5</span><span class="hl opt">,</span> <span class="hl num">0x1b</span><span class="hl opt">,</span> <span class="hl num">0x13</span><span class="hl opt">,</span> <span class="hl num">0x90</span><span class="hl opt">,</span> <span class="hl num">0x5f</span><span class="hl opt">,</span> <span class="hl num">0x07</span><span class="hl opt">,</span> <span class="hl num">0xf0</span><span class="hl opt">,</span> <span class="hl num">0x6b</span><span class="hl opt">,</span> <span class="hl num">0x99</span><span class="hl opt">,</span> <span class="hl num">0xa2</span><span class="hl opt">,</span> <span class="hl num">0xf7</span><span class="hl opt">,</span> <span class="hl num">0x15</span><span class="hl opt">,</span> <span class="hl num">0x9b</span><span class="hl opt">,</span> <span class="hl num">0x22</span><span class="hl opt">,</span> <span class="hl num">0x25</span><span class="hl opt">,</span> <span class="hl num">0xf3</span><span class="hl opt">,</span> <span class="hl num">0x74</span><span class="hl opt">,</span> <span class="hl num">0xcd</span><span class="hl opt">,</span> <span class="hl num">0x37</span><span class="hl opt">,</span> <span class="hl num">0x8d</span><span class="hl opt">,</span> <span class="hl num">0x71</span><span class="hl opt">,</span> <span class="hl num">0x30</span><span class="hl opt">,</span> <span class="hl num">0x2f</span><span class="hl opt">,</span> <span class="hl num">0xa2</span><span class="hl opt">,</span> <span class="hl num">0x84</span><span class="hl opt">,</span> <span class="hl num">0x14</span><span class="hl opt">,</span> <span class="hl num">0xe7</span><span class="hl opt">,</span> <span class="hl num">0xaa</span><span class="hl opt">,</span> <span class="hl num">0xb3</span><span class="hl opt">,</span> <span class="hl num">0x73</span><span class="hl opt">,</span> <span class="hl num">0x97</span><span class="hl opt">,</span> <span class="hl num">0xf5</span><span class="hl opt">,</span> <span class="hl num">0x54</span><span class="hl opt">,</span> <span class="hl num">0xa7</span><span class="hl opt">,</span> <span class="hl num">0xdf</span><span class="hl opt">,</span> <span class="hl num">0x5f</span><span class="hl opt">,</span> <span class="hl num">0x14</span><span class="hl opt">,</span> <span class="hl num">0x2c</span><span class="hl opt">,</span> <span class="hl num">0x21</span><span class="hl opt">,</span> <span class="hl num">0xc1</span><span class="hl opt">,</span> <span class="hl num">0xb7</span><span class="hl opt">,</span> <span class="hl num">0x30</span><span class="hl opt">,</span> <span class="hl num">0x3b</span><span class="hl opt">,</span> <span class="hl num">0x8a</span><span class="hl opt">,</span> <span class="hl num">0x06</span><span class="hl opt">,</span> <span class="hl num">0x26</span><span class="hl opt">,</span> <span class="hl num">0xf1</span><span class="hl opt">,</span> <span class="hl num">0xba</span><span class="hl opt">,</span> <span class="hl num">0xde</span><span class="hl opt">,</span> <span class="hl num">0xd5</span><span class="hl opt">,</span> <span class="hl num">0xc7</span><span class="hl opt">,</span> <span class="hl num">0x2a</span><span class="hl opt">,</span> <span class="hl num">0x70</span><span class="hl opt">,</span> <span class="hl num">0x4f</span><span class="hl opt">,</span> <span class="hl num">0x7e</span><span class="hl opt">,</span> <span class="hl num">0x6c</span><span class="hl opt">,</span> <span class="hl num">0xd8</span><span class="hl opt">,</span> <span class="hl num">0x4c</span><span class="hl opt">,</span> <span class="hl num">0xac</span><span class="hl opt">,</span> <span class="hl num">0x00</span><span class="hl opt">,</span> <span class="hl num">0x28</span><span class="hl opt">,</span> <span class="hl num">0x6b</span><span class="hl opt">,</span> <span class="hl num">0xee</span><span class="hl opt">,</span> <span class="hl num">0x00</span><span class="hl opt">,</span> <span class="hl num">0x00</span><span class="hl opt">,</span> <span class="hl num">0x00</span><span class="hl opt">,</span> <span class="hl num">0x00</span><span class="hl opt">,</span> <span class="hl num">0x43</span><span class="hl opt">,</span> <span class="hl num">0x41</span><span class="hl opt">,</span> <span class="hl num">0x04</span><span class="hl opt">,</span> <span class="hl num">0x11</span><span class="hl opt">,</span> <span class="hl num">0xdb</span><span class="hl opt">,</span> <span class="hl num">0x93</span><span class="hl opt">,</span> <span class="hl num">0xe1</span><span class="hl opt">,</span> <span class="hl num">0xdc</span><span class="hl opt">,</span> <span class="hl num">0xdb</span><span class="hl opt">,</span> <span class="hl num">0x8a</span><span class="hl opt">,</span> <span class="hl num">0x01</span><span class="hl opt">,</span> <span class="hl num">0x6b</span><span class="hl opt">,</span> <span class="hl num">0x49</span><span class="hl opt">,</span> <span class="hl num">0x84</span><span class="hl opt">,</span> <span class="hl num">0x0f</span><span class="hl opt">,</span> <span class="hl num">0x8c</span><span class="hl opt">,</span> <span class="hl num">0x53</span><span class="hl opt">,</span> <span class="hl num">0xbc</span><span class="hl opt">,</span> <span class="hl num">0x1e</span><span class="hl opt">,</span> <span class="hl num">0xb6</span><span class="hl opt">,</span> <span class="hl num">0x8a</span><span class="hl opt">,</span> <span class="hl num">0x38</span><span class="hl opt">,</span> <span class="hl num">0x2e</span><span class="hl opt">,</span> <span class="hl num">0x97</span><span class="hl opt">,</span> <span class="hl num">0xb1</span><span class="hl opt">,</span> <span class="hl num">0x48</span><span class="hl opt">,</span> <span class="hl num">0x2e</span><span class="hl opt">,</span> <span class="hl num">0xca</span><span class="hl opt">,</span> <span class="hl num">0xd7</span><span class="hl opt">,</span> <span class="hl num">0xb1</span><span class="hl opt">,</span> <span class="hl num">0x48</span><span class="hl opt">,</span> <span class="hl num">0xa6</span><span class="hl opt">,</span> <span class="hl num">0x90</span><span class="hl opt">,</span> <span class="hl num">0x9a</span><span class="hl opt">,</span> <span class="hl num">0x5c</span><span class="hl opt">,</span> <span class="hl num">0xb2</span><span class="hl opt">,</span> <span class="hl num">0xe0</span><span class="hl opt">,</span> <span class="hl num">0xea</span><span class="hl opt">,</span> <span class="hl num">0xdd</span><span class="hl opt">,</span> <span class="hl num">0xfb</span><span class="hl opt">,</span> <span class="hl num">0x84</span><span class="hl opt">,</span> <span class="hl num">0xcc</span><span class="hl opt">,</span> <span class="hl num">0xf9</span><span class="hl opt">,</span> <span class="hl num">0x74</span><span class="hl opt">,</span> <span class="hl num">0x44</span><span class="hl opt">,</span> <span class="hl num">0x64</span><span class="hl opt">,</span> <span class="hl num">0xf8</span><span class="hl opt">,</span> <span class="hl num">0x2e</span><span class="hl opt">,</span> <span class="hl num">0x16</span><span class="hl opt">,</span> <span class="hl num">0x0b</span><span class="hl opt">,</span> <span class="hl num">0xfa</span><span class="hl opt">,</span> <span class="hl num">0x9b</span><span class="hl opt">,</span> <span class="hl num">0x8b</span><span class="hl opt">,</span> <span class="hl num">0x64</span><span class="hl opt">,</span> <span class="hl num">0xf9</span><span class="hl opt">,</span> <span class="hl num">0xd4</span><span class="hl opt">,</span> <span class="hl num">0xc0</span><span class="hl opt">,</span> <span class="hl num">0x3f</span><span class="hl opt">,</span> <span class="hl num">0x99</span><span class="hl opt">,</span> <span class="hl num">0x9b</span><span class="hl opt">,</span> <span class="hl num">0x86</span><span class="hl opt">,</span> <span class="hl num">0x43</span><span class="hl opt">,</span> <span class="hl num">0xf6</span><span class="hl opt">,</span> <span class="hl num">0x56</span><span class="hl opt">,</span> <span class="hl num">0xb4</span><span class="hl opt">,</span> <span class="hl num">0x12</span><span class="hl opt">,</span> <span class="hl num">0xa3</span><span class="hl opt">,</span> <span class="hl num">0xac</span><span class="hl opt">,</span> <span class="hl num">0x00</span><span class="hl opt">,</span> <span class="hl num">0x00</span><span class="hl opt">,</span> <span class="hl num">0x00</span><span class="hl opt">,</span> <span class="hl num">0x00</span><span class="hl opt">,</span> <span class="hl num">0x01</span><span class="hl opt">,</span> <span class="hl num">0x00</span><span class="hl opt">,</span> <span class="hl num">0x00</span><span class="hl opt">,</span> <span class="hl num">0x00</span><span class="hl opt">};</span>
+    <span class="hl kwd">BITCOIN_ASSERT</span><span class="hl opt">(</span>raw_tx <span class="hl opt">==</span> ss<span class="hl opt">.</span><span class="hl kwd">get_data</span><span class="hl opt">());</span>
+ 
+    hash_digest tx_hash <span class="hl opt">=</span> libbitcoin<span class="hl opt">::</span><span class="hl kwd">generate_sha256_hash</span><span class="hl opt">(</span>ss<span class="hl opt">.</span><span class="hl kwd">get_data</span><span class="hl opt">());</span>
+ 
+    data_chunk pubkey<span class="hl opt">{</span><span class="hl num">0x04</span><span class="hl opt">,</span> <span class="hl num">0x11</span><span class="hl opt">,</span> <span class="hl num">0xdb</span><span class="hl opt">,</span> <span class="hl num">0x93</span><span class="hl opt">,</span> <span class="hl num">0xe1</span><span class="hl opt">,</span> <span class="hl num">0xdc</span><span class="hl opt">,</span> <span class="hl num">0xdb</span><span class="hl opt">,</span> <span class="hl num">0x8a</span><span class="hl opt">,</span> <span class="hl num">0x01</span><span class="hl opt">,</span> <span class="hl num">0x6b</span><span class="hl opt">,</span> <span class="hl num">0x49</span><span class="hl opt">,</span> <span class="hl num">0x84</span><span class="hl opt">,</span> <span class="hl num">0x0f</span><span class="hl opt">,</span> <span class="hl num">0x8c</span><span class="hl opt">,</span> <span class="hl num">0x53</span><span class="hl opt">,</span> <span class="hl num">0xbc</span><span class="hl opt">,</span> <span class="hl num">0x1e</span><span class="hl opt">,</span> <span class="hl num">0xb6</span><span class="hl opt">,</span> <span class="hl num">0x8a</span><span class="hl opt">,</span> <span class="hl num">0x38</span><span class="hl opt">,</span> <span class="hl num">0x2e</span><span class="hl opt">,</span> <span class="hl num">0x97</span><span class="hl opt">,</span> <span class="hl num">0xb1</span><span class="hl opt">,</span> <span class="hl num">0x48</span><span class="hl opt">,</span> <span class="hl num">0x2e</span><span class="hl opt">,</span> <span class="hl num">0xca</span><span class="hl opt">,</span> <span class="hl num">0xd7</span><span class="hl opt">,</span> <span class="hl num">0xb1</span><span class="hl opt">,</span> <span class="hl num">0x48</span><span class="hl opt">,</span> <span class="hl num">0xa6</span><span class="hl opt">,</span> <span class="hl num">0x90</span><span class="hl opt">,</span> <span class="hl num">0x9a</span><span class="hl opt">,</span> <span class="hl num">0x5c</span><span class="hl opt">,</span> <span class="hl num">0xb2</span><span class="hl opt">,</span> <span class="hl num">0xe0</span><span class="hl opt">,</span> <span class="hl num">0xea</span><span class="hl opt">,</span> <span class="hl num">0xdd</span><span class="hl opt">,</span> <span class="hl num">0xfb</span><span class="hl opt">,</span> <span class="hl num">0x84</span><span class="hl opt">,</span> <span class="hl num">0xcc</span><span class="hl opt">,</span> <span class="hl num">0xf9</span><span class="hl opt">,</span> <span class="hl num">0x74</span><span class="hl opt">,</span> <span class="hl num">0x44</span><span class="hl opt">,</span> <span class="hl num">0x64</span><span class="hl opt">,</span> <span class="hl num">0xf8</span><span class="hl opt">,</span> <span class="hl num">0x2e</span><span class="hl opt">,</span> <span class="hl num">0x16</span><span class="hl opt">,</span> <span class="hl num">0x0b</span><span class="hl opt">,</span> <span class="hl num">0xfa</span><span class="hl opt">,</span> <span class="hl num">0x9b</span><span class="hl opt">,</span> <span class="hl num">0x8b</span><span class="hl opt">,</span> <span class="hl num">0x64</span><span class="hl opt">,</span> <span class="hl num">0xf9</span><span class="hl opt">,</span> <span class="hl num">0xd4</span><span class="hl opt">,</span> <span class="hl num">0xc0</span><span class="hl opt">,</span> <span class="hl num">0x3f</span><span class="hl opt">,</span> <span class="hl num">0x99</span><span class="hl opt">,</span> <span class="hl num">0x9b</span><span class="hl opt">,</span> <span class="hl num">0x86</span><span class="hl opt">,</span> <span class="hl num">0x43</span><span class="hl opt">,</span> <span class="hl num">0xf6</span><span class="hl opt">,</span> <span class="hl num">0x56</span><span class="hl opt">,</span> <span class="hl num">0xb4</span><span class="hl opt">,</span> <span class="hl num">0x12</span><span class="hl opt">,</span> <span class="hl num">0xa3</span><span class="hl opt">};</span>
+    <span class="hl slc">// Leave out last byte since that&#39;s the hash_type_code (SIGHASH_ALL in this</span>
+    <span class="hl slc">// case)</span>
+    data_chunk signature<span class="hl opt">{</span><span class="hl num">0x30</span><span class="hl opt">,</span> <span class="hl num">0x44</span><span class="hl opt">,</span> <span class="hl num">0x02</span><span class="hl opt">,</span> <span class="hl num">0x20</span><span class="hl opt">,</span> <span class="hl num">0x4e</span><span class="hl opt">,</span> <span class="hl num">0x45</span><span class="hl opt">,</span> <span class="hl num">0xe1</span><span class="hl opt">,</span> <span class="hl num">0x69</span><span class="hl opt">,</span> <span class="hl num">0x32</span><span class="hl opt">,</span> <span class="hl num">0xb8</span><span class="hl opt">,</span> <span class="hl num">0xaf</span><span class="hl opt">,</span> <span class="hl num">0x51</span><span class="hl opt">,</span> <span class="hl num">0x49</span><span class="hl opt">,</span> <span class="hl num">0x61</span><span class="hl opt">,</span> <span class="hl num">0xa1</span><span class="hl opt">,</span> <span class="hl num">0xd3</span><span class="hl opt">,</span> <span class="hl num">0xa1</span><span class="hl opt">,</span> <span class="hl num">0xa2</span><span class="hl opt">,</span> <span class="hl num">0x5f</span><span class="hl opt">,</span> <span class="hl num">0xdf</span><span class="hl opt">,</span> <span class="hl num">0x3f</span><span class="hl opt">,</span> <span class="hl num">0x4f</span><span class="hl opt">,</span> <span class="hl num">0x77</span><span class="hl opt">,</span> <span class="hl num">0x32</span><span class="hl opt">,</span> <span class="hl num">0xe9</span><span class="hl opt">,</span> <span class="hl num">0xd6</span><span class="hl opt">,</span> <span class="hl num">0x24</span><span class="hl opt">,</span> <span class="hl num">0xc6</span><span class="hl opt">,</span> <span class="hl num">0xc6</span><span class="hl opt">,</span> <span class="hl num">0x15</span><span class="hl opt">,</span> <span class="hl num">0x48</span><span class="hl opt">,</span> <span class="hl num">0xab</span><span class="hl opt">,</span> <span class="hl num">0x5f</span><span class="hl opt">,</span> <span class="hl num">0xb8</span><span class="hl opt">,</span> <span class="hl num">0xcd</span><span class="hl opt">,</span> <span class="hl num">0x41</span><span class="hl opt">,</span> <span class="hl num">0x02</span><span class="hl opt">,</span> <span class="hl num">0x20</span><span class="hl opt">,</span> <span class="hl num">0x18</span><span class="hl opt">,</span> <span class="hl num">0x15</span><span class="hl opt">,</span> <span class="hl num">0x22</span><span class="hl opt">,</span> <span class="hl num">0xec</span><span class="hl opt">,</span> <span class="hl num">0x8e</span><span class="hl opt">,</span> <span class="hl num">0xca</span><span class="hl opt">,</span> <span class="hl num">0x07</span><span class="hl opt">,</span> <span class="hl num">0xde</span><span class="hl opt">,</span> <span class="hl num">0x48</span><span class="hl opt">,</span> <span class="hl num">0x60</span><span class="hl opt">,</span> <span class="hl num">0xa4</span><span class="hl opt">,</span> <span class="hl num">0xac</span><span class="hl opt">,</span> <span class="hl num">0xdd</span><span class="hl opt">,</span> <span class="hl num">0x12</span><span class="hl opt">,</span> <span class="hl num">0x90</span><span class="hl opt">,</span> <span class="hl num">0x9d</span><span class="hl opt">,</span> <span class="hl num">0x83</span><span class="hl opt">,</span> <span class="hl num">0x1c</span><span class="hl opt">,</span> <span class="hl num">0xc5</span><span class="hl opt">,</span> <span class="hl num">0x6c</span><span class="hl opt">,</span> <span class="hl num">0xbb</span><span class="hl opt">,</span> <span class="hl num">0xac</span><span class="hl opt">,</span> <span class="hl num">0x46</span><span class="hl opt">,</span> <span class="hl num">0x22</span><span class="hl opt">,</span> <span class="hl num">0x08</span><span class="hl opt">,</span> <span class="hl num">0x22</span><span class="hl opt">,</span> <span class="hl num">0x21</span><span class="hl opt">,</span> <span class="hl num">0xa8</span><span class="hl opt">,</span> <span class="hl num">0x76</span><span class="hl opt">,</span> <span class="hl num">0x8d</span><span class="hl opt">,</span> <span class="hl num">0x1d</span><span class="hl opt">,</span> <span class="hl num">0x09</span><span class="hl opt">};</span>
+    <span class="hl kwd">BITCOIN_ASSERT</span><span class="hl opt">(</span>signature<span class="hl opt">.</span><span class="hl kwd">size</span><span class="hl opt">() ==</span> <span class="hl num">70</span><span class="hl opt">);</span>
+ 
+    elliptic_curve_key key<span class="hl opt">;</span>
+    <span class="hl kwa">if</span> <span class="hl opt">(!</span>key<span class="hl opt">.</span><span class="hl kwd">set_public_key</span><span class="hl opt">(</span>pubkey<span class="hl opt">))</span>
+    <span class="hl opt">{</span>
+        <span class="hl kwd">log_fatal</span><span class="hl opt">() &lt;&lt;</span> <span class="hl str">&quot;unable to set EC public key&quot;</span><span class="hl opt">;</span>
+        <span class="hl kwa">return</span> <span class="hl opt">-</span><span class="hl num">1</span><span class="hl opt">;</span>
+    <span class="hl opt">}</span>
+ 
+    <span class="hl kwd">log_info</span><span class="hl opt">() &lt;&lt;</span> <span class="hl str">&quot;checksig returns: &quot;</span> <span class="hl opt">&lt;&lt; (</span>key<span class="hl opt">.</span><span class="hl kwd">verify</span><span class="hl opt">(</span>tx_hash<span class="hl opt">,</span> signature<span class="hl opt">)</span> ? <span class="hl str">&quot;true&quot;</span> <span class="hl opt">:</span> <span class="hl str">&quot;false&quot;</span><span class="hl opt">);</span>
+    <span class="hl kwa">return</span> <span class="hl num">0</span><span class="hl opt">;</span>
+<span class="hl opt">}</span>
+</pre></div>
+
+
+<h2 id="References">References</h2>
+
+<p>3.1: <a href="http://sourceforge.net/projects/bitcoin/files/Bitcoin/bitcoin-0.7.1/bitcoin-0.7.1-linux.tar.gz">file src/src/script.cpp in bitcoin-0.7.1</a></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Developer/" rel="tag">Developer</a>
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../BIP_0011/">BIP 0011</a>
+
+<a href="../Protocol_documentation/">Protocol documentation</a>
+
+<a href="../Raw_Transactions/">Raw Transactions</a>
+
+<a href="../Script/">Script</a>
+
+<a href="../Transaction_Malleability/">Transaction Malleability</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-06-07T14:24:02Z">Tue 07 Jun 2016 02:24:02 PM Europe</time>
+<!-- Created <time datetime="2011-01-24T23:26:59Z" pubdate="pubdate">Mon 24 Jan 2011 11:26:59 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

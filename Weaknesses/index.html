@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Weaknesses</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Weaknesses
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<h2 id="Might_be_a_problem">Might be a problem</h2>
+
+<h3 id="Wallet_Vulnerable_To_Theft">Wallet Vulnerable To Theft</h3>
+
+<p>The <a href="../Wallet/">wallet</a> is stored unencrypted, by default, and thus becomes a valuable target for theft.  Recent releases of the Bitcoin client now supports encryption to protect the wallet data, though the user must opt-in.</p>
+
+<h4 id="New_wallets_vulnerable_with_old_passwords_via_backups">New wallets vulnerable with old passwords via backups</h4>
+
+<p>An old copy of a wallet with its old password is often easily retrievable via an existing backup facility (particularly Apple Time-Machine): draining that old wallet, with its old password, drains the current wallet with the current password -- this is contrary to most non-technical users expectation of what &#39;change the password on your wallet&#39; should mean following password compromise.</p>
+
+<p>An initial solution is to mandate (either in code or as expressed policy) that changing a wallet&#39;s password causes (or asks the user to cause) the creation of a new wallet with new addresses, and the sending of existing sums to them. Backed-up copies of the original wallet with the original password would then be empty, should they be compromised. On the downside, the password-changing process would potentially take much longer, cost a transaction fee or more, and - intially at least - the new wallet is no longer backed up. On the upside, non-technical users won&#39;t find their wallets drained from security compromises they believed they had closed, nor be required to locate existing backups of a wallet in order to destroy them.</p>
+
+<h3 id="Tracing_a_coin.27s_history">Tracing a coin&#39;s history</h3>
+
+<p>Tracing a coin&#39;s history can be used to connect identities to addresses. <a href="../Anonymity/">More info</a>.</p>
+
+<h3 id="Sybil_attack">Sybil attack</h3>
+
+<p>An attacker can attempt to fill the network with clients controlled by him, you would then be very likely to connect only to attacker nodes. Although Bitcoin never uses a count of nodes for anything completely isolating a node from the honest network can be helpful in the execution of other attacks.</p>
+
+<p>This state can be exploited in (at least) the following ways:</p>
+
+<ul>
+<li>The attacker can refuse to relay blocks and transactions from everyone, disconnecting you from the network.</li>
+<li>The attacker can relay only blocks that he creates, putting you on a separate network. You&#39;re then open to <a href="../Double-spending/">double-spending</a> attacks.</li>
+<li>If you rely on transactions with 0 confirmations, the attacker can just filter out certain transactions to execute a double-spending attack.</li>
+<li>Low-latency encryption/anonymization of Bitcoin&#39;s transmissions (With Tor, JAP, etc.) can be defeated relatively easy with a timing attack if you&#39;re connected to several of the attacker&#39;s nodes and the attacker is watching your transmissions at your ISP.</li>
+</ul>
+
+
+<p>Bitcoin makes these attacks more difficult by only making an outbound connection to one IP address per /16 (x.y.0.0). Incoming connections are unlimited and unregulated, but this is generally only a problem in the anonymity case, where you&#39;re probably already unable to accept incoming connections.</p>
+
+<p>Looking for suspiciously low network hash-rates may help prevent the second one.</p>
+
+<h3 id="Packet_sniffing">Packet sniffing</h3>
+
+<p>Someone who can see all of your Internet traffic can easily see when you send a transaction that you didn&#39;t receive (which suggests you originated it). Bitcoin-QT has good Tor integration which closes this attack vector if used.</p>
+
+<h3 id="Denial_of_Service_.28DoS.29_attacks">Denial of Service (DoS) attacks</h3>
+
+<p>Sending lots of data to a node may make it so busy it cannot process normal Bitcoin transactions.  Bitcoin has some denial-of-service prevention built-in, but is likely still vulnerable to more sophisticated denial-of-service attacks.</p>
+
+<p>These are the current Bitcoin Satoshi client protections to deter DoS attacks, as of version 0.7.0:</p>
+
+<ol>
+<li>Does not forward orphan transactions/blocks</li>
+<li>Does not forward double-spend transactions</li>
+<li>Does not forward the same block, transaction or alert twice to the same peer.</li>
+<li>Continuous rate-limit of free transactions to mitigate &#39;penny-flooding&#39;</li>
+<li>Keeps a DoS score of each connected peer and disconnects from a peer that send messages that fail to comply with the rules.</li>
+<li>Bans IP addresses that misbehave for a time lapse (24 hours default)</li>
+<li>Limits the number of stored orphan transactions (10000 by default)</li>
+<li>Uses a signature cache to prevent attacks that try to continuously trigger the re-verification of stored orphan transactions (protects from https://bitcointalk.org/index.php?topic=136422.0 attack)</li>
+<li>Limits the number of stored signatures in the signature cache (50000 signatures by default)</li>
+<li>Tries to catch all possible errors in transactions before the signature verifications take place, to avoid DoS attacks on CPU usage.</li>
+<li>Penalizes peers that send lots of duplicate/expired/invalid-signature/whatever alerts, so they eventually get banned.</li>
+<li>In orphan/signature caches, when removing an item, evicts a random entry.</li>
+<li>Data structures are specially chosen to avoid loops in which the number of iterations can be controlled by an attacker that result in exponential complexity.</li>
+<li>Ignores big orphan transactions, to avoid a send-big-orphans memory exhaustion attack.</li>
+<li>In RPC: Only sends a HTTP 403 response if it&#39;s not using SSL to prevent a DoS during the SSL handshake.</li>
+<li>In RPC: Sleeps some time if authorization fails to deter brute-forcing short passwords.</li>
+<li>In GUI: Limits URI length to prevent a DoS against the QR-Code dialog</li>
+<li>Considers non-standard signature scripts with size greater than 500 bytes.</li>
+<li>Considers non-standard signature scripts that contain operations that are not PUSHs.</li>
+<li>Does not forward nor process non-standard transactions</li>
+</ol>
+
+
+<p>These are protocol rules built to prevent DoS:</p>
+
+<ol>
+<li>Restricts the block size to 1 megabyte.</li>
+<li>Restricts the maximum number of signature checks a transaction input may request</li>
+<li>Limits the size of each script (up to 10000 bytes)</li>
+<li>Limits the size of each value pushed while evaluating a a script (up to 520 bytes)</li>
+<li>Limits the number of expensive operations in a script (up to 201 operations). All but pushs are considered expensive. Also each key argument of signature checking in multi-signature checking (OP_CHECKMULTISIG) is considered an additional operation.</li>
+<li>Limits the number of key arguments OP_CHECKMULTISIG can use (up to 20 keys)</li>
+<li>Limits the number of the stack elements that can be stored simultaneously (up to 1000 elements, in standard and alt stacks together)</li>
+<li>Limits the number of signature checks a block may request (up to 20000 checks)</li>
+</ol>
+
+
+<p>These are the Satoshi client protections added in version 0.8.0:</p>
+
+<ol>
+<li>Transactions greater than 100 Kbytes are considered non-standard (protects from variations of the https://bitcointalk.org/index.php?topic=140078.0 attack).</li>
+<li>Only the UXTO (Unspent Transaction Output Set) is stored in memory, the remaining data is stored on disk.</li>
+<li>When processing a transaction, before fetching transaction inputs from disk to memory, the client checks that all the inputs are unspent (protects from the Continuous Hard Disk Seek/Read Activity (https://bitcointalk.org/index.php?topic=144122.0) DoS attack)</li>
+</ol>
+
+
+<p>Satoshi client does not directly limit peer bandwidth nor CPU usage.</p>
+
+<h3 id="Forcing_clock_drift_against_a_target_node">Forcing clock drift against a target node</h3>
+
+<p>See <a href="http://culubas.blogspot.com/2011/05/timejacking-bitcoin_802.html">Timejacking</a> for a description of this attack. It can be fixed by changing how nodes calculate the current time.</p>
+
+<h3 id="Illegal_content_in_the_block_chain">Illegal content in the block chain</h3>
+
+<p>It is illegal in some countries to possess/distribute certain kinds of data. Since arbitrary data can be included in Bitcoin transactions, and full Bitcoin nodes must normally have a copy of all unspent transactions, this could cause legal problems. However, Local node policy generally doesn&#39;t permit arbitrary data (transactions attempting to embed data re non-standard), but steganographic embedding can still be used though this generally limits storage to small amounts. Various ideas have <a href="http://sourceforge.net/mailarchive/message.php?msg_id=30705609">been proposed</a> to further limit datastorage in the UTXO set but are not currently being seriously considered for deployment.</p>
+
+<h3 id="Security_Vulnerabilities_and_bugs">Security Vulnerabilities and bugs</h3>
+
+<p>It&#39;s possible but unlikely that a newly discovered bug or security vulnerability in the standard client could lead to a block chain split, or the need for every node to upgrade in a short time period. For example, a single malformed message tailored to exploit a specific vulnerability, when spread from node to node, could cause the whole network to shutdown in a few hours. Bugs that break user anonymity, on the contrary, have been found, since the pseudo-anonymity property of Bitcoin has been analyzed less.
+Starting from version 0.7.0, Bitcoin client can be considered a mature project. The security critical sections of the source code are updated less and less frequently and those parts have been reviewed by many computer security experts. Also Bitcoin Satoshi client has passed the test of being on-line for more than 3 years, without a single vulnerability being exploited <em>in the wild</em>.
+See <a href="../Common_Vulnerabilities_and_Exposures/">Common Vulnerabilities and Exposures</a> for a detailed list of vulnerabilities detected and fixed.</p>
+
+<h3 id="Energy_Consumption">Energy Consumption</h3>
+
+<p>Energy consumption for mining has a high correlation with bitcoin value (exchange rate). Because variable costs of <a href="../Mining/">mining</a> are dominated by electricity price, the economic equilibrium for the mining rate is reached when global electricity costs for mining approximate the value of <a href="../Mining/">mining</a> reward plus  <a href="../Transaction_Fee/">transaction fees</a>.</p>
+
+<p>So the higher the value of one bitcoin, the higher the value of mining rewards and transaction fees, the higher the energy consumption of the bitcoin network in the long run.</p>
+
+<ul>
+<li>more efficient mining gear does not reduce energy use of the bitcoin network. It will only raise the network <a href="../Difficulty/">difficulty</a></li>
+<li>cheaper energy linearly increases mining energy use of the bitcoin network</li>
+<li>the same conclusions apply to all <a href="../Proof_of_work/">proof of work</a> based currencies.</li>
+</ul>
+
+
+<h2 id="Probably_not_a_problem">Probably not a problem</h2>
+
+<h3 id="Breaking_the_cryptography">Breaking the cryptography</h3>
+
+<p>SHA-256 and <a href="../ECDSA/">ECDSA</a> are considered very strong currently, but they might be broken in the far future. If that happens, Bitcoin can shift to a stronger algorithm. <a href="https://bitcointalk.org/index.php?topic=191.msg1585#msg1585">More info</a>.</p>
+
+<h3 id="Scalability">Scalability</h3>
+
+<p>Bitcoin can easily scale beyond the level of traffic VISA sees globally today. See the discussion on the <a href="../Scalability/">scalability</a> page for more information.</p>
+
+<h3 id="Segmentation">Segmentation</h3>
+
+<p>If there is even a &quot;trickle&quot; of a connection between two sides of a segmented network, things should still work perfectly. When block chains are combined, all of the non-generation transactions in the shorter chain are re-added to the transaction pool -- they&#39;ll start over at 0/unconfirmed, but they&#39;ll still be valid. No mature transactions will be lost unless the segmentation persists for longer than ~120 blocks. Then generations will start to mature, and any transactions based on those generations will become invalid when recombined with the longer chain. <a href="https://bitcointalk.org/index.php?topic=241.msg2071#msg2071">More info</a>.</p>
+
+<h3 id="Attacking_all_users">Attacking all users</h3>
+
+<p>The IP addresses of most users are totally public. You can use Tor to hide this, but the network won&#39;t work if everyone does this. Bitcoin requires that <em>some</em> country is still free.</p>
+
+<h3 id="Dropping_transactions">Dropping transactions</h3>
+
+<p>Nodes that generate blocks can choose not to include a transaction in their blocks. When this happens, the transaction remains &quot;active&quot; and can be included in a later block. Two things discourage this:</p>
+
+<ul>
+<li>Nodes only hash a fixed-size <em>header</em>, so there is no speed advantage to dropping transactions.</li>
+<li><a href="../Satoshi/">Satoshi</a> has <a href="https://bitcointalk.org/index.php?topic=165.msg1595#msg1595">communicated</a> that he will write code to stop this kind of thing if it becomes a problem.</li>
+</ul>
+
+
+<h3 id="Attacker_has_a_lot_of_computing_power">Attacker has a lot of computing power</h3>
+
+<p>An attacker that controls more than 50% of the network&#39;s computing power can, for the time that he is in control, exclude and modify the ordering of transactions. This allows him to:</p>
+
+<ul>
+<li>Reverse transactions that he sends while he&#39;s in control.  This has the potential to <a href="../Double-spending/#51.25_attack">double-spend transactions</a> that previously had already been seen in the block chain.</li>
+<li>Prevent some or all transactions from gaining any confirmations</li>
+<li><p>Prevent some or all other miners from mining any valid blocks
+The attacker <em>can&#39;t</em>:</p></li>
+<li><p>Reverse other people&#39;s transactions</p></li>
+<li>Prevent transactions from being sent at all (they&#39;ll show as 0/unconfirmed)</li>
+<li>Change the number of coins generated per block</li>
+<li>Create coins out of thin air</li>
+<li>Send coins that never belonged to him</li>
+</ul>
+
+
+<p>With less than 50%, the same kind of attacks are possible, but with less than 100% rate of success.
+For example, someone with only 40% of the network computing power can overcome a 6-deep confirmed transaction with a 50% success rate.</p>
+
+<p>It&#39;s much more difficult to change historical blocks, and it becomes exponentially more difficult the further back you go. As above, changing historical blocks only allows you to exclude and change the ordering of transactions. It&#39;s impossible to change blocks created before the last checkpoint.</p>
+
+<p>Since this attack doesn&#39;t permit all that much power over the network, it is expected that no one will attempt it. A profit-seeking person will always gain more by just following the rules, and even someone trying to destroy the system will probably find other attacks more attractive. However, if this attack is successfully executed, it will be difficult or impossible to &quot;untangle&quot; the mess created -- any changes the attacker makes might become permanent.</p>
+
+<h3 id="Spamming_transactions">Spamming transactions</h3>
+
+<p> <em>Main article: <a href="../Flood_attack/">Flood attack</a></em></p>
+
+<p>It is easy to send transactions to yourself repeatedly. If these transactions fill blocks to the maximum size (1MB), other transactions would be delayed until the next block.</p>
+
+<p>This is made expensive by the <a href="../Transaction_Fee/">fees</a> that would be required after the 50KB of free transactions per block are exhausted. An attacker will eventually eliminate free transactions, but Bitcoin fees will always be low because raising fees above 0.01 BTC per KB would require spending transaction fees. An attacker will eventually run out of money. Even if an attacker wants to waste money, transactions are further prioritized by the time since the coins were last spent, so attacks spending the same coins repeatedly are less effective.</p>
+
+<h3>The <a href="../Double-spending/#Finney_attack">Finney attack</a></h3>
+
+<p>Named for Hal Finney, who first described this variation of a double-spend attack involving accepting <a href="http://www.bitcointalk.org/index.php?topic=3441.msg48384#msg48384">0-confirmation transactions</a>.  Accepting 0-confirmation large-value transactions is problematic; accepting them for low-value transactions (after waiting several seconds to detect an ordinary double-spend attempt) is probably safe.</p>
+
+<h3 id="Rival.2Fmalicious_client_code">Rival/malicious client code</h3>
+
+<p>Any rival client must follow Bitcoin&#39;s rules or else all current Bitcoin clients will ignore it. You&#39;d have to actually get people to <em>use</em> your client. A better client that pretends to follow the same rules, but with an exception known only to the author (possibly by making it closed source), might conceivably be able to gain widespread adoption. At that point, its author could use his exception and go largely unnoticed.</p>
+
+<h2 id="Definitely_not_a_problem">Definitely not a problem</h2>
+
+<h3 id="Coin_destruction">Coin destruction</h3>
+
+<p>Bitcoin has 2.1 quadrillion raw units, making up 8 decimals of BTC precision, so the entire network could potentially operate on much less than the full quantity of Bitcoins. If deflation gets to the point where transactions of more than 10 BTC are unheard of, clients can just switch to another unit so that, for example, it shows 10 mBTC rather than 0.01 BTC.</p>
+
+<p>The maximum number of raw units might not be enough if the <em>entire world</em> starts using BTC, but it would not be too difficult to increase precision in that case. The transaction format and version number would be scheduled to change at some particular block number after a year or two, and everyone would have to update by then.</p>
+
+<h3 id="Generating_tons_of_addresses">Generating tons of addresses</h3>
+
+<p>Generating an address doesn&#39;t touch the network at all. You&#39;d only be wasting your CPU resources and disk space.</p>
+
+<p>Also, a collision is highly unlikely.</p>
+
+<p>Keys are 256 bit in length and are hashed in a 160 bit address.(2<sup>160th</sup> power)
+Divide it by the world population and you have about 215,000,000,000,000,000,000,000,000,000,000,000,000 addresses per capita.(2.15 x 10<sup>38</sup>)<a href="http://www.wolframalpha.com/input/?i=2^160+%2F+world+population">(1)</a></p>
+
+<h3 id="Everyone_calculates_at_the_same_rate">Everyone calculates at the same rate</h3>
+
+<p>If everyone began with identical blocks and started their nonce at 1 and incremented, the fastest machine would always win. However, each block contains a new, random public key known only to you in the list of transactions.  The 256-bit &quot;Merkle tree&quot; hash of this is part of the block header.</p>
+
+<p>So everyone begins with slightly different blocks and everyone truly has a random chance of winning (modified by CPU power).</p>
+
+<h3 id="Generate_valid_blocks_with_a_lower_difficulty_than_normal">Generate &quot;valid&quot; blocks with a lower difficulty than normal</h3>
+
+<p>Using unmodified Bitcoin code, an attacker could segment himself from the main network and generate a long block chain with a lower difficulty than the real network. These blocks would be totally valid for his network. However, it would be impossible to combine the two networks (and the &quot;false&quot; chain would be destroyed in the process).</p>
+
+<p>&quot;Block chain length&quot; is calculated from the combined difficulty of all the blocks, not just the number of blocks in the chain. The one that represents the most computation will win.</p>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../Double-spending/">Double-spending</a></li>
+<li><a href="http://bitcoin.stackexchange.com/questions/10025/where-can-i-find-well-written-criticism-about-bitcoin">Stack Exchange</a></li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Double-spending/">Double-spending</a>
+
+<a href="../Full_node/">Full node</a>
+
+<a href="../How_bitcoin_works/">How bitcoin works</a>
+
+<a href="../Myths/">Myths</a>
+
+<a href="../Thin_Client_Security/">Thin Client Security</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-07-08T18:19:20Z">Wed 08 Jul 2015 06:19:20 PM Europe</time>
+<!-- Created <time datetime="2010-12-19T22:02:10Z" pubdate="pubdate">Sun 19 Dec 2010 10:02:10 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

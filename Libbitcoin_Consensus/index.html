@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Libbitcoin Consensus</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Libbitcoin Consensus
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Libbitcoin_Consensus" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>The <a href="https://github.com/libbitcoin/libbitcoin-consensus">libbitcoin-consensus</a> library is an optional dependency of <a href="../Libbitcoin_Blockchain/">libbitcoin-blockchain</a>. It is conceptually redundant with native functionality within <a href="../Libbitcoin_Common/">libbitcoin</a>.</p>
+
+<h2 id="Example">Example</h2>
+
+<pre><code>#include &lt;cstdint&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;bitcoin/consensus.hpp&gt;
+
+// For bc::decode_base16 utility.
+#include &lt;bitcoin/bitcoin.hpp&gt;
+
+#define VERIFY_TX \
+&quot;01000000017d01943c40b7f3d8a00a2d62fa1d560bf739a2368c180615b0a793&quot; \
+&quot;7c0e883e7c000000006b4830450221008f66d188c664a8088893ea4ddd968902&quot; \
+&quot;4ea5593877753ecc1e9051ed58c15168022037109f0d06e6068b7447966f751d&quot; \
+&quot;e8474641ad2b15ec37f4a9d159b02af68174012103e208f5403383c77d5832a2&quot; \
+&quot;68c9f71480f6e7bfbdfa44904becacfad66163ea31ffffffff01c8af00000000&quot; \
+&quot;00001976a91458b7a60f11a904feef35a639b6048de8dd4d9f1c88ac00000000&quot;
+
+#define PREVOUT_SCRIPT \
+&quot;76a914c564c740c6900b93afc9f1bdaef0a9d466adf6ee88ac&quot;
+
+// Validate a transaction against a single previous output script.
+int main()
+{
+using namespace libbitcoin::consensus;
+
+constexpr uint32_t tx_input_index = 0;
+constexpr uint32_t flags = verify_flags_standard  verify_flags_mandatory;
+
+const std::string tx(VERIFY_TX);
+const std::string ps(PREVOUT_SCRIPT);
+
+std::vector&lt;uint8_t&gt; tx_data, ps_data;
+/* bool */ bc::decode_base16(tx_data, tx);
+/* bool */ bc::decode_base16(ps_data, ps);
+
+const auto result = verify_script(&amp;tx_data&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=0&amp;amp;do=create&amp;amp;from=Libbitcoin_Consensus&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;0&lt;/span&gt;, tx_data.size(),
+&amp;ps_data&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=0&amp;amp;do=create&amp;amp;from=Libbitcoin_Consensus&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;0&lt;/span&gt;, ps_data.size(), tx_input_index, flags);
+
+return result == verify_result_eval_true ? 0 : 1;
+}
+</code></pre>
+
+<h2 id="Background">Background</h2>
+
+<p>The consensus library exists to provide consensus validation identical in outcome to <a href="../Bitcoind/">bitcoind</a>. The integral <a href="../Libbitcoin_Common/">libbitcoin</a> script engine provides the same checks. However given the complexity of the validation code it is effectively impossible to prove that two implementations are identical in outcome, even with extensive testing. This effectively makes the bitcoind <em>implementation</em> a standard (as opposed to an RFC or BIP).</p>
+
+<p>That has helped stifle the adoption of alternative full node implementations. While it has been argued that consensus risk from any particular implementation is a red herring (3.1) it was decided to give Libbitcoin developers and users the option. Following much deliberation (3.2) and a recommendation by <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Peter_Todd&amp;from=Libbitcoin_Consensus" rel="nofollow">?</a>Peter Todd</span> (3.3) (3.4) it was decided to package this library independently in order to provide better consistency, a leaner dependency, and more formal isolation from bitcoind. The library is free of both libbitcoin and bitcoind dependencies. (3.5)</p>
+
+<h2 id="Verification">Verification</h2>
+
+<p>This library incorporates the files that have been identified as &quot;consensus critical&quot; in bitcoind. It is straightforward to verify the implementation against bitcoind by overlaying the bitcoind sources and performing a difference option. With each tagged release of bitcoind this library is updated with the files identified in the <a href="https://github.com/bitcoin/bitcoin/blob/master/src/Makefile.am">libbitcoinconsensus</a> build.</p>
+
+<h2 id="Bindings">Bindings</h2>
+
+<p>The library exposes a C++ interface and includes <a href="http://www.swig.org">SWIG</a> generated bindings for other languages. Libbitcoin is a C++ toolkit, the underlying bitcoind sources are C++, and SWIG bindings are easily generated over C++. For these reasons the native interface is C++, in contrast to the libbitcoinconsensus interface which is C.</p>
+
+<ul>
+<li><a href="https://github.com/libbitcoin/libbitcoin-consensus/blob/master/include/bitcoin/consensus/export.hpp">C++</a> (native)</li>
+<li><a href="https://github.com/libbitcoin/libbitcoin-consensus/tree/master/bindings/java">Java</a></li>
+<li><a href="https://github.com/libbitcoin/libbitcoin-consensus/tree/master/bindings/python">Python</a></li>
+</ul>
+
+
+<h2 id="Dependencies">Dependencies</h2>
+
+<ul>
+<li><a href="https://www.openssl.org">openssl</a> (optional, default)</li>
+<li><a href="https://github.com/bitcoin/secp256k1">libsecp256k1</a> (optional, experimental)</li>
+<li><a href="http://www.boost.org/doc/libs/1_55_0/libs/test/doc/html/index.html">boost test</a> (tests only)</li>
+</ul>
+
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../Libbitcoin/">Libbitcoin</a></li>
+</ul>
+
+
+<h2 id="References">References</h2>
+
+<p>3.1: <a href="https://blog.conformal.com/the-bitcoin-consensus-red-herring">The Bitcoin Consensus Red Herring</a><br />
+3.2: <a href="https://lists.dyne.org/lurker/message/20150214.111556.61403f4c.en.html">Libbitcoinconsensus Discussion on Libbitcoin Mailing List</a><br />
+3.3: <a href="https://lists.dyne.org/lurker/message/20150325.083041.77f52cd3.en.html">Response to Peter Todd &quot;Twinkle Fingers&quot; Post on Bitcoin-Dev</a><br />
+3.4: <a href="https://plus.google.com/u/0/+AvatarEquis/posts/JjFnTf3iY1E">&quot;Peter Todd takes the gloves off on this letter to Libbitcoin Devs&quot;&#xFEFF; - AvatarX</a><br />
+3.5: <a href="https://github.com/libbitcoin/libbitcoin-consensus/blob/master/README.md">Instructions for Building libbitcoin-consensus</a></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Open_Source/" rel="tag">Open Source</a>
+
+<a href="../tags/Software__8207____8206__/" rel="tag">Software‏‎</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Libbitcoin/">Libbitcoin</a>
+
+<a href="../Libbitcoin_Blockchain/">Libbitcoin Blockchain</a>
+
+<a href="../Libbitcoin_Common/">Libbitcoin Common</a>
+
+<a href="../Libbitcoin_Node/">Libbitcoin Node</a>
+
+<a href="../Libbitcoin_Server/">Libbitcoin Server</a>
+
+<a href="../tags/Nodes/">tags/Nodes</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-07-12T21:25:11Z">Sun 12 Jul 2015 09:25:11 PM Europe</time>
+<!-- Created <time datetime="2015-05-13T21:29:35Z" pubdate="pubdate">Wed 13 May 2015 09:29:35 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>talk</title>
+
+<link rel="stylesheet" href="../../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../../">bitcoin</a>/ 
+
+<a href="../">Alternative chain</a>/ 
+
+</span>
+<span class="title">
+talk
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>Excellent article!  Two suggestions:</p>
+
+<p>The fields coinbase_tx, coinbase_merkle_branch, altblock_merkle_branch, and the yet-to-be-specified Merkle branch format are a lot of complexity.  They could be generalized, with perhaps added flexibility, by supplying a new kind of script to link the alt chain header hash to the Bitcoin header hash.  The script would start with the alt chain header hash on the stack and have access to a &quot;concatenate&quot; instruction (already implemented as OP_CAT) that pops the top stack item and appends it to the next one.  Merkle branch navigation from the leaf hash to the root would be expressed as constants (stubs), concatenations, and sometimes swaps (when the branch goes left vs. right).  The embedding of a hash in a transaction or a block header could also be expressed as appending and prepending data.</p>
+
+<p>All the extra bytes (the script as just described) impose some burdens on the alternative chain.  They must be stored even in SPV mode for proof of work.  They must be transmitted along with block headers.  They require additional verification steps.  We would like to encourage miners to mine our block &quot;first&quot; or at least in such a way as to minimize this overhead.  Alternative chains&#39; block acceptance rules could impose a lower target (higher difficulty) on blocks with longer scripts.  For example, if the normal block header size is 80 and the current target is T, a block of size S+80 (S bytes in the script) could require a hash below T * 80 / (S+80).</p>
+
+<p><a>JohnTobey253</a> 03:07, 16 June 2011 (GMT)</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../">Alternative chain</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2011-06-16T15:48:28Z">Thu 16 Jun 2011 03:48:28 PM Europe</time>
+<!-- Created <time datetime="2011-06-16T03:07:20Z" pubdate="pubdate">Thu 16 Jun 2011 03:07:20 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

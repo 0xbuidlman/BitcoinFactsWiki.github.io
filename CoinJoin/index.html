@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>CoinJoin</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+CoinJoin
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=CoinJoin&amp;page=Talk&amp;do=create" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p><strong>CoinJoin</strong> is a method of bitcoin transaction compression which aims to improve privacy by discarding unnecessary information.
+A coinjoin transaction is one where multiple people have agreed to form a single transaction where some of the the outputs have the same value.
+A casual observer of the blockchain cannot tell which output is of interest to each sender.
+Unlike many other privacy solutions, coinjoin transactions do not require a modification to the bitcoin protocol.</p>
+
+<p>This type of transaction was first described in posts (1.1) (1.2) by gmaxwell.</p>
+
+<h2 id="Motivation">Motivation</h2>
+
+<p>Bitcoin is often promoted as a tool for privacy but the only privacy that exists in Bitcoin comes from pseudonymous addresses which are fragile and easily compromised through reuse, &quot;taint&quot; analysis, tracking payments, IP address monitoring nodes, web-spidering, and many other mechanisms. Once broken this privacy is difficult and sometimes costly to recover.</p>
+
+<p>Traditional banking provides a fair amount of privacy by default. Your inlaws don&#39;t see that you&#39;re buying birth control that deprives them of grand children, your employer doesn&#39;t learn about the non-profits you support with money from your paycheck, and thieves don&#39;t see your latest purchases or how wealthy you are to help them target and scam you. Poor privacy in Bitcoin can be a major practical disadvantage for both individuals and businesses.</p>
+
+<p>Even when a user ends address reuse by switching to <a href="http://bitcoinism.blogspot.com/2013/07/reclaiming-financial-privacy-with-hd.html">BIP 32 address chains</a>, they still have privacy loss from their old coins and the joining of past payments when they make larger transactions.</p>
+
+<p>Privacy errors can also create externalized costs: You might have good practices but when you trade with people who don&#39;t (say ones using &quot;green addresses&quot;) you and everyone you trade with loses some privacy.  A loss of privacy also presents a grave systemic risk for Bitcoin:  If degraded privacy allows people to assemble centralized lists of good and bad coins you may find Bitcoin&#39;s fungibility destroyed when your honestly accepted coin is later not honored by others, and its decentralization along with it when people feel forced to enforce popular blacklists on their own coin.</p>
+
+<h2 id="Concept">Concept</h2>
+
+<p>The idea is very simple, first some quick background:</p>
+
+<p><a href="../Twotx.png"><img class="img" height="249" src="../Twotx.png" title="class=fullwidth" width="719" /></a></p>
+
+<p>A Bitcoin transaction consumes one or more inputs and creates one or more outputs with specified values.</p>
+
+<p>Each input is an output from a past transaction. For each input there is a distinct signature (scriptsig) which is created in accordance with the rules specified in the past-output that it is consuming (scriptpubkey).</p>
+
+<p>The Bitcoin system is charged with making sure the signatures are correct, that the inputs exist and are spendable, and that the sum of the output values is less than or equal to the sum of the input values (any excess becomes fees paid to miners for including the transaction).</p>
+
+<p>It is normal for a transaction to spend many inputs in order to get enough value to pay its intended payment, often also creating an additional &#39;change&#39; output to receive the unspent (and non-fee) excess.</p>
+
+<p>There is no requirement that the scriptpubkeys of the inputs used be the same; i.e., no requirement that they be payments to the same address. And, in fact, when Bitcoin is correctly used with one address per payment, none of them will be the same.</p>
+
+<p>When considering the history of Bitcoin ownership one could look at transactions which spend from multiple distinct scriptpubkeys as co-joining their ownership and make an assumption: How else could the transaction spend from multiple addresses unless a common party controlled those addresses?</p>
+
+<p>In the illustration &#39;transaction 2&#39; spends coins which were assigned to 1A1 and 1C3. So 1A1 and 1C3 are necessarily the same party?</p>
+
+<p>This assumption is incorrect. Usage in a single transaction does not prove common control (though it&#39;s currently pretty suggestive), and this is what makes <strong>CoinJoin</strong> possible:</p>
+
+<p>The signatures, one per input, inside a transaction are <strong>completely</strong> independent of each other.  This means that it&#39;s possible for Bitcoin users to agree on a set of inputs to spend, and a set of outputs to pay to, and then to individually and separately sign a transaction and later merge their signatures. The transaction is not valid and won&#39;t be accepted by the network until all signatures are provided, and no one will sign a transaction which is not to their liking.</p>
+
+<p>To use this to increase privacy, the N users would agree on a uniform output size and provide inputs amounting to at least that size. The transaction would have N outputs of that size and potentially N more change outputs if some of the users provided input in excess of the target.  All would sign the transaction, and then the transaction could be transmitted. No risk of theft at any point.</p>
+
+<p>In the illustration &#39;transaction 2&#39; has inputs from 1A1 and 1C3. Say we beliece 1A1 is an address used for Alice and 1C3 is an address used for Charlie. Which of Alice and Charlie owns which of the 1D and 1E outputs?</p>
+
+<p>The idea can also be used more casually. When you want to make a payment, find someone else who also wants to make a payment and make a joint payment together. Doing so doesn&#39;t increase privacy much, but it actually makes your transaction smaller and thus easier on the network (and lower in fees); the extra privacy is a perk.</p>
+
+<p>Such a transaction is externally indistinguishable from a transaction created through conventional use. Because of this, if these transactions become widespread they improve the privacy even of people who do not use them, because no longer will input co-joining be strong evidence of common control.</p>
+
+<p>There are many variations of this idea possible, and all can coexist because the idea requires no changes to the Bitcoin system. Let a thousand flowers bloom: we can have diversity in ways of accomplishing this and learn the best.</p>
+
+<h2 id="Example">Example</h2>
+
+<p>An example 2-party coinjoin transaction. https://chain.localbitcoins.com/tx/c38aac9910f327700e0f199972eed8ea7c6b1920e965f9cb48a92973e7325046
+The outputs to addresses 1MUzngtNnrQRXRqqRTeDmpULW8X1aaGWeR and 1Fufjpf9RM2aQsGedhSpbSCGRHrmLMJ7yY are coinjoined because they are both of value 0.01btc.</p>
+
+<p>Another example is this 3-party coinjoin. https://chain.localbitcoins.com/tx/92a78def188053081187b847b267f0bfabf28368e9a7a642780ce46a78f551ba</p>
+
+<h2 id="FAQ">FAQ</h2>
+
+<h3 id="Don.27t_you_need_tor_or_something_to_prevent_everyone_from_learning_everyone.27s_IP.3F">Don&#39;t you need tor or something to prevent everyone from learning everyone&#39;s IP?</h3>
+
+<p>Any transaction privacy system that hopes to hide user&#39;s addresses should start with some kind of anonymity network. This is no different. Fortunately networks like Tor, I2P, Bitmessage, and Freenet all already exist and could all be used for this. (Freenet would result in rather slow transactions, however)</p>
+
+<p>However, gumming up &quot;taint analysis&quot; and reducing transaction sizes doesn&#39;t even require that the users be private from each other. So even without things like tor this would be no worse than regular transactions.</p>
+
+<h3 id="Don.27t_the_users_learn_which_inputs_match_up_to_which_outputs.3F">Don&#39;t the users learn which inputs match up to which outputs?</h3>
+
+<p>In the simplest possible implementation where users meet up on IRC over tor or the like, yes they do. The next simplest implementation is where the users send their input and output information to some meeting point server, and the server creates the transaction and asks people to sign it. The server learns the mapping, but no one else does, and the server still can&#39;t steal the coins.</p>
+
+<p>More complicated implementations are possible where even the server doesn&#39;t learn the mapping.</p>
+
+<p>E.g. Using chaum blind signatures: The users connect and provide inputs (and change addresses) and a cryptographically-blinded version of the address they want their private coins to go to; the server signs the tokens and returns them. The users anonymously reconnect, unblind their output addresses, and return them to the server. The server can see that all the outputs were signed by it and so all the outputs had to come from valid participants. Later people reconnect and sign.</p>
+
+<p>Similar things can be accomplished with various zero-knowledge proof systems.</p>
+
+<h3 id="Does_the_totally_private_version_need_to_have_a_server_at_all.3F_What_if_it_gets_shut_down.3F">Does the totally private version need to have a server at all? What if it gets shut down?</h3>
+
+<p>No. The same privacy can be achieved in a decentralized manner where all users act as blind-signing servers. This ends up needing n<sup>2</sup> signatures, and distributed systems are generally a lot harder to create.  I don&#39;t know if there is, or ever would be, a reason to bother with a fully distributed version with full privacy, but it&#39;s certainly possible.</p>
+
+<h3 id="What_about_DOS_attacks.3F_Can.27t_someone_refuse_to_sign_even_if_the_transaction_is_valid.3F">What about DOS attacks? Can&#39;t someone refuse to sign even if the transaction is valid?</h3>
+
+<p>Yes, this can be DOS attacked in two different ways: someone can refuse to sign a valid joint transaction, or someone can spend their input out from under the joint transaction before it completes.</p>
+
+<p>However, if all the signatures don&#39;t come in within some time limit, or a conflicting transaction is created, you can simply leave the bad parties and try again. With an automated process any retries would be invisible to the user. So the only real risk is a persistent DOS attacker.</p>
+
+<p>In the non-decentralized (or decentralized but non-private to participants) case, gaining some immunity to DOS attackers is easy: if someone fails to sign for an input, you blacklist that input from further rounds. They are then naturally rate-limited by their ability to create more confirmed Bitcoin transactions.</p>
+
+<p>Gaining DOS immunity in a decentralized system is considerably harder, because it&#39;s hard to tell which user actually broke the rules. One solution is to have users perform their activity under a zero-knowledge proof system, so you could be confident which user is the cheater and then agree to ignore them.</p>
+
+<p>In all cases you could supplement anti-DOS mechanisms with proof of work, a fidelity bond, or other scarce resource usage. But I suspect that it&#39;s better to adapt to actual attacks as they arise, as we don&#39;t have to commit to a single security mechanism in advance and for all users. I also believe that bad input exclusion provides enough protection to get started.</p>
+
+<h3 id="Isn.27t_the_anonymity_set_size_limited_by_how_many_parties_you_can_get_in_a_single_transaction.3F">Isn&#39;t the anonymity set size limited by how many parties you can get in a single transaction?</h3>
+
+<p>Not quite. The anonymity set size of a single transaction is limited by the number of parties in it, obviously. And transaction size limits as well as failure (retry) risk mean that really huge joint transactions would not be wise. But because these transactions are cheap, there is no limit to the number of transactions you can cascade.</p>
+
+<p>In particular, if you have can build transactions with m participants per transaction you can create a sequence of m*3 transactions which form a three-stage <a href="http://en.wikipedia.org/wiki/Clos_network">switching network</a> that permits any of m<sup>2</sup> final outputs to have come from any of m<sup>2</sup> original inputs (e.g. using three stages of 32 transactions with 32 inputs each 1024 users can be joined with a total of 96 transactions).  This allows the anonymity set to be any size, limited only by participation.</p>
+
+<p>In practice I expect most users only want to prevent nosy friends (and thieves) from prying into their financial lives, and to recover some of the privacy they lost due to bad practices like address reuse. These users will likely be happy with only a single pass; other people will just operate opportunistically, while others may work to achieve many passes and big anonymity sets. All can coexist.</p>
+
+<h3 id="How_does_this_compare_to_.5Bhttp.3A.2F.2Fzerocoin.org.2F_zerocoin.5D.3F">How does this compare to [http://zerocoin.org/ zerocoin]?</h3>
+
+<p>As a crypto and computer science geek I&#39;m super excited by Zerocoin: the technology behind it is fascinating and important. But as a Bitcoin user and developer the promotion of it as the solution to improved privacy disappoints me.</p>
+
+<p>Zerocoin has a number of serious limitations:</p>
+
+<ul>
+<li>It uses cutting-edge cryptography which may turn out to be insecure, and which is understood by relatively few people (compared to ECDSA, for example).</li>
+<li>It produces large (20kbyte) signatures that would bloat the blockchain (or create risk if stuffed in external storage).</li>
+<li>It requires a trusted party to initiate its accumulator. If that party cheats, they can steal coin. (Perhaps fixable with more cutting-edge crypto.)</li>
+<li>Validation is very slow (can process about 2tx per second on a fast CPU), which is a major barrier to deployment in Bitcoin as each full node must validate every transaction.</li>
+<li>The large transactions and slow validation also means costly transactions, which will reduce the anonymity set size and potentially make ZC usage unavailable to random members of the public who are merely casually concerned about their privacy.</li>
+<li>Uses an accumulator which grows forever and has no pruning. In practice this means we&#39;d need to switch accumulators periodically to reduce the working set size, reducing the anonymity set size. And potentially creating big UTXO bloat problems if the horizon on an accumulator isn&#39;t set in advance.</li>
+</ul>
+
+
+<p>Some of these things may improve significantly with better math and software engineering over time.</p>
+
+<p>But above all: <strong>Zerocoin requires a soft-forking change to the Bitcoin protocol</strong>, which all full nodes must adopt, which would commit Bitcoin to a particular version of the Zerocoin protocol. This cannot happen fast&mdash;probably not within years, especially considering that there is so much potential for further refinement to the algorithm to lower costs. It would be politically contentious, as some developers and Bitcoin businesses are very concerned about being overly associated with &quot;anonymity&quot;. Network-wide rule changes are something of a suicide pact: we shouldn&#39;t, and don&#39;t, take them lightly.</p>
+
+<p><strong>CoinJoin transactions work today</strong>, and they&#39;ve worked since the first day of Bitcoin. They are indistinguishable from normal transactions and thus cannot be blocked or inhibited except to the extent that any other Bitcoin transaction could be blocked.</p>
+
+<p>(As an aside: ZC could potentially be used externally to Bitcoin in a decentralized CoinJoin as a method of mutually blinding the users in a DOS attack resistant way. This would allow ZC to mature under live fire without taking its costs or committing to a specific protocol network-wide.)</p>
+
+<p>The primary argument I can make for ZC over CoinJoin, beyond it stoking my crypto-geek desires, is that it may potentially offer a larger anonymity set.  But with the performance and scaling limits of ZC, and the possibility to construct sorting network transactions with CJ, or just the ability to use hundreds of CJ transactions with the storage and processing required for one ZC transactions, I don&#39;t know which would actually produce bigger anonymity sets in practice. E.g. To join 1024 users, just the ZC redemptions would involve 20k * 1024 bytes of  data compared to less than 3% of that for a complete three-stage cascade of 32 32-way joint transactions. Though the ZC anonymity set could more easily cross larger spans of time.</p>
+
+<p>The anonymity sets of CoinJoin transactions could easily be big enough for common users to regain some of their casual privacy and that&#39;s what I think is most interesting.</p>
+
+<h3 id="How_does_this_compare_to_.5Bhttps.3A.2F.2Fbitcointalk.org.2Findex.php.3Ftopic.3D277389.0_CoinWitness.5D.3F.3D">How does this compare to [https://bitcointalk.org/index.php?topic=277389.0 CoinWitness]?=</h3>
+
+<p>CoinWitness is even rocket-sciency than Zerocoin, it also shares many of the weaknesses as a privacy-improver: Novel crypto, computational cost, and the huge point of requiring a soft fork and not being available today. It may have some scaling advantages if it is used as more than just a privacy tool. But it really is overkill for this problem, and won&#39;t be available anytime real soon.</p>
+
+<h3 id="Sounds_great.21_Where_is_it.3F">Sounds great! Where is it?</h3>
+
+<p>Theres the rub: There exist no ready made, easy-to-use software for doing this.  You can make the transactions by hand using bitcoin-qt and the raw transactions API, as we did in that &quot;taint rich&quot; thread, but to make this into a practical reality we need easy-to-use automated tools.</p>
+
+<p>Luke has written up some <a href="https://gist.github.com/luke-jr/5409899">sketches a protocol</a> which would enable establishing joint transactions over the regular Bitcoin network.</p>
+
+<p>The Bitcoin-qt RPC system provides everything someone needs to write a side-car applet (including the ability to lock txouts to prevent them from being spent out from from under it) that participants in such a system. But the fact that so many users use centralized webwallets today which can spy on them will ultimately limit the userbase for these tools.</p>
+
+<p>Personally, most of my coding brain capacity is spent on other things which are even more important to me. And what I could spare on Bitcoin is spent on more core and security things&mdash; if I work on anything wallet related anytime soon it will likely be improving the privacy behavior of coin selection... But moreover:</p>
+
+<p>Anyone who builds this is going to be accused of enabling criminal activity, it doesn&#39;t matter if any actual criminals use this or not: Criminal activity sells headlines. Being a Bitcoin core developer already fills my quota for accusations of this kind, especially my quota for risk that I&#39;m not even paid for. :)</p>
+
+<p>In reality, real criminals don&#39;t need CoinJoin if they have even the slightest clue: They can afford to buy privacy in a way that regular users cannot, it&#39;s just a cost of their (often lucrative) business.</p>
+
+<p>Joe-criminal can go out and buy 120% PPS mining to get brand new coins, or run his money through a series of semi-sham high cashflow gambling businesses for a 50% cut, they can afford the cost of seeking out and interfacing with these seedy services... Joe and Jane doe? Their names are up in neon on blockchain.info. It might not seem great to them, but if there a high cost of fixing it they simply won&#39;t, because the cost of fixing it is very concrete and the cost or privacy loss is speculative and distant. They might just need to give up bitcoin and switch to something almost totally private: cash... Regular users need efficient and inexpensive privacy if it is to help them at all.</p>
+
+<p>I know that making such a tool doesn&#39;t fit into the get-rich-quick mold of many Bitcoin businesses, but the importance is self-apparent and the simplest versions of this don&#39;t require very deep technical wizardry. I think the &quot;political&quot; risk of improving people&#39;s privacy is a real one that you should carefully consider, but around these parts I see people sticking their names on some rather outrageously risky stuff. I&#39;d hoped the &quot;taint rich&quot; thread would be enough to inspire some community action, but perhaps this will be.</p>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=User%3AGmaxwell%2Fstate_of_coinjoin&amp;do=create&amp;from=CoinJoin" rel="nofollow">?</a>state of coinjoin</span></li>
+</ul>
+
+
+<h2 id="References">References</h2>
+
+<p>
+
+1.1: <a href="https://bitcointalk.org/?topic=139581">I taint rich! (Raw txn fun and disrupting &#39;taint&#39; analysis; &gt;51kBTC linked!)</a><br />
+1.2: <a href="https://bitcointalk.org/?topic=279249">CoinJoin: Bitcoin privacy for the real world</a></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Anonymity/">Anonymity</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-03-29T20:38:41Z">Sun 29 Mar 2015 08:38:41 PM Europe</time>
+<!-- Created <time datetime="2015-03-02T23:16:36Z" pubdate="pubdate">Mon 02 Mar 2015 11:16:36 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

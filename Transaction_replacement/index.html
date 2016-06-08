@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Transaction replacement</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Transaction replacement
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Transaction_replacement" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p><strong>Transaction replaceability</strong> occurs when a full node allows one or
+more of the transactions in its memory pool (mempool) to be replaced
+with a different transaction that spends some or all of the same inputs.
+Transaction replaceability was enabled in the first version of
+Bitcoin (1.1) but was disabled in the 0.3.12 release with the comment,
+&quot;Disable replacement feature for now&quot;. (1.2)  Since then, there have been various attempts to make
+transaction replaceability widely available again. (1.3)</p>
+
+<p>Beginning with Bitcoin Core 0.12.0 (eta Feb 1 2016), it is expected
+that transaction replaceability will become widely available. This page
+attempts to document the current state of transaction replaceability for
+wallet authors who want to use that feature.</p>
+
+<h2 id="Node_policies">Node policies</h2>
+
+<p>Transaction replacement is optional (it is not, and cannot be,
+a consensus rule), but widespread adherence to the same basic policy
+among nodes will help maintain a consistent network-wide mempool policy
+with the following expected benefits:</p>
+
+<ul>
+<li><p>Consistent policy makes it easy for wallet authors to write code that uses transaction replacement to provide usability-enhancing features.</p></li>
+<li><p>Consistent policy helps ensure long-running mempools contain mostly the same transactions (mempool consistency), which makes it easier for wallets and nodes to make guesses about how long it will take a transaction to confirm.</p></li>
+<li><p>Consistent mempools may help nodes more quickly validate newly-received blocks as well as reduce the bandwidth used to announce new blocks in the future.</p></li>
+</ul>
+
+
+<h3 id="Bitcoin_Core_0.3.12_to_0.11.x">Bitcoin Core 0.3.12 to 0.11.x</h3>
+
+<p>Transaction replaceability is disallowed in a running node.</p>
+
+<h3 id="Bitcoin_Core_0.12.0">Bitcoin Core 0.12.0</h3>
+
+<p><em>Bitcoin Core 0.12.0 has not been released yet.  It is expected in Jan/Feb 2016.</em></p>
+
+<p>Bitcoin Core 0.12.0 uses the initial implementation of opt-in full-RBF
+described in <a href="https://github.com/bitcoin/bips/blob/master/bip-0125.mediawiki">BIP 125</a>.</p>
+
+<p>The initial implementation of opt-in full-RBF may be seen in
+<a href="https://github.com/bitcoin/bitcoin/pull/6871">Bitcoin Core PR#6871</a>
+and specifically the master branch commits from
+5891f870d68d90408aa5ce5b597fb574f2d2cbca to
+16a2f93629f75d182871f288f0396afe6cdc8504 (inclusive).</p>
+
+<h3 id="Peter_Todd.27s_full-RBF_patchset">Peter Todd&#39;s full-RBF patchset</h3>
+
+<p>Peter Todd has historically maintained patchsets against Bitcoin Core
+0.8.x and later that implement full-RBF for all transactions in the
+mempool. (Later versions also provide an option to enable RBF First-Seen-Safe (RBF-FSS) only.)
+A rebased version of the most recent patch is also available for
+contemporary <a href="http://luke.dashjr.org/programs/bitcoin-ljr/">Bitcoin LJR</a> releases.</p>
+
+<p>Notably, the patchset also implements preferential peering that allows
+nodes implementing full-RBF to connect to each other so that replacements
+can circulate even if full-RBF nodes represent a small minority of the
+network.</p>
+
+<p>As of 2015-12-08, there are no known large miners or mining pools that
+implement full-RBF.</p>
+
+<ul>
+<li><a href="https://github.com/petertodd/bitcoin/branches/all?utf8=%E2%9C%93&amp;query=replace-by-fee-v0.10">Replace by fee patches for Bitcoin Core 0.10.x</a></li>
+<li><a href="https://github.com/petertodd/bitcoin/branches/all?utf8=%E2%9C%93&amp;query=replace-by-fee-v0.11">Replace by fee patches for Bitcoin Core 0.11.x</a></li>
+</ul>
+
+
+<p>Policy (5.1): one or more transactions currently in the mempool (original
+transactions) will be replaced by a new transaction (replacement
+transaction) that spends one or more of the same inputs if,</p>
+
+<ol>
+<li>The replacement transaction pays an absolute higher fee than the original transactions.</li>
+<li>The replacement transaction must pay for its own bandwidth in addition to the amount paid by the original transactions at least by the rate set by the node&#39;s minimum relay fee setting.  For example, if the minimum relay fee is 1 satoshi/byte and the replacement transaction is 500 bytes total, then the replacement must pay a fee at least 500 satoshis higher than the originals.</li>
+<li>No more than 100 original transactions are replaced by the replacement transaction</li>
+</ol>
+
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="https://github.com/bitcoin/bips/blob/master/bip-0125.mediawiki">BIP 125</a></li>
+<li><a href="https://www.reddit.com/r/Bitcoin/comments/3urm8o/optin_rbf_is_misunderstood_ask_questions_about_it/">Reddit: Questions about opt-in RBF</a></li>
+</ul>
+
+
+<h2 id="References">References</h2>
+
+<p>1.1: <a href="https://github.com/trottier/original-bitcoin/blob/master/src/main.cpp#L434">Replacement in original Bitcoin source code</a> , Satoshi Nakamoto, GitHub, &#39;&#39;Retrieved 2015-12-08&#39;&#39;<br />
+1.2: <a href="https://github.com/bitcoin/bitcoin/commit/05454818dc7ed92f577a1a1ef6798049f17a52e7#diff-118fcbaaba162ba17933c7893247df3aR522">Commit disabling replacement &quot;for now&quot;</a> , Satoshi Nakamoto, GitHub, &#39;&#39;Retrieved 2015-12-08&#39;&#39;<br />
+1.3: <a href="https://bitcointalk.org/index.php?topic=199947.0">Initial replace-by-fee implementation available for testnet</a> , BitcoinTalk forum, posted 2013-05-09, &#39;&#39;retrieved 2015-12-09&#39;&#39;<br />
+5.1: <a href="https://github.com/bitcoin/bitcoin/compare/0.11...petertodd:replace-by-fee-v0.11.0">RBF patchset for 0.11.2</a> , Peter Todd, GitHub, &#39;&#39;Retrieved 2015-12-08&#39;&#39;</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-04-13T19:14:44Z">Wed 13 Apr 2016 07:14:44 PM Europe</time>
+<!-- Created <time datetime="2015-12-08T17:20:56Z" pubdate="pubdate">Tue 08 Dec 2015 05:20:56 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

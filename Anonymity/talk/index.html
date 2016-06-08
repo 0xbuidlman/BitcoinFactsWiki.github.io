@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>talk</title>
+
+<link rel="stylesheet" href="../../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../../">bitcoin</a>/ 
+
+<a href="../">Anonymity</a>/ 
+
+</span>
+<span class="title">
+talk
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>I have been looking at the algorithm Bitcoin uses to choose coins. The algorithm does not lend itself to obscuring the trail of coin transfers. In fact, I think it makes it easier for someone analyzing the transactions to figure out things.</p>
+
+<p>Suppose, for example, there is a transaction with two coins in and two coins out (one for the payment, one for the change). The source code randomizes which output is the payment, and which is the change, but in most cases it is trivial to look at the transaction and figure it out. For example, suppose there&#39;s a transaction with two inputs, 50 coins and 20 coins; and two outputs, 65 coins and 5 coins. It&#39;s pretty clear that the payment is 65 coins, and the change - <em>which goes back to the owner</em> - is 5 coins. You have now linked two coin transactions to a single person (whether or not you can identify that person is another matter).</p>
+
+<p>Or, suppose Bitcoin creates a transaction with several (or even many) coins on the input side. If an analyst links just one of those coins to you, that person now knows for certain that all the other coins in that transaction also belonged to you. So, for anonymity sake, the fewer the coins on the &#39;in&#39; side, the better.</p>
+
+<p>And, of course, if a transaction has one input and one output, it&#39;s a no-brainer to figure it out.</p>
+
+<p>The program uses what I call a &quot;best fit&quot; algorithm - i.e. it chooses one or more coins that come as close as possible to the exact value requested, giving preference to selecting a single coin with the exact payment value. So you will likely find many transactions that have multiple coins coming in, and one or two transactions out - the payment, and a small amount of change, or with exactly one input and one output. In either case, it&#39;s pretty easy to figure out what&#39;s going on.</p>
+
+<p>Fortunately, the default behaviour of the program is to choose a new key each time you receive a payment, so that&#39;s a plus at least.</p>
+
+<p>I don&#39;t know if this is the correct place to make these suggestions, but I would suggest modifying the standard Bitcoin program as follows:</p>
+
+<ol>
+<li>Eliminate the transaction logging in the wallet. Your wallet should contain only the coins you haven&#39;t spent (after having been confirmed, of course).</li>
+<li>Accounting entries should never be linked to specific coins or addresses used to create that entry.</li>
+<li>Automatically &quot;shuffle&quot; the coins. By &quot;shuffling&quot; I mean generating transactions within your own wallet - take one or two coins, and pay them to a Bitcoin address - NOT an IP address - under your control. (Note that for this to work, transaction logging MUST be removed.) This helps strengthen the plausible deniability mentioned in the article: since the program automatically generates these transactions, if someone questions where a particular payment went to you can legitimately say you don&#39;t know. Transactions would created at random intervals (but ideally not more frequently than once every 10 minutes or so, to keep them on separate blocks), using coins selected at random, and the transaction would be chosen at random from the following list:
+
+<ol>
+<li>Combine two coins into a single coin.</li>
+<li>split a single coin into two coins</li>
+<li>Rearrange two coins into two coins of different values, for example 5+2 in, 1+6 out. In order for this to be indistinguishable from an actual transaction, one output must be larger than the larger of the two inputs. In this example, the larger input is 5, so one output must be &gt; 5. If not, then it will be obvious that this is a shuffling transaction. For example, if the outputs are 3+4, then you could obviously have paid with just the 5 BTC coin and there&#39;s no reason to include the 2BTC coin.</li>
+</ol>
+</li>
+<li>Modify the coin selection routine to randomly choose one of the following algorithms:
+
+<ol>
+<li>Select two coins, the value of each coin being greater than the value of the payment. For example, payment amount is 5. Choose 50+20 in, giving 65+5 out. In this case, the payment is 5 and the change is 65. Randomize which is the payment and which is the change.</li>
+<li>Select two coins, the value of each coin being smaller than the value of the payment. For example, payment amount is 65. Choose 50+20 in, 65+5 out. Randomize which is the payment and which is the change.</li>
+<li>Select two coins which equal exactly the payment amount (this matches the &quot;combine two coins into a single coin&quot; shuffle operation above).</li>
+<li>Select a single coin for payment, with a value much greater than the value of the payment (for some definition of &quot;much greater&quot;). About 2x the payment value is good, because then the payment and the change are about the same, and a snooper won&#39;t be able to tell which is which.</li>
+<li>Choose multiple coins such that the value of the payment is greater than the value of the smallest coin, but less than the value of the largest coin. For example, your payment is 7 BTC. Choose coins valued at 5, 8, and 10, giving a payment of 7 and change of 16.</li>
+<li>The existing &quot;best fit&quot; algorithm, modified so that it only selects a single coin with the exact value as a last resort.</li>
+</ol>
+</li>
+</ol>
+
+
+<blockquote><p>That does sound like an improvement. I don&#39;t think most people care much about anonymity right now, though, and it&#39;s not <em>that</em> easy to track transactions, so the solution needs to be good for average users (or there needs to be an option). Most of those changes will increase transaction sizes, which will increase fees. <a>theymos</a> 05:10, 5 March 2011 (GMT)</p></blockquote>
+
+<h2 id="Attacker_forcing_you_to_disclosure_who_you_send_money_to">Attacker forcing you to disclosure who you send money to</h2>
+
+<p>It is said that trying to use your own addresses to clean tracks is dangerous due to this: &quot;However, an investigator is still likely to find you and demand to know who you sent the coins to.&quot;</p>
+
+<p>Using a mixing service might not help much then. He&#39;ll ask what have you used those coins for anyway, and you won&#39;t be able to tell &quot;I was just hiding them from you&quot;. You&#39;ll need a convincing excuse.</p>
+
+<blockquote><p>He won&#39;t be able to find you to ask you anything. Tracing the coins just leads him to a random person who used the mixing service -- not you. <a>theymos</a> 21:05, 9 June 2011 (GMT)</p></blockquote>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../">Anonymity</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2014-08-14T23:58:30Z">Thu 14 Aug 2014 11:58:30 PM Europe</time>
+<!-- Created <time datetime="2011-03-04T06:14:33Z" pubdate="pubdate">Fri 04 Mar 2011 06:14:33 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

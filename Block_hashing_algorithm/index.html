@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Block hashing algorithm</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Block hashing algorithm
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>Bitcoin mining uses the <a href="../Hashcash/">hashcash</a> proof of work function; the hashcash algorithm requires the following parameters: a service string, a nonce, and a counter.  In bitcoin the service string is encoded in the block header data structure, and includes a version field, the hash of the previous block, the root hash of the merkle tree of all transactions in the block, the current time, and the difficulty.  Bitcoin stores the nonce in the extraNonce field which is part of the coinbase transaction, which is stored as the left most leaf node in the merkle tree (the coinbase is the special first transaction in the block).  The counter parameter is small at 32-bits so each time it wraps the extraNonce field must be incremented (or otherwise changed) to avoid repeating work.
+The basics of the hashcash algorithm are quite easy to understand and it is described in more detail <a href="../Hashcash/">here</a>.
+When mining bitcoin, the hashcash algorithm repeatedly hashes the block header while incrementing the counter &amp; extraNonce fields.  Incrementing the extraNonce field entails recomputing the merkle tree, as the coinbase transaction is the left most leaf node.  The block is also occasionally updated as you are working on it.</p>
+
+<p>A block header contains these fields:</p>
+
+<p>|Field|Purpose|Updated when...|Size (Bytes)
+|---|---|---|---
+|Version|Block version number|You upgrade the software and it specifies a new version|4
+|hashPrevBlock|256-bit hash of the previous block header|A new block comes in|32
+d|hashMerkleRoot|256-bit hash based on all of the transactions in the block|A transaction is accepted|32
+|Time|Current timestamp as seconds since 1970-01-01T00:00 UTC|Every few seconds|4
+|Bits|Current <a href="../Target/">target</a>in compact format|The <a href="../Difficulty/">difficulty</a>is adjusted|4
+|Nonce|32-bit number (starts at 0)|A hash is tried (increments)|4</p>
+
+<p>The body of the block contains the transactions. These are hashed only indirectly through the Merkle root. Because transactions aren&#39;t hashed directly, hashing a block with 1 transaction takes exactly the same amount of effort as hashing a block with 10,000 transactions.</p>
+
+<p>The compact format of target is a special kind of floating-point encoding using 3 bytes mantissa, the leading byte as exponent (where only the 5 lowest bits are used) and its base is 256.
+Most of these fields will be the same for all users. There might be some minor variation in the timestamps. The nonce will usually be different, but it increases in a strictly linear way. &quot;Nonce&quot; starts at 0 and is incremented for each hash. Whenever Nonce overflows (which it does frequently), the extraNonce portion of the generation transaction is incremented, which changes the Merkle root.</p>
+
+<p>Moreover, it is extremely unlikely for two people to have the same Merkle root because the first transaction in your block is a generation &quot;sent&quot; to one of <em>your</em> unique Bitcoin addresses. Since your block is different from everyone else&#39;s blocks, you are (nearly) guaranteed to produce different hashes. Every hash you calculate has the same chance of winning as every other hash calculated by the network.</p>
+
+<p>Bitcoin uses: SHA256(SHA256(Block_Header)) but you have to be careful about byte-order.</p>
+
+<p>For example, this python code will calculate the hash of the block with the smallest hash as of June 2011, <a href="http://blockexplorer.com/block/00000000000000001e8d6829a8a21adc5d38d0a473b144b6765798e61f98bd1d">Block 125552</a>.  The header is built from the six fields described above, concatenated together as little-endian values in hex notation:
+<source lang="python"></source></p>
+
+<blockquote><blockquote><blockquote><p>import hashlib
+header_hex = (&quot;01000000&quot; +
+    &quot;81cd02ab7e569e8bcd9317e2fe99f2de44d49ab2b8851ba4a308000000000000&quot; +
+    &quot;e320b6c2fffc8d750423db8b1eb942ae710e951ed797f7affc8892b0f1fc122b&quot; +
+    &quot;c7f5d74d&quot; +
+    &quot;f2b9441a&quot; +
+    &quot;42a14695&quot;)
+header_bin = header_hex.decode(&#39;hex&#39;)
+hash = hashlib.sha256(hashlib.sha256(header_bin).digest()).digest()
+hash.encode(&#39;hex_codec&#39;)
+&#39;1dbd981fe6985776b644b173a4d0385ddc1aa2a829688d1e0000000000000000&#39;
+hash<span class="createlink"><a href="/ikiwiki.cgi?from=Block_hashing_algorithm&amp;page=%3A%3A-1&amp;do=create" rel="nofollow">?</a>::-1</span>.encode(&#39;hex_codec&#39;)
+&#39;00000000000000001e8d6829a8a21adc5d38d0a473b144b6765798e61f98bd1d&#39;
+</p></blockquote></blockquote></blockquote>
+
+<h2 id="Endianess">Endianess</h2>
+
+<p>Note that the hash, which is a 256-bit number, has lots of leading zero bytes when stored or printed as a big-endian hexadecimal constant, but it has trailing zero bytes when stored or printed in little-endian. For example, if interpreted as a string and the lowest (or start of) the string address keeps lowest significant byte, it is little-endian.</p>
+
+<p>The output of <a href="http://blockexplorer.com">blockexplorer</a> displays the hash values as big-endian numbers; notation for numbers is usual (leading digits are the most significant digits read from left to right).</p>
+
+<p>For another example, <a href="http://pastebin.com/bW3fQA2a">here</a> is a version in plain C without any optimization, threading or error checking.</p>
+
+<p>Here is the same example in plain PHP without any optimization.
+<source lang="php">
+&lt;?
+    //This reverses and then swaps every other char
+    function SwapOrder($in){
+    $Split = str_split(strrev($in));
+    $x=*;
+    for ($i = 0; $i &lt; count($Split); $i+=2) {
+    $x .= $Split<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=__36__i%2B1&amp;from=Block_hashing_algorithm" rel="nofollow">?</a>$i+1</span>.$Split<span class="createlink"><a href="/ikiwiki.cgi?from=Block_hashing_algorithm&amp;page=__36__i&amp;do=create" rel="nofollow">?</a>$i</span>;
+    }
+    return $x;
+    }</source></p>
+
+<pre><code>//makes the littleEndian
+function littleEndian($value){
+return implode (unpack(&#39;H*&#39;,pack(&quot;V*&quot;,$value)));
+}
+
+$version = littleEndian(1);
+$prevBlockHash = SwapOrder(&#39;00000000000008a3a41b85b8b29ad444def299fee21793cd8b9e567eab02cd81&#39;);
+$rootHash = SwapOrder(&#39;2b12fcf1b09288fcaff797d71e950e71ae42b91e8bdb2304758dfcffc2b620e3&#39;);
+$time = littleEndian(1305998791);
+$bits = littleEndian(440711666); 
+$nonce = littleEndian(2504433986); 
+
+//concat it all
+$header_hex = $version . $prevBlockHash . $rootHash . $time . $bits . $nonce;
+
+//convert from hex to binary 
+$header_bin  = hex2bin($header_hex);
+//hash it then convert from hex to binary 
+$pass1 = hex2bin(  hash(&#39;sha256&#39;, $header_bin )  );
+//Hash it for the seconded time
+$pass2 = hash(&#39;sha256&#39;, $pass1);
+//fix the order
+$FinalHash = SwapOrder($pass2);
+
+echo   $FinalHash;
+</code></pre>
+
+<p>?&gt;
+</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../ASIC/">ASIC</a>
+
+<a href="../Block/">Block</a>
+
+<a href="../Block_timestamp/">Block timestamp</a>
+
+<a href="../Getblocktemplate/">Getblocktemplate</a>
+
+<a href="../Nonce/">Nonce</a>
+
+<a href="../Protocol_documentation/">Protocol documentation</a>
+
+<a href="../Transaction/">Transaction</a>
+
+<a href="../Vocabulary/">Vocabulary</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-12-12T16:27:58Z">Sat 12 Dec 2015 04:27:58 PM Europe</time>
+<!-- Created <time datetime="2010-12-19T20:42:13Z" pubdate="pubdate">Sun 19 Dec 2010 08:42:13 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

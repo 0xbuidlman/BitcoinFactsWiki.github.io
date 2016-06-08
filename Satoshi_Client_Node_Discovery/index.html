@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Satoshi Client Node Discovery</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Satoshi Client Node Discovery
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<h2 id="Overview">Overview</h2>
+
+<p>The Satoshi client discovers the IP address and port of nodes in several different ways.</p>
+
+<ol>
+<li>Nodes discover their own external address by various methods.</li>
+<li>Nodes receive the callback address of remote nodes that connect to them.</li>
+<li>Nodes makes DNS request to receive IP addresses.</li>
+<li>Nodes can use addresses hard coded into the software.</li>
+<li>Nodes exchange addresses with other nodes.</li>
+<li>Nodes store addresses in a database and read that database on startup.</li>
+<li>Nodes can be provided addresses as command line arguments</li>
+<li>Nodes read addresses from a user provided text file on startup</li>
+</ol>
+
+
+<p>A timestamp is kept for each address to keep track of when the node
+address was last seen. The AddressCurrentlyConnected in <a href="https://github.com/bitcoin/bitcoin/blob/master/src/net.cpp">net.cpp</a> handles
+updating the timestamp whenever a message is received from a node.
+Timestamps are only updated on an address and saved to the database
+when the timestamp is over 20 minutes old.</p>
+
+<p>See the Node Connectivity article for information on which type of
+addresses take precedence when actually connecting to nodes.</p>
+
+<p>In the first section we will cover how a node handles a request for
+addresses via the &quot;getaddr&quot; message. By understanding the role of
+timestamps, it will become more clear why timestamps are kept the way
+they are for each of the different ways an address is discovered.</p>
+
+<h2 id="Handling_Message_getaddr">Handling Message &quot;getaddr&quot;</h2>
+
+<p>When a node receives a &quot;getaddr&quot; request, it first figures out how many
+addresses it has that have a timestamp in the last 3 hours.
+Then it sends those addresses, but if there are more than 2500 addresses
+seen in the last 3 hours, it selects around 2500 out of the available
+recent addresses by using random selection.</p>
+
+<p>Now lets look at the ways a node finds out about node addresses.</p>
+
+<h2 id="Discovery_Methods">Discovery Methods</h2>
+
+<h3 id="Local_Client.27s_External_Address">Local Client&#39;s External Address</h3>
+
+<p>The client uses public web services which return the information to determine its own external, routable IP address.</p>
+
+<p>The client runs a thread called ThreadGetMyExternalIP (in <a href="https://github.com/bitcoin/bitcoin/blob/master/src/net.cpp">net.cpp</a>)
+which attempts to determine the client&#39;s IP address as seen from the outside
+world.</p>
+
+<p>First, it attempts to connect to 91.198.22.70 port 80, which should be
+the checkip.dyndns.org server. If connection fails, a DNS request is made
+for checkip.dyndns.org and a connection is attempted to that address.
+Next, it attempts to connect to 74.208.43.192 port 80, which should be
+the www.showmyip.com server. If connection fails, a DNS request is made
+for www.showmyip.com and a connection is attempted to that address.</p>
+
+<p>For each address attempted above, the client attempts to connect,
+send a HTTP request, read the appropriate response line, and parse the
+IP address from it.
+If this succeeds, the IP address is returned, it is advertised to any connected
+nodes, and then the thread finishes (without proceeding to the next
+address).</p>
+
+<h3 id="Connect_Callback_Address">Connect Callback Address</h3>
+
+<p>When a node receives an initial &quot;version&quot; message, and that node initiated the connection, then the node advertises its address to the remote so that it can connect back to the local node if it wants to.</p>
+
+<p>After sending its own address, it sends a &quot;getaddr&quot; request message to the remote node to learn about more addresses, if the remote node version is recent or if the local node does not yet have 1000 addresses.</p>
+
+<h3 id="IRC_Addresses">IRC Addresses</h3>
+
+<p>As of version 0.6.x the Bitcoin client no longer uses IRC bootstrapping by default, and as of version 0.8.2 support for IRC bootstrapping has been removed completely.  This documentation below is accurate for most prior versions.</p>
+
+<p>In addition to learning and sharing its own address, the node learned about other node addresses via an IRC channel. See <a href="https://github.com/bitcoin/bitcoin/blob/847593228de8634bf6ef5933a474c7e63be59146/src/irc.cpp">irc.cpp</a>.</p>
+
+<p>After learning its own address, a node encoded its own address into a string to be used as a nickname. Then, it randomly joined an IRC channel named between #bitcoin00 and #bitcoin99. Then it issued a WHO command. The thread read the lines as they appeared in the channel and decoded the IP addresses of other nodes in the channel. It did this in a loop, forever, until the node was shutdown.</p>
+
+<p>When the client discovered an address from IRC, it set the timestamp on the address to the current time, but it used a &quot;penalty&quot; of 51 minutes, which means it looked like it was actually seen almost an hour earlier.</p>
+
+<h3 id="DNS_Addresses">DNS Addresses</h3>
+
+<p>Upon startup, if peer node discovery is needed, the client then issues DNS requests to learn about the addresses of other peer nodes.  The client includes a list of host names for DNS services that are seeded.  As-of May 17, 2012 the list (from chainparams.cpp (8.1)) includes:</p>
+
+<ul>
+<li>bitseed.xf2.org</li>
+<li>dnsseed.bluematt.me</li>
+<li>seed.bitcoin.sipa.be</li>
+<li>dnsseed.bitcoin.dashjr.org</li>
+<li>seed.bitcoinstats.com</li>
+</ul>
+
+
+<p>A DNS reply can contain multiple IP addresses for a requested name.</p>
+
+<p>Addresses discovered via DNS are initially given a zero timestamp, therefore they are not advertised in response to a &quot;getaddr&quot; request.</p>
+
+<h3 id="Hard_Coded_Seed_Addresses">Hard Coded &quot;Seed&quot; Addresses</h3>
+
+<p>The client contains hard coded IP addresses that represent bitcoin nodes.</p>
+
+<p>These addresses are only used as a last resort, if no other method has produced any addresses at all. When the loop in the connection handling thread ThreadOpenConnections2() sees an empty address map, it uses the &quot;seed&quot; IP addresses as backup.</p>
+
+<p>There is code is move away from seed nodes when possible. The presumption is that this is to avoid overloading those nodes. Once the local node has enough addresses (presumably learned from the seed nodes), the connection thread will close seed node connections.</p>
+
+<p>Seed Addresses are initially given a zero timestamp,
+therefore they are not advertised in response to a &quot;getaddr&quot; request.</p>
+
+<h3 id="Ongoing_addr_advertisements">Ongoing &quot;addr&quot; advertisements</h3>
+
+<p>Nodes may receive addresses in an &quot;addr&quot; message after having sent a &quot;getaddr&quot; request, or &quot;addr&quot; messages may arrive  unsolicited, because nodes advertise addresses gratuitously when they relay addresses (see below), when they advertise their own address periodically, and when a connection is made.</p>
+
+<p>If the address is from a really old version, it is ignored; if from a not-so-old version, it is ignored if we have 1000 addresses already.</p>
+
+<p>If the sender sent over 1000 addresses, they are all ignored.</p>
+
+<p>Addresses received from an &quot;addr&quot; message have a timestamp, but the timestamp is not necessarily honored directly.</p>
+
+<p>For every address in the message:</p>
+
+<ol>
+<li>If the timestamp is too low or too high, it is set to 5 days ago.</li>
+<li>We subtract 2 hours from the timestamp and add the address.</li>
+</ol>
+
+
+<p>Note that when any address is added, for any reason, the code that calls AddAddress() does not check to see if it already exists. The AddAddresss() function in <a href="https://github.com/bitcoin/bitcoin/blob/master/src/net.cpp">net.cpp</a> will do that, and if the address already exists, further processing is done to update the address record. If the advertised services of the address have changed, that is updated and stored.</p>
+
+<p>If the address has been seen in the last 24 hours and the timestamp is currently over 60 minutes old, then it is updated to 60 minutes ago.</p>
+
+<p>If the address has NOT been seen in the last 24 hours, and the timestamp is currently over 24 hours old, then it is updated to 24 hours ago.</p>
+
+<h4 id="Address_Relay">Address Relay</h4>
+
+<p>Once addresses are added from an &quot;addr&quot; message (see above), they then may be relayed to the other nodes. First, the following criteria must be set <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=9&amp;from=Satoshi_Client_Node_Discovery" rel="nofollow">?</a>9</span>:</p>
+
+<ol>
+<li>The address timestamp, after processing, is within 60 minutes of the current time</li>
+<li>The &quot;addr&quot; message contains 10 addresses or less</li>
+<li>And fGetAddr is not set on the node. fGetAddr starts false, is set to true when we request addresses from a node, and it is cleared when we receive less than 1000 addresses from a node.</li>
+<li>The address must be routable.</li>
+</ol>
+
+
+<p>For every address that meets the above criteria, the node hash the address, the current day (in the form of an integer), and a random 256 bit value (generated at client startup). The node takes the two addresses with the lowest hash values and relays &quot;addr&quot; messages to them. This ensures that each node only relays &quot;addr&quot; messages to two other clients at any given time, that the two other clients are randomly selected, and that the random selection starts over at least once every 24 hours.</p>
+
+<h4 id="Self_broadcast">Self broadcast</h4>
+
+<p>Every 24 hours, the node advertises its own address to all connected nodes.</p>
+
+<p>It also clears the list of the addresses we think the remote node has, which will trigger a refresh of sends to nodes. This code is in SendMessages() in <a href="https://github.com/bitcoin/bitcoin/blob/master/src/main.cpp">main.cpp</a>.</p>
+
+<h4 id="Old_Address_Cleanup">Old Address Cleanup</h4>
+
+<p>In SendMessages() in <a href="https://github.com/bitcoin/bitcoin/blob/master/src/main.cpp">main.cpp</a>, there is code to remove old addresses.</p>
+
+<p>This is done every ten minutes, as long as there are 3 active connections.</p>
+
+<p>The node erases messages that have not been used in 14 days as long as there are at least 1000 addresses in the map, and as long as the erasing process has not taken more than 20 seconds.</p>
+
+<h3 id="Addresses_stored_in_the_Database">Addresses stored in the Database</h3>
+
+<p>Addresses are stored in the database when AddAddress() is called.</p>
+
+<p>Addresses are read on startup when AppInit2() calls LoadAddresses(), which is located in <a href="https://github.com/bitcoin/bitcoin/blob/master/src/db.cpp">db.cpp</a>.</p>
+
+<p>Currently, it appears all addresses are stored all at once whenever any address is stored or updated (14.1). Indeed, AddAddress is seen to take over .01 seconds in various testing and is typically called tens of thousands of times in the initial 12 hours of running the client.</p>
+
+<h3 id="Command_Line_Provided_Addresses">Command Line Provided Addresses</h3>
+
+<p>The user can specify nodes to connect to with the
+    -addnode 
+command line argument. Multiple nodes may be specified.</p>
+
+<p>Addresses provided on the command line are initially given a zero timestamp, therefore they are not advertised in response to a &quot;getaddr&quot; request.</p>
+
+<p>The user can also specify an address to connect to with the -connect 
+command line argument. Multiple nodes may be specified.</p>
+
+<p>The -connect argument differs from -addnode in that -connect addresses are not added to the address database and when -connect is specified, only those addresses are used.</p>
+
+<h3 id="Text_File_Provided_Addresses">Text File Provided Addresses</h3>
+
+<p>The client will automatically read a file named &quot;addr.txt&quot; in the bitcoin data directory and will add any addresses it finds in there as node addresses. These nodes are given no special preference over other addresses. They are just added to the pool.</p>
+
+<p>Addresses loaded from the text file are initially given a zero timestamp, therefore they are not advertised in response to a &quot;getaddr&quot; request.</p>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../Network/#Bootstrapping">Network - Boostrapping</a></li>
+</ul>
+
+
+<h2 id="References">References</h2>
+
+<p>8.1: <a href="https://github.com/bitcoin/bitcoin/blob/master/src/chainparams.cpp#L139">bitcoin/src/chainparams.cpp at master</a><br />
+14.1: <a href="http://bitcointalk.org/index.php?topic=26436.0">Lots of disk activity on Bitcoin startup: easy fix?</a></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Developer/" rel="tag">Developer</a>
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Bitcoind/">Bitcoind</a>
+
+<a href="../Network/">Network</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2014-03-13T12:24:15Z">Thu 13 Mar 2014 12:24:15 PM Europe</time>
+<!-- Created <time datetime="2011-09-17T21:37:09Z" pubdate="pubdate">Sat 17 Sep 2011 09:37:09 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

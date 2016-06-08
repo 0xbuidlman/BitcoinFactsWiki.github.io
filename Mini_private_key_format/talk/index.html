@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>talk</title>
+
+<link rel="stylesheet" href="../../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../../">bitcoin</a>/ 
+
+<a href="../">Mini private key format</a>/ 
+
+</span>
+<span class="title">
+talk
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>I&#39;m not sure I like the idea of encouraging people to use less than the current 160bits of entropy in a private key. <a>Willphase</a> 14:15, 25 September 2011 (GMT)</p>
+
+<blockquote><p> The original private key has 256bits of entropy, not 160, hasn&#39;t it? (I don&#39;t know why the current wiki page compares it with 160 bits) --<a>T X</a> 20:03, 27 November 2011 (GMT)</p></blockquote>
+
+<h1 id="Application">Application</h1>
+
+<p>When minikeys should or should not be used is not really obvious to me from reading this article. From reading the introduction I&#39;m especially getting the impression that minikeys should always be prefered.</p>
+
+<p>Any disadvantages of minikeys are not directly mentioned - only indirectly via the entropy section, but this might not be understandable to anyone not that familiar with cryptography.</p>
+
+<p>In forum and github posts I however got the impression, that due to the reduced entropy minikeys should be used for smaller amounts only. Is this the case for the SHA256 or also the PBKDF2 computed version?</p>
+
+<p>Are there any other disadvantages? Would it be problematic if 1M (2M/4M/10M/...) bitcoins were stored in 1 (0.1/0.01/...) BTC mini private keys (via for instance Casascius or Casascius alike coins)? Is it really the case that a minikey is always &quot;favorable for use in QR codes&quot;, under all circumstances? --<a>T X</a> 00:44, 10 November 2011 (GMT)</p>
+
+<blockquote><p>The only concern would be the number of bitcoins stored in low-entropy keys.  The concern expressed by the developers (in #bitcoin-dev at around the same time I made the PBKDF2 edits - you can review the logs) wasn&#39;t whether a few Casascius coins were at risk, but rather, whether a low-entropy format would become popular enough as time goes on to make the constantly increasing reward for a successful attack eventually intersect with the constantly decreasing resource cost to attack it.</p>
+
+<p>Also the developers noted that QR codes are much more efficient when they are made strictly from the set of uppercase alphanumerics, as it switches to a QR encoding that spends fewer bits per character.  Mixed case QR codes require a full 8-bit character set (IIRC), which takes up significantly more space than the QR alphanumeric encoding which doesn&#39;t support lowercase.  The developers expressed a willingness to entertain an alternate encoding of full Bitcoin private keys that used base36 (or perhaps base44, since that&#39;s how many printable characters in the QR alphanumeric set), which would result in a significantly reduced footprint in QR codes. <a>Casascius</a> 03:32, 10 November 2011 (GMT)</p></blockquote>
+
+<h1 id="Purpose_of_appending_the_.27.3F.27_for_determining_algorithm.3F">Purpose of appending the &#39;?&#39; for determining algorithm?</h1>
+
+<p>At first I was wondering why this should be appended, why not just checking the first byte of SHA256 of the minikey as is. The reason I now could think of is that you don&#39;t want someone to be able to tell whether a bitcoin private key was generated from a minikey. Is that a good or a bad thing? Is that the main reason? Are there any other reasons? Maybe such reasons should be explained on the wiki page? --<a>T X</a> 16:32, 26 November 2011 (GMT)</p>
+
+<h1 id="Terminology">Terminology</h1>
+
+<p>For a non-developer it is not obvious whether a certain minikey is the SHA256 or stronger PBKDF2 version. So for instance if a user got a receipt saying &quot;minikey: ...&quot;, the user does not know whether s/he should hurry to redeem it or not. Maybe two distinct names should be used for the SHA256 and PBKDF2 versions? --<a>T X</a> 00:44, 10 November 2011 (GMT)</p>
+
+<blockquote><p> I don&#39;t think it will be a major issue.  If there&#39;s a lot of them out there, they could easily be described by the product.  For example, one could name &quot;all Casascius coins with the &#39;casacius&#39; misspelling&quot; and accurately describe the set of affected coins, if a fault in 22-char sha256 keys were to be found. <a>Casascius</a> 03:32, 10 November 2011 (GMT)</p>
+
+<p> True, that could easily be done through the thing that embeds the minikey if this embedding thing is a fixed product version (like the casacius coins). But what if only the minikey is available without a recognisable product(which could probably easily happen if this format were widely adopted)?</p>
+
+<p> But on second thought, even if having two minikey names this problem would still exist. Someone could still just print either minikey version and the user will not know which one that is without doing the first two decoding steps on a computer. So another thought would be: Adding a Reserved Minikey Version Character?</p>
+
+<p> --<a>T X</a> 04:19, 25 November 2011 (GMT)</p>
+
+<p> Hm, after some more thoughts, I think I might be able to partially answer this to myself: If I were receiving a minikey from an untrusted/unknown party, the minikey is pretty much worthless anyway due to not being able to verify that it is a valid minikey until getting access to a computer. As you said before, if it is a known, public party then I can usually get information probably somewhere online about the used algorithm at any time. If it is a trusted but non-public party I want to get a minikey from then the my trusting that the other party chose a good minikey algorithm is marginal compared to my already given trust in the other party that they have generated a valid minikey in general.</p>
+
+<p> Now there&#39;s just one scenario left I can come up with: I might have obtained lots of minikeys from trusted, non-public parties which I had all put in my piggy bank at home. Now, five years later some issues came up with certain minikey algorithms which suggests anyone having such minikeys to redeem the value as soon as possible. If only about 5% of the minikeys in my piggy bank were using the broken minikey algorithm, I&#39;d still have to copy and check all of them on my computer.</p>
+
+<p> Maybe the conclusion could be that you shouldn&#39;t save &#39;anonymous&#39; minikeys (if any due to the lower entropy). Don&#39;t know. --<a>T X</a> 15:25, 26 November 2011 (GMT)</p></blockquote>
+
+<h1 id="Adding_a_Reserved_Minikey_Version_Character.3F">Adding a Reserved Minikey Version Character?</h1>
+
+<p>What do you think about sacrificing another character to visibly allow knowing the chosen algorithm of this minikey? E.g. the first &#39;S&#39; will still show that it&#39;s a minikey, but the second letter could note the selected algorithm (for instance &#39;0&#39; for sha256, &#39;1&#39; for PBKDF2-SHA256).</p>
+
+<p>Advantages:</p>
+
+<ul>
+<li>Selected algorithm visibility / minikey &#39;strength&#39; visibility</li>
+<li>Easy Extensibility</li>
+</ul>
+
+
+<p>For instance if sha256 were at some day considered broken or improvements for the algorithm were coming up, we wouldn&#39;t need to reserve a new letter instead of the &#39;S&#39;, due to the minikey reserved version character in the second character. --<a>T X</a> 04:18, 25 November 2011 (GMT)</p>
+
+<h1 id="Entropy_Considerations">Entropy Considerations</h1>
+
+<p>The entropy is much lower due to the thrown away candidates, isn&#39;t it? So log2(58<sup>21</sup>/2<sup>7</sup>)?</p>
+
+<p>&quot;The 30-character version offers over 169 bits, which exceeds the 160-bits found in a Bitcoin address.&quot; But practically this doesn&#39;t make 30-char-minikeys more secure than 160bit bitcoin addresses, as only the 160bit bitcoin addresses are being used within the network anyway, right? --<a>T X</a> 00:44, 10 November 2011 (GMT)</p>
+
+<blockquote><p> Correct, if a Bitcoin address has 160 bits, then the extra bits in the private key will probably add little or no value. <a>Casascius</a> 03:32, 10 November 2011 (GMT)</p></blockquote>
+
+<h1 id="PBKDF2">PBKDF2</h1>
+
+<h2 id="HMAC-SHA1_or_HMAC-SHA256.3F">HMAC-SHA1 or HMAC-SHA256?</h2>
+
+<p>Is HMAC&minus;SHA1 or HMAC&minus;SHA256 being used? --<a>T X</a> 01:01, 10 November 2011 (GMT)</p>
+
+<blockquote><p> I implemented an HMAC-SHA1 on my fork on Github just because the code was readily available.  The developers&#39; response was along the lines of &quot;why should we make use of a hashing algorithm on its way out the door when we don&#39;t have to, it makes us look less sophisticated&quot;.  I tend to agree and would favor HMAC-SHA256, was just a matter of how much time I had to throw at it. <a>Casascius</a> 03:32, 10 November 2011 (GMT)</p>
+
+<p> Oki doki, makes sense for quick prototyping reasons. However for making it a &#39;Standard&#39; probably the best available one today should be chosen, shouldn&#39;t it? Also kind of in the spirit of <a href="http://iang.org/ssl/hn_hypotheses_in_secure_protocol_design.html">Ian Grigg&#39;s hypotheses</a>. --<a>T X</a> 04:18, 25 November 2011 (GMT)</p></blockquote>
+
+<h2 id="Use_exponential_rounds_encoding">Use exponential rounds encoding</h2>
+
+<p>With the values from 0x0128 to 0x01FF being reserved about another 7.75 Bits (log2 (0xFF - 0x27)) of entropy would be lost. I don&#39;t think that for instance very similar number of rounds are needed. Instead the number of rounds could be encoded exponentially and reserved in less bits. For instance:</p>
+
+<ul>
+<li>(SHA256 &amp; 0xFF03) == 0x0100 -&gt; 4096 rounds</li>
+<li>(SHA256 &amp; 0xFF03) == 0x0101 -&gt; 8192</li>
+<li>(SHA256 &amp; 0xFF03) == 0x0102 -&gt; 16384</li>
+<li>(SHA256 &amp; 0xFF03) == 0x0103 -&gt; 32768</li>
+</ul>
+
+
+<p>This would only remove about 2 instead of the 7.75Bits of entropy. --<a>T X</a> 16:11, 26 November 2011 (GMT)</p>
+
+<h1 id="Tagging_Stable_Versions">Tagging Stable Versions</h1>
+
+<p>Just as a note and thought: Before including a minikey format in the bitcoin source code and after all questions and considerations have been resolved a fixed version should be tagged so that other people could rely on certain properties of a certain minikey version. Until then the whole thing (including the simple sha256 version?) should be explicitly marked as a draft, stating that any adoption in for instance commercial products should be done on one&#39;s own risk. --<a>T X</a> 04:18, 25 November 2011 (GMT)</p>
+
+<h1 id="More_specific_applications_for_simple_SHA256_minikeys">More specific applications for simple SHA256 minikeys</h1>
+
+<p>&quot;The SHA256 function is provided for the convenience of hardware and software environments that offer very limited computational power, such as microcontrollers&quot;</p>
+
+<p>Would you mind explaining a little further in which use cases it might be desireable to compute minikeys on for instance microcontrollers? Are they common? Do they justify the necessity of a weaker minikey version?</p>
+
+<p>If you have a certain product like your &#39;casacius coins&#39;, one possible application area, I guess you probably don&#39;t do this on microcontrollers. You usually have enough space + money for machines with enough computational power generating minikeys in PBKFD2-SHA256 format.</p>
+
+<p>I saw that you, <a>Casascius</a>, were playing with <span class="createlink"><a href="/ikiwiki.cgi?from=Mini_private_key_format%2Ftalk&amp;page=Casascius_Bitcoin_POS_system&amp;do=create" rel="nofollow">?</a>POS systems</span>: Is that the main application for the SHA256 minikey version you had in mind? Won&#39;t most embedded devices need an internet connection to be useful anyway, just like such a POS system, which will in most use cases allow the outsourcing of computational intensive tasks, like a PBKFD2-SHA256 generation? Is there really a need to be able to calculate minikeys directly on tiny embedded systems? --<a>T X</a> 04:18, 25 November 2011 (GMT)</p>
+
+<hr />
+
+<h1 id="z-Probably.29_Finished_Discussions">(Probably) Finished Discussions</h1>
+
+<h2 id="Python_Code">Python Code</h2>
+
+<p>What was the &quot;additionalSecurity&quot; flag supposed to do? It seems unused. --<a>T X</a> 00:44, 10 November 2011 (GMT)</p>
+
+<blockquote><p> It was to force all codes to only pass the 717th round checksum, which is computationally intensive in slow interpreted languages like Javascript.  But I would favor scrapping the arbitrary 717th round thing in favor of PBKDF2. <a>Casascius</a> 03:32, 10 November 2011 (GMT)
+ Ok, agreed, also makes sense to me to remove the 717th round sha256 in favour for PBKDF2. I removed it from the python code. --<a>T X</a> 22:31, 20 November 2011 (GMT)</p></blockquote>
+
+<h2 id="z-17_round_SHA256">717 round SHA256</h2>
+
+<p><a href="https://github.com/bitcoin/bitcoin/pull/220#issuecomment-2185128">&quot;I also got rid of the 717-round stuff. I haven&#39;t used any such codes on physical bitcoins so it can be scrapped right now.&quot;</a></p>
+
+<p>Does that mean that the 717 round sha256 version mentioned on this wiki page is deprecated due to a superior PBKDF2 version? --<a>T X</a> 00:44, 10 November 2011 (GMT)</p>
+
+<blockquote><p> The 717 round bit was mostly a proposal, I am not aware of any use in the field.  I did not use them in Casascius Coins.  The PBKDF2 version would be preferred long term. <a>Casascius</a> 03:32, 10 November 2011 (GMT)
+ Oki doki, makes sense (as already said above) --<a>T X</a> 22:31, 20 November 2011 (GMT)</p></blockquote>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../">Mini private key format</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2011-11-27T20:03:04Z">Sun 27 Nov 2011 08:03:04 PM Europe</time>
+<!-- Created <time datetime="2011-09-25T14:15:58Z" pubdate="pubdate">Sun 25 Sep 2011 02:15:58 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

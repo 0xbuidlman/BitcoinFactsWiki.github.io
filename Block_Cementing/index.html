@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Block Cementing</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Block Cementing
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Block_Cementing&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>A term <a href="https://bitcointalk.org/index.php?topic=130222.msg1392450#msg1392450">coined by Meni Rosenfeld</a> for the following miner policy:</p>
+
+<pre><code>Ignore alternate chains if they contradict more than N blocks of history known to this miner.
+</code></pre>
+
+<p>This proposal is a possible way to combat double spends. If honest miners cement each block N blocks after it is received, an attacker has a deadline of N blocks for the release of his alternate chain that contains the double spend transaction (this in opposed to without cementing, where an attacker can theoretically wait a very long time while building his alternate chain, in the hopes of winning the race to build the longest chain.</p>
+
+<h2 id="Potential_Problems">Potential Problems</h2>
+
+<p>Cementing has some potential problems, and might not be good in practice. From the thread linked above by Meni:</p>
+
+<p>**I call this practice &quot;cementing&quot; and it has some problems, similar to what we would have if there was no blockchain at all. The basic idea is that a node could be stuck on &quot;the wrong version&quot; after being isolated and fed bad data from an attacker, and would have no way to recover even after being exposed to the honest network.</p>
+
+<p>**</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2012-12-13T01:41:44Z">Thu 13 Dec 2012 01:41:44 AM Europe</time>
+<!-- Created <time datetime="2012-12-13T01:41:44Z" pubdate="pubdate">Thu 13 Dec 2012 01:41:44 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

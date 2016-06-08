@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>talk</title>
+
+<link rel="stylesheet" href="../../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../../">bitcoin</a>/ 
+
+<a href="../">OP CHECKSIG</a>/ 
+
+</span>
+<span class="title">
+talk
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<h1 id="Redundant_step.3F">Redundant step?</h1>
+
+<p>Under &quot;How it works&quot;, we have steps 2 and 6:</p>
+
+<ul>
+<li><ol>
+<li>A new subscript is created from the instruction from the most recent OP_CODESEPARATOR to the end of the script. If there is no OP_CODESEPARATOR the entire script becomes the subscript (hereby referred to as subScript)</li>
+</ol>
+</li>
+<li><ol>
+<li>All OP_CODESEPARATORS are removed from subScript</li>
+</ol>
+</li>
+</ul>
+
+
+<p>However, doesn&#39;t step 6 seem redundant? <a>Vegard</a></p>
+
+<p>Answer: (<a>sirk390</a>)
+The comment for step 6. in the bitcoin sources help to understand this (script.cpp:882)
+    // In case concatenating two scripts ends up with two codeseparators,
+    // or an extra one at the end, this prevents all those possible incompatibilities.
+In step 2, only OP_CODESEPARATOR before OP_CHECKSIG are removed. In step OP_CODESEPARATOR after OP_CHECKSIG are also removed.</p>
+
+<h2 id="Update_with_OP_RETURN">Update with OP_RETURN</h2>
+
+<p>I&#39;m searching a schema like the one from jenjix but updated with the OP_RETURN code, anyone can updare the page to add this new feature information in the raw transaction explanation? I also see that for now doesn&#39;t exist either a page on the OP_RETURN on this wiki... <a>Pietrod</a></p>
+
+<h1 id="More_info">More info</h1>
+
+<p>Maybe add short description from here <a href="../../Contracts/#Theory">Contracts</a> for all SIGHASH_*? <a>Mad</a></p>
+
+<h1 id="Code_samples_and_raw_dumps">Code samples and raw dumps</h1>
+
+<p>I think there is some error in the section &quot;Code samples and raw dumps&quot; - The input script is:</p>
+
+<p>&quot;04 11 db 93 e1 dc db 8a
+01 6b 49 84 0f 8c 53 bc
+1e b6 8a 38 2e 97 b1 48
+2e ca d7 b1 48 a6 90 9a
+5c b2 e0 ea dd fb 84 cc
+f9 74 44 64 f8 2e 16 0b
+fa 9b 8b 64 f9 d4 c0 3f
+99 9b 86 43 f6 56 b4 12
+a3
+ac&quot;</p>
+
+<p>and should probably be &quot;304402204e45e16932b8af514961a1d3a1a25fdf3f4f7732e9d624c6c61548ab5fb8cd410220181522ec8eca07de4860a4acdd12909d831cc56cbbac4622082221a8768d1d0901&quot;, at least according to the Block Explorer:
+http://blockexplorer.com/rawtx/f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16
+--<a>ThePiachu</a> 22:46, 21 March 2012 (GMT)</p>
+
+<blockquote><p>Indeed, I had noticed the same problem. I have fixed the example.
+<a>OneEyed</a> (<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=User_talk%3AOneEyed&amp;from=OP_CHECKSIG%2Ftalk" rel="nofollow">?</a>talk</span>) 18:16, 4 August 2012 (GMT)</p></blockquote>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../">OP CHECKSIG</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-07-19T15:46:50Z">Sun 19 Jul 2015 03:46:50 PM Europe</time>
+<!-- Created <time datetime="2011-06-23T19:01:45Z" pubdate="pubdate">Thu 23 Jun 2011 07:01:45 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

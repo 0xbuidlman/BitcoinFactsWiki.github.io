@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Tor</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Tor
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p><strong>Tor</strong> is a distributed &#39;onion&#39; network, that makes it more difficult for an adversary to track any one peer on the network.  Tor also is very useful to access the &#39;uncensored&#39; internet in countries such as China and Iran. Preserving privacy means not only hiding the content of messages, but also hiding who is talking to whom (traffic analysis). Tor provides anonymous connections that are strongly resistant to both eavesdropping and traffic analysis.</p>
+
+<p>Bitcoin can run easily on the Tor network.</p>
+
+<h1 id="Tor_installation_.26amp.3B_use">Tor installation &amp; use</h1>
+
+<p><em>todo explain: onion routing (how tor network helps to anonymize), encryption used, exit nodes, routers</em><br /></p>
+
+<p>Please follow the instructions provided with installation files and read the <a href="http://www.torproject.org/download/download.html.en#warning">list of warnings</a>. <em>Tor doesn&#39;t magically anonymize all your traffic just because you install it.</em><br />
+Down the page you can find examples how to configure applications to use Tor to anonymize the origin of your traffic.<br />
+<a href="http://www.torproject.org/docs/tor-doc-windows.html.en">This</a> is a detailed installation guide for Windows. Before you setup Bitcoin or mIRC to use Tor, please install Tor and start in.<br />
+<span class="createlink"><a href="/ikiwiki.cgi?page=%3A20110109-tor-running.png&amp;do=create&amp;from=Tor" rel="nofollow">?</a>:20110109-tor-running.png</span> On the taskbar of your compute you&#39;ll see a small green onion when Tor is running.
+<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=%3A20110109-bitcoin-mirc-vidalia.png&amp;from=Tor" rel="nofollow">?</a>:20110109-bitcoin-mirc-vidalia.png</span></p>
+
+<h1 id="Bitcoin_Core">Bitcoin Core</h1>
+
+<p><em>See also <a href="https://github.com/bitcoin/bitcoin/blob/master/doc/tor.md">Bitcoin Core instructions for Tor</a></em></p>
+
+<h2 id="GUI">GUI</h2>
+
+<p>Once you have your Tor client up &amp; running, you can configure your Bitcoin client to use it.<br />
+Select in menu Settings -&gt; Options<br />
+<span class="createlink"><a href="/ikiwiki.cgi?from=Tor&amp;do=create&amp;page=%3A20110108-btc-options.png" rel="nofollow">?</a>:20110108-btc-options.png</span><br /></p>
+
+<p>Check &quot;Connect through socks 4 proxy&quot; with the address 127.0.0.1 and port 9050 (the Tor default port number)<br />
+<span class="createlink"><a href="/ikiwiki.cgi?page=%3A20110108-btc-client-tor-as-proxy.png&amp;do=create&amp;from=Tor" rel="nofollow">?</a>:20110108-btc-client-tor-as-proxy.png</span><br />
+Configuring an application to use Tor is also called to torify it.
+(needs a brief howto here)</p>
+
+<p><em>the note about bitcoin-otc promote on a more appropriate place in this page? reference to trading and IRC</em>
+Conducting business using <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=bitcoin-otc&amp;from=Tor" rel="nofollow">?</a>bitcoin-otc</span> can be done more anonymously when directly connected to a Freenode IRC hidden service.</p>
+
+<h2 id="bitcoind">bitcoind</h2>
+
+<p>Run bitcoind with -proxy=127.0.0.1:9050 (or whatever your SocksPort is).</p>
+
+<p>bitcoind will detect that you are using a proxy on 9050 and will force the &quot;nolisten&quot; flag.  If you are not running tor on 9050, you need to set &quot;nolisten&quot; manually otherwise you will listen on your public IP and possibly reveal that you are running a node.</p>
+
+<h1 id="Hidden_services">Hidden services</h1>
+
+<p> <a href="../Hidden_Service/">Hidden services</a> run within the Tor network and can be connected to using the -connect= parameter to bitcoind so long as bitcoin is configured to use a Tor proxy. Bitcoin users do not need to use hidden services, since Tor can be used to increase anonymity of normal internet traffic, including bitcoin connections, but there are some technical reasons why hidden services may be beneficial; for more information see the Tor project&#39;s documentation.</p>
+
+<p>Services are listed at <span class="createlink"><a href="/ikiwiki.cgi?page=Fallback_Nodes&amp;do=create&amp;from=Tor" rel="nofollow">?</a>Fallback Nodes</span> along with instructions for using them.</p>
+
+<h1 id="Pooled_Mining">Pooled Mining</h1>
+
+<p>Some mining pools are available as a hidden service on the tor network.  Any pool can be reached over tor.  The general methodology here is to tell your mining client to use your local Tor proxy.  This is client specific but there are some helpful hints.</p>
+
+<h2 id="Linux_.2F_BSD">Linux / BSD</h2>
+
+<p>Any client can have its traffic routed via Tor by using the torify command and invoking the miner with that.  Another method is to set the http_proxy environment variable as some miners use libraries which support that.</p>
+
+<h2 id="Windows_.2F_OS_X">Windows / OS X</h2>
+
+<p>It is possible to set the http_proxy environment variable as some miners use libraries which support that.</p>
+
+<h1 id="mIRC">mIRC</h1>
+
+<p>mIRC is a popular IRC client. This is a guide how to connect to Freenode IRC using Tor + SASL + mIRC.<br /></p>
+
+<h2>Register your nick with freenode nickserv<br /></h2>
+
+<p>Freenode only allows SASL authenticated users to connect to the onion IRC server. SASL authentication works only with a registered nickname.<br />
+Connect to Freenode IRC without using tor &amp; execute<br />
+/msg nickserv register  <br />
+<br />
+You will see something like this<br />
+-NickServ- An email containing nickname activation instructions has been sent to <br />
+-NickServ- If you do not complete registration within one day, your nickname will expire.<br />
+<br />
+To finish your nick registration go the provided email and copy/paste the command from e-mail to irc.<br /></p>
+
+<h2>Add SASL support to your mIRC installation<br /></h2>
+
+<p>Download the SASL.dll and sasl.mrc files and copy them to your mIRC installation directory<br />
+Load sasl.mrc script (Alt + R to open script editor, Ctrl + L to load file, browse to sasl.mrc, press OK or &quot;save &amp; exit&quot;).<br />
+<span class="createlink"><a href="/ikiwiki.cgi?from=Tor&amp;do=create&amp;page=%3A20110109-sasl-script-loaded.png" rel="nofollow">?</a>:20110109-sasl-script-loaded.png</span><br />
+Type /dialog -m SASL.main SASL.main to open the SASL connection manager.<br />
+<span class="createlink"><a href="/ikiwiki.cgi?from=Tor&amp;page=%3A20110109-sasl-dialog.png&amp;do=create" rel="nofollow">?</a>:20110109-sasl-dialog.png</span><br />
+Add Freenode entry.<br />
+<span class="createlink"><a href="/ikiwiki.cgi?from=Tor&amp;do=create&amp;page=%3A20110109-sasl-manager.png" rel="nofollow">?</a>:20110109-sasl-manager.png</span><span class="createlink"><a href="/ikiwiki.cgi?from=Tor&amp;do=create&amp;page=%3A20110109-sasl-manager-network.png" rel="nofollow">?</a>:20110109-sasl-manager-network.png</span><br />
+Network is Freenode.<br />
+Username and NS Password must match your nickserv reservation.<br />
+Auth Type can be PLAIN<br /></p>
+
+<h2>setup mIRC to use Tor<br /></h2>
+
+<p>Add the entry for Freenode onion IRC server<br />
+<span class="createlink"><a href="/ikiwiki.cgi?from=Tor&amp;do=create&amp;page=%3A20110109-onion-irc-add.png" rel="nofollow">?</a>:20110109-onion-irc-add.png</span><br />
+Configure mIRC to use a Proxy (your local Tor proxy)<br />
+<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=%3A20110109-mirc-proxy.png&amp;from=Tor" rel="nofollow">?</a>:20110109-mirc-proxy.png</span><br />
+<br />
+Now you should be able to connect.<br />
+<a href="https://www.bitcointalk.org/index.php?topic=2602">Bitcoin forum where this topic is discussed</a></p>
+
+<h1 id="How_Tor_works">How Tor works</h1>
+
+<p>Unlike Freenet, I2P, etc., Tor&#39;s security is very well-defined. While weaknesses do exist (described below), they have been known since Tor was created, and new weaknesses of significance are not expected.</p>
+
+<p>Tor sends TCP packets over 3 (normal) or 7 (hidden services) Tor relays. This is why it is so slow: your packet might have to go through 100 computers (counting Internet routers) before it reaches its destination. Tor uses multiple <em>layers</em> of encryption that are <em>pulled away</em> for each node. Hence the name <strong>T</strong>he <strong>O</strong>nion <strong>R</strong>outer, which is always capitalized as <strong>Tor</strong>, and never TOR or t.o.r.</p>
+
+<p>Say that I want to connect to bitcoin.org through Tor. I first select three Tor relays that I know about. Then, I send a message to my ISP that looks like this:
+    Send to this IP: 
+    
+When Relay1 receives this, he decrypts the payload using his private key. The payload contains this:
+    Send to this Tor node: 
+    
+Relay2 decrypts his payload:
+    Send to this Tor node: 
+    
+Relay3 receives the real TCP payload, which he sends to the destination:
+    Send to this IP: 
+    
+The payload is not and can not be further encrypted by Tor. However, if the protocol itself uses encryption (HTTPS, SSH, etc.), the data will be encrypted. This means that the last node (the <em>exit node</em>) can see everything you do on HTTP sites, and can steal your passwords if they are transmitted unencrypted. Many people become exit nodes just so they can view this information -- Tor is much more dangerous than open WiFi for snooping!</p>
+
+<p>The encryption arrangement described above ensures that no single Tor node knows both the sender and the destination. Relay1 and your ISP know that you are using Tor and sending a packet at a certain time, but they don&#39;t know what you&#39;re sending or who you&#39;re sending to. Relay3 knows exactly what you&#39;re sending, but he can&#39;t determine who is sending it because Relay2 and Relay1 are blocking him. All three relays need to work together in order to conclusively connect the sender and the destination.</p>
+
+<p>However, Tor is weak to a <em>timing attack</em> that allows only two participants in certain positions to determine the sender with high accuracy. Consider this Tor connection:
+    Sender &lt;-&gt; S-ISP &lt;-&gt; Relay1 &lt;-&gt; Relay2 &lt;-&gt; Relay3 &lt;-&gt; D-ISP &lt;-&gt; Destination
+If the sender&#39;s ISP (S-ISP) and the destination are working together, they can record the size and times of packets sent and received. Over a large number of packets, they can determine with very high accuracy that the sender is, in fact, the person sending packets to the destination. This requires active surveillance or detailed logging by both sides. Relay1 can also perform the same role as S-ISP.</p>
+
+<p>Additionally, more configurations are possible if the underlying connection is not encrypted (normal HTTP, for example):</p>
+
+<ul>
+<li>S-ISP &amp; Relay3</li>
+<li>Relay1 &amp; Relay3</li>
+<li>S-ISP &amp; D-ISP</li>
+<li>Relay1 &amp; D-ISP
+This second set can always see that the sender is connected to the destination, but they can only see what the sender is doing on the site if the connection is not encrypted. (Pathnames are encrypted in HTTPS.)</li>
+</ul>
+
+
+<p>Because the first relay (the <em>entry node</em>) is a weak point in the connection, Tor takes certain defensive measures. When you first start Tor, it chooses three <em>entry guards</em> that don&#39;t change for the entire time that you run Tor. You will always use one of those three unless one goes down. If all of those nodes are safe and your ISP is safe, then you are OK.</p>
+
+<p>These timing attacks are of special importance to Bitcoin because anyone can be the &quot;destination&quot; in a connection. Packets are broadcast to every peer in the Bitcoin network. This might allow your ISP alone to associate your transactions to you without much difficulty. However, a timing attack relies on receiving at least several dozen packets from the sender, so the &quot;destination&quot; might actually have to be one of your direct Bitcoin peers. It&#39;s not too difficult to flood the Bitcoin network with peers, though. Because of this attack, it is wise to use an <a href="../EWallet/">EWallet</a> instead of the Bitcoin client when using Tor.</p>
+
+<p>To discover Tor relays, Tor uses a centralized directory server model. There are nine authoritative directory servers. To become a relay, you register with one of these. The directory servers share their data and produce a <em>network status consensus</em> document every so often containing all Tor nodes. Tor clients don&#39;t connect directly to the authoritative directory servers -- they connect to one of many <em>directory mirrors</em>, which have a copy of the network status consensus. Since there is no peer-to-peer bootstrap mechanism in Tor, the entire network can be destroyed if half of the authoritative directory servers are destroyed, and the entire network can be subverted if half of the authoritative directory servers become evil.</p>
+
+<p>Hidden services allow both the sender and destination to remain anonymous. A hidden service connection is made like this:</p>
+
+<ul>
+<li>The destination tells several Tor relays to act as <em>introduction points</em> for the hidden service. The destination stays connected to all of these introduction points through a regular three-node Tor circuit.</li>
+<li>The destination registers these introduction points on a Tor DHT. The introduction points are associated with the first 16 characters of an encoded SHA-1 hash of the destination&#39;s key. This is the information in .onion addresses. The use of SHA-1 is a possible weakness.</li>
+<li>The sender creates a four-node Tor circuit. The fourth node is called the <em>rendezvous point</em>.</li>
+<li>The sender searches the DHT for the introduction points of the desired hidden service. The sender connects to one through a regular three-node Tor circuit and, through the introduction point, tells the destination about the rendezvous point he has chosen.</li>
+<li>The destination connects to the rendezvous point over a three-node Tor circuit. The sender and destination are now in contact over a seven-node connection.</li>
+</ul>
+
+
+<p>For clients, hidden services are more secure than encrypted Tor HTTPS connections because:</p>
+
+<ul>
+<li>If the destination remains anonymous, they are less likely to become controlled by an evil party.</li>
+<li>The destination&#39;s ISP isn&#39;t involved as they are in the HTTPS case. Only these configurations are possible for a timing attack:
+
+<ul>
+<li>S-ISP &amp; Destination</li>
+<li>Relay1 &amp; Destination</li>
+</ul>
+</li>
+</ul>
+
+
+<p>Running a hidden service is more dangerous, however. A simple intersection attack can be performed by the hidden service&#39;s ISP alone:</p>
+
+<ul>
+<li>Your Internet service is cut off.</li>
+<li>If the hidden service went down at that exact moment, you are unmasked.
+The same sort of timing attacks as above are also possible.</li>
+</ul>
+
+
+<p>See the <a href="http://www.usenix.org/events/sec04/tech/full_papers/dingledine/dingledine_html/index.html">Tor design paper</a> for more info.</p>
+
+<h1 id="Exchange_Restrictions">Exchange Restrictions</h1>
+
+<p>Some exchanges will treat activity occurring through Tor with greater precautions.  For instance, the now-defunct Mt. Gox signup sheet read:</p>
+
+<blockquote><p> Please be advised that accessing your account via the Tor network and/or public proxies may result in a temporary suspension of your account, and having to submit AML documents.</p></blockquote>
+
+<h1 id="External_Tor_Hidden_Services">External Tor Hidden Services</h1>
+
+<ul>
+<li><a href="irc://p4fsi4ockecnea7l.onion">Freenode hidden service</a></li>
+</ul>
+
+
+<h1 id="External_links">External links</h1>
+
+<ul>
+<li><a href="http://tor.eff.org/">Tor project</a></li>
+<li><a href="http://www.torproject.org/docs/tor-doc-windows.html.en">Tor installation guide - Windows</a></li>
+<li><a href="https://trac.torproject.org/projects/tor/wiki/TheOnionRouter/TorFAQ">Tor FAQ</a></li>
+<li><a href="http://www.torproject.org/about/overview.html.en">how Tor works - overview</a></li>
+<li><a href="http://freenode.net/irc_servers.shtml#tor">Freenode over Tor info</a></li>
+<li><a href="http://wiki.honk-honk.org/wiki/SaslServ#mIRC">howto enable SASL in mIRC</a></li>
+<li><a href="http://honk-honk.org/SASL/SASL.dll">SASL.dll library for mIRC</a></li>
+<li><a href="http://honk-honk.org/SASL/sasl.mrc">sasl script for mIRC</a></li>
+<li><a href="http://freenode.net/sasl/">Freenode resources on SASL</a></li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Security/" rel="tag">Security</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Hidden_Service/">Hidden Service</a>
+
+<a href="../Wallet_Security_Dos_and_Donts_(Windows)/">Wallet Security Dos and Donts (Windows)</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-09-03T10:58:49Z">Thu 03 Sep 2015 10:58:49 AM Europe</time>
+<!-- Created <time datetime="2011-01-04T11:09:14Z" pubdate="pubdate">Tue 04 Jan 2011 11:09:14 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

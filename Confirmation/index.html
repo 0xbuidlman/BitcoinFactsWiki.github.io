@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Confirmation</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Confirmation
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=Confirmation" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>After a transaction is broadcast to the Bitcoin network, it may be included in a block that is published to the network.
+When that happens it is said that the transaction has been mined at a depth of 1 block.
+With each subsequent block that is found, the number of blocks deep is increased by one.
+To be secure against <a href="../Double_spending/">double spending</a>, a transaction should not be considered as <strong>confirmed</strong> until it is a certain number of blocks deep.</p>
+
+<p>The classic bitcoin client will show a transaction as &quot;n/unconfirmed&quot; until the transaction is 6 blocks deep.
+Merchants and exchanges who accept bitcoins as payment can and should set their own threshold as to how many blocks are required until funds are considered confirmed.
+When potential loss due to double spending as nominal, as with very inexpensive or non-fungible items, people may choose not to wait for a transaction to be confirmed, and complete the exchange as soon as it is seen on the network.
+Most exchanges and other merchants who bear the risk from double spending require 6 or more blocks.</p>
+
+<p>There is nothing special about the default, often-cited figure of 6 blocks. It was chosen based on the assumption that an attacker is unlikely to amass more than 10% of the hashrate, and that a negligible risk of less than 0.1% is acceptable.
+Both these figures are arbitrary, however;
+6 blocks are overkill for casual attackers, and at the same time powerless against more dedicated attackers with much more than 10% hashrate. (1.1)</p>
+
+<p>Coins generated aren&#39;t considered valid by the Bitcoin protocol for 100 blocks.
+It is advisable to wait some additional time for a better chance that the transaction will be propogated by all nodes.
+Some older bitcoin clients won&#39;t show generated coins as confirmed until they are 120 blocks deep.</p>
+
+<h2 id="Confirmation_Times">Confirmation Times</h2>
+
+<p>Each additional confirmation is a new <a href="../Block/">block</a> being found and added to the end of the <a href="../Blockchain/">blockchain</a>.</p>
+
+<p>Miners create blocks by solving the <a href="../Proof_of_work/">proof of work</a> for their proposed block. The block interval has an average of 10 minutes but not every block interval is exactly 10 minutes. In statistics it&#39;s called a <a href="https://en.wikipedia.org/wiki/Poisson_point_process">poisson process</a>, where random events happen with the same probability in each time interval. Another way of expressing this is that the mining process has no memory, so at every second a block has the same chance of being found. Poisson processes are well-understood but can be unintuative.</p>
+
+<p><span class="createlink"><a href="/ikiwiki.cgi?from=Confirmation&amp;do=create&amp;page=Block-interval.png" rel="nofollow">?</a>Block-interval.png</span></p>
+
+<p>There are lots of block intervals with a time less than 10 minutes but then a few block intervals much longer which bump up the average to 10 minutes. So the bitcoin network can get unlucky and a block won&#39;t be found for a whole hour.</p>
+
+<p><span class="createlink"><a href="/ikiwiki.cgi?page=Block-cumulative-interval.png&amp;do=create&amp;from=Confirmation" rel="nofollow">?</a>Block-cumulative-interval.png</span></p>
+
+<p>In a 10 minute interval, the probability of a block being found is about 63% (or 1 - e<sup>-1</sup>). So approximately two-thirds of the time a block will be found in 10 minutes or less. In 30 minutes a block has a 95% chance of being found, which rises to 99.7% if the time interval is 60 minutes.</p>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../Blocks/">Blocks</a></li>
+</ul>
+
+
+<h2 id="References">References</h2>
+
+<p>1.1: <a href="https://bitcoil.co.il/Doublespend.pdf">Analysis of hashrate-based double-spending</a></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Best_Practices/">Best Practices</a>
+
+<a href="../Bitcoin/">Bitcoin</a>
+
+<a href="../Clearing_Up_Misconceptions_About_Full_Nodes/">Clearing Up Misconceptions About Full Nodes</a>
+
+<a href="../Double-spending/">Double-spending</a>
+
+<a href="../Help:FAQ/">Help:FAQ</a>
+
+<a href="../Mining/">Mining</a>
+
+<a href="../Off-Chain_Transactions/">Off-Chain Transactions</a>
+
+<a href="../Vocabulary/">Vocabulary</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-06-07T14:24:02Z">Tue 07 Jun 2016 02:24:02 PM Europe</time>
+<!-- Created <time datetime="2011-02-15T22:48:23Z" pubdate="pubdate">Tue 15 Feb 2011 10:48:23 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

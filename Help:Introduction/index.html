@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Help:Introduction</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Help:Introduction
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>The purpose of this page is to provide a general overview of the Bitcoin system and economy.</p>
+
+<h2 id="Basic_Concepts">Basic Concepts</h2>
+
+<h3 id="Currency">Currency</h3>
+
+<p>Alice wants to buy the <a href="http://www.grasshillalpacas.com/alpacaproductsforbitcoinoffer.html">Alpaca socks</a> which Bob has for sale. In return, she must provide something of equal value to Bob. The most efficient way to do this is by using a medium of exchange that Bob accepts which would be classified as currency. Currency makes trade easier by eliminating the need for <a href="http://en.wikipedia.org/wiki/Coincidence_of_wants">coincidence of wants</a> required in other systems of trade such as barter. Currency adoption and acceptance can be global, national, or in some cases local or community-based.</p>
+
+<h3 id="Banks">Banks</h3>
+
+<p>Alice need not provide currency to Bob in-person. She may instead transfer this value by first entrusting her currency to a bank who promises to store and protect Alice&#39;s currency notes. The bank gives Alice a written promise (called a &quot;bank statement&quot;) that entitles her to withdraw the same number of currency bills that she deposited. Since the money is still Alice&#39;s, she is entitled to do with it whatever she pleases, and the bank (like most banks), for a small fee, will do Alice the service of passing on the currency bills to Bob on her behalf. This is done by Alice&#39;s bank by giving the dollar bills to Bob&#39;s bank and informing them that the money is for Bob, who will then see the amount the next time he checks his balance or receives his bank statement.</p>
+
+<p>Since banks have many customers, and bank employees require money for doing the job of talking to people and signing documents, banks in recent times have been using machines such as ATMs and web servers that do the job of interacting with customers instead of paid bank employees. The task of these machines is to learn what each customer wants to do with their money and, to the extent that it is possible, act on what the customer wants (for example, ATMs can hand out cash). Customers can always know how much money they have in their accounts, and they are confident that the numbers they see in their bank statements and on their computer screens accurately reflect the number of dollars that they can get from the bank on demand. They can be so sure of this that they can accept those numbers in the same way they accept paper banknotes (this is similar to the way people started accepting paper dollars when they had been accepting gold or silver).</p>
+
+<p>Such a system has several disadvantages:</p>
+
+<ul>
+<li>It is costly. <a href="https://en.wikipedia.org/wiki/Electronic_funds_transfer">EFTs</a> in Europe can cost 25 euros. Credit transactions can cost several percent of the transaction.</li>
+<li>It is slow. Checking and low cost wire services take days to complete.</li>
+<li>In most cases, it cannot be anonymous.</li>
+<li>Accounts can be frozen, or their balance partially or wholly confiscated.</li>
+<li>Banks and other payment processors like PayPal, Visa, and Mastercard may refuse to process payments for certain legal entities.</li>
+</ul>
+
+
+<p>Bitcoin is a system of owning and voluntarily transferring amounts of so-called <em>bitcoins</em>, in a manner similar to an on-line banking, but pseudonymously and without reliance on a central authority to maintain account balances. If bitcoins are valuable, it is because they are useful and limited in supply.</p>
+
+<h2 id="Bitcoin_Basics">Bitcoin Basics</h2>
+
+<h3 id="Creation_of_coins">Creation of coins</h3>
+
+<p>The creation of coins must be limited for the currency to have any value.</p>
+
+<p>New coins are slowly <a href="../Mining/">mined</a> into existence by following a mutually agreed-upon set of rules. A user <a href="../Mining/">mining</a> bitcoins is running a software program that searches for a solution to a very difficult math problem the difficulty of which is precisely known. This difficulty is automatically adjusted on a predictable schedule so that the number of solutions found globally for a given unit of time is constant: the global system aims for 6 per hour. When a solution is found, the user may tell everyone of the existence of this newly found solution along with other information packaged together in what is called a &quot;<a href="../Block/">block</a>&quot;. The solution itself is a  <a href="../Proof_of_work/">proof-of-work</a> or PoW. It is hard to find, but easy to verify.</p>
+
+<p>Blocks create 25 new bitcoins at present. This amount, known as the block reward, is an incentive for people to perform the computation work required for generating blocks. Roughly every 4 years, the number of bitcoins that can be &quot;mined&quot; in a block reduces by 50%. Originally the block reward was 50 bitcoins; it halved in November 2012.  Any block that is created by a malicious user that does not follow this rule (or any other rules) will be rejected by everyone else. In the end, no more than 21 million bitcoins will ever exist.</p>
+
+<p>Because the block reward will decrease over the long term, miners will some day instead pay for their hardware and electricity costs by collecting <a href="../Transaction_fee/">transaction fees</a>. The sender of money may voluntarily pay a small transaction fee which will be kept by whoever finds the next block. Paying this fee will encourage miners to include the transaction in a block more quickly.</p>
+
+<h3 id="Sending_payments">Sending payments</h3>
+
+<p>To guarantee that a third-party, let&#39;s call her Eve, cannot spend other people&#39;s bitcoins by creating transactions in their names, Bitcoin uses <a>public key cryptography</a> to make and verify digital signatures. In this system, each person, such as Alice or Bob, has one or more addresses each with an associated pair of public and private keys that they may hold in a <a href="../Wallet/">wallet</a>. Only the user with the private key can sign a transaction to give some of their bitcoins to somebody else, but anyone can validate the signature using that user&rsquo;s public key.</p>
+
+<p>Suppose Alice wants to send a bitcoin to Bob.</p>
+
+<ul>
+<li>Bob sends his address to Alice.</li>
+<li>Alice adds Bob&rsquo;s address and the amount of bitcoins to transfer to a message: a &#39;transaction&#39; message.</li>
+<li>Alice signs the transaction with her private key, and announces her public key for signature verification.</li>
+<li>Alice broadcasts the transaction on the Bitcoin network for all to see.</li>
+</ul>
+
+
+<p>(Only the first two steps require human action. The rest is done by the Bitcoin client software.)</p>
+
+<p>Looking at this transaction from the outside, anyone who knows that these addresses belong to Alice and Bob can see that Alice has agreed to transfer the amount to Bob, because nobody else has Alice&#39;s private key. Alice would be foolish to give her private key to other people, as this would allow them to sign transactions in her name, removing funds from her control.</p>
+
+<p>Later on, when Bob wishes to transfer the same bitcoins to Charley, he will do the same thing:</p>
+
+<ul>
+<li>Charlie sends Bob his address.</li>
+<li>Bob adds Charlie&#39;s address and the amount of bitcoins to transfer to a message: a &#39;transaction&#39; message.</li>
+<li>Bob signs the transaction with his private key, and announces his public key for signature verification.</li>
+<li>Bob broadcasts the transaction on the Bitcoin network for all to see.</li>
+</ul>
+
+
+<p>Only Bob can do this because only he has the private key that can create a valid signature for the transaction.</p>
+
+<p>Eve cannot change whose coins these are by replacing Bob&rsquo;s address with her address, because Alice signed the transfer to Bob using her own private key, which is kept secret from Eve, and instructing that the coins which were hers now belong to Bob. So if Charlie accepts that the original coin was in the hands of Alice, he will also accept the fact that this coin was later passed to Bob, and now Bob is passing this same coin to him.</p>
+
+<h3>Preventing <a href="../Double-spending/">double-spending</a></h3>
+
+<p>The process described above does not prevent Alice from using the same bitcoins in more than one transaction. The following process does; this is the primary innovation behind Bitcoin.</p>
+
+<ul>
+<li>Details about the <a href="../Transactions/">transaction</a> are <a href="../Network/">sent and forwarded</a> to all or as many other computers as possible.</li>
+<li>A constantly growing chain of <a href="../Blocks/">blocks</a> that contains a record of all transactions is collectively maintained by all computers (each has a full copy).</li>
+<li>To be accepted in the chain, transaction blocks must be valid and must include <a href="../Proof_of_work/">proof of work</a> (one block generated by the network every 10 minutes).</li>
+<li>Blocks are chained in a way so that, if any one is modified, all following blocks will have to be recomputed.</li>
+<li>When multiple valid continuations to this chain appear, only the longest such branch is accepted and it is then extended further.</li>
+</ul>
+
+
+<p>When Bob sees that his transaction has been included in a block, which has been made part of the single longest and fastest-growing block chain (extended with significant computational effort), he can be confident that the transaction by Alice has been accepted by the computers in the network and is permanently recorded, preventing Alice from creating a second transaction with the same coin. In order for Alice to thwart this system and double-spend her coins, she would need to muster more computing power than all other Bitcoin users combined.</p>
+
+<h3 id="Anonymity">Anonymity</h3>
+
+<p>When it comes to the Bitcoin network itself, there are no &quot;accounts&quot; to set up, and no e-mail addresses, user-names or passwords are required to hold or spend bitcoins. Each balance is simply associated with an address and its public-private key pair. The money &quot;belongs&quot; to anyone who has the private key and can sign transactions with it. Moreover, those keys do not have to be registered anywhere in advance, as they are only used when required for a transaction. Transacting parties do not need to know each other&#39;s identity in the same way that a store owner does not know a cash-paying customer&#39;s name.</p>
+
+<p>A <a href="../Address/">Bitcoin address</a> mathematically corresponds to a public key and looks like this:</p>
+
+<blockquote><p>1PHYrmdJ22MKbJevpb3MBNpVckjZHt89hz</p></blockquote>
+
+<p>Each person can have many such addresses, each with its own balance, which makes it very difficult to know which person owns what amount. In order to protect his <a href="../Anonymity/">privacy</a>, Bob can generate a new public-private key pair for each individual receiving transaction and the Bitcoin software encourages this behavior by default. Continuing the example from above, when Charlie receives the bitcoins from Bob, Charlie will not be able to identify who owned the bitcoins before Bob.</p>
+
+<h3 id="Capitalization_.2F_Nomenclature">Capitalization / Nomenclature</h3>
+
+<p>Since Bitcoin is both a currency and a protocol, capitalization can be confusing. Accepted practice is to use <em>Bitcoin</em> (singular with an upper case letter B) to label the protocol, software, and community, and <em>bitcoins</em> (with a lower case b) to label units of the currency.</p>
+
+<h2 id="Where_to_see_and_explore">Where to see and explore</h2>
+
+<p>You can directly explore the system in action by visiting <a href="https://www.biteasy.com/">Biteasy.com</a>, <a href="http://blockchain.info/">Blockchain.info</a>, <a href="http://btc.blockr.io/">Blokr.io Bitcoin Block Explorer</a> or <a href="http://blockexplorer.com/">Bitcoin Block Explorer</a>.
+The site shows you the latest blocks in the block chain. The <a href="../Block_chain/">block chain</a> contains the agreed history of all transactions that took place in the system.
+Note how many blocks were generated in the last hour, which on average will be 6. Also notice the number of transactions and the total amount transferred in the last hour (last time I checked it was about 64 and 15K).
+This should give you an indication of how active the system is.</p>
+
+<p>Next, navigate to one of these blocks.
+The block&#39;s <a href="../Hash/">hash</a> begins with a run of zeros. This is what made creating the block so difficult; a hash that begins with many zeros is much more difficult to find than a hash with few or no zeros. The computer that generated this block had to try many <em>Nonce</em> values (also listed on the block&#39;s page) until it found one that generated this run of zeros.
+Next, see the line titled <em>Previous block</em>. Each block contains the hash of the block that came before it. This is what forms the chain of blocks.
+Now take a look at all the transactions the block contains. The first transaction is the income earned by the computer that generated this block. It includes a fixed amount of coins created out of &quot;thin air&quot; and possibly a fee collected from other transactions in the same block.</p>
+
+<p>Drill down into any of the transactions and you will see how it is made up of one or more amounts coming in and out.
+Having more than one incoming and outgoing amount in a transaction enables the system to join and break amounts in any possible way, allowing for any fractional amount needed. Each incoming amount is a past transaction (which you can also view) from someone&#39;s address, and each outgoing amount is addressed to someone and will be part of a future transaction (which you can also navigate down into if it has already taken place.)</p>
+
+<p>Finally you can follow any of the <a href="../Address/">addresses</a> links and see what public information is available for them.</p>
+
+<p>To get an impression of the amount of activity on the Bitcoin network, you might like to visit the monitoring websites <span class="createlink"><a href="/ikiwiki.cgi?from=Help%3AIntroduction&amp;do=create&amp;page=Bitcoin_Monitor" rel="nofollow">?</a>Bitcoin Monitor</span> and <span class="createlink"><a href="/ikiwiki.cgi?page=Bitcoin_Watch&amp;do=create&amp;from=Help%3AIntroduction" rel="nofollow">?</a>Bitcoin Watch</span>. The first shows a real-time visualization of events on the Bitcoin network, and the second lists general statistics on the amount and size of recent transactions.</p>
+
+<h3 id="How_many_people_use_Bitcoin.3F">How many people use Bitcoin?</h3>
+
+<p>This is quite a difficult question to answer accurately. One approach is to count how many bitcoin clients connected to the network in the last 24 hours. We can do this because some clients transmit their addresses to the other members of the network periodically. In September 2011 this method suggested that there were about [[!template <span class="error">Error: failed to process template &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=%2Ftemplates%2Fformatnum%3A60000&amp;amp;from=Help%3AIntroduction&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;formatnum:60000&lt;/span&gt; template formatnum:60000 not found
+</span>]] users.</p>
+
+<p>In October 2014, according to <a href="http://www.coindesk.com/state-of-bitcoin-q3-2014-report-maturing-ecosystem-price-pressure/">Coindesk report</a> there were more than 7.5 million bitcoin wallets.</p>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="http://bitcoinhelp.net">Bitcoin Help</a> &mdash; the simple guide to Bitcoin.</li>
+<li>Learn the entire history of Bitcoin in the interactive timeline at <a href="http://historyofbitcoin.org">History of Bitcoin</a>.</li>
+<li><a href="https://www.weusecoins.com">What Is Bitcoin?</a></li>
+<li><a href="https://www.bitcoinmining.com">What Is Bitcoin Mining?</a></li>
+</ul>
+
+
+<p><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=zh-cn%3A%E7%AE%80%E4%BB%8B&amp;from=Help%3AIntroduction" rel="nofollow">?</a>zh-cn:&#x7B80;&#x4ECB;</span></p>
+
+<p><span class="createlink"><a href="/ikiwiki.cgi?page=de%3AEinf%C3%BChrung&amp;do=create&amp;from=Help%3AIntroduction" rel="nofollow">?</a>de:Einf&uuml;hrung</span>
+<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=fr%3AIntroduction&amp;from=Help%3AIntroduction" rel="nofollow">?</a>fr:Introduction</span></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-08-21T14:31:16Z">Fri 21 Aug 2015 02:31:16 PM Europe</time>
+<!-- Created <time datetime="2011-02-13T16:13:28Z" pubdate="pubdate">Sun 13 Feb 2011 04:13:28 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

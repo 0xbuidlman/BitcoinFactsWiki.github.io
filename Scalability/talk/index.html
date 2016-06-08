@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>talk</title>
+
+<link rel="stylesheet" href="../../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../../">bitcoin</a>/ 
+
+<a href="../">Scalability</a>/ 
+
+</span>
+<span class="title">
+talk
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<h2 id="Response_to_Dan_Kaminskys_presentation">Response to Dan Kaminskys presentation</h2>
+
+<p><a href="http://www.slideshare.net/dakami/bitcoin-8776098">Dans slides</a> were presented at Blackhat 2011.</p>
+
+<h3 id="Response_from_Mike_Hearn_.28original_author.29">Response from Mike Hearn (original author)</h3>
+
+<p>Mike responded <a href="https://bitcointalk.org/index.php?topic=34597.0">in this forum thread</a>.</p>
+
+<h3 id="Response_from_Gregory_Maxwell">Response from Gregory Maxwell</h3>
+
+<p>When techies hear about how bitcoin works they frequently stop at the word &quot;flooding&quot; and say &quot;Oh-my-god! that can&#39;t scale!&quot;.  The purpose of this article is to take an extreme example, the peak transaction rate of Visa, and show that bitcoin <em>could</em> technically reach that kind of rate without any kind of questionable reasoning, changes in the core design, or non-existent overlays.  As such, it&#39;s merely an extreme example&mdash; not a plan for how bitcoin will grow to address wider needs (as a decentralized system it is the bitcoin using public who will decide how bitcoin grows)&mdash; it&#39;s just an argument that shows that bitcoin&#39;s core design can scale much better than an intelligent person might guess at first.</p>
+
+<p>Dan rightly criticizes the analysis presented here&mdash; pointing out that operating at this scale would significantly reduce the decentralized nature of bitcoin: If you have to have many terabytes of disk space to run a &quot;full validating&quot; node then fewer people will do it, and everyone who doesn&#39;t will have to trust the ones who do to be honest. Dan appears (from his slides) to have gone too far with that argument: he seems to suggest that this means bitcoins will be controlled by the kind of central banks that are common today. His analysis fails for two reasons (and the second is the fault of this page being a bit misleading):</p>
+
+<p>First, even at the astronomic scale presented here the required capacity is well within the realm of (wealthy) private individuals, and certainly would be at some future time when that kind of capacity was required.  A system which puts private individuals, or at least small groups of private parties, on equal footing with central banks could hardly be called a centralized one, though it would be less decentralized than the bitcoin we have today. The system could also not get to this kind of scale without bitcoin users agreeing collectively to increase the maximum block size, so it&#39;s not an outcome that can happen without the consent of bitcoin users.</p>
+
+<p>Second, and most importantly, the assumed scaling described here deals with Bitcoin replacing visa.  This is a poor comparison because bitcoin alone is not a perfect replacement for visa for reasons completely unrelated to scaling:  Bitcoin does not offer instant transactions, credit, or various anti-fraud mechanisms (which some people want, even if not everyone does), for example. Bitcoin is a more complete replacement for checks, wire transfers, money orders, gold coins, CDs, savings accounts, etc. and if widely adopted probably replace the uses of credit cards which would be better served by these other things if they worked better online.</p>
+
+<p>Bitcoin users sometimes gloss over this fact too quickly because people are too quick to call it a flaw but this is unfair. No one system is ideal for all usage and Bitcoin has a broader spectrum of qualities than most monetary instruments. If the bitcoin community isn&#39;t willing to point out some things would better be done by other systems then it becomes easy to make strawman arguments: If we admit that bitcoin could be used as a floor wax and desert topping, someone will always point out that it&#39;s not the best floorwax or best desert topping.</p>
+
+<p>It&#39;s trivial to build payment processing and credit systems <em>on top</em> of bitcoin, both classic ones (like Visa itself!) as well as decentralized ones like  <a href="http://ripple-project.org/">Ripple</a>. These systems could handle higher transaction volumes with lower costs, and settle frequently to the bitcoin that backs them. These could use other techniques with different tradeoffs than bitcoin, but still be backed and denominated by bitcoin so still enjoy its lack of central control. We see the beginnings of this today with bitcoin exchange and wallet services allowing instant payments between members.</p>
+
+<p>These services would gain the benefit of the stable inflation resistant bitcoin currency, users would gain the benefits of instant transactions, credit, and anti-fraud, bitcoin overall would enjoy improved scaling from offloaded transaction volume without compromising its decentralized nature. In a world where bitcoin was widely used payment processing systems would probably have lower prices because they would need to compete with raw-bitcoin transactions, they also could be afford lower price because frequent bitcoin settling (and zero trust bitcoin escrow transactions) would reduce their risk. This is doubly true because bitcoin could conceivably scale to replace them entirely, even if that wouldn&#39;t be the best idea due to the resulting reduction in decentralization.</p>
+
+<h2 id="Other_discussion">Other discussion</h2>
+
+<p>There is one major point that the page overlooks: the limitation on block
+creation.</p>
+
+<p>Block creation is limited to an average of one block every ten minutes.
+Furthermore, block size (which includes the transactions in the block) is limited to 1,000,000 bytes.</p>
+
+<p>Each transaction requires 10 bytes, plus approximately 106 bytes for every
+input and approximately 69 bytes for every output. The exact size depends
+on the size of the public key, which I have not been able to confirm, but
+the keys in my wallet.dat seem to be about 65 bytes each.</p>
+
+<p>If we assume that transactions average two inputs and two outputs, then
+the average transaction size will be about 350 bytes <em>(note that the main page assumes an average of 1KB per transaction)</em>. If we further assume
+that the block size will, in practice, be limited to 500,000 bytes because
+the transaction fees increase as the block size increases, then that means
+there will be, on average, approximately 1430 transactions per block. That
+works out to an average of 2.5 transactions per second - <strong>well</strong> below
+the stated goal of at least 4,000 transactions per second.</p>
+
+<p>Even if we assume only one input and one output per transaction, and that
+each block will contain the full 1,000,000 bytes, that still works out to only 5,405
+transactions per block, or 9 transactions per second.</p>
+
+<p>Unfortunately, this is <strong>not</strong> a limitation that can be overcome by
+simply increasing memory, or switching to a different ISP with more
+bandwidth. It is a built-in limitation, designed to <strong>deliberately</strong>
+slow down block creation. One solution is to somehow allow blocks to be freely created, while still keeping the rate of coin creation constant.</p>
+
+<p>The bottom line is that, <em>as it sits</em>, this system is not scalable.</p>
+
+<blockquote><p>MAX_BLOCK_SIZE has always been planned to increase as needed. That limitation should be ignored. <a>theymos</a> 17:15, 4 March 2011 (GMT)
+What Theymos said.  Increasing MAX_BLOCK_SIZE will be done when &quot;lightweight, header-only&quot; client mode is done.  Until then, block size has to be kept under control.--<a>Gavin Andresen</a> 00:19, 5 March 2011 (GMT)
+I&#39;ve updated the page with more discussion of this topic. --<a>Mike</a> March 5 2011</p></blockquote>
+
+<p>The thing with VISA or and credit card company is that there wouldn&#39;t be that many actual transactions.  When I buy stuff with my credit card the vender doesn&#39;t get paid instantly.  I pay my bill once a month and the vender gets all his transactions lumped into one payment from VISA (once a week, I think).  Someone correct me if I&#39;m wrong, but the number of real transfers of money would be much smaller.  --<a>Randomproof</a> 17:29, 1 April 2011 (GMT)</p>
+
+<p>Would also be nice to get some kind of an estimate on how much the crypto-operations could be accelerated with a GPU.
+<a>Jojkaart</a> 20:48, 13 June 2011 (GMT)</p>
+
+<p>Shouldn&#39;t this (under Opimizations -&gt; Network Structure): &quot;<em>Switching to DNS would give dramatically faster startup times that do not scale with the size of the network.</em>&quot; read: &quot;<em>Switching to DNS would give dramatically faster startup times that do scale with the size of the network.</em>&quot;? ie Remove the &quot;not&quot;.
+--<a>Tokoin</a> 09:24, 21 July 2011 (GMT)</p>
+
+<h2 id="Moore.27s_law">Moore&#39;s law</h2>
+
+<p>I think Moore&#39;s law should be mentioned.</p>
+
+<p>Even though now the comparison to Visa produces requirements for processing power, data storage or network capacity appear overwhelming for a casual user, the cost/performance ratio decreases all the time. My calculations based on data from wikipedia projected for 2020:</p>
+
+<h3 id="Disk_space">Disk space</h3>
+
+<p>Wikipedia quotes a research article that estimates that &quot;in 2020 a two-platter, 2.5-inch disk drive will be capable of storing more than 14 terabytes(TB) and will cost about $40&quot;. This can hold about 85 days of data (~3 months) at &quot;visa-speed&quot;. This is a bit pricey, but within the scope of a normal user, and definitely enough for enthusiasts.</p>
+
+<h3 id="Network_capacity">Network capacity</h3>
+
+<p>Wikipedia references articles that estimate the &quot;moore&#39;s law&quot; equivalent for network to be 50% increase / year. For 9 years (2011-2020), this makes an increase of approximately 38 times. In order to achieve the speed of 1GB/s, this is the equivalent of someone having 27MB/s at the moment, i.e. 215Mbit/s. I think this exceeds a normal user and most enthusiasts. Assuming a casual user has 2Mbit/s at the moment, he&#39;ll scale to &quot;visa-speed&quot; in about 16 years, i.e. 2027.</p>
+
+<h3 id="CPU_performance">CPU performance</h3>
+
+<p>Moore&#39;s law is approximated as &quot;doubling every 18 months&quot;. For 9 years this makes 34 times if I&#39;m calculating right. 50/34 = 1.47 cores. A dual-core computer in 2020 should therefore be sufficient to handle relaying/verifying Bitcoin transactions at visa-speed. I&#39;m ignoring mining. So why someone is proposing that double tx check should be removed from the protocol ? We would surely leave the door open to some nasty attacks if strange transactions or double spends slip into blocks from attacking miners.</p>
+
+<h3 id="Summary">Summary</h3>
+
+<p>I only made very rough estimates. Feel free to recalculate with more accurate data. My conclusion is that CPU would be a no-brainer, disk space would be an annoyance, however network speed would indeed appear to be a problem.</p>
+
+<h2 id="satoshiDICE">satoshiDICE</h2>
+
+<p>I believe the implications of <span class="createlink"><a href="/ikiwiki.cgi?from=Scalability%2Ftalk&amp;page=SatoshiDice&amp;do=create" rel="nofollow">?</a>SatoshiDice</span> and similar schemes that stress the network should be mentioned, since as of March 2013, SatoshiDice transactions occupy 80% of the <a href="../../Block_chain/">block chain</a>. --<a>Alvox</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Scalability%2Ftalk&amp;page=User_talk%3AAlvox&amp;do=create" rel="nofollow">?</a>talk</span>) 23:09, 29 March 2013 (GMT)</p>
+
+<blockquote><p> So mention them? Note that SatoshiDice just abuses the network, not so much merely stressing it.. but clarifications can always be edited in after we have something to start from. --<a>Luke-jr</a> (<span class="createlink"><a href="/ikiwiki.cgi?page=User_talk%3ALuke-jr&amp;do=create&amp;from=Scalability%2Ftalk" rel="nofollow">?</a>talk</span>) 23:28, 29 March 2013 (GMT)</p>
+
+<p> Is SatoshiDice relevant to scalability? If there is a solution to SatoshiDice spam then we probably should mention it, but I don&#39;t know of any solutions that can&#39;t be worked around by them --<a>Lapp0</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Scalability%2Ftalk&amp;page=User_talk%3ALapp0&amp;do=create" rel="nofollow">?</a>talk</span>) 17:50, 20 December 2014 (UTC)</p></blockquote>
+
+<h2 id="passively_running_a_full_node_and_other_scalability_options">passively running a full node and other scalability options</h2>
+
+<p>This page makes no distinction between passively running a full node and actively using 90% of your CPU power, 90% of your bandwidth and a ton of disk space. Clearly if it takes significant effort to run a full node, arguably unlike right now, then the number of full nodes will drop significantly.</p>
+
+<p>I propose collapsing this whole article into one section titled &quot;Increasing the Block size (Hardfork)&quot; and include the problems with hardforking along with the problems of expensive full nodes.</p>
+
+<p>Along with this section there should be other sections on other scalability improvements and their problems including sidechains, opentransactions, and others. --<a>Lapp0</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Scalability%2Ftalk&amp;do=create&amp;page=User_talk%3ALapp0" rel="nofollow">?</a>talk</span>) 17:47, 20 December 2014 (UTC)</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../">Scalability</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2014-12-20T17:50:27Z">Sat 20 Dec 2014 05:50:27 PM Europe</time>
+<!-- Created <time datetime="2011-03-03T23:51:07Z" pubdate="pubdate">Thu 03 Mar 2011 11:51:07 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

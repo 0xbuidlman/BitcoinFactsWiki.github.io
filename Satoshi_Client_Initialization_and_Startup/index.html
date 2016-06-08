@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Satoshi Client Initialization and Startup</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Satoshi Client Initialization and Startup
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Satoshi_Client_Initialization_and_Startup&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<h2 id="Startup_Process">Startup Process</h2>
+
+<p>The client uses a fixed number of threads that are created on startup. All of the reading and writing on active network sockets are handled by one thread.</p>
+
+<p>The main() entry point to the program is in init.cpp. Do not go looking in main.cpp for main() - you will not find it.</p>
+
+<p>The first thing main() does is call AppInit, which calls AppInit2 which performs a bunch of initialization busy work mostly related to how the application handles errors. At some point AppInit2 calls ParseParameters, and then some argument handling code processes some basic arguments.</p>
+
+<p>Now it checks to see if an existing GUI window is already present and if so, brings it to the foreground.</p>
+
+<p>Next it creates a lock file in the bitcoin directory and if bitcoin is already running, displays a message and exits.</p>
+
+<p>Next it attemps to listen on the bitcoin port, and if the port is already in use or other error, displays a message and exits.</p>
+
+<p>Next it loads IP addresses from a database, then it loads the block index, and then it loads the wallet.</p>
+
+<p>Next it gets the top block number from the wallet, or zero if -rescan is used. Then It scans the block chain from the block number above.</p>
+
+<p>Side Note:  printf has been redefined in util.h. So printf is really OutputDebugStringF which directs to a file if appropriate (see util.h and util.cpp). Also &quot;loop&quot; is defined in util.h as for (  ; ;  ).</p>
+
+<p>Then it does a bit more initialization and parameter processing and then it finally opens the GUI main window.</p>
+
+<p>Next it creates two threads:</p>
+
+<ol>
+<li>StartNode()</li>
+<li>And if acting as server: ThreadRPCServer()</li>
+</ol>
+
+
+<p>This is the only place where these threads are created.</p>
+
+<p>StartNode() is in net.cpp and ThreadRPCServer() is in rpc.cpp.</p>
+
+<p>Last, if not compiled for the GUI it sleeps for 5 seconds in an infinite loop.</p>
+
+<h2 id="fClient_Mode">fClient Mode</h2>
+
+<p>It is worth noting that there is code in the client to allow it to operate in a mode where it only downloads block headers. The implementation is intended to be used as a lightweight client mode which can operate without verifying and storing all blocks and transactions. This is controlled by the fClient variable in the code which is currently hard coded to false.  This is currently not considered to be finished code. This mode is known as fClient mode and the phrase Simplified Payment Verification (or SPV) mode has also been used to describe a lightweight client approach.</p>
+
+<h2 id="Thread_StartNode.28.29_in_net.cpp">Thread StartNode() in net.cpp</h2>
+
+<p>StartNode is sort of a master networking thread.</p>
+
+<p>First it creates a CNode for the localhost 127.0.0.1 internal addresss to
+handle communication.</p>
+
+<p>Next, it gets the local IP address. On windows, its a lookup using the
+local host name. On Linux, it is the first IP address it finds on an
+interface that is up and is not the loopback interface.</p>
+
+<p>Next it creates a thread (ThreadGetMyExternalIP) to confirm the local IP
+address using 3rd party verification. If using a proxy, it does not
+bother, because it will not take incoming connections.</p>
+
+<p>Next, if Universal Plug and Play is used, then a thread (ThreadMapPort)
+to deal with port mapping is created.</p>
+
+<p>Next it creates a thread (ThreadIRCSeed) to exchange IP addresses.</p>
+
+<p>Next it creates a thread (ThreadSocketHandler) to &quot;Send and receive from
+sockets, accept connections&quot;.</p>
+
+<p>Next it creates a thread (ThreadOpenConnections) to initiate outbound
+connections.</p>
+
+<p>Next it creates a thread (ThreadMessageHandler) to process messages.</p>
+
+<p>Finally, if you have specified so, it will start a bitcoin mining thread.</p>
+
+<h2 id="Thread_IRCSeed_in_net.cpp">Thread IRCSeed in net.cpp</h2>
+
+<p>Connects to 92.243.23.21 port 6667, JOINs the channel, and then
+reads lines one at a time looking for other users.</p>
+
+<h2 id="Thread_ThreadSocketHandler_in_net.cpp">Thread ThreadSocketHandler in net.cpp</h2>
+
+<p>Goes into an endless loop servicing sockets that need servicing.
+Handles disconnected nodes.
+Prepares &quot;select&quot; descriptor list and then calls select, waiting for
+I/O on all the relevant sockets with a 50ms timeout.
+Process new incoming connection on listening socket. Create a CNode for them.
+Handle receiving and sending.
+Set sockets that have not done anything to disconnected state.</p>
+
+<h2 id="Thread_ThreadOpenConnecions_in_net.cpp">Thread ThreadOpenConnecions in net.cpp</h2>
+
+<p>Figures out nodes from parameters, seeds, irc, etc, and then goes into a
+loop, connecting to each one by one.</p>
+
+<h2 id="Thread_ThreadMessageHandler_in_net.cpp">Thread ThreadMessageHandler in net.cpp</h2>
+
+<p>This thread goes through all the nodes and calls ProcessMessages(pnode) in
+main.cpp which looks for valid messages on the node receive
+queue (pFrom-&gt;vRecv) and if it finds one, it calls
+ProcessMessage(CNode* pfrom, string strCommand, CDataStream&amp; vRecv), which
+is also in main.cpp.</p>
+
+<p>Then the thread calls SendMessages for each node (which is in main.cpp)
+which handles creating and sending any messages appropriate for that node.</p>
+
+<h2 id="Thread_ThreadRPCServer_in_rpc.cpp">Thread ThreadRPCServer in rpc.cpp</h2>
+
+<p>This thread will be rather complicated in that it implements an
+HTTP(S)+JSONRPC server using boost classes that are probably going
+to be unfamiliar to most developers.</p>
+
+<p>You will see lines like this:</p>
+
+<pre><code>acceptor.set_option(boost::asio::ip::tcp::acceptor::reuse_address(true));
+</code></pre>
+
+<p>and this:</p>
+
+<pre><code>boost::thread api_caller(ReadHTTP, boost::ref(stream), boost::ref(mapHeaders), boost::ref(strRequest));
+if (!api_caller.timed_join(boost::posix_time::seconds(GetArg(&quot;-rpctimeout&quot;, 30))))
+</code></pre>
+
+<p>It appears the code above is creating a thread in order to apply 30
+second timeout to reading an HTTPrequest.  When HTTP requests are
+read, they are parsed, and then a routine corresponding to the
+request command name is called to handle the request. This happens
+in a loop until shutdown.</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Developer/" rel="tag">Developer</a>
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Bitcoind/">Bitcoind</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-06-07T14:24:02Z">Tue 07 Jun 2016 02:24:02 PM Europe</time>
+<!-- Created <time datetime="2011-09-17T21:36:17Z" pubdate="pubdate">Sat 17 Sep 2011 09:36:17 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

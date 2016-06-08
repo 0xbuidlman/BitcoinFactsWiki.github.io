@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Libbitcoin Database</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Libbitcoin Database
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Libbitcoin_Database&amp;page=Talk&amp;do=create" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>The <a href="https://github.com/libbitcoin/libbitcoin-database">libbitcoin-database</a> library is a dependency of <a href="../Libbitcoin_Blockchain/">libbitcoin-blockchain</a>, <a href="../Libbitcoin_Node/">libbitcoin-node</a> and <a href="../Libbitcoin_Server/">libbitcoin-server</a>.</p>
+
+<h2 id="Example">Example</h2>
+
+<pre><code>#include &lt;string&gt;
+#include &lt;bitcoin/database.hpp&gt;
+
+// Create a new mainnet blockchain store.
+int main(int argc, char* argv[])
+{
+std::string prefix(&quot;blockchain&quot;);
+const auto genesis = bc::chain::block::genesis_mainnet();
+
+if (argc &gt; 1)
+prefix = argv&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=1&amp;amp;from=Libbitcoin_Database&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;1&lt;/span&gt;;
+
+if (!bc::database::data_base::initialize(prefix, genesis)
+return -1;
+
+return 0;
+}
+</code></pre>
+
+<h2 id="Design">Design</h2>
+
+<p>The database is built directly on the operating system&#39;s <a href="https://en.wikipedia.org/wiki/Memory-mapped_file">memory-mapped file</a> system. Logical queries are performed using a set of hash tables. The number of hash buckets is optimized to minimize hash collisions, though collisions are accommodated. These changes resulted in a substantial performance increase, near constant time, for queries against the blockchain. Insert performance was not materially affected. The database uses sequence locking to avoid writer starvation while never blocking the reader. This is ideal for a high performance blockchain server as reads are significantly more frequent than writes and yet writes must proceed wtihout delay.</p>
+
+<p><a href="../Libbitcoin-blockchain-gets.png"><img class="img" height="375" src="./500x500-Libbitcoin-blockchain-gets.png" width="500" /></a> <span class="createlink"><a href="/ikiwiki.cgi?page=Libbitcoin-blockchain-gets-normalised.png&amp;do=create&amp;from=Libbitcoin_Database" rel="nofollow">?</a>Libbitcoin-blockchain-gets-normalised.png</span></p>
+
+<h2 id="Database">Database</h2>
+
+<p>The following files constitute the blockchain database non-volatile storage. As of height 350,000 the database consumes approximately 105 GB of disk space.</p>
+
+<ul>
+<li>blocks_lookup</li>
+<li>blocks_rows</li>
+<li>history_lookup</li>
+<li>history_rows</li>
+<li>spends</li>
+<li>stealth_index</li>
+<li>stealth_rows</li>
+<li>txs</li>
+</ul>
+
+
+<h2 id="Considerations">Considerations</h2>
+
+<ul>
+<li>There is no mechanical hard drive optimization. The implementation is intended for solid state drives (<a href="http://en.wikipedia.org/wiki/Solid-state_drive">SSD</a>).</li>
+<li>There is a possibility of index corruption during hard shutdown. There is no means of detecting corruption aside from catastrophic fault. However given that the entire blockchain is a cache this is not considered significant. Repair can be accomplished by re-synchronizing the blockchain.</li>
+<li>Data files are append only, with logical deletions only. Therefore file size is not minimized following blockchain reorganization although the impact is typically small. Defragmentation can be accomplished by re-synchronizing the blockchain.</li>
+<li>The database is effectively locked during write operations. As these operations are anticipated on a period of approximately ten minutes this is not typically significant. However during a period of catch-up synchronizing the server can become continuously unresponsive to requests.</li>
+</ul>
+
+
+<h2 id="History">History</h2>
+
+<ul>
+<li>The original implementation used <a href="http://leveldb.org">LevelDB</a>.</li>
+<li>In late 2014 by <span class="createlink"><a href="/ikiwiki.cgi?from=Libbitcoin_Database&amp;page=Amir_Taaki&amp;do=create" rel="nofollow">?</a>Amir Taaki</span> (genjix) replaced LevelDB with memory-mapped hash table storage and indexing.</li>
+<li>In early 2016 <span class="createlink"><a href="/ikiwiki.cgi?from=Libbitcoin_Database&amp;page=Eric_Voskuil&amp;do=create" rel="nofollow">?</a>Eric Voskuil</span> separated the database from <a href="../Libbitcoin_Blockchain/">libbitcoin-blockchain</a> into an independent library.</li>
+</ul>
+
+
+<h2 id="Dependencies">Dependencies</h2>
+
+<ul>
+<li><a href="http://www.boost.org">boost</a></li>
+<li><a href="https://github.com/bitcoin/secp256k1">secp256k1</a></li>
+<li><a href="../Libbitcoin_Common/">libbitcoin</a></li>
+</ul>
+
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../Libbitcoin/">Libbitcoin</a></li>
+<li><a href="https://wiki.unsystem.net/en/index.php/Libbitcoin/Blockchain">Libbitcoin blockchain design (Unsystem)</a></li>
+</ul>
+
+
+<h2 id="References">References</h2>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Open_Source/" rel="tag">Open Source</a>
+
+<a href="../tags/Software__8207____8206__/" rel="tag">Software‏‎</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Libbitcoin/">Libbitcoin</a>
+
+<a href="../Libbitcoin_Blockchain/">Libbitcoin Blockchain</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-02-22T12:38:23Z">Mon 22 Feb 2016 12:38:23 PM Europe</time>
+<!-- Created <time datetime="2016-02-22T12:22:32Z" pubdate="pubdate">Mon 22 Feb 2016 12:22:32 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

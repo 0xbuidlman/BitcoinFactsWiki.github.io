@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Private key</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Private key
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=Private_key" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>A <strong>private key</strong> in the context of Bitcoin is a secret number that allows bitcoins to be spent.
+Every Bitcoin wallet contains one or more private keys, which are saved in the wallet file.
+The private keys are mathematically related to all Bitcoin addresses generated for the wallet.</p>
+
+<p>Because the private key is the &quot;ticket&quot; that allows someone to spend bitcoins, it is important that these are kept secure.
+Private keys can be kept on computer files, but in some cases are also short enough that they can be printed on paper.</p>
+
+<p>Some wallets allow private keys to be imported without generating any transactions while other wallets or services require that the private key be swept.
+When a private key is swept, a transaction is broadcast that sends the balance controlled by the private key to a new address in the wallet.
+Just as with any other transaction, there is risk of swept transactions to be double-spending.</p>
+
+<p>In contrast, bitcoind provides a facility to import a private key without creating a sweep transaction.
+This is considered very dangerous, and not intended to be used even by power users or experts except in very specific cases.
+Bitcoins can be easily stolen at any time, from a wallet which has imported an untrusted or otherwise insecure private key - this can include private keys generated offline and never seen by someone else (1.1) (1.2).</p>
+
+<h2 id="An_example_private_key">An example private key</h2>
+
+<p>In Bitcoin, a private key is usually a 256-bit number (some newer wallets may use between 128 and 512 bits), which can be represented one of several ways.
+Here is a private key in hexadecimal - 256 bits in hexadecimal is 32 bytes, or 64 characters in the range 0-9 or A-F.</p>
+
+<pre><code>E9 87 3D 79 C6 D8 7D C0 FB 6A 57 78 63 33 89 F4 45 32 13 30 3D A6 1F 20 BD 67 FC 23 3A A3 32 62
+</code></pre>
+
+<h2 id="Range_of_valid_ECDSA_private_keys">Range of valid ECDSA private keys</h2>
+
+<p>Nearly every 256-bit number is a valid <a href="../ECDSA/">ECDSA</a> private key.  Specifically, any 256-bit number from 0x1 to 0xFFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFE BAAE DCE6 AF48 A03B BFD2 5E8C D036 4140 is a valid private key.</p>
+
+<p>The range of valid private keys is governed by the <a href="../Secp256k1/">secp256k1</a> ECDSA standard used by Bitcoin.</p>
+
+<p>Newer wallets may use <a href="../BIP_0032/">BIP 32</a> seeds for their private keys, which can be as long as 512 bits.</p>
+
+<h2 id="Base58_Wallet_Import_format">Base58 Wallet Import format</h2>
+
+<p>When importing or sweeping ECDSA private keys, a shorter format known as <a href="../Wallet_import_format/">wallet import format</a> is often used, which offers a few advantages.
+The wallet import format is shorter, and includes built-in error checking codes so that typos can be automatically detected and/or corrected (which is impossible in hex format) and type bits indicating how it is intended to be used.
+Wallet import format is the most common way to represent private keys in Bitcoin.
+For private keys associated with uncompressed public keys, they are 51 characters and always start with the number 5 on mainnet (9 on testnet). Private keys associated with compressed public keys are 52 characters and start with a capital L or K on mainnet (c on testnet). This is the same private key in (mainnet) wallet import format:</p>
+
+<pre><code>5Kb8kLf9zgWQnogidDA76MzPL6TsZZY36hWXMssSzNydYXYB9KF
+</code></pre>
+
+<p>When a WIF private key is imported, it always corresponds to exactly one <a href="../Address/">Bitcoin address</a>.
+Any utility which performs the conversion can display the matching Bitcoin address.
+The mathematical conversion is somewhat complex and best left to a computer, but it&#39;s notable that the WIF guarantees it will always correspond to the same address no matter which program is used to convert it.</p>
+
+<p>The Bitcoin address implemented using the sample above is: 1CC3X2gu58d6wXUWMffpuzN9JAfTUWu4Kj</p>
+
+<h2 id="Mini_private_key_format">Mini private key format</h2>
+
+<p>Some applications use the <a href="../Mini_private_key_format/">mini private key format</a>.  Not every private key or Bitcoin address has a corresponding mini private key - they have to be generated a certain way in order to ensure a mini private key exists for an address.  The mini private key is used for applications where space is critical, such as in QR codes and in <a href="../Physical_Bitcoins/">physical bitcoins</a>.  The above example has a mini key, which is:</p>
+
+<pre><code>SzavMBLoXU6kDrqtUVmffv
+</code></pre>
+
+<h2 id="Summary">Summary</h2>
+
+<p>Any Bitcoins sent to the address 1CC3X2gu58d6wXUWMffpuzN9JAfTUWu4Kj can be spent by anybody who knows the private key implementing it in <em>any</em> of the three formats, regardless of when the bitcoins were sent, unless the wallet receiving them has since made use of the coins generated.
+The private key is only needed to spend the bitcoins, not necessarily to see the value of them.</p>
+
+<p>If a private key controlling unspent bitcoins is compromised or stolen, the value can only be protected if it is immediately spent to a different output which is secure.
+Because bitcoins can only be spent once, when they are spent using a private key, the private key becomes worthless.
+It is often possible, but inadvisable and insecure, to use the address implemented by the private key again, in which case the same private key would be reused.</p>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../Paper_wallet/">Paper wallet</a></li>
+<li><a href="../How_to_import_private_keys/">How to import private keys</a></li>
+<li><a href="../How_to_import_private_keys_v7+/">How to import private keys v7+</a></li>
+</ul>
+
+
+<h2 id="References">References</h2>
+
+<p>1.1: <a href="https://bitcoin.stackexchange.com/questions/29948/why-doc-says-importing-private-keys-is-so-dangerous">Bitcoin StackExchange - Why doc says importing private keys is so dangerous?</a><br />
+1.2: <a href="https://bitcoin.stackexchange.com/questions/18619/why-so-many-warnings-about-importing-private-keys">Bitcoin StackExchange - Why so many warnings about importing private keys?</a></p>
+
+<p><span class="createlink"><a href="/ikiwiki.cgi?page=es%3AClave%20privada&amp;do=create&amp;from=Private_key" rel="nofollow">?</a>es:Clave privada</span></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Base58Check_encoding/">Base58Check encoding</a>
+
+<a href="../Brainwallet/">Brainwallet</a>
+
+<a href="../Clients/">Clients</a>
+
+<a href="../Controlled_supply/">Controlled supply</a>
+
+<a href="../Elliptic_Curve_Digital_Signature_Algorithm/">Elliptic Curve Digital Signature Algorithm</a>
+
+<a href="../Gocoin/">Gocoin</a>
+
+<a href="../How_to_import_private_keys/">How to import private keys</a>
+
+<a href="../Importprivkey/">Importprivkey</a>
+
+<a href="../Merchant_Howto/">Merchant Howto</a>
+
+<a href="../Paper_wallet/">Paper wallet</a>
+
+
+<span class="popup">...
+<span class="balloon">
+
+<a href="../Protocol_documentation/">Protocol documentation</a>
+
+<a href="../Technical_background_of_version_1_Bitcoin_addresses/">Technical background of version 1 Bitcoin addresses</a>
+
+<a href="../The_Byzantine_Generals_Problem/">The Byzantine Generals Problem</a>
+
+<a href="../Ways_to_store_Bitcoins/">Ways to store Bitcoins</a>
+
+</span>
+</span>
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-02-10T15:36:12Z">Tue 10 Feb 2015 03:36:12 PM Europe</time>
+<!-- Created <time datetime="2011-09-17T18:27:10Z" pubdate="pubdate">Sat 17 Sep 2011 06:27:10 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

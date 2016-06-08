@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>talk</title>
+
+<link rel="stylesheet" href="../../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../../">bitcoin</a>/ 
+
+<a href="../">BIP 0014</a>/ 
+
+</span>
+<span class="title">
+talk
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>Suggestion: be more explicit that the version in the protocol is a 32-bit integer, that 0.6.0 is represented by the number 60000, and that the &#39;subversion&#39; field is an arbitrary string.
+--<a>Gavin Andresen</a> 19:19, 16 December 2011 (GMT)</p>
+
+<ul>
+<li>What &quot;0.6.0&quot;? The whole point of having a protocol version is that it isn&#39;t tied to the client version... --<a>Luke-jr</a> 06:02, 23 December 2011 (GMT)</li>
+</ul>
+
+
+<p>Just as a point of information; &quot;git describe&quot; output solves the problem of non-incremental committish.  It does this by providing a base version code (the most recent tag name) the number of commits past that tag and then a little bit of the commitish for the revision in question.
+--<a>Andyparkins</a> 11:45, 9 December 2011 (GMT)</p>
+
+<h2 id="Arguments_about_requirements">Arguments about requirements</h2>
+
+<p>Luke has been arguing that clients are required to write specific information into the various fields and forbidden from lying e.g. a merchant daemon can&#39;t claim to be running a GUI in order to avoid making it a target for attack. I don&#39;t believe this is actually required by the BIP as written. Nor do I think requiring it would make sense: the requirement can&#39;t really be enforced, required information disclosure would make users less secure, and the expectation of certain uses would lead to programs changing their behavior based on it because they think they can depend on it (much like all-browsers-are-mozilla).  I think this can be clarified by the judicious addition of MAY and SHOULD into the document.  Unless there is opposition I will go ahead and do it.  I think the purpose of separating the useragent and the protocol is an excellent one, which the community clearly supported, but I don&#39;t think most people expected this to be some surprise legislation forcing nodes to identify themselves on the network in particular ways. --<a>Gmaxwell</a> 04:08, 23 December 2011 (GMT)</p>
+
+<ul>
+<li>To clarify, I never said any information is required, and I agree clients may omit as much as they want. I do think that, as defined in the BIP, giving <em>false</em> information is in violation of, and entirely defeats the purpose of, the User Agent&#39;s designation as strictly &quot;informational&quot;. On the contrary, I argue that such abuse of the field is more likely to result in other abuses, such as the cited all-browsers-are-mozilla issue which would not have been possible had browsers not begun lying (which was in itself a result of protocol behaviour changes based on User Agent, which is forbidden in this BIP). I oppose any attempt to modify the BIP to endorse this abuse of the User Agent field as it would render it utterly useless. Better to define it as a null string. --<a>Luke-jr</a> 06:02, 23 December 2011 (GMT)</li>
+</ul>
+
+
+<h2 id="The_more_data_the_better">The more data the better</h2>
+
+<p>Any additional information would be useful for sites like http://bitcoinstatus.rowit.co.uk as this information can be tracked and reported back to the developers. --<a>Nibor</a> 23:41, 26 December 2011 (GMT)</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../">BIP 0014</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2011-12-26T23:42:21Z">Mon 26 Dec 2011 11:42:21 PM Europe</time>
+<!-- Created <time datetime="2011-12-09T11:45:48Z" pubdate="pubdate">Fri 09 Dec 2011 11:45:48 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

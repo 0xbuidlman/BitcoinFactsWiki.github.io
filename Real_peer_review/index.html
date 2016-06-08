@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Real peer review</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Real peer review
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=Real_peer_review" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>In new fields the normal systems of academic peer review may be ineffective because the norms for studying that field are not yet established, the basics are not yet widely known, and the best references sources have not been identified.  The experience in the subject that the authors have relative to reviewers can be much greater than usual because without a well developed field there is not an adequate supply of expert reviewers.</p>
+
+<p>While analysis and review is greatly appreciated, some in the Bitcoin community have the opinion that much of the output from academic analysis of Bitcoin is of low quality: It often repeats well known things as novel, gets basic details about the system wrong, and generally would have benefited greatly by even a little review by an <em>actual</em> Bitcoin expert.</p>
+
+<p>While the Bitcoin community doesn&#39;t have any way to intercede in the publication process we can at least document these mistakes after the fact to reduce their propagation in new works via citations.</p>
+
+<p><strong>This page is a recent work in progress and has not yet been widely reviewed</strong></p>
+
+<h2 id="Linking_transactions_to_identify_ownership">Linking transactions to identify ownership</h2>
+
+<p>In <em>Quantitative Analysis of the Full Bitcoin Transaction Graph</em> by Dorit Ron and Adi Shamir <a href="http://eprint.iacr.org/2012/584.pdf">(1)</a> the authors write:</p>
+
+<blockquote>
+A very important feature of the Bitcoin network is that a transaction involving
+multiple sending addresses can only be carried out by the common owner of
+all those addresses, as it is demanded by the Bitcoin system that &ldquo;Whoever sent
+this transaction owns all of these addresses&rdquo;. This legal requirement is also technically
+ensured by the fact that each received amount must have a cryptographic
+digital signature that unlocks it from the prior transaction. Only the person possessing
+the appropriate address is able to create a satisfactory signature, and thus
+funds can only be spent by their owners.
+</blockquote>
+
+
+<p>This is flatly untrue for multiple reasons.</p>
+
+<p>First&mdash; this is expressed as a &#39;legal requirement&#39; of the system, which isn&#39;t necessarily important for the paper&#39;s purposes but is still misinformation which may have greater implications elsewhere.  It is perfectly possible for users of Bitcoin to <em>jointly</em> create a transactions where the owner of each input signs only for that input. This can be used so that multiple parties can atomically pay a third (e.g. to release information) without risk that one party will not pay. It&#39;s also used for &#39;coin mixing&#39; purposes to explicitly frustrate the kind of analysis done in <em>Quantitative Analysis</em>.</p>
+
+<p>Admittedly, these uses are not currently very common. But if we step away from the pedantic details of the system we still find other problems with this assumption:  A very common model for &#39;web wallets&#39;, &#39;exchanges&#39;, and bank like services (as well as explicit centralized laundering services) is to have a common wallet which mixes inputs from many customers. While arguably these services &quot;control&quot; the funds, this kind of control is not useful for drawing conclusions about ownership or if funds are &quot;in use&quot; since they could be stationary in the blockchain while being very actively traded inside other systems.  Moreover, many of these systems allow users to <em>import</em> private keys, invisibly transferring control. It would not be a correct assumption that a later party &quot;controlled&quot; the past use of a key, much less other keys jointly used in the past (as joint use is never proof of joint control). The import functionality is fairly widely used.</p>
+
+<p>Because of these concerns great care should be taken when assuming that &quot;ownership&quot; or even &quot;control&quot; can be reliably determined from transaction graph analysis, and the exact analysis and conclusions should be carefully compared against usage norms because the system rules to not ensure a clear pattern of either of these qualities as a function of the transaction graph.</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2012-10-16T20:50:20Z">Tue 16 Oct 2012 08:50:20 PM Europe</time>
+<!-- Created <time datetime="2012-10-16T19:04:48Z" pubdate="pubdate">Tue 16 Oct 2012 07:04:48 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

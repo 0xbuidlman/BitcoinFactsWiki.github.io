@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>OpenSourceEncryptionSoftware</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+OpenSourceEncryptionSoftware
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=OpenSourceEncryptionSoftware&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<h2 id="dm-crypt">dm-crypt</h2>
+
+<h3 id="Description">Description</h3>
+
+<p>Dm-crypt is part of the Linux Kernel. Some distributions might not include it in their kernel configurations, however. It is a lot like TrueCrypt: it allows you to mount encrypted files or partitions and decrypt/encrypt them on-the-fly.</p>
+
+<h3 id="Manual_setup">Manual setup</h3>
+
+<p>Your distro probably comes with a tool to simplify using dm-crypt (also see Tomb below). However, here is how you would manually mount a file-hosted dm-crypt volume. The <a href="http://www.paranoiacs.org/~sluskyb/hacks/hashalot/">hashalot</a> tool is used to prompt you for and process your password. This is used both to create the device and access it:
+    losetup /dev/loop0 ~/encrypted
+    HASH=<code>hashalot -s InsertSaltHere sha256  hexdump -e &#39;32/1 &quot;%02x&quot;&#39;</code>
+    echo 0 <code>blockdev --getsize /dev/loop0</code> crypt aes-cbc-essiv:sha256 \
+    $HASH 0 /dev/loop0 0  dmsetup create dmDevice
+    mount /dev/mapper/dmDevice /mnt/encrypted</p>
+
+<ul>
+<li>Losetup makes the container file (~/encrypted in this case) act like a device.</li>
+<li>The hashalot command prompts you for a password and then hashes it, adding the specified salt. The salt should be random, but it mustn&#39;t change.</li>
+<li>The hexdump command puts the binary hashalot output into the format required for dm-crypt</li>
+<li>Dm-crypt is set up on the /dev/loop0 device created by losetup. It uses the password hash created previously. The aes-cbc-essiv:sha256 encryption method is secure, though probably not as secure as Truecrypt&#39;s XTS method, which does not appear to be available in official kernel releases as far as I can tell. The dm-crypt device is created as /dev/mapper/dmDevice in this example.</li>
+<li>The device is mounted. Before you do this for the first time, you need to run mke2fs. If you ever enter the wrong password, the device will appear to contain random data and attempting to mount it will fail.</li>
+</ul>
+
+
+<h2 id="eCryptfs">eCryptfs</h2>
+
+<h3 id="Description">Description</h3>
+
+<p>eCryptfs is a POSIX-compliant enterprise-class stacked cryptographic filesystem for Linux.</p>
+
+<h3 id="Download">Download</h3>
+
+<p><a href="https://launchpad.net/ecryptfs">Latest source link on right side of page.</a></p>
+
+<p><a href="https://launchpad.net/ecryptfs/+download">All downloads.</a></p>
+
+<h3 id="Examples">Examples</h3>
+
+<p>Examples can be found in Damien Oh&#39;s article <a href="http://www.makeuseof.com/tag/encrypt-your-files-in-linux-with-ecryptfs/">How To Encrypt Files in Linux with eCryptfs.</a></p>
+
+<h3 id="FAQ">FAQ</h3>
+
+<p><a href="http://ecryptfs.sourceforge.net/ecryptfs-faq.html">FAQ</a></p>
+
+<h3 id="HomePage">HomePage</h3>
+
+<p><a href="https://launchpad.net/ecryptfs">eCryptfs - Enterprise Cryptographic Filesystem</a></p>
+
+<h3 id="License">License</h3>
+
+<p><a href="https://launchpad.net/ubuntu/natty/+source/ecryptfs-utils/+copyright">GPL 2+</a></p>
+
+<h2 id="OpenSSL">OpenSSL</h2>
+
+<h3 id="Description">Description</h3>
+
+<p>The OpenSSL Project is a collaborative effort to develop a robust, commercial-grade, full-featured, and Open Source toolkit implementing the Secure Sockets Layer (SSL v2/v3) and Transport Layer Security (TLS v1) protocols as well as a full-strength general purpose cryptography library.</p>
+
+<h3 id="Donation">Donation</h3>
+
+<p><a href="http://www.openssl.org/support/donations.html">Donation page.</a></p>
+
+<h3 id="Download">Download</h3>
+
+<p><a href="http://www.openssl.org/source/">Source</a></p>
+
+<h3 id="Examples">Examples</h3>
+
+<p>Based on Grondilu&#39;s <a href="http://www.bitcoin.org/smf/index.php?topic=2458.msg33379#msg33379">post,</a> to encrypt the wallet, from a terminal in the bitcoin parent directory, type:</p>
+
+<p>openssl enc -aes256 -in ./.bitcoin/wallet.dat -out wallet.aes256</p>
+
+<p>From <a href="http://www.madboa.com/people/paul/">Paul Heinlein&#39;s</a> <a href="http://www.madboa.com/geek/openssl/">openssl command line how to,</a> to decode, add the &#39;-d&#39; option, set the &#39;-in&#39; option to the output file name, to type:</p>
+
+<p>openssl enc -d -aes256 -in wallet.aes256 -out wallet.dat</p>
+
+<p>There is a small shell script that automates the whole process of 1) decrypting wallet 2) launching Bitcoin 3) encrypting the wallet afterwards and cleaning up the unencrypted bits. <a href="http://lorelei.kaverit.org/bitcoin.sh">bitcoin-launch-script</a></p>
+
+<h2 id="CCrypt">CCrypt</h2>
+
+<h3 id="Description">Description</h3>
+
+<p><strong>CCrypt</strong> is a linux command-line utility by Peter Selinger<a href="http://www.mathstat.dal.ca/~selinger/">(1)</a> that replaces the Unix <em>crypt</em> command. <strong>CCrypt</strong> is much more secure than <em>crypt</em> because it uses the Rijndael block cipher, the same encryption algorithm as AES and SSL, the algoirthms of choice for the US government and the commercial banking industry. The command line syntax for <strong>ccrypt</strong> is a bit simpler than <em>openssl</em> because it doesn&#39;t require the user to select an encryption algorithm or name the output file, but merely specify the direction (encrypt or decrypt).</p>
+
+<h3 id="Download">Download</h3>
+
+<p>Download the source code version of your choice at <a href="http://ccrypt.sourceforge.net">downloads</a> such as <a href="http://ccrypt.sourceforge.net/download/ccrypt-1.9.tar.gz">v1.9</a></p>
+
+<p>or in a Debian distribution like Ubuntu just execute</p>
+
+<pre><code>sudo apt-get install ccrypt
+</code></pre>
+
+<h3 id="Examples">Examples</h3>
+
+<p>To encrypt your wallet:</p>
+
+<pre><code>ccrypt ~/.bitcoin/wallet.dat
+</code></pre>
+
+<p>To decrypt the file created above:</p>
+
+<pre><code>ccdecrypt ~/.bitcoin/wallet.dat.cpt
+</code></pre>
+
+<p>or
+    ccrypt -d ~/.bitcoin/wallet.dat.cpt</p>
+
+<h3 id="FAQ">FAQ</h3>
+
+<p><a href="http://ccrypt.sourceforge.net/faq.html">FAQ</a></p>
+
+<h3 id="HomePage">HomePage</h3>
+
+<p><a href="http://ccrypt.sourceforge.net/">Ccrypt Project on SourceForge</a></p>
+
+<h3 id="License">License</h3>
+
+<p><a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License.</a></p>
+
+<h2 id="Tomb">Tomb</h2>
+
+<h3 id="Description">Description</h3>
+
+<p>Tomb is a simple tool to manage encrypted storage on GNU/Linux.</p>
+
+<p>Tomb generates encrypted storage files to be opened and closed using
+their associated keyfiles, which are also protected with a password
+chosen by the user.</p>
+
+<p>A tomb is like a locked folder that can be safely transported and
+hidden in a filesystem; its keys can be kept separate, for instance
+keeping the tomb file on your computer harddisk and the key files on a
+USB stick.</p>
+
+<h3 id="HomePage">HomePage</h3>
+
+<p><a href="http://tomb.dyne.org">Tomb - Crypto Undertaker</a></p>
+
+<h3 id="Donation">Donation</h3>
+
+<p><a href="http://dyne.org/donate">Donation page</a></p>
+
+<h3 id="Download">Download</h3>
+
+<p><a href="http://apt.dyne.org">Binaries (WIP: Debian and Ubuntu)</a></p>
+
+<p><a href="http://ftp.dyne.org/tomb">Source</a></p>
+
+<h3 id="License">License</h3>
+
+<p><a href="http://www.truecrypt.org/legal/license">True Crypt Open Source License.</a></p>
+
+<h2 id="True_Crypt">True Crypt</h2>
+
+<h3 id="Description">Description</h3>
+
+<p>Open-source disk encryption software for Windows 7/Vista/XP, Mac OS X, and Linux.  True Crypt creates a virtual encrypted disk within a file and mounts it as a real disk.</p>
+
+<h3 id="Documentation">Documentation</h3>
+
+<p><a href="http://www.truecrypt.org/docs/">Documentation page.</a></p>
+
+<h3 id="Donation">Donation</h3>
+
+<p><a href="http://www.truecrypt.org/donations/?lnk=5">Donation page.</a></p>
+
+<h3 id="Download">Download</h3>
+
+<p><a href="http://www.truecrypt.org/downloads">Binaries</a></p>
+
+<p><a href="http://www.truecrypt.org/downloads2">Source</a></p>
+
+<h3 id="FAQ">FAQ</h3>
+
+<p><a href="http://www.truecrypt.org/faq">FAQ</a></p>
+
+<h3 id="HomePage">HomePage</h3>
+
+<p><a href="http://www.truecrypt.org/">TrueCrypt</a></p>
+
+<h3 id="License">License</h3>
+
+<p><a href="http://www.truecrypt.org/legal/license">True Crypt Open Source License.</a></p>
+
+<h2 id="xorsplit">xorsplit</h2>
+
+<h3 id="Description">Description</h3>
+
+<p>Open-source software for Linux.  xorsplit copies a file into 3 separate
+backup files.  Any two of the backup files are sufficient to reconstruct
+the original -- but any one of the files will yield at most half of
+the original information (the odd bytes or the even bytes).</p>
+
+<p>Optionally, each of the backup files can be encrypted with a password.</p>
+
+<h3 id="Home_page.2C_Download.2C_Donation.2C_and_Documentation">Home page, Download, Donation, and Documentation</h3>
+
+<p><a href="http://www.xorsplit.com/">xorsplit.com</a> (Down)</p>
+
+<h3 id="License">License</h3>
+
+<p><a href="that">the donation address remain unchanged.</a></p>
+
+<h3 id="Usage">Usage</h3>
+
+<p>xorsplit file   -- splits the file into file.1, file.2, and file.3</p>
+
+<p>xorsplit-p file -- same, but requesting a password (no password means no encryption)</p>
+
+<p>xorsplit file.3 file.1 outfile   -- combine file.1 and file.3 into outfile.</p>
+
+<p>xorsplit-p file.3 file.1 outfile -- same, after using the password to decrypt</p>
+
+<h2 id="GNU_Privacy_Guard">GNU Privacy Guard</h2>
+
+<h3 id="Description">Description</h3>
+
+<p>GnuPG allows to encrypt and sign your data.</p>
+
+<h3 id="Homepage">Homepage</h3>
+
+<p><a href="http://www.gnupg.org/">gnupg.org</a></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Open_Source/" rel="tag">Open Source</a>
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Securing_your_wallet/">Securing your wallet</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2013-07-03T23:55:44Z">Wed 03 Jul 2013 11:55:44 PM Europe</time>
+<!-- Created <time datetime="2011-01-24T05:31:43Z" pubdate="pubdate">Mon 24 Jan 2011 05:31:43 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

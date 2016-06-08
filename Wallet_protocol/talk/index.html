@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>talk</title>
+
+<link rel="stylesheet" href="../../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../../">bitcoin</a>/ 
+
+<a href="../">Wallet protocol</a>/ 
+
+</span>
+<span class="title">
+talk
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<h2 id="User_interaction">User interaction</h2>
+
+<p>As one goal of this protocol is to properly abstract the User Interface from the Wallet, there are presumed to be no conditions where a Wallet itself has any direct user interaction. This is why it is left entirely to the Wallet implementation to decide if there may be circumstances that warrant leaving out the &#39;merchant&#39; account. --<a>Luke-jr</a> 06:16, 25 March 2011 (GMT)</p>
+
+<h2 id="PKI_to_authenticate_merchant">PKI to authenticate merchant</h2>
+
+<p>This doesn&#39;t seem like something we should be inventing just for Bitcoin. Surely there&#39;s some existing standard? I don&#39;t see why TLS client certs wouldn&#39;t work... --<a>Luke-jr</a> 06:16, 25 March 2011 (GMT)</p>
+
+<blockquote><p> Possibly.  It depends on what devices you can imagine supporting it.  In a sense we have &quot;already&quot; invented PKI for Bitcoin, and done so in a space-friendly manner, such that public and private keys and digital signatures fit in one or two lines of text rather than a screen-sized blob of data, and there is no guesswork involved in validating signatures.  That sort of efficiency scales well to small gadgets with miniscule memory.  Parsing X.509 certificates is a challenge for tiny devices because of the huge variation in formats, this is what I mean by guesswork.  If it can be kept simple, we preserve the possibility that wallets can be implemented on extremely cheap hardware like microcontrollers and keep their cost down.  Of course one advantage with TLS is the ability to replace ciphers etc. when needed, this is admittedly more difficult for a bare bones home brewed setup.  <a>Casascius</a> 17:00, 26 March 2011 (GMT)
+ PKI by definition involves a CA. SSL/TLS already has active CAs with common trust lists. It would seem TLS using the cert client-side is a perfect fit... --<a>Luke-jr</a> 20:45, 26 March 2011 (GMT)
+For a similar reason I would suggest avoiding running TCP/IP-over-serial, just because it is a disproportionately large amount of overhead for the type of device that would be using it, for negligible benefit.  If communication is CR/LF-terminated lines of text, simply terminating each line with &quot;<em>xx&quot; (where xx is a simple hash of the entire line) would suffice - just so receivers can reject garbled data - this is exactly the methodology common serial GPS receivers use today and is very inexpensive to implement (google &quot;NMEA checksum&quot;).  <a>Casascius</a> 17:00, 26 March 2011 (GMT)
+ Since communication is </em>not* simply line-based, it&#39;s not quite so simple... This seems like something else that should be able to recycle an existing standard-- in this case, TCP seems to be a good fit. It already has the ability to retransmit missing/corrupt packets, after all. Or perhaps PPP, since that&#39;d be even more trivial to implement on most system. --<a>Luke-jr</a> 20:45, 26 March 2011 (GMT)
+ It&#39;s a good fit for smartphones and computers, but in one stroke, makes some super cheap hardware that otherwise could implement a wallet protocol unable to, if that&#39;s of any value.  The availability of a low-cost SHM (secure hardware module) for Bitcoin is something people would probably value.  Not only does it up the minimum memory requirement from a few KBytes to several hundred KBytes, requiring a full TCP/IP stack also increases the attack surface for any hardware wallet device that implements it.  Hopefully the gain from requiring an IP stack to do something that can be accomplished with CRC (e.g. elementary arithmetic ops like add/xor) somehow provides an offsetting benefit in exchange for making it too bloated to run on cheap smart cards or microcontrollers, the kind with 2 or 4 KBytes of flash and 128 bytes of RAM that you can source for pennies. <a>Casascius</a> 04:12, 19 April 2011 (GMT)</p></blockquote>
+
+<h2 id="Miner_security_level">Miner security level</h2>
+
+<p>Why would a miner need to create new addresses? I think this creates a lot of DDoS potential --<a>Witchspace</a> 14:50, 24 July 2011 (GMT)</p>
+
+<ul>
+<li>A smart miner would need to create a new address to assign the generation to. The recommended security levels would not be mandatory, in any case. --<a>Luke-jr</a> 21:58, 24 July 2011 (GMT)</li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../">Wallet protocol</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2011-07-24T21:58:18Z">Sun 24 Jul 2011 09:58:18 PM Europe</time>
+<!-- Created <time datetime="2011-03-25T06:16:54Z" pubdate="pubdate">Fri 25 Mar 2011 06:16:54 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

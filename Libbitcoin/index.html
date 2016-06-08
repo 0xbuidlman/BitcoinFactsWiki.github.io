@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Libbitcoin</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Libbitcoin
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Libbitcoin" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p><a href="../Libbitcoin-logo.png"><img class="right" height="250" src="./250x250-Libbitcoin-logo.png" title="libbitcoin logo" width="250" /></a></p>
+
+<p><a href="http://libbitcoin.org">Libbitcoin</a> is a set of cross platform, open source C++ libraries for building bitcoin applications. The toolkit consists of libraries, examples, tests and applications. The project was established on three principles (1.1):</p>
+
+<ul>
+<li>Privacy: Bitcoin should always remain as private as possible for its users.</li>
+<li>Scalability: Bitcoin built today with the future in mind.</li>
+<li>Integrity: No individual or group should have enough power over the network to compromise its original aims.</li>
+</ul>
+
+
+<h2 id="Status">Status</h2>
+
+<p>Libbitcoin is actively maintained. Since version 2.0 the original projects of <a href="../Libbitcoin_Common/">Libbitcoin</a>, <a href="../Obelisk/">Obelisk</a> and <a href="../SubvertX/">SubvertX (sx)</a> have been rationalized under a common repository, taxonomy and build system (2.1).</p>
+
+<p>Libbitcoin includes the dedicated consensus library <a href="../Libbitcoin_Consensus/">libbitcoin-consensus</a>. This library provides a clean interface to the 34 source and header files from Bitcoin Core considered consensus critical. It also includes Python and Java SWIG (2.2) bindings. The use of this library is optional when building <a href="../Libbitcoin_Blockchain/">libbitcoin-blockchain</a>.</p>
+
+<p>Signed single file application binaries are available for <a href="../Bitcoin_Explorer/">Bitcoin Explorer</a> (2.3) and <a href="../Bitcoin_Server/">Bitcoin Server</a> (2.4) for Linux, OSX and Windows platforms. Extensive end-user and developer documentation is provided for Bitcoin Explorer (2.5).</p>
+
+<p>Libbitcoin repositories include standard Autotools builds supporting GCC and Clang as well as robust Visual Studio solutions. Single file install scripts for Linux/OSX can download and build all dependencies and repositories (2.6). Linux and OSX builds are regularly tested on Travis-CI (2.7). Tests are executed following each automated build and subsequent reports are published through Coveralls (2.8).</p>
+
+<p>Libbitcoin has been deployed on ARM devices, such as Airbitz iOS and Android applications which are built using <a href="../Libbitcoin_Common/">libbitcoin</a> and <a href="../Libbitcoin_Client/">libbitcoin-client</a> (2.9). There are a number of community Bitcoin Server deployments, including those maintained by Airbitz and Coinkite (2.10).</p>
+
+<h2 id="Libbitcoin_Libraries">Libbitcoin Libraries</h2>
+
+<ul>
+<li><a href="../Libbitcoin_Common/">libbitcoin</a> (common)</li>
+<li><a href="../Libbitcoin_Blockchain/">libbitcoin-blockchain</a></li>
+<li><a href="../Libbitcoin_Build/">libbitcoin-build</a></li>
+<li><a href="../Libbitcoin_Client/">libbitcoin-client</a></li>
+<li><a href="../Libbitcoin_Consensus/">libbitcoin-consensus</a></li>
+<li><a href="../Libbitcoin_Database/">libbitcoin-database</a></li>
+<li><a href="../Libbitcoin_Explorer/">libbitcoin-explorer</a></li>
+<li><a href="../Libbitcoin_Network/">libbitcoin-network</a></li>
+<li><a href="../Libbitcoin_Node/">libbitcoin-node</a></li>
+<li><a href="../Libbitcoin_Protocol/">libbitcoin-protocol</a></li>
+<li><a href="../Libbitcoin_Server/">libbitcoin-server</a></li>
+</ul>
+
+
+<h2 id="Libbitcoin_Applications">Libbitcoin Applications</h2>
+
+<ul>
+<li><a href="../Bitcoin_Explorer/">Bitcoin Explorer</a> (bx) - Bitcoin command line tool</li>
+<li><a href="../Bitcoin_Node/">Bitcoin Node</a> (bn) - Bitcoin full node (only)</li>
+<li><a href="../Bitcoin_Server/">Bitcoin Server</a> (bs) - Blockchain query service (and full node)</li>
+</ul>
+
+
+<h2 id="History">History</h2>
+
+<ul>
+<li>Libbitcoin was the second full implementation of <a href="https://bitcoin.org/bitcoin.pdf">Bitcoin</a>, after the <a href="../Original_Bitcoin_client/">original client</a>. It was created by a community of open source developers led by <span class="createlink"><a href="/ikiwiki.cgi?from=Libbitcoin&amp;page=Amir_Taaki&amp;do=create" rel="nofollow">?</a>Amir Taaki</span> (genjix). (5.1)</li>
+<li>The first commits were by <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Patrick_Strateman&amp;from=Libbitcoin" rel="nofollow">?</a>Patrick Strateman</span> (phantomcircuit) on May 18, 2011 (5.2) and Libbitcoin was announced on July 21, 2011. (5.3)</li>
+<li>The related command line application <a href="../SubvertX/">SubvertX (sx)</a> was announced on November 2, 2011. (5.4)</li>
+<li>The related server <a href="../Obelisk/">Obelisk</a> was first released on January 6, 2014, with an update to SubvertX (sx) and the second major release of Libbitcoin. (5.5)</li>
+<li>SubvertX was redesigned by <span class="createlink"><a href="/ikiwiki.cgi?from=Libbitcoin&amp;page=Eric_Voskuil&amp;do=create" rel="nofollow">?</a>Eric Voskuil</span> (evoskuil) and released as <a href="../Bitcoin_Explorer/">Bitcoin Explorer</a> (bx 2.0) on December 13, 2014. (5.6)</li>
+<li>The <a href="../Libbitcoin_Protocol/">libbitcoin-protocol</a> design was the work product of a Libbitcoin team meeting in San Diego in August, 2014. (5.7)</li>
+<li><a href="../Bitcoin_Server/">Bitcoin Server</a> (bs 2.0) was released on On May 9th, 2015, replacing Obelisk. A blockchain redesign by genjix substantially improved query performance (5.8).</li>
+<li><a href="../Bitcoin_Node/">Bitcoin Node</a> (bn 2.2) achieved parity with Bitcoin Server on December 21st, 2015, as a release quality full node.</li>
+</ul>
+
+
+<h2 id="Active_Maintainers">Active Maintainers</h2>
+
+<ul>
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Eric_Voskuil&amp;do=create&amp;from=Libbitcoin" rel="nofollow">?</a>Eric Voskuil</span> (development)</li>
+<li>Phillip Mienk (development)</li>
+<li>Neill Miller (development)</li>
+<li>William Swanson (development, hosting)</li>
+<li>Pablo Castellano (debian packaging)</li>
+<li>Noel Maersk (operational test)</li>
+<li>Skaht (operational test)</li>
+</ul>
+
+
+<h2 id="Early_Contributors">Early Contributors</h2>
+
+<ul>
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Amir_Taaki&amp;do=create&amp;from=Libbitcoin" rel="nofollow">?</a>Amir Taaki</span> (gengix)</li>
+<li>Robert Williamson (bobalot)</li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Patrick_Strateman&amp;from=Libbitcoin" rel="nofollow">?</a>Patrick Strateman</span> (phantomcircuit)</li>
+<li>Denis Roio (jaromil)</li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Luke_Dashjr&amp;from=Libbitcoin" rel="nofollow">?</a>Luke Dashjr</span> (luke-jr)</li>
+</ul>
+
+
+<h2 id="Projects_Using_Libbitcoin">Projects Using Libbitcoin</h2>
+
+<ul>
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Airbitz&amp;do=create&amp;from=Libbitcoin" rel="nofollow">?</a>Airbitz</span></li>
+<li><a href="https://cancoin.co/wallet">Cancoin</a></li>
+<li><a href="https://github.com/darkleaks">Darkleaks</a></li>
+<li><a href="http://www.darkwallet.is">Darkwallet</a></li>
+<li><a href="https://github.com/darkwallet/darkmarket">Darkmarket</a></li>
+<li><a href="http://openbazaar.org">OpenBazaar</a></li>
+<li><a href="http://slur.io">Slur</a></li>
+</ul>
+
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="https://bitcointalk.org/index.php?topic=30646.0">Bitcointalk Topic</a></li>
+<li><a href="http://libbitcoin.org">libbitcoin.org (under construction)</a></li>
+<li></li>
+<li></li>
+<li><a href="https://mailinglists.dyne.org/cgi-bin/mailman/listinfo/libbitcoin">Libbitcoin Mailing List</a></li>
+<li><a href="https://forum.unsystem.net/category/projects/libbitcoin">Libbitcoin Web Forum</a></li>
+<li>https://bitcoinmagazine.com/6234/what-libbitcoin-and-sx-are-and-why-they-matter</li>
+<li>http://blog.coinkite.com/post/97397052686/public-obelisk-server-for-the-community</li>
+<li>https://wiki.unsystem.net/en/index.php/Libbitcoin</li>
+<li>http://www.slideshare.net/swansontec/libbitcoin-slides</li>
+<li>https://github.com/aantonop/bitcoinbook/blob/develop/appdx-bx.asciidoc</li>
+</ul>
+
+
+<h2 id="References">References</h2>
+
+<p>1.1: <a href="https://bitcointalk.org/index.php?topic=30646.msg384791#msg384791">Libbitcoin Values - Amir Taaki</a><br />
+2.1: <a href="https://github.com/libbitcoin">Libbitcoin Repository</a><br />
+2.2: <a href="http://www.swig.org">SWIG Website</a><br />
+2.3: <a href="https://github.com/libbitcoin/libbitcoin-explorer/wiki/Download-BX">Download Bitcoin Explorer (bx)</a><br />
+2.4: <a href="https://github.com/libbitcoin/libbitcoin-server/wiki/Download-BS">Download Bitcoin Server (bs)</a><br />
+2.5: <a href="https://github.com/libbitcoin/libbitcoin-explorer/wiki">Bitcoin Explorer Documentation</a><br />
+2.6: <a href="https://github.com/libbitcoin/libbitcoin/blob/master/README.md">Libbitcoin Repository Build Instructions</a><br />
+2.7: <a href="https://travis-ci.org/libbitcoin">Libbitcoin Build Status Reports</a><br />
+2.8: <a href="https://coveralls.io/r/libbitcoin">Libbitcoin Test Coverage Reports</a><br />
+2.9: <a href="https://github.com/Airbitz">Airbitz Libbitcoin GitHub Forks</a><br />
+2.10: <a href="https://wiki.unsystem.net/en/index.php/Obelisk/Servers">Community Obelisk/Libbitcoin Servers</a><br />
+5.1: <a href="https://github.com/libbitcoin/libbitcoin/graphs/contributors">GitHub Libbitcoin Contributors</a><br />
+5.2: <a href="https://github.com/libbitcoin/libbitcoin/commit/9dea4682bf0e4247f3c4cb8a6c140ade61bf7df7">First Libbitcoin Commit by Patrick Strateman</a><br />
+5.3: <a href="https://bitcointalk.org/index.php?topic=30646.0">Bitcoin Talk Libbitcoin Announcement</a><br />
+5.4: <a href="https://bitcointalk.org/index.php?topic=50721.0">Bitcoin Talk SubvertX Announcement</a><br />
+5.5: <a href="https://bitcointalk.org/index.php?topic=30646.msg4341812#msg4341812">Bitcoin Talk Libbitcoin, Obelisk and SubvertX Release Announcement</a><br />
+5.6: <a href="https://github.com/libbitcoin/libbitcoin-explorer/releases/tag/v2.0.0">Bitcoin Explorer Release</a><br />
+5.7: <a href="https://lists.dyne.org/lurker/message/20140906.221448.18997951.en.html">Libbitcoin Update 2014-09-06</a><br />
+5.8: <a href="http://www.reddit.com/r/Bitcoin/comments/2go7qm/devs_be_sure_to_test_your_bitcoin_apidata">Reddit Post on Obelisk Performance</a></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Nodes/" rel="tag">Nodes</a>
+
+<a href="../tags/Open_Source/" rel="tag">Open Source</a>
+
+<a href="../tags/Software/" rel="tag">Software</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Bitcoin/">Bitcoin</a>
+
+<a href="../Bitcoin_Explorer/">Bitcoin Explorer</a>
+
+<a href="../Bitcoin_Node/">Bitcoin Node</a>
+
+<a href="../Bitcoin_Server/">Bitcoin Server</a>
+
+<a href="../Libbitcoin_Blockchain/">Libbitcoin Blockchain</a>
+
+<a href="../Libbitcoin_Build/">Libbitcoin Build</a>
+
+<a href="../Libbitcoin_Client/">Libbitcoin Client</a>
+
+<a href="../Libbitcoin_Common/">Libbitcoin Common</a>
+
+<a href="../Libbitcoin_Consensus/">Libbitcoin Consensus</a>
+
+<a href="../Libbitcoin_Database/">Libbitcoin Database</a>
+
+
+<span class="popup">...
+<span class="balloon">
+
+<a href="../Libbitcoin_Explorer/">Libbitcoin Explorer</a>
+
+<a href="../Libbitcoin_Network/">Libbitcoin Network</a>
+
+<a href="../Libbitcoin_Node/">Libbitcoin Node</a>
+
+<a href="../Libbitcoin_Protocol/">Libbitcoin Protocol</a>
+
+<a href="../Libbitcoin_Server/">Libbitcoin Server</a>
+
+<a href="../Obelisk/">Obelisk</a>
+
+<a href="../Software/">Software</a>
+
+<a href="../SubvertX/">SubvertX</a>
+
+<a href="../Thin_Client_Security/">Thin Client Security</a>
+
+<a href="../tags/Nodes/">tags/Nodes</a>
+
+</span>
+</span>
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-06-07T10:45:50Z">Tue 07 Jun 2016 10:45:50 AM Europe</time>
+<!-- Created <time datetime="2015-05-12T23:26:38Z" pubdate="pubdate">Tue 12 May 2015 11:26:38 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

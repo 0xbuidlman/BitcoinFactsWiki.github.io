@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>talk</title>
+
+<link rel="stylesheet" href="../../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../../">bitcoin</a>/ 
+
+<a href="../">BIP 0039</a>/ 
+
+</span>
+<span class="title">
+talk
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>Here is a simple implementation of my proposal to &#39;mine&#39; for a seed:</p>
+
+<pre>
+from electrum import mnemonic
+import ecdsa
+import time
+import hmac
+import hashlib
+
+PREFIX = &quot;100&quot;
+n = len(PREFIX)
+entropy = ecdsa.util.randrange( pow(2,160) )
+nonce = 0
+
+while True:
+  ss = &quot;%040x&quot;%(entropy+nonce)
+  s = hashlib.sha256(ss.decode(&#39;hex&#39;)).digest().encode(&#39;hex&#39;)
+  words = mnemonic.mn_encode(s)[0:13] # 13 random words                                                                                                                          
+  seed = &#39; &#39;.join(words)
+  I = hmac.new(&quot;Bitcoin mnemonic&quot;, seed, hashlib.sha512).digest().encode(&#39;hex&#39;)
+  if I[0:n] == PREFIX:
+    break
+  nonce += 1
+
+print seed
+print I
+</pre>
+
+
+<p>PREFIX contains metadata about the wallet version.</p>
+
+<p>The first 4 or 12 bits of PREFIX encode the length of the metadata (0 to e, f00 to fff)</p>
+
+<p>The length of the metadata in bits is 4*(n+1) where n is the value that is encoded in the first bits.</p>
+
+<p>The format of the metadata itself remains to be defined.</p>
+
+<p>The most compact way to use it is probably to allocate version numbers.</p>
+
+<p>Examples:</p>
+
+<ul>
+<li>00 to 0f :  length = 4 bits. 16 possible version numbers</li>
+<li>100 to 1ff : length = 8 bits. 256 possible version numbers. (00 is used for Electrum&#39;s wallet structure)</li>
+<li>2000 to 2fff</li>
+<li>etc.</li>
+</ul>
+
+
+<p><a>ThomasV</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=BIP_0039%2Ftalk&amp;do=create&amp;page=User_talk%3AThomasV" rel="nofollow">?</a>talk</span>) 15:06, 26 October 2013 (GMT)</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../">BIP 0039</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2013-10-26T15:06:22Z">Sat 26 Oct 2013 03:06:22 PM Europe</time>
+<!-- Created <time datetime="2013-10-26T14:56:56Z" pubdate="pubdate">Sat 26 Oct 2013 02:56:56 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

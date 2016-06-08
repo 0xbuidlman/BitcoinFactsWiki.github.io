@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Deterministic wallet</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Deterministic wallet
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Deterministic_wallet" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>A deterministic wallet is a system of deriving keys from a single starting point known as a seed. The seed allows a user to easily back up and restore a wallet without needing any other information and can in some cases allow the creation of public addresses without the knowledge of the private key.</p>
+
+<h2 id="Benefits">Benefits</h2>
+
+<p>Early clients such as the <a href="../Satoshi_client/">Satoshi client</a> generate a buffer of fresh random private keys to be used as receiving and <a href="../Change/">change addresses</a> in the future. This has the effect of invalidating backups after a short period when the keypool buffer (typically 100 addresses) is exhausted. Deterministic wallets can generate an unlimited number of addresses on the fly and as such don&#39;t suffer from this issue. As the addresses are generated in a known fashion rather than randomly some clients can be used on multiple devices without the risk of losing funds. Users can conveniently create a single backup of the seed in a human readable format that will last the life of the wallet, without the worry of this backup becoming stale.</p>
+
+<p>Certain types of deterministic wallet (BIP0032, Armory, <span class="createlink"><a href="/ikiwiki.cgi?from=Deterministic_wallet&amp;page=Coinkite&amp;do=create" rel="nofollow">?</a>Coinkite</span> and <a href="https://coinb.in/#newHDaddress">Coinb.in</a> ) additionally allow for the complete separation of private and public key creation for greater security and convenience. In this model a server can be set up to only know the Master Public Key of a particular deterministic wallet. This allows the server to create as many public keys as is necessary for receiving funds, but a compromise of the MPK will not allow an attacker to spend from the wallet. They can alternatively be used in <a href="../Electrum/">Electrum</a> and <a href="../Armory/">Armory</a> to enable completely offline storage and spending, where an offline computer knows the private key and an online one knows only the MPK. Transactions spending coins are ferried between the two computers via USB storage which avoids exposing the offline computer to a network-based attack.</p>
+
+<p>Deterministic wallets implemented by hardware wallets (<span class="createlink"><a href="/ikiwiki.cgi?from=Deterministic_wallet&amp;do=create&amp;page=TREZOR" rel="nofollow">?</a>TREZOR</span>) keep the generated private keys offline and do not expose them to the computer even when spending coins.</p>
+
+<h2 id="Types">Types</h2>
+
+<h3 id="Type_1_deterministic_wallet">Type 1 deterministic wallet</h3>
+
+<p>A type 1 deterministic wallet is a simple method of generating addresses from a known starting string, as such it does not allow advanced features such as a Master Public Key. To generate a private key take SHA256(string + n), where n is an ASCII-coded number that starts from 1 and increments as additional keys are needed.</p>
+
+<p>This  type of wallet can be created by Casascius Bitcoin Address Utility.</p>
+
+<h3 id="Type_2_hierarchical_deterministic_wallet">Type 2 hierarchical deterministic wallet</h3>
+
+<p>This wallet type is described in <a href="../BIP_0032/">BIP 0032</a> and is fully implemented in <span class="createlink"><a href="/ikiwiki.cgi?from=Deterministic_wallet&amp;do=create&amp;page=TREZOR" rel="nofollow">?</a>TREZOR</span>, <a href="../Electrum/">Electrum</a> and <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=CarbonWallet&amp;from=Deterministic_wallet" rel="nofollow">?</a>CarbonWallet</span>. The seed is a random 128 bit value presented to the user as a 12 word mnemonic using common English words. The seed is used after 100,000 rounds of SHA256 to slow down attacks against weak user-chosen strings. <a href="https://bitcointalk.org/index.php?topic=330672.msg3547258#msg3547258">(1)</a>.</p>
+
+<p>The initial description and workings of this wallet type is credited to Gregory Maxwell. <a href="https://bitcointalk.org/index.php?topic=19137.msg239768#msg239768">(2)</a></p>
+
+<h3 id="Armory_deterministic_wallet">Armory deterministic wallet</h3>
+
+<p><a href="../Armory/">Armory</a> has its own Type-2 deterministic wallet format based on a &quot;root key&quot; and a &quot;chain code.&quot; Earlier versions of Armory required backing up both the &quot;root key&quot; and &quot;chaincode,&quot; while newer versions start deriving the chaincode from the private key in a non-reversible way.  These newer Armory wallets (0.89+) only require the single, 256-bit root key. This older format is intended to be phased out in favor of the standard BIP0032 format. <a href="https://bitcointalk.org/index.php?topic=351099.msg3770818#msg3770818">(1)</a></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Address/">Address</a>
+
+<a href="../Armory/">Armory</a>
+
+<a href="../Merchant_Howto/">Merchant Howto</a>
+
+<a href="../Paper_wallet/">Paper wallet</a>
+
+<a href="../Technical_background_of_version_1_Bitcoin_addresses/">Technical background of version 1 Bitcoin addresses</a>
+
+<a href="../Wallet/">Wallet</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-05-20T20:56:42Z">Wed 20 May 2015 08:56:42 PM Europe</time>
+<!-- Created <time datetime="2011-12-12T11:59:08Z" pubdate="pubdate">Mon 12 Dec 2011 11:59:08 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

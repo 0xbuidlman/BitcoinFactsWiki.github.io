@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>talk</title>
+
+<link rel="stylesheet" href="../../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../../">bitcoin</a>/ 
+
+<a href="../">Script</a>/ 
+
+</span>
+<span class="title">
+talk
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>xOP_IFDUP   115 0x73    x   x / x x If the input is true or false, duplicate it.</p>
+
+<p>Shouldn&#39;t it be: &quot;If the input is true, duplicate it.&quot;?
+--<a>ThePiachu</a> 11:37, 20 December 2011 (GMT)</p>
+
+<p>The byte vectors in the stack are specified as being signed integers of variable-length. Then there&#39;s an explanation that these integers are considered false if they are either zero or negative zero, which is 0x80. For this to be the case, the elements should be represented in an old binary format called sign-magnitude, which is important to state explicitly, since today virtually all computers use two&#39;s complement as representation, and there&#39;s no such thing as a negative zero. There&#39;s even another representation, one&#39;s complement, where negative zero looks like 0xff.</p>
+
+<p>Reading the source code of the application, I see that arithmetic operations expect unsigned integers, for example, operations OP_2MUL and OP_2DIV are implemented as byte-shifting, which wouldn&#39;t work with signed representations.</p>
+
+<p>It seems to me that, at best, variable-length sign-magnitued integer format is only used for testing for truth, although I haven&#39;t read all the code yet.</p>
+
+<p>--<a>Jean-Pierre Rupp</a> 10:43, 4 March 2012 (GMT)</p>
+
+<h2 id="Provably_Unspendable.2FPrunable_Outputs">Provably Unspendable/Prunable Outputs</h2>
+
+<p>If im not mistaken this kind of transaction would not result in donating the output to the miner. It would instead make the output unusable by anyone forever. In my opinion the best and easiest way to donate to miner is just transfer BTC between your own addresses and set a high fee. <a>Norill</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Script%2Ftalk&amp;page=User_talk%3ANorill&amp;do=create" rel="nofollow">?</a>talk</span>) 22:32, 14 April 2013 (GMT)</p>
+
+<blockquote><p>norill: Fixed wording for OP_RETURN; it is mining fee in the example because the output value is zero, not 0.125BTC as I think you thought. Sorry about that.
+<a>Peter Todd</a> (<span class="createlink"><a href="/ikiwiki.cgi?page=User_talk%3APetertodd&amp;do=create&amp;from=Script%2Ftalk" rel="nofollow">?</a>talk</span>) 02:51, 23 July 2013 (GMT)</p></blockquote>
+
+<h2 id="Common_confusion_on_Turing-completeness.">Common confusion on Turing-completeness.</h2>
+
+<p>Script isn&#39;t turing-complete under the precise definition of the term because it executes with bounded time and memory.</p>
+
+<p>But by the precise definition a conventional desktop computer is also not &quot;turing-complete&quot;: there are functions a universal turing machine can compute that a desktop cannot because the desktop computer runs out of memory first.</p>
+
+<p>The precise definition isn&#39;t terribly useful for most people, since it excludes most things we think of as computers. Many people read the &quot;not Turing-complete&quot; as a statement that Script is only as expressive as a regular language or only capable of expressing monotone functions or something like that. Not so, if you ignore the time/memory bounds script is technically universal for computation. Consider the fragment &quot;2 OP_PICK OP_IF OP_SWAP OP_ENDIF&quot;: This implements a <a href="http://en.wikipedia.org/wiki/Fredkin_gate">fredkin gate</a> which is universal and could just be wired up and repeated up to the operation limit Q.E.D.</p>
+
+<p>It&#39;s absolutely important for the Bitcoin system that script&#39;s execution has an quickly checkable, bounded, and very short runtime. The relevance of turing completeness to any of that is easily and often overstated. The greater limits of script&#39;s expressiveness come from the computation bound, not the computational model. --<a>Gmaxwell</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Script%2Ftalk&amp;do=create&amp;page=User_talk%3AGmaxwell" rel="nofollow">?</a>talk</span>) 05:47, 28 March 2015 (UTC)</p>
+
+<blockquote><p> I think that often when people talk about &quot;Turing completeness&quot;, they mean that any program written in a normal programming language can ~always be compiled into any &quot;Turing complete&quot; language, even though this isn&#39;t really the definition of Turing completeness. You can write a program in C to calculate pi to the n<sup>th</sup> digit, and even if you were using regular C integers n could be pretty large without needing to modify the program. But the equivalent Script program would need to increase in size every time you increase the maximum size of n by 1, and this is what makes Script much weaker than C or any other normal programming language. <a>theymos</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Script%2Ftalk&amp;do=create&amp;page=User_talk%3ATheymos" rel="nofollow">?</a>talk</span>) 18:32, 28 March 2015 (UTC)</p></blockquote>
+
+<h2 id="OP_xVERIFY_output_is_Nothing">OP_xVERIFY output is Nothing</h2>
+
+<p>The commands OP_CHECKSIGVERIFY, OP_CHECKMULTISIGVERIFY, OP_VERIFY, OP_EQUALVERIFY, OP_NUMEQUALVERIFY shows a boolean output on the table of this page, however the output is Nothing. Is that correct? --<a>Thelink2012</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Script%2Ftalk&amp;do=create&amp;page=User_talk%3AThelink2012" rel="nofollow">?</a>talk</span>) 16:57, 15 November 2015 (UTC)</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../">Script</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-11-15T16:57:46Z">Sun 15 Nov 2015 04:57:46 PM Europe</time>
+<!-- Created <time datetime="2011-12-20T11:37:31Z" pubdate="pubdate">Tue 20 Dec 2011 11:37:31 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

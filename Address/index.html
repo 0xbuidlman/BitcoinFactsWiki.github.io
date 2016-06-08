@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Address</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Address
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>A <strong>Bitcoin address</strong>, or simply <strong>address</strong>, is an identifier of 26-35 alphanumeric characters, beginning with the number <code>1</code> or <code>3</code>, that represents a possible destination for a bitcoin payment.
+Addresses can be generated at no cost by any user of Bitcoin.
+For example, using <a href="../Bitcoin_Core/">Bitcoin Core</a>, one can click &quot;New Address&quot; and be assigned an address.
+It is also possible to get a Bitcoin address using an account at an exchange or online wallet service.</p>
+
+<p>There are currently two <a href="../List_of_address_prefixes/">address formats</a> in common use:</p>
+
+<ol>
+<li>Common <a href="../Transaction/#Pay-to-PubkeyHash">P2PKH</a> which begin with the number <code>1</code>, eg: <code>1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2</code>.</li>
+<li>Newer <a href="../Pay_to_script_hash/">P2SH</a> type starting with the number <code>3</code>, eg: <code>3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy</code>.</li>
+</ol>
+
+
+<h2 id="A_Bitcoin_address_is_a_single-use_token">A Bitcoin address is a single-use token</h2>
+
+<p>Like e-mail addresses, you can send bitcoins to a person by sending bitcoins to one of their addresses.
+However, <em>unlike</em> e-mail addresses, people have many different Bitcoin addresses and a unique address should be used for each transaction.
+Most Bitcoin software and websites will help with this by generating a brand new address each time you create an invoice or payment request.</p>
+
+<h2 id="Addresses_can_be_created_offline">Addresses can be created offline</h2>
+
+<p>Creating addresses can be done without an Internet connection and does not require any contact or registration with the Bitcoin network.
+It is possible to create large batches of addresses offline using freely available software tools.
+Generating batches of addresses is useful in several scenarios, such as e-commerce websites where a unique pre-generated address is dispensed to each customer who chooses a &quot;pay with Bitcoin&quot; option.
+Newer  <a href="../Deterministic_wallet/">&quot;HD wallets&quot;</a> can generate a &quot;seed&quot; token which can be used to allow untrusted systems (such as webservers) to generate an unlimited number of addresses without the ability to spend the bitcoins received.</p>
+
+<h2 id="Addresses_are_case_sensitive_and_exact">Addresses are case sensitive and exact</h2>
+
+<p>Bitcoin addresses are case-sensitive.  Bitcoin addresses should be copied and pasted using the computer&#39;s clipboard wherever possible. If you hand-key a Bitcoin address, and each character is not transcribed exactly - including capitalization - the incorrect address will most likely be rejected by the Bitcoin software.  You will have to check your entry and try again.</p>
+
+<p>The probability that a mistyped address is accepted as being valid is 1 in 2<sup>32</sup>, that is, approximately 1 in 4.29 billion.</p>
+
+<h2 id="Proving_you_receive_with_an_address">Proving you receive with an address</h2>
+
+<p>Most Bitcoin wallets have a function to &quot;sign&quot; a message, proving the entity receiving funds with an address has agreed to the message.
+This can be used to, for example, finalise a contract in a cryptographically provable way prior to making payment for it.</p>
+
+<p>Some services will also piggy-back on this capability by dedicating a specific address for authentication only, in which case the address should never be used for actual Bitcoin transactions.
+When you login to or use their service, you will provide a signature proving you are the same person with the pre-negotiated address.</p>
+
+<p>It is important to note that these signatures only prove one receives with an address.
+Since Bitcoin transactions do not have a &quot;from&quot; address, you cannot prove you are the <em>sender</em> of funds.</p>
+
+<p>Current standards for message signatures are only compatible with &quot;version zero&quot; bitcoin addresses (that begin with the number 1).</p>
+
+<h2 id="Address_validation">Address validation</h2>
+
+<p>If you would like to validate a Bitcoin address in an application, it is advisable to use a method from <a href="https://bitcointalk.org/index.php?topic=1026.0">this thread</a> rather than to just check for string length, allowed characters, or that the address starts with a 1 or 3.  Validation may also be done using open source code available in <a href="http://rosettacode.org/wiki/Bitcoin/address_validation">various languages</a> or with an <a href="http://lenschulwitz.com/base58">online validating tool</a>.</p>
+
+<h2><a href="../Multisignature/">Multi-signature</a> addresses</h2>
+
+<p>Addresses can be created that require a combination of multiple private keys.
+Since these take advantage of newer features, they begin with the newer prefix of 3 instead of the older 1.
+These can be thought of as the equivalent of writing a check to two parties - &quot;pay to the order of somebody AND somebody else&quot; - where both parties must endorse the check in order to receive the funds.</p>
+
+<p>The actual requirement (number of private keys needed, their corresponding public keys, etc.) that must be satisfied to spend the funds is decided in advance by the person generating this type of address, and once an address is created, the requirement cannot be changed without generating a new address.</p>
+
+<h2 id="What.27s_in_an_address">What&#39;s in an address</h2>
+
+<p>Most Bitcoin addresses are 34 characters.
+They consist of random digits and uppercase and lowercase letters, with the exception that the uppercase letter &quot;O&quot;, uppercase letter &quot;I&quot;, lowercase letter &quot;l&quot;, and the number &quot;0&quot; are never used to prevent visual ambiguity.</p>
+
+<p>Some Bitcoin addresses can be shorter than 34 characters (as few as 26) and still be valid.
+A significant percentage of Bitcoin addresses are only 33 characters, and some addresses may be even shorter.
+Every Bitcoin address stands for a number.
+These shorter addresses are valid simply because they stand for numbers that happen to start with zeroes, and when the zeroes are omitted, the encoded address gets shorter.</p>
+
+<p>Several of the characters inside a Bitcoin address are used as a checksum so that typographical errors can be automatically found and rejected.
+The checksum also allows Bitcoin software to confirm that a 33-character (or shorter) address is in fact valid and isn&#39;t simply an address with a missing character.</p>
+
+<h2 id="Testnet">Testnet</h2>
+
+<p>Addresses on the Bitcoin Testnet are generated with a different address version, which results in a different prefix.
+See <a href="../List_of_address_prefixes/">List of address prefixes</a> and <a href="../Testnet/">Testnet</a> for more details.</p>
+
+<h2 id="Misconceptions">Misconceptions</h2>
+
+<h3 id="Address_reuse">Address reuse</h3>
+
+<p>Addresses are not intended to be used more than once, and doing so has numerous problems associated.
+See the dedicated article on <a href="../Address_reuse/">address reuse</a> for more details.</p>
+
+<h3 id="Address_balances">Address balances</h3>
+
+<p>Addresses are not wallets nor accounts, and do not carry balances.
+They only receive funds, and you do not send &quot;from&quot; an address at any time.
+Various confusing services and software display <em>bitcoins received with an address, minus bitcoins sent in random unrelated transactions</em> as an &quot;address balance&quot;, but this number is not meaningful: it does not infer the recipient of the bitcoins sent to the address has spent them, nor that they still have the bitcoins received.</p>
+
+<p>An example of bitcoin loss resulting from this misunderstanding is when people believed their address contained 3btc. They spent 0.5btc and believed the address now contained 2.5btc when actually it contained zero. The remaining 2.5btc was transferred to a change address which was not backed up and therefore lost. This has happened on a few occasions to users of <a href="../Paper_wallets/">Paper wallets</a>.</p>
+
+<h3 id="From_addresses">&quot;From&quot; addresses</h3>
+
+<p>Bitcoin transactions do not have any kind of origin-, source- or &quot;from&quot; address. See the dedicated article on &quot;<a href="../From_address/">from address</a>&quot; for more details.</p>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../Technical_background_of_Bitcoin_addresses/">Technical background of Bitcoin addresses</a></li>
+<li><a href="../List_of_address_prefixes/">List of address prefixes</a></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Address&amp;do=create&amp;page=Exit_Address" rel="nofollow">?</a>Exit Address</span></li>
+</ul>
+
+
+<h2 id="References">References</h2>
+
+<p><span class="createlink"><a href="/ikiwiki.cgi?from=Address&amp;do=create&amp;page=es%3ADirecci%C3%B3n" rel="nofollow">?</a>es:Direcci&oacute;n</span>
+<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=de%3AAdresse&amp;from=Address" rel="nofollow">?</a>de:Adresse</span></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Vocabulary/" rel="tag">Vocabulary</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Address_reuse/">Address reuse</a>
+
+<a href="../Bitcoin/">Bitcoin</a>
+
+<a href="../Block_chain/">Block chain</a>
+
+<a href="../Block_chain_browser/">Block chain browser</a>
+
+<a href="../Clearing_Up_Misconceptions_About_Full_Nodes/">Clearing Up Misconceptions About Full Nodes</a>
+
+<a href="../Colored_Coins/">Colored Coins</a>
+
+<a href="../Controlled_supply/">Controlled supply</a>
+
+<a href="../Full_node/">Full node</a>
+
+<a href="../Genesis_block/">Genesis block</a>
+
+<a href="../Help:FAQ/">Help:FAQ</a>
+
+
+<span class="popup">...
+<span class="balloon">
+
+<a href="../Help:Introduction/">Help:Introduction</a>
+
+<a href="../How_to_use_a_Bitcoin_wallet_(for_newbies)/">How to use a Bitcoin wallet (for newbies)</a>
+
+<a href="../IP_transaction/">IP transaction</a>
+
+<a href="../Merchant_Howto/">Merchant Howto</a>
+
+<a href="../Multisignature/">Multisignature</a>
+
+<a href="../Original_Bitcoin_client/API_calls_list/">Original Bitcoin client/API calls list</a>
+
+<a href="../Pay_to_script_hash/">Pay to script hash</a>
+
+<a href="../Private_key/">Private key</a>
+
+<a href="../Technical_background_of_version_1_Bitcoin_addresses/">Technical background of version 1 Bitcoin addresses</a>
+
+<a href="../Transaction/">Transaction</a>
+
+<a href="../Wallet/">Wallet</a>
+
+</span>
+</span>
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-01-29T15:20:43Z">Fri 29 Jan 2016 03:20:43 PM Europe</time>
+<!-- Created <time datetime="2010-12-19T19:27:22Z" pubdate="pubdate">Sun 19 Dec 2010 07:27:22 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

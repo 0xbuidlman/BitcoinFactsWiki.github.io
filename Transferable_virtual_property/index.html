@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Transferable virtual property</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Transferable virtual property
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Transferable_virtual_property&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>Usually, digital objects (like an mp3 file or a helmet in a video game) is either infinitely duplicateable (the mp3) or controlled by a central authority (the video game servers). Transferable virtual property are digital objects that are not controlled by a central authority, can be exchanged between peers, and yet can only have a single owner.</p>
+
+<p>A motivating example is the case of inventory ownership in online games (virtual worlds).  Current games store your inventory on the company servers, which means all exchanges have to go through them, and you can&#39;t use the item in other games.  Really, we would like a system where items are:</p>
+
+<ul>
+<li>granted from a reputable server to a user</li>
+<li>transferred freely between users</li>
+<li>declared by users who want to use them on another server</li>
+<li>verified by servers 1) to be owned by the declaring user, and 2) to have been granted from a trusted reputable server (and maybe 3, have acceptable characteristics)</li>
+</ul>
+
+
+<h2 id="Theory">Theory</h2>
+
+<p>A <a href="https://github.com/thandal/passe-partout">Passe-Partout</a> item looks like:</p>
+
+<ul>
+<li>name: convenient_name</li>
+<li>content: arbitrary_digital_content</li>
+<li>creator_key_name: a_server_that_has_a_good_reputation</li>
+<li>origin_tx_id: the_original_bitcoin_transaction_id</li>
+<li>signature: original_servers_cryptographic_signature_of_the_above</li>
+<li>last_tx_id: the_most_recent_transaction_that_transferred_the_item_to_someone</li>
+</ul>
+
+
+<p>In order to &quot;declare&quot; an item, the user provides the server with a copy of the item and proof that they own the output from the last_tx_id.  The server can verify the signature to prove that the item is unmodified, and also trace the history of transactions to see that the user is the unique owner of the chain of transactions that lead from orign_tx_id to last_tx_id.</p>
+
+<h2 id="Implementation">Implementation</h2>
+
+<p><a href="https://github.com/thandal/passe-partout">Passe-partout</a> is an experimental implementation that includes a demo.</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Contract/">Contract</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2013-01-13T14:50:58Z">Sun 13 Jan 2013 02:50:58 PM Europe</time>
+<!-- Created <time datetime="2013-01-13T14:50:58Z" pubdate="pubdate">Sun 13 Jan 2013 02:50:58 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

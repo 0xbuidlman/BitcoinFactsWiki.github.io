@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Scalability</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Scalability
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>A Bitcoin full node could be modified to scale to much higher transaction rates than are seen today, assuming that said node is running on a high end servers rather than a desktop. Bitcoin was designed to support lightweight clients that only process small parts of the block chain (see <em>simplified payment verification</em> below for more details on this).</p>
+
+<p><em>Please note that this page exists to give calculations about the scalability of a Bitcoin full node and transactions on the block chain without regards to network security. It is not intended to discuss the scalability of alternative protocols or try and summarise philosophical debates. Create alternative pages if you want to do that.</em></p>
+
+<h2 id="Scalability_targets">Scalability targets</h2>
+
+<p>VISA handles on average around 2,000 transactions per second (tps), so call it a daily peak rate of 4,000 tps. It has a peak capacity of around 56,000 transactions per second, <a href="https://usa.visa.com/dam/VCOM/download/corporate/media/visa-fact-sheet-Jun2015.pdf">(1)</a> however they never actually use more than about a third of this even during peak shopping periods. <a href="http://www.visa.com/blogarchives/us/2013/10/10/stress-test-prepares-visanet-for-the-most-wonderful-time-of-the-year/index.html">(2)</a></p>
+
+<p>PayPal, in contrast, handled around 10 million transactions per day for an average of 115 tps in late 2014. <a href="https://web.archive.org/web/20141226073503/https://www.paypal-media.com/about">(3)</a></p>
+
+<p>Let&#39;s take 4,000 tps as starting goal. Obviously if we want Bitcoin to scale to all economic transactions worldwide, including cash, it&#39;d be a lot higher than that, perhaps more in the region of a few hundred thousand tps. And the need to be able to withstand DoS attacks (which VISA does not have to deal with) implies we would want to scale far beyond the standard peak rates. Still, picking a target let us do some basic calculations even if it&#39;s a little arbitrary.</p>
+
+<p>Today the Bitcoin network is restricted to a sustained rate of 7 tps due to the bitcoin protocol restricting block sizes to 1MB.</p>
+
+<h3 id="CPU">CPU</h3>
+
+<p>The protocol has two parts. Nodes send &quot;inv&quot; messages to other nodes telling them they have a new transaction. If the receiving node doesn&#39;t have that transaction it requests it with a getdata.</p>
+
+<p>The big cost is the crypto and block chain lookups involved with verifying the transaction. Verifying a transaction means some hashing and some <a href="../ECDSA/">ECDSA</a> signature verifications. RIPEMD-160 runs at 106 megabytes/sec (call it 100 for simplicity) and SHA256 is about the same. So hashing 1 megabyte should take around 10 milliseconds and hashing 1 kilobyte would take 0.01 milliseconds - fast enough that we can ignore it.</p>
+
+<p>Bitcoin is currently able (with a couple of simple optimizations that are prototyped but not merged yet) to perform around 8000 signature verifications per second on an quad core <a href="http://ark.intel.com/products/53469">Intel Core i7-2670QM 2.2Ghz processor</a>. The average number of inputs per transaction is around 2, so we must halve the rate. This means 4000 tps is easily achievable CPU-wise with a single fairly mainstream CPU.</p>
+
+<p>As we can see, this means as long as Bitcoin nodes are allowed to max out at least 4 cores of the machines they run on, we will not run out of CPU capacity for signature checking unless Bitcoin is handling 100 times as much traffic as PayPal. As of late 2015 the network is handling 1.5 transactions/second, so even assuming enormous growth in popularity we will not reach this level for a long time.</p>
+
+<p>Of course Bitcoin does other things beyond signature checking, most obviously, managing the database. We use LevelDB which does the bulk of the heavy lifting on a separate thread, and is capable of very high read/write loads. Overall Bitcoin&#39;s CPU usage is dominated by ECDSA.</p>
+
+<h3 id="Network">Network</h3>
+
+<p>Let&#39;s assume an average rate of 2000tps, so just VISA. Transactions vary in size from about 0.2 kilobytes to over 1 kilobyte, but it&#39;s averaging half a kilobyte today.</p>
+
+<p>That means that you need to keep up with around 8 megabits/second of transaction data (2000tps * 512 bytes) / 1024 bytes in a kilobyte / 1024 kilobytes in a megabyte = 0.97 megabytes per second * 8 = 7.8 megabits/second.</p>
+
+<p>This sort of bandwidth is already common for even residential connections today, and is certainly at the low end of what colocation providers would expect to provide you with.</p>
+
+<p>When blocks are solved, the current protocol will send the transactions again, even if a peer has already seen it at broadcast time. Fixing this to make blocks just list of hashes would resolve the issue and make the bandwidth needed for block broadcast negligable. So whilst this optimization isn&#39;t fully implemented today, we do not consider block transmission bandwidth here.</p>
+
+<h3 id="Storage">Storage</h3>
+
+<p>At very high transaction rates each block can be over half a gigabyte in size.</p>
+
+<p>It is not required for most fully validating nodes to store the entire chain. In Satoshi&#39;s paper he describes &quot;pruning&quot;, a way to delete unnecessary data about transactions that are fully spent. This reduces the amount of data that is needed for a fully validating node to be only the size of the current unspent output size, plus some additional data that is needed to handle re-orgs. As of October 2012 (block 203258) there have been 7,979,231 transactions, however the size of the unspent output set is less than 100MiB, which is small enough to easily fit in RAM for even quite old computers.</p>
+
+<p>Only a small number of archival nodes need to store the full chain going back to the genesis block. These nodes can be used to bootstrap new fully validating nodes from scratch but are otherwise unnecessary.</p>
+
+<p>The primary limiting factor in Bitcoin&#39;s performance is disk seeks once the unspent transaction output set stops fitting in memory. Once hard disks are phased out in favour of SSDs, it is quite possible that access to the UTXO set never becomes a serious bottleneck.</p>
+
+<h2 id="Optimizations">Optimizations</h2>
+
+<p>The description above applies to the current software with only minor optimizations assumed (the type that can and have been done by one man in a few weeks).</p>
+
+<p>However there is potential for even greater optimizations to be made in future, at the cost of some additional complexity.</p>
+
+<h3 id="CPU">CPU</h3>
+
+<p>Pieter Wuille has implemented a custom verifier tuned for secp256k1 that can go beyond 20,000 signature verifications per second. It would require careful review by professional cryptographers to gain as much confidence as OpenSSL, but this can easily halve CPU load.</p>
+
+<p>Algorithms exist to accelerate batch verification over elliptic curve signatures. This means if there are several inputs that are signing with the same key, it&#39;s possible to check their signatures simultaneously for another 9x speedup. This is a somewhat more complex implementation, however, it can work with existing signatures (clients don&#39;t need upgrading).</p>
+
+<p>Newly developed digital signature algorithms, like <a href="http://ed25519.cr.yp.to/ed25519-20110705.pdf">ed25519</a> have extremely efficient software implementations that can reach speeds of nearly 80,000 verifications per second, even on an old Westmere CPU. That is a 10x improvement over secp256k1, and most likely is even higher on more modern CPUs. Supporting this in Bitcoin would mean a chain fork. This ECC algorithm has also been shown to be <a href="http://eprint.iacr.org/2014/198">easily accelerated using GPUs</a>, yielding scalar point multiplication times of less than a microsecond (i.e. a million point multiplications per second).</p>
+
+<p>At these speeds it is likely that disk and memory bandwidth would become the primary limiting factor, rather than signature checking.</p>
+
+<h3 id="Simplified_payment_verification">Simplified payment verification</h3>
+
+
+
+
+<p>It&#39;s possible to build a Bitcoin implementation that does not verify everything, but instead relies on either connecting to a trusted node, or puts its faith in high difficulty as a proxy for proof of validity. <a href="../Bitcoinj/">bitcoinj</a> is an implementation of this mode.</p>
+
+<p>In Simplified Payment Verification (SPV) mode, named after the section of Satoshi&#39;s paper that describes it, clients connect to an arbitrary full node and download only the block headers. They verify the chain headers connect together correctly and that the difficulty is high enough. They then request transactions matching particular patterns from the remote node (ie, payments to your addresses), which provides copies of those transactions along with a Merkle branch linking them to the block in which they appeared. This exploits the Merkle tree structure to allow proof of inclusion without needing the full contents of the block.</p>
+
+<p>As a further optimization, block headers that are buried sufficiently deep can be thrown away after some time (eg. you only really need to store as low as 2016 headers).</p>
+
+<p>The level of difficulty required to obtain confidence the remote node is not feeding you fictional transactions depends on your threat model. If you are connecting to a node that is known to be reliable, the difficulty doesn&#39;t matter. If you want to pick a random node, the cost for an attacker to mine a block sequence containing a bogus transaction should be higher than the value to be obtained by defrauding you. By changing how deeply buried the block must be, you can trade off confirmation time vs cost of an attack.</p>
+
+<p>Programs implementing this approach can have fixed storage/network overhead in the null case of no usage, and resource usage proportional to received/sent transactions.</p>
+
+<p>See also: <a href="../Thin_Client_Security/">Thin Client Security</a>.</p>
+
+<h2 id="Related_work">Related work</h2>
+
+<p>There are a few proposals for optimizing Bitcoin&#39;s scalability. Some of these require an alt-chain / hard fork.</p>
+
+<ul>
+<li><a href="https://bitcointalk.org/index.php?topic=88208.0">Ultimate blockchain compression</a> - the idea that the blockchain can be compressed to achieve &quot;trust-free lite nodes&quot;</li>
+<li><a href="http://cryptonite.info/files/mbc-scheme-rev2.pdf">The Finite Blockchain</a> paper that describes splitting the blockchain into three data structures, each better suited for its purpose. The three data structures are a finite blockchain (keep N blocks into the past), an &quot;account tree&quot; which keeps account balance for every address with a non-zero balance, and a &quot;proof chain&quot; which is an (ever growing) slimmed down version of the blockchain.</li>
+<li><a href="https://lightning.network/">Lightning Network</a>, an alternative protocol for transaction clearance in which payment hubs set up micropayment channels between each other and settle up on the block chain occasionally. Ordinary users interact primarily or only with hubs.</li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Funding_network_security/">Funding network security</a>
+
+<a href="../Help:FAQ/">Help:FAQ</a>
+
+<a href="../Maximum_transaction_rate/">Maximum transaction rate</a>
+
+<a href="../Off-Chain_Transactions/">Off-Chain Transactions</a>
+
+<a href="../Scalability_FAQ/">Scalability FAQ</a>
+
+<a href="../Weaknesses/">Weaknesses</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-05-04T16:52:07Z">Wed 04 May 2016 04:52:07 PM Europe</time>
+<!-- Created <time datetime="2011-02-12T14:46:44Z" pubdate="pubdate">Sat 12 Feb 2011 02:46:44 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

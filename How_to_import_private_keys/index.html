@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>How to import private keys</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+How to import private keys
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=How_to_import_private_keys" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p><strong>WARNING</strong></p>
+
+<p>Before reading this page, users should note that messing with ECDSA private keys is very dangerous and can result in losing bitcoins, even long after the import.
+It is recommended that outside of self-generated vanity addresses, users should <em>never</em> import (or export) private keys. (1.1) (1.2)</p>
+
+<h1 id="Using_Blockchain.info">Using Blockchain.info</h1>
+
+<p>As of August 2012, possibly the easiest way to import a private key is using <span class="createlink"><a href="/ikiwiki.cgi?from=How_to_import_private_keys&amp;do=create&amp;page=Blockchain.info" rel="nofollow">?</a>Blockchain.info</span>&#39;s My Wallet service. When successully imported through the &quot;Import/Export&quot; screen, the bitcoins assigned to a private key can be immediately sent to any Bitcoin address.</p>
+
+<h1 id="Using_BIPS">Using BIPS</h1>
+
+<p>As of August 2013, <span class="createlink"><a href="/ikiwiki.cgi?from=How_to_import_private_keys&amp;do=create&amp;page=BIPS.gif" rel="nofollow">?</a>BIPS.gif</span> <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=BIPS&amp;from=How_to_import_private_keys" rel="nofollow">?</a>BIPS</span> allows for easy import of private key using Paper Wallet - Import. User can choose to type in the private key manually or scan a QR code containing the private key using the camera. The user must wait 6 confirmations for access to the funds, and system is based on batch importation.</p>
+
+<h1 id="Using_Mycelium">Using Mycelium</h1>
+
+<p>Steps described are with the following settings:</p>
+
+<ul>
+<li>Export mode enabled</li>
+<li>Aggregated view disabled</li>
+</ul>
+
+
+<h2 id="Partial_spend_from_cold_storage">Partial spend from cold storage</h2>
+
+<p>Use this function if you would like to keep some funds on the paper wallet.</p>
+
+<ol>
+<li>Download <a href="https://play.google.com/store/apps/details?id=com.mycelium.wallet&amp;hl=en">Mycelium</a> from the Android Play Store or through iTunes.</li>
+<li>Press the menu button and select &quot;Cold Storage&quot;</li>
+<li>Scan in private key</li>
+<li>Select your destination address</li>
+<li>Select the amount
+
+<ol>
+<li>Press the blue currency tag at the top to toggle currency.</li>
+</ol>
+</li>
+<li>Send!</li>
+</ol>
+
+
+<p>After spending, the private key in memory is destroyed so the paper private key remains somewhat secure. Despite this, best practice is to immediately send the remaining balance to a paper wallet that was generated offline.</p>
+
+<h2 id="Import_key_from_a_paper_wallet">Import key from a paper wallet</h2>
+
+<p>Use this function if you would like to import a private key so all funds are immediately available for spending.</p>
+
+<ol>
+<li>Download <a href="https://play.google.com/store/apps/details?id=com.mycelium.wallet&amp;hl=en">Mycelium</a> from the Android Play Store or through iTunes.</li>
+<li>Key Management</li>
+<li>Press the blue &#39;+&#39; symbol</li>
+<li>Scan in private key</li>
+</ol>
+
+
+<p>After importing this paper private key, you might consider destroying the original so it cannot be found and your funds stolen. Alternatively, you can keep it safe to be used as an offline backup.</p>
+
+<h1 id="Using_bitcoind">Using bitcoind</h1>
+
+<p><strong>If you have Version 7 or later it is now trival.</strong> See: <a href="../How_to_import_private_keys_v7+/">How to import private keys v7+</a></p>
+
+<p>If you are using <a href="../Cold_storage/">Cold storage</a>, a <a href="../Paper_wallet/">Paper wallet</a> or generating <a href="https://bitcointalk.org/index.php?topic=25804.0">vanity addresses</a> you may have a need to import a <a href="../Private_key/">Private key</a>. Since Bitcoin-QT/bitcoind v0.6.0, you can import private keys using built-in RPC command <a href="../Importprivkey/">importprivkey</a>. Before v0.6.0, you needed to rely on third-party <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=wallet.dat&amp;from=How_to_import_private_keys" rel="nofollow">?</a>wallet.dat</span> manipulation tool such as <a href="../Pywallet/">Pywallet</a>.</p>
+
+<p>This article describes how to import a private key through the RPC API of bitcoind, which is a topic for advanced users.</p>
+
+<p><strong>Note that importing a key to bitcoind and/or Bitcoin-Qt may be dangerous and is not recommended unless you understand the full details of how it works</strong></p>
+
+<h2 id="Start_Bitcoin_client">Start Bitcoin client</h2>
+
+<p>Unlike third-party wallet.dat manipulation tools such as <a href="../Pywallet/">Pywallet</a>, you do not have to close the Bitcoin client before proceeding. Instead, you need to start the bitcoind server.</p>
+
+<ul>
+<li>Close bitcoin-qt and start <em>bitcoind -damon</em> in Terminal Emulator. The version of bitcoind MUST be the same as bitcoin-qt!</li>
+</ul>
+
+
+<p>Bitcoin-QT does not enable its RPC interface by default. To enable it:</p>
+
+<ul>
+<li>Close Bitcoin-QT and restart it with <em>bitcoin-qt -server</em>.</li>
+</ul>
+
+
+<h2 id="Unlock_your_wallet">Unlock your wallet</h2>
+
+<p>If you have an encrypted wallet (recommended), you need to unlock it temporarily before importing private keys. The RPC command for unlocking an encrypted wallet is <em>walletpassphrase  </em>. Typing this directly in a bash terminal will leave your wallet passphrase directly in the bash history but there are a couple of techniques you can use to avoid this. Simply add a space before the command:</p>
+
+<pre><code>(space)bitcoind walletpassphrase yourpassphrase 120
+</code></pre>
+
+<p>Another alternative is to use a bash variable:</p>
+
+<pre><code>read x
+(input your passphrase)
+bitcoind walletpassphrase &quot;$x&quot; 120   # Do not set the timeout too long or too short.
+</code></pre>
+
+<h2 id="Import_Private_key.28s.29">Import Private key(s)</h2>
+
+<p>The last command unlocked your wallet temporarily for 120 seconds, during which time you must import your private keys. Since private keys can be as important as your passphrase, you may want to use the same techniques as above to prevent their being recorded in bash history (bash variable or space before the command):</p>
+
+<pre><code>(space)bitcoind importprivkey &quot;5yourveryveryveryverylongprivatekeystring&quot; &quot;my-new-key&quot;  # &quot;my-new-key&quot; is a label for the key/address pair and is optional
+</code></pre>
+
+<p>The importing process is now started. Bitcoind will rescan the entire block data to ensure this key has not been used before. This process will take from one to two minutes, depending on your CPU performance. DO NOT abort it before finishing!</p>
+
+<p>To avoid rescanning run the following.</p>
+
+<pre><code>(space)bitcoind importprivkey 5yourveryveryveryverylongprivatekeystring&quot; &quot;label-here&quot; rescan=false
+</code></pre>
+
+<p>If no errors occurs, the import is a success and Bitcoin-QT users will be able to see the new address in the GUI immediately. If you need to import more keys, just repeat the instructions above. There is currently no command to import a batch of private keys so you will need to wait a minute or two for each key to be imported.</p>
+
+<h2 id="Cleaning_up">Cleaning up</h2>
+
+<pre><code>bitcoind walletlock
+</code></pre>
+
+<p>This will lock your wallet again (so you don&#39;t have to wait for timeout)</p>
+
+<pre><code>unset x
+unset y
+</code></pre>
+
+<p>These commands will clear the passphrase and private key from memory if you used the <em>read</em> technique. If you started bitcoind, you will need to stop it before Bitcoin-QT will start again:</p>
+
+<pre><code>bitcoind stop
+</code></pre>
+
+<h3 id="Deleting_Keys">Deleting Keys</h3>
+
+<p>At some point, you may wish to delete private keys from a wallet.dat file but as of version v0.6.0 of Bitcoin-QT/bitcoind, there is no RPC method available for this purpose.</p>
+
+<h2 id="References">References</h2>
+
+<p>1.1: <a href="https://bitcoin.stackexchange.com/questions/29948/why-doc-says-importing-private-keys-is-so-dangerous">Bitcoin StackExchange - Why doc says importing private keys is so dangerous?</a><br />
+1.2: <a href="https://bitcoin.stackexchange.com/questions/18619/why-so-many-warnings-about-importing-private-keys">Bitcoin StackExchange - Why so many warnings about importing private keys?</a></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Instructional/" rel="tag">Instructional</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Cold_storage/">Cold storage</a>
+
+<a href="../How_to_set_up_a_secure_offline_savings_wallet/">How to set up a secure offline savings wallet</a>
+
+<a href="../Original_Bitcoin_client/API_calls_list/">Original Bitcoin client/API calls list</a>
+
+<a href="../Paper_wallet/">Paper wallet</a>
+
+<a href="../Private_key/">Private key</a>
+
+<a href="../Securing_your_wallet/">Securing your wallet</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-02-10T06:01:37Z">Tue 10 Feb 2015 06:01:37 AM Europe</time>
+<!-- Created <time datetime="2012-08-05T05:33:42Z" pubdate="pubdate">Sun 05 Aug 2012 05:33:42 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

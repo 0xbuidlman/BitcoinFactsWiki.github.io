@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>talk</title>
+
+<link rel="stylesheet" href="../../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../../">bitcoin</a>/ 
+
+<a href="../">Proper Money Handling (JSON-RPC)</a>/ 
+
+</span>
+<span class="title">
+talk
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>RE: best practices in ECMAScript:
+Just converting to base units doesn&#39;t magically fix the issues; if I have 1.0BTC == 100000000.0 base units and I need to divide that value into three equal pieces, I&#39;m going to run into issues whether the result is 0.3333333.... or 3333333.33333...</p>
+
+<p>And the fixes are the same:  either round to the nearest .0000001 or to the nearest 1 before display, etc.</p>
+
+<p>For Ruby I think the syntax is:</p>
+
+<p>(f * 1e8).round.to_f / 1e8</p>
+
+<p>Correct?</p>
+
+<h2 id="ECMAScript.3F">ECMAScript?</h2>
+
+<p>Since the value is already in ECMAScript&#39;s native representation, why would you use a conversion function?</p>
+
+<ul>
+<li>The RPC value is passed as an inexact floating point. Money handling should always be done as integers. --<a>Luke-jr</a> 00:57, 11 June 2011 (GMT)</li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../">Proper Money Handling (JSON-RPC)</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2011-06-11T00:57:24Z">Sat 11 Jun 2011 12:57:24 AM Europe</time>
+<!-- Created <time datetime="2011-03-03T15:17:15Z" pubdate="pubdate">Thu 03 Mar 2011 03:17:15 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

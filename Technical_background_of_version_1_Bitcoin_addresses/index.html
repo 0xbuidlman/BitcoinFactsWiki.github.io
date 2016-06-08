@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Technical background of version 1 Bitcoin addresses</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Technical background of version 1 Bitcoin addresses
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Technical_background_of_version_1_Bitcoin_addresses" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p><a href="../PubKeyToAddr.png"><img class="right" height="120" src="./120x120-PubKeyToAddr.png" title="Conversion from ECDSA public key to Bitcoin Address" width="79" /></a>
+This article may be too technical for some users. The more basic article on <a href="../Address/">Bitcoin Addresses</a> may be more appropriate.</p>
+
+<p>A <a href="../Bitcoin_address/">Bitcoin address</a> is a 160-bit hash of the public portion of a public/private <a>ECDSA</a> keypair. Using <a>public-key cryptography</a>, you can &quot;sign&quot; data with your <a href="../Private_key/">private key</a> and anyone who knows your public key can verify that the signature is valid.</p>
+
+<p>A new keypair is generated for each receiving address (with newer  <a href="../Deterministic_wallet/">HD wallets</a>, this is done deterministically).
+The public key and their associated private keys (or the seed needed to generate them) are stored in the <a href="../Wallet/">wallet</a> data file.
+This is the only file users should need to <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=backup&amp;from=Technical_background_of_version_1_Bitcoin_addresses" rel="nofollow">?</a>backup</span>.
+A &quot;send&quot; transaction to a specific Bitcoin address requires that the corresponding wallet knows the private key implementing it.
+This has the implication that if you create an address and receive coins to that address, then restore the wallet from an earlier backup, before the address was generated, then the coins received with that address are lost; this is not an issue for HD wallets where all addresses are generated from a single seed.
+Addresses are added to an address <a href="../Key_pool/">key pool</a> prior to being used for receiving coins. If you lose your wallet entirely, all of your coins are lost and can never be recovered.</p>
+
+<p>Bitcoin allows you to create as many addresses as you want, and use a new one for every transaction.
+There is no &quot;master address&quot;: the &quot;Your Bitcoin address&quot; area in some wallet UIs has no special importance.
+It&#39;s only there for your convenience, and it should change automatically when used.</p>
+
+<p>Bitcoin addresses contain a built-in check code, so it&#39;s generally not possible to send Bitcoins to a mistyped address. However, if the address is well-formed but no one owns it (or the owner lost their wallet.dat), any coins sent to that address will be lost forever.</p>
+
+<p>Hash values and the checksum data are converted to an alpha-numeric representation using a custom scheme: the <a href="../Base58Check_encoding/">Base58Check encoding</a> scheme. Under Base58Check, addresses can contain all alphanumeric characters except 0, O, I, and l. Normal addresses currently always start with 1 (addresses from script hashes use 3), though this might change in a future version. Testnet addresses usually start with <em>m</em> or <em>n</em>. Mainline addresses can be 25-34 characters in length, and testnet addresses can be 26-34 characters in length. Most addresses are 33 or 34 characters long.</p>
+
+<h2 id="Collisions_.28lack_thereof.29">Collisions (lack thereof)</h2>
+
+<p>Since Bitcoin addresses are basically random numbers, it is possible, although extremely unlikely, for two people to independently generate the same address. This is called a <a>collision</a>). If this happens, then  both the original owner of the address and the colliding owner could spend money sent to that address. It would not be possible for the colliding person to spend the original owner&#39;s entire wallet (or vice versa). If you were to intentionally try to make a collision, it would currently take 2<sup>107</sup> times longer to generate a colliding Bitcoin address than to generate a block. As long as the signing and hashing algorithms remain cryptographically strong, it will likely always be more profitable to collect generations and <a href="../Transaction_Fee/">transaction fees</a> than to try to create collisions.</p>
+
+<p>It is more likely that the Earth is destroyed in the next 5 seconds, than that a collision occur in the next millenium.</p>
+
+<h2 id="How_to_create_Bitcoin_Address">How to create Bitcoin Address</h2>
+
+<ol>
+<li>Having a private <a href="../ECDSA/">ECDSA</a> key
+18E14A7B6A307F426A94F8114701E7C8E774E7F9A47E2C2035DB29A206321725</li>
+<li>Take the corresponding public key generated with it (65 bytes, 1 byte 0x04, 32 bytes corresponding to X coordinate, 32 bytes corresponding to Y coordinate)
+0450863AD64A87AE8A2FE83C1AF1A8403CB53F53E486D8511DAD8A04887E5B23522CD470243453A299FA9E77237716103ABC11A1DF38855ED6F2EE187E9C582BA6</li>
+<li>Perform <a href="../SHA-256/">SHA-256</a> hashing on the public key
+600FFE422B4E00731A59557A5CCA46CC183944191006324A447BDB2D98D4B408</li>
+<li>Perform <a href="../RIPEMD-160/">RIPEMD-160</a> hashing on the result of SHA-256
+010966776006953D5567439E5E39F86A0D273BEE</li>
+<li>Add version byte in front of RIPEMD-160 hash (0x00 for Main Network)
+00010966776006953D5567439E5E39F86A0D273BEE
+<em>(note that below steps are the <a href="../Base58Check_encoding/">Base58Check encoding</a>, which has multiple library options available implementing it)</em><br /></li>
+<li>Perform SHA-256 hash on the extended RIPEMD-160 result
+445C7A8007A93D8733188288BB320A8FE2DEBD2AE1B47F0F50BC10BAE845C094</li>
+<li>Perform SHA-256 hash on the result of the previous SHA-256 hash
+D61967F63C7DD183914A4AE452C9F6AD5D462CE3D277798075B107615C1A8A30</li>
+<li>Take the first 4 bytes of the second SHA-256 hash. This is the address checksum
+D61967F6</li>
+<li>Add the 4 checksum bytes from stage 7 at the end of extended RIPEMD-160 hash from stage 4. This is the 25-byte binary Bitcoin Address.
+00010966776006953D5567439E5E39F86A0D273BEED61967F6</li>
+<li>Convert the result from a byte string into a base58 string using <a href="../Base58Check_encoding/">Base58Check encoding</a>. This is the most commonly used Bitcoin Address format
+16UwLL9Risc3QfPqBUvKofHmBQ7wMtjvM</li>
+</ol>
+
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../Address/">Address</a></li>
+<li><a href="../Base58Check_encoding/">Base58Check encoding</a></li>
+<li><a href="http://gobittest.appspot.com/Address">Address testing suite</a></li>
+<li><a href="http://lenschulwitz.com/base58">Online Address Validator and Base58 Encoder/Decoder</a></li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Base58Check_encoding/">Base58Check encoding</a>
+
+<a href="../SHA-256/">SHA-256</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-06-07T14:24:02Z">Tue 07 Jun 2016 02:24:02 PM Europe</time>
+<!-- Created <time datetime="2011-11-22T16:50:35Z" pubdate="pubdate">Tue 22 Nov 2011 04:50:35 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Bitcoin symbol</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Bitcoin symbol
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>By far the most commonly used symbol for Bitcoin is <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=%3ABtc-sans.png&amp;from=Bitcoin_symbol" rel="nofollow">?</a>:Btc-sans.png</span>, a capital letter <strong>B</strong> with two vertical lines &quot;going through&quot; it, though the lines are only visible at the top and bottom. This symbol was created by <a href="../Satoshi_Nakamoto/">Satoshi Nakamoto</a> for the icon of an early version of the <a href="../Reference_client/">original Bitcoin client</a>, though the very first versions of the Bitcoin client used &quot;BC&quot; instead of any special symbol. Presumably the symbol was intended to look similar to other currency symbols. The symbol represents the currency <span class="createlink"><a href="/ikiwiki.cgi?page=Units&amp;do=create&amp;from=Bitcoin_symbol" rel="nofollow">?</a>unit</span> &quot;bitcoin&quot; (100 million <a href="../Satoshi_(unit)/">satoshi</a>), as well as the Bitcoin network and currency itself. The bitcoin currency unit is also commonly given the informal currency code <strong>BTC</strong>.</p>
+
+<h2 id="Currency_code">Currency code</h2>
+
+<p>The <a href="https://secure.wikimedia.org/wikipedia/en/wiki/ISO_4217">ISO 4217 currency code</a> for Bitcoin is <strong>XBT</strong>. However, at the moment it is an <a href="https://secure.wikimedia.org/wikipedia/en/wiki/ISO_4217#Without_currency_code">unofficial code</a> according to the ISO 4217 standard. The unit name <strong>BTC</strong> is also commonly used to represent one bitcoin, but it violates ISO 4217 because it begins with &quot;BT&quot;, the country code of Bhutan. Bhutan does not actually use the code BTC for any currency, and XBT has not yet defined which unit it represents (just that it represents <em>some</em> unit of bitcoin), so the Bitcoin community is likely to continue using mainly BTC as a unit name and currency code for some time.</p>
+
+<p>A <a href="http://www.coindesk.com/bitcoin-foundation-standardise-bitcoin-symbol-code-next-year/">formal application</a> by the Financial Standards Working Group of the <span class="createlink"><a href="/ikiwiki.cgi?from=Bitcoin_symbol&amp;page=Bitcoin_Foundation&amp;do=create" rel="nofollow">?</a>Bitcoin Foundation</span> is nearing completion <sup><a href="still">true?</a></sup>. This application would request ISO 4217 standard to support XBT.</p>
+
+<h2 id="Currency_Sign">Currency Sign</h2>
+
+<p> <sup>(here rendered using a webfont -- you will see &quot;BTC&quot; if your browser does not support webfonts)</sup> has been the standard currency sign for BTC for a long time. This symbol can <em>sort of</em> be represented using existing Unicode features as (B&#x20E6;), but this symbol is completely broken on many devices/browsers, and <em>at best</em> it looks quite off. Some existing Unicode symbols have been proposed as alternatives, but also serious work is being done on creating a custom Bitcoin sign with its own official <a href="https://secure.wikimedia.org/wikipedia/en/wiki/Unicode">Unicode</a> that is recognized by the <a href="https://secure.wikimedia.org/wikipedia/en/wiki/Unicode_Consortium">Unicode Consortium</a>. Note that creating an official currency sign is more complex than creating a logo as will be explained below.</p>
+
+<p><a href="../Example-unicode-reference-currency-signs.png"><img class="right" height="91" src="./120x120-Example-unicode-reference-currency-signs.png" title="Examples of Unicode currency sign reference glyphs" width="120" /></a></p>
+
+<h3 id="New_Unicode_symbol">New Unicode symbol</h3>
+
+<p>In some discussions on topics <a href="https://bitcointalk.org/index.php?topic=41.0">41</a>, <a href="https://bitcointalk.org/index.php?topic=369.0">369</a> and <a href="https://bitcointalk.org/index.php?topic=7215.0">7215</a> on the Bitcoin Forum several designs of an official Bitcoin sign have been proposed. This section on the Wiki is intended to streamline the process of arriving at an official Bitcoin currency sign with its own Unicode character code.</p>
+
+<p>In November 2015, <strong>U+20BF</strong> was selected to be the code point of the bitcoin sign in Unicode.  (4.1)</p>
+
+<h4 id="Goal">Goal</h4>
+
+<p>Having a unique Bitcoin currency sign will allow typographers to add their currency sign design in their fonts. This is similar to implementing support for the euro sign. Each font has its own version of the euro sign that fits with the style observed in the characters in the rest of the fonts of their typefaces. Note that the Unicode Consortium does not endorse Bitcoin in any way by assigning a Unicode character code, however, by having an official Unicode Bitcoin&#39;s perception of legitimacy will increase.</p>
+
+<h4 id="Requirements_and_criteria">Requirements and criteria</h4>
+
+<p>A reference Bitcoin sign could/should/must be:</p>
+
+<ul>
+<li>recognizable as a <a href="https://secure.wikimedia.org/wikipedia/en/wiki/Currency_sign">currency sign</a> such as $ &euro; &yen; &pound; &cent; (e.g. with one or two vertical or horizontal bars)</li>
+<li>distinct from existing currency signs such as the Thai Baht, &#xE3F;</li>
+<li>built from recognizable existing characters found on most <a href="https://secure.wikimedia.org/wikipedia/en/wiki/Keyboard_layout#United_States">QWERTY keyboards</a> such as bar , minus -, hash # and/or capital B referring to currencies and <strong>B</strong>itcoin</li>
+<li>easy to use in handwriting</li>
+<li>easy to compose with one or more <a href="https://help.ubuntu.com/community/GtkComposeTable#The%20Gtk%20Compose%20Table">compose sequences</a> that are still free and refer to the elements recognizable in the sign (for example the euro sign can be composed from = and C even though the = and C are not part of how it is pronounced)</li>
+<li><em>possible</em> to implement in <a href="https://secure.wikimedia.org/wikipedia/en/wiki/Serif">serif and sans-serif</a> (Most of the <a href="http://www.unicode.org/charts/PDF/U20A0.pdf">Unicode reference implementations</a> are made with serifs but sans-serif also exist in sans-serif fonts. So a reference implementation in serif to what is found in the PDF is preferred.)</li>
+<li><em>possible</em> to implement in regular, italic, bold and bold italic (for sans-serif the italic will simply be a slanted version)</li>
+<li>in <a href="https://secure.wikimedia.org/wikipedia/en/wiki/SVG">SVG</a> and use this <a href="http://pastebin.com/raw.php?i=FVY8W1W3">template</a> (save as <tt>bitcoin-sign-20110719-template.svg</tt>) with updated metadata and public domain or similar free/open/libre license</li>
+</ul>
+
+
+<p>Note that a reference Bitcoin sign will only be used as a reference by the Unicode Consortium and it is up to typographers to implement their version matching the style of their typefaces and fonts.</p>
+
+<h4 id="Submissions">Submissions</h4>
+
+<p>It is possible to submit proposals for a <strong>reference implementation</strong> below.</p>
+
+<table>
+<thead>
+<tr>
+<th>Preview </th>
+<th>Handwritten </th>
+<th>Associations </th>
+<th>Compose sequence(s) </th>
+<th>Designer </th>
+<th>Link to SVG file </th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../Bitcoin-sign-20110719.png"><img class="img" height="127" src="./128x128-Bitcoin-sign-20110719.png" width="90" /></a></td>
+<td><a href="../Img075.jpg"><img class="img" height="128" src="./128x128-Img075.jpg" width="115" /></a></td>
+<td>double barred dollar sign ($), capital b (B)</td>
+<td>B, B, B=, =B</td>
+<td>Pander</td>
+<td><a href="http://pastebin.com/raw.php?i=XYsc9DeS">bitcoin-sign-20110719.svg</a></td>
+<td>example submission based on</td>
+</tr>
+<tr>
+<td><a href="../Bitcoin-proposal-1.png"><img class="img" height="127" src="./128x128-Bitcoin-proposal-1.png" width="90" /></a></td>
+<td><a href="../Hashbtc.jpg"><img class="img" height="127" src="./128x128-Hashbtc.jpg" width="84" /></a></td>
+<td>hash (#), numeral three (3)</td>
+<td>B#, #B, 3#, #3</td>
+<td>Wareen</td>
+<td><a href="http://pastebin.com/raw.php?i=MRfcm0Cn">Bitcoin-proposal-1.svg</a></td>
+<td>proposal based on original design idea from <a href="https://bitcointalk.org/index.php?topic=41.msg348274#msg348274">RylandAlmanza</a>and <a href="https://bitcointalk.org/index.php?topic=25102.msg325489#msg325489">netrin</a></td>
+</tr>
+</tbody>
+</table>
+
+
+<h3 id="Existing_Unicode_symbol">Existing Unicode symbol</h3>
+
+<p>There is a discussion over <a href="https://bitcointalk.org/index.php?topic=369.0">which Unicode symbol might be the best suited</a> for Bitcoin.</p>
+
+<p>To type Unicode characters, refer to:</p>
+
+<ul>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Bitcoin_symbol&amp;page=Microsoft_Windows_Unicode_Input&amp;do=create" rel="nofollow">?</a>Microsoft Windows Unicode Input</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=How_to_easily_type_the_circled_B_symbol_on_a_Mac&amp;from=Bitcoin_symbol" rel="nofollow">?</a>How to easily type the circled B symbol on a Mac</span></li>
+</ul>
+
+
+<p>It has led to the following options:</p>
+
+<table>
+<thead>
+<tr>
+<th>Proposed character </th>
+<th>Description &amp; Pros &amp; Cons </th>
+<th>Unicode name </th>
+<th>Unicode decimal input </th>
+<th>Unicode hex input</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><center><big>B&#x20E6;</big></center></td>
+<td>* Pros: Similar to current bitcoin.org logo* Cons: Displays poorly on some systems</td>
+<td>LATIN CAPITAL LETTER B + COMBINING DOUBLE VERTICAL STROKE OVERLAY </td>
+<td></td>
+<td>U+0042 U+20E6</td>
+</tr>
+<tr>
+<td><center><big>&#xE3F;</big></center></td>
+<td>* Pros: Displayed correctly on all known OSes * Cons: It is already used as the Thai Baht (THB) symbol but the $ is also shared by many currencies</td>
+<td>THAI CURRENCY SYMBOL BAHT </td>
+<td></td>
+<td>Alt +0E3F</td>
+</tr>
+<tr>
+<td><center><big>&#x243;</big></center></td>
+<td>* Pros: Standard Latin Extended-B character; <a href="http://www.ecogex.com/bitcoin/">See the project &#x243; Another Bitcoin identity</a>* Cons: Does not display on modern Android devices</td>
+<td>LATIN CAPITAL LETTER B WITH STROKE </td>
+<td></td>
+<td>Alt +0243</td>
+</tr>
+<tr>
+<td><center><big>&#x15F8;</big></center></td>
+<td>Resembles the struck B while being different from Baht symbol </td>
+<td>CANADIAN SYLLABICS CARRIER KHEE </td>
+<td></td>
+<td>Alt +15F8</td>
+</tr>
+<tr>
+<td><center><big>B&#x20EB;</big></center></td>
+<td></td>
+<td>LATIN CAPITAL LETTER B + COMBINING LONG DOUBLE SOLIDUS OVERLAY </td>
+<td></td>
+<td>U+0042 U+20EB</td>
+</tr>
+<tr>
+<td><center><big>&#x24B7;</big></center></td>
+<td>* Pros: Similar to current bitcoin.org logo</td>
+<td>CIRCLED LATIN CAPITAL LETTER B </td>
+<td></td>
+<td>Alt +24B7</td>
+</tr>
+<tr>
+<td><center><big>&#x24D1;</big></center></td>
+<td>* Pros: Small b represent the unit bit in computer where capital B is Byte* Cons: Small fonts are harder to read</td>
+<td>CIRCLED LATIN SMALL LETTER B </td>
+<td></td>
+<td>Alt +24D1</td>
+</tr>
+<tr>
+<td><center><big>&#x1D03;</big></center></td>
+<td></td>
+<td>LATIN LETTER SMALL CAPITAL BARRED B </td>
+<td></td>
+<td>Alt +1D03</td>
+</tr>
+<tr>
+<td><center><big>&#x2422;</big></center></td>
+<td></td>
+<td>(Unicode Block:   Control Pictures) BLANK SYMBOL (graphic for space) </td>
+<td></td>
+<td>Alt +2422</td>
+</tr>
+<tr>
+<td><center><big>&beta;</big></center></td>
+<td>* Pros: Fluid look and easy to write; Lowercase<br />* Cons: Languages that use this character don&#39;t consider it a B.  in Greek it&#39;s a V, and the German character it resembles is a hard S.</td>
+<td>GREEK SMALL LETTER BETA </td>
+<td></td>
+<td>Alt +03B2</td>
+</tr>
+<tr>
+<td><center><big>&#x2206;</big></center></td>
+<td>delta for &quot;digital&quot;  </td>
+<td>Greek capital Delta. (In Greek it&#39;s pronounced as the &quot;th&quot; in &quot;then&quot; and not like &quot;d&quot; in &quot;digital&quot;. </td>
+<td></td>
+<td>U+0394</td>
+</tr>
+<tr>
+<td><center><big>&#x278;</big></center></td>
+<td>contains 0 and I </td>
+<td>Greek small Phi </td>
+<td></td>
+<td>U+0278</td>
+</tr>
+<tr>
+<td><center><big>&#x5E01;</big></center></td>
+<td>pronounced &quot;bi&quot;, combines &quot;b&quot;, turned &quot;c&quot; and &quot;T&quot;, many Chinese users, also &#x7F51;&#x6C11;&#x5E01; - Wangminbi, &quot;The Netizen&#39;s Currency&quot; (pun on Renminbi) </td>
+<td>Chinese for &quot;Currency&quot;  </td>
+<td></td>
+<td>U+5E01</td>
+</tr>
+<tr>
+<td><center><big>&curren;</big></center></td>
+<td></td>
+<td>CURRENCY SIGN </td>
+<td>Alt 0164 </td>
+<td>Alt +00A4</td>
+</tr>
+<tr>
+<td><center><big>&#x184;</big></center></td>
+<td></td>
+<td>LATIN CAPITAL LETTER TONE SIX </td>
+<td></td>
+<td>Alt +0184</td>
+</tr>
+<tr>
+<td><center><big>&#x2204;</big></center></td>
+<td></td>
+<td>(Unicode Block: Mathematical Operators) THERE DOES NOT EXIST </td>
+<td></td>
+<td>Alt +2204</td>
+</tr>
+<tr>
+<td><center><big>&equiv;</big></center></td>
+<td>three bars like three bits * Cons: this resembles the letter ksi (&Xi;) in Greek and it sounds like &quot;x&quot; in &quot;axiom&quot;.</td>
+<td>(Unicode Block: Mathematical Operators) IDENTICAL TO </td>
+<td></td>
+<td>U+2261</td>
+</tr>
+<tr>
+<td><center><big>&#xA98;</big></center></td>
+<td></td>
+<td>GUJARATI LETTER GHA (Indo-Aryan language)  </td>
+<td></td>
+<td>Alt +0A98</td>
+</tr>
+<tr>
+<td><center><big>&#x3ED;</big></center></td>
+<td></td>
+<td>(Unicode Block: Greek and Coptic) COPTIC SMALL LETTER SHIMA </td>
+<td></td>
+<td>Alt +03ED</td>
+</tr>
+<tr>
+<td><center><big>&#x24E2;</big></center></td>
+<td>Purposed as a smaller unit of bitcoin. E.g. A hundredth of a bitcoin </td>
+<td>CIRCLED LATIN SMALL LETTER S  </td>
+<td></td>
+<td>Alt +24E2</td>
+</tr>
+<tr>
+<td><center><big>&#x25EA;</big></center></td>
+<td></td>
+<td>(Unicode Block: Geometric Shapes) SQUARE WITH LOWER RIGHT DIAGONAL HALF BLACK  </td>
+<td></td>
+<td>Alt +25EA</td>
+</tr>
+<tr>
+<td><center><big>&#x32E1;</big></center></td>
+<td></td>
+<td>CIRCLED KATAKANA TU&#39; (Japanese)</td>
+<td></td>
+<td>Alt +32E1</td>
+</tr>
+<tr>
+<td><center><a href="../Bat.png"><img class="img" height="24" src="./24x24-Bat.png" title="alt=The b&#39;at" width="22" /></a><br />the b&#39;at</center></td>
+<td>* Pros: Is round like a coin. Contains the B for Bitcoin. Borrows a style widely associated with the Internet. Not used for other meanings.<em> Cons: Does not exist in the Unicode standard</em> Cons: Very similar to the existing trademarked logo of <a href="http://www.broad.com">Broad</a></td>
+<td>n/a </td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><center><a href="../Bitcoin_Symbol_Suggestion_circled_struck-through_B.png"><img class="img" height="24" src="./24x24-Bitcoin_Symbol_Suggestion_circled_struck-through_B.png" width="22" /></a></center></td>
+<td>* Cons: Does not exist in the Unicode standard</td>
+<td>n/a </td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><center><a href="../Bitcoin_Symbol_Suggestion_rotated_power.png"><img class="img" height="21" src="./24x24-Bitcoin_Symbol_Suggestion_rotated_power.png" width="24" /></a></center></td>
+<td>* Cons: Does not exist in the Unicode standard</td>
+<td>n/a </td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><center>A &#39;C&#39; with &#39;1&#39; and &#39;0&#39; inside <a href="http://img829.imageshack.us/img829/8840/bitcoinlogodraft.png">http://img829.imageshack.us/img829/8840/bitcoinlogodraft.png</a></center></td>
+<td>* Cons: Does not exist in the Unicode standard </td>
+<td>n/a </td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><center>A &#39;C&#39; with a &#39;circle&#39; and &#39;dot&#39; inside <a href="http://img836.imageshack.us/img836/6006/bitcoinlogodraftii.png">http://img836.imageshack.us/img836/6006/bitcoinlogodraftii.png</a></center></td>
+<td>* Cons: Does not exist in the Unicode standard </td>
+<td>n/a </td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><center>B-T-C monogram <a href="http://hosting11.imagecross.com/image-hosting-61/2381unicode1s.png">http://hosting11.imagecross.com/image-hosting-61/2381unicode1s.png</a><a href="http://hosting11.imagecross.com/image-hosting-61/162bitcoin_uni_s.png">http://hosting11.imagecross.com/image-hosting-61/162bitcoin_uni_s.png</a></center></td>
+<td>* Cons: Does not exist in the Unicode standard    </td>
+<td>n/a </td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+
+<h3 id="Inserting_the_symbol">Inserting the symbol</h3>
+
+<p>In lieu of the Bitcoin symbol being included in the Unicode standard and its adoption into typographic fonts,  can be included in many documents by other means.  This section focuses on online publications but the basic concepts apply to all publishing forms.</p>
+
+<p>A package including a high resolution raster image with transparency (PNG), vector image (SVG) and TrueType font (TTF) is available (9.1)</p>
+
+<h4 id="Image">Image</h4>
+
+<p>The Bitcoin symbol can be inserted as an image, as is done in the opening sentence of this page.  The benefit of this method is that any client that can display images in line with text will be able to display the symbol.  The down side to this method is that as an image, it does not always degrade as nicely as a font.  If using raster image, scaling the image up/down (to fit with surrounding text) may result in pixelation, inappropriate filtering, and other issues typical of raster images.  If using a vector image, scaling concerns do not apply but the display would still not benefit from font-specific rendering features such as <a>hinting</a>.  Both forms also suffer from client-specific considerations such as whether or not a box will be drawn around the image and the general inability to easily style its display; applying color requires specific CSS, and italicizing would require a CSS skew transform, for example.</p>
+
+<p>When using an image in running text on a webpage it&#39;s generally a good idea to set the <em>alt</em> property to an appropriate value.  For example, when depicting amounts you might use <em>alt=&quot;BTC&quot;</em>.  Text including the symbol copied and pasted will then remain syntactically correct, replacing the symbol with BTC.</p>
+
+<p>Sample HTML code:
+    
+ .btc { height:1em; position:relative; top:0.17em; cursor:text; }
+  ...
+  Please send <img alt="BTC" class="btc" src="btc-sans.png" />0.01 to ...
+  Please send <img alt="BTC" class="btc" src="btc-sans.svg" />0.01 to ...</p>
+
+<h4 id="Font_Awesome_icon">Font Awesome icon</h4>
+
+<p>The Font Awesome collection of icons and symbols also includes the Bitcoin symbol. (11.1)</p>
+
+<p>Sample HTML code:
+     </p>
+ ...
+ Please send <i class="fa fa-btc"></i>0.01 to ...
+
+<h4 id="Font">Font</h4>
+
+<p>As few fonts include the Bitcoin symbol, a special font was created by <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=User%3ATheymos&amp;from=Bitcoin_symbol" rel="nofollow">?</a>User:Theymos</span>, originally for the <span class="createlink"><a href="/ikiwiki.cgi?from=Bitcoin_symbol&amp;do=create&amp;page=BitcoinTalk" rel="nofollow">?</a>BitcoinTalk</span> forum (12.1).  The font consists of <em>only</em> the Bitcoin symbol used in the glyph for the capital letter B.  The text &quot;BTC&quot; can be entered and styled with this font, causing it to be replaced entirely with just the symbol on those systems that support this font, while on other systems the text &quot;BTC&quot; is retained.  Similarly, copying and pasting text will still retain &quot;BTC&quot;.  This method is used on BitcoinTalk and this Bitcoin Wiki.</p>
+
+<p>Sample HTML code:
+     @font-face { font-family: BTC; src: url(BTC.ttf); }
+ ...
+ Please send <span>BTC</span>0.01 to ...</p>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Bitcoin_symbol&amp;page=Promotional_graphics&amp;do=create" rel="nofollow">?</a>Promotional graphics</span></li>
+</ul>
+
+
+<p>4.1: https://twitter.com/ken_lunde/status/661351862155669506<br />
+9.1: http://www.filedropper.com/bitcoinsymbol<br />
+11.1: http://fortawesome.github.io/Font-Awesome/icon/btc/<br />
+12.1: https://bitcointalk.org/index.php?topic=88647</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Introduction/" rel="tag">Introduction</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../BTC_(disambiguation)/">BTC (disambiguation)</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-11-03T16:19:52Z">Tue 03 Nov 2015 04:19:52 PM Europe</time>
+<!-- Created <time datetime="2010-12-17T17:34:41Z" pubdate="pubdate">Fri 17 Dec 2010 05:34:41 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

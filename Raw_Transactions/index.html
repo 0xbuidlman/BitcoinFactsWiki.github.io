@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Raw Transactions</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Raw Transactions
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Raw_Transactions&amp;page=Talk&amp;do=create" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<h2 id="Overview">Overview</h2>
+
+<p>The &quot;raw transaction API&quot; was introduced with  <a href="../Bitcoind/#_History_of_official_bitcoind_(and_predecessor)_releases">Bitcoin-Qt/bitcoind version 0.7</a>. It gives developers or very sophisticated end-users low-level access to transaction creation and broadcast.</p>
+
+<h2 id="JSON-RPC_API">JSON-RPC API</h2>
+
+<h3 id="listunspent_.5Bminconf.3D1.5D_.5Bmaxconf.3D999999.5D.3D.3D">listunspent [minconf=1] [maxconf=999999]==</h3>
+
+<p>Returns an array of unspent transaction outputs in the wallet that have between minconf and maxconf (inclusive) confirmations. Each output is a 5-element object with keys: txid, output, scriptPubKey, amount, confirmations. txid is the hexadecimal transaction id, output is which output of that transaction, scriptPubKey is the hexadecimal-encoded CScript for that output, amount is the value of that output and confirmations is the transaction&#39;s depth in the chain.</p>
+
+<h3 id="lockunspent_unlock.3F_.5B.7Btxid.3Atxid.2Cvout.3An.7D.2C....5D">lockunspent unlock? [{&quot;txid&quot;:txid,&quot;vout&quot;:n},...]</h3>
+
+<p>Temporarily lock (unlock=false) or unlock (unlock=true) specified transaction outputs. A locked transaction output will not be chosen by automatic coin selection, when spending bitcoins.  Locks are stored in memory only.  Nodes start with zero locked outputs, and the locked output list is always cleared (by virtue of process exit) when a node stops or fails.</p>
+
+<h3 id="listlockunspent">listlockunspent</h3>
+
+<p>List all temporarily locked transaction outputs.</p>
+
+<h3 id="createrawtransaction_.5B.7Btxid.3Atxid.2Cvout.3An.7D.2C....5D_.7Baddress.3Aamount.2C....7D">createrawtransaction [{&quot;txid&quot;:txid,&quot;vout&quot;:n},...] {address:amount,...}</h3>
+
+<p>Create a transaction spending given inputs (array of objects containing transaction outputs to spend), sending to given address(es). Returns the hex-encoded transaction in a string. Note that the transaction&#39;s inputs are not signed, and it is not stored in the wallet or transmitted to the network.</p>
+
+<p>Also note that NO transaction validity checks are done; it is easy to create invalid transactions or transactions that will not be relayed/mined by the network because they contain insufficient fees.</p>
+
+<h3>decoderawtransaction &lt;hex string&gt;</h3>
+
+<p>Returns JSON object with information about a serialized, hex-encoded transaction.</p>
+
+<h3>getrawtransaction &lt;txid&gt; [verbose=0]=</h3>
+
+<p>If verbose=0, returns serialized, hex-encoded data for transaction txid. If verbose is non-zero, returns a JSON Object containing information about the transaction. Returns an error if  is unknown.</p>
+
+<h3>signrawtransaction &lt;hex string&gt; [{&quot;txid&quot;:txid,&quot;vout&quot;:n,&quot;scriptPubKey&quot;:hex},...] [&lt;privatekey1&gt;,...] [sighash=&quot;ALL&quot;]=</h3>
+
+<p>Sign as many inputs as possible for raw transaction (serialized, hex-encoded). The first argument may be several variations of the same transaction concatenated together; signatures from all of them will be combined together, along with signatures for keys in the local wallet. The optional second argument is an array of parent transaction outputs, so you can create a chain of raw transactions that depend on each other before sending them to the network. Third optional argument is an array of base58-encoded private keys that, if given, will be the only keys used to sign the transaction. The fourth optional argument is a string that specifies how the <a href="../OP_CHECKSIG/">signature hash</a> is computed, and can be &quot;ALL&quot;, &quot;NONE&quot;, &quot;SINGLE&quot;, &quot;ALLANYONECANPAY&quot;, &quot;NONEANYONECANPAY&quot;, or &quot;SINGLEANYONECANPAY&quot;.
+Returns json object with keys:</p>
+
+<ul>
+<li>hex : raw transaction with signature(s) (hex-encoded string)</li>
+<li>complete : 1 if rawtx is completely signed, 0 if signatures are missing.
+If no private keys are given and the wallet is locked, requires that the wallet be unlocked with walletpassphrase first.</li>
+</ul>
+
+
+<h3>sendrawtransaction &lt;hex string&gt;</h3>
+
+<p>Submits raw transaction (serialized, hex-encoded) to local node and network. Returns transaction id, or an error if the transaction is invalid for any reason.</p>
+
+<h2 id="Motivating_use_cases">Motivating use cases</h2>
+
+<h3 id="Multisignature_transactions">Multisignature transactions</h3>
+
+<p>Funds are sitting in one or more multisignature transaction outputs, and it is time to gather signatures and spend them.</p>
+
+<p>Assumption: you know the multisignature outputs&#39; {txid, outputNumber, amount}.</p>
+
+<ul>
+<li>Create a raw transaction to spend, using createrawtransaction.</li>
+<li>Use signrawtransaction to add your signatures (after unlocking the wallet, if necessary).</li>
+<li>Give the transaction to the other person(s) to sign.</li>
+<li>You or they submit the transaction to the network using sendrawtransaction.
+<strong>You must be careful to include an appropriate transaction fee</strong>, or the sendrawtransaction method is likely to fail (either immediately or, worse, the transaction will never confirm).</li>
+</ul>
+
+
+<h3 id="Debugging.2Ftesting">Debugging/testing</h3>
+
+<p>These lower-level routines will be useful for debugging and testing; listunspent gives a detailed list of the state of the wallet, and sendrawtx might be used to test double-spend-handling.</p>
+
+<h3 id="Input_selection_control">Input selection control</h3>
+
+<p>You want fine-grained control over exactly what coins in the wallet are spent.</p>
+
+<ul>
+<li>Get a list of not-yet-spent outputs with listunspent</li>
+<li>Create a transaction using createrawtransaction</li>
+<li>Apply signatures using signrawtransaction</li>
+<li>Submit it using sendrawtransaction
+Note that you are responsible for preventing accidental double-spends.</li>
+</ul>
+
+
+<h3 id="Control_over_payment_of_fees_and.2For_transaction_re-transmission">Control over payment of fees and/or transaction re-transmission</h3>
+
+<p>You want to specify, on a per-transaction basis, how much to pay in fees. Or you want to implement your own policy for how often transactions that are not immediately included in blocks are re-broadcast to the network.</p>
+
+<ul>
+<li>Maintain a list of not-yet-spent, confirmed outputs with listunspent (refreshed every time a new block is found, using the -blocknotify feature).</li>
+<li>Create a transaction with exactly the amount of fees you wish with createrawtransaction</li>
+<li>Apply signatures using signrawtransaction</li>
+<li>Submit it with sendrawtransaction</li>
+<li>Re-submit it periodicially with sendrawtransaction if it does not get into a block.</li>
+</ul>
+
+
+<h2 id="Other.2C_non-obvious_use_cases">Other, non-obvious use cases</h2>
+
+<h3 id="Re-broadcast_a_transaction">Re-broadcast a transaction</h3>
+
+<p>If you want to re-broadcast a transaction right away, you can use the getrawtransaction and sendrawtransaction API calls to do that. As a bash shell-script one-liner it would be:</p>
+
+<ul>
+<li>sendrawtransaction $(getrawtransaction $TXID)
+(note that Bitcoin-Qt/bitcoind automatically re-transmit wallet transactions periodically until they are accepted into a block).</li>
+</ul>
+
+
+<h3 id="Validate_a_transaction_without_broadcasting_it">Validate a transaction without broadcasting it</h3>
+
+<p>If you have a raw transaction and want to make sure all of its signatures are correct, you can use the signrawtransaction API call. Pass in the hex-encoded raw transaction, any inputs that bitcoind doesn&#39;t yet know about, and an empty array of private keys to use to sign the transaction. Passing an empty array of private keys will prevent signrawtransaction from doing any signing; if it returns &quot;complete&quot;:1 then all of the existing signatures are valid and there are no signatures missing.</p>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../Original_Bitcoin_client/API_calls_list/">API calls list</a></li>
+<li><a href="https://people.xiph.org/~greg/signdemo.txt example of signing offline">https://people.xiph.org/~greg/signdemo.txt example of signing offline</a></li>
+<li><a href="https://people.xiph.org/~greg/escrowexample.txt example for escrow">https://people.xiph.org/~greg/escrowexample.txt example for escrow</a></li>
+<li><a href="https://gist.github.com/3966071 example for offline multisig (not supported as of 0.7.1)">https://gist.github.com/3966071 example for offline multisig (not supported as of 0.7.1)</a></li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Developer/" rel="tag">Developer</a>
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../API_reference_(JSON-RPC)/">API reference (JSON-RPC)</a>
+
+<a href="../Original_Bitcoin_client/API_calls_list/">Original Bitcoin client/API calls list</a>
+
+<a href="../Transaction/">Transaction</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-06-07T14:24:02Z">Tue 07 Jun 2016 02:24:02 PM Europe</time>
+<!-- Created <time datetime="2012-07-16T17:38:29Z" pubdate="pubdate">Mon 16 Jul 2012 05:38:29 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

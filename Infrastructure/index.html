@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Infrastructure</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Infrastructure
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Infrastructure" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<h2 id="Overview">Overview</h2>
+
+<h3 id="Components">Components</h3>
+
+<ul>
+<li>Peer/Node -- Maintains connections with the BitCoin network, and relays BitCoin traffic based on policies.</li>
+<li>Wallet -- Maintains private key database, and controls balances for the user.</li>
+<li>UI -- End-user interface. Could be a wx/Qt/GTK GUI, CLI, Android app, iPhone app, etc...</li>
+<li>Miner -- Tries to solve blocks for the wallet.</li>
+</ul>
+
+
+<h3 id="Protocols">Protocols</h3>
+
+<ul>
+<li>p2p -- Used for communication between Peers/Nodes, and also between your personal Peer/Node and your Wallet(s)</li>
+<li>JSON-RPC -- Old wallet-control protocol; suitable for web integration</li>
+<li>wallet -- Used for communication between your Wallet(s) and your Miner(s) and User Interface(s)</li>
+</ul>
+
+
+<h3 id="Diagram">Diagram</h3>
+
+<pre><code>___________
+           --(p2p protocol)---ooooooooooooooo
+ Peer/Node --(p2p protocol)--o  Other Peers  o
+___________--(p2p protocol)---ooooooooooooooo
+
+(p2p protocol)
+__________                       _________
+
+   Wallet  --(wallet protocol)--  Miner  
+___________                     _________
+
+(wallet protocol)
+_______________
+
+ User Interface 
+________________
+</code></pre>
+
+<h2 id="Implementations">Implementations</h2>
+
+<h3 id="Peer.2FNode">Peer/Node</h3>
+
+<table>
+<thead>
+<tr>
+<th>Software</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="createlink"><a href="/ikiwiki.cgi?page=bitcoin.pl&amp;do=create&amp;from=Infrastructure" rel="nofollow">?</a>bitcoin.pl</span></td>
+</tr>
+<tr>
+<td><a href="../Bitcoind/">bitcoind</a></td>
+</tr>
+<tr>
+<td><span class="createlink"><a href="/ikiwiki.cgi?from=Infrastructure&amp;do=create&amp;page=bitcoin-alt" rel="nofollow">?</a>bitcoin-alt</span></td>
+</tr>
+<tr>
+<td><a href="../BitCoinJ/">bitcoinj</a></td>
+</tr>
+<tr>
+<td><a href="../Pycoin/">Pycoin</a></td>
+</tr>
+<tr>
+<td><span class="createlink"><a href="/ikiwiki.cgi?from=Infrastructure&amp;page=wxBitcoin&amp;do=create" rel="nofollow">?</a>wxBitcoin</span></td>
+</tr>
+<tr>
+<td><a href="../QBitcoin/">QBitcoin CORE</a></td>
+</tr>
+</tbody>
+</table>
+
+
+<h3 id="Wallet">Wallet</h3>
+
+<table>
+<thead>
+<tr>
+<th>Software </th>
+<th>Old JSON-RPC </th>
+<th>New <a href="../Wallet_protocol/">Wallet protocol</a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../Bitcoind/">bitcoind</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="../BitCoinJ/">bitcoinj</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><span class="createlink"><a href="/ikiwiki.cgi?page=wxBitcoin&amp;do=create&amp;from=Infrastructure" rel="nofollow">?</a>wxBitcoin</span></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="../QBitcoin_Wallet/">QBitcoin Wallet</a></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+
+<h3 id="Miner">Miner</h3>
+
+<table>
+<thead>
+<tr>
+<th>Software </th>
+<th>Old JSON-RPC </th>
+<th>New <a href="../Wallet_protocol/">Wallet protocol</a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Cpu_Miner&amp;from=Infrastructure" rel="nofollow">?</a>Cpu Miner</span></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=DiabloMiner&amp;from=Infrastructure" rel="nofollow">?</a>DiabloMiner</span></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Poclbm&amp;from=Infrastructure" rel="nofollow">?</a>Poclbm</span></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+
+<h3 id="User_Interface">User Interface</h3>
+
+<table>
+<thead>
+<tr>
+<th>Software </th>
+<th>Old JSON-RPC </th>
+<th>New <a href="../Wallet_protocol/">Wallet protocol</a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../Bitcoin-js-remote/">Bitcoin-js-remote</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="../BitCoinJ/">bitcoinj</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><span class="createlink"><a href="/ikiwiki.cgi?from=Infrastructure&amp;page=BitDroid&amp;do=create" rel="nofollow">?</a>BitDroid</span></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="../QBitcoin/">QBitcoin API Client</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="../QBitcoin/">QBitcoin CLI</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="../QBitcoin/">QBitcoin GUI</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="../Java_Bitcoin_Client/">Java Bitcoin Client</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><span class="createlink"><a href="/ikiwiki.cgi?from=Infrastructure&amp;page=Spesmilo&amp;do=create" rel="nofollow">?</a>Spesmilo</span></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=wxBitcoin&amp;from=Infrastructure" rel="nofollow">?</a>wxBitcoin</span></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Wallet_protocol/">Wallet protocol</a>
+
+<a href="../tags/Clients/talk/">tags/Clients/talk</a>
+
+<a href="../tags/Nodes/talk/">tags/Nodes/talk</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2013-03-31T12:36:10Z">Sun 31 Mar 2013 12:36:10 PM Europe</time>
+<!-- Created <time datetime="2011-03-03T17:03:58Z" pubdate="pubdate">Thu 03 Mar 2011 05:03:58 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>List of address prefixes</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+List of address prefixes
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>Blockchain-based currencies use encoded strings, which are a <a href="../Base58Check_encoding/">Base58Check encoding</a> of some hash, typically that of a public key. The encoding includes a prefix (traditionally a single <em>version byte</em>), which affects the leading symbol(s) in the encoded result. The following is a list of some prefixes which are in use in the reference Bitcoin codebase. (1.1) (1.2)</p>
+
+<table>
+<thead>
+<tr>
+<th>Decimal prefix</th>
+<th>Hex</th>
+<th>Example use</th>
+<th>Leading symbol(s)</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>00</td>
+<td>Pubkey hash (<a href="../Transaction/#Pay-to-PubkeyHash">P2PKH address</a>)</td>
+<td>1</td>
+<td><tt>17VZNX1SN5NtKa8UQFxwQbFeFc3iqRYhem</tt></td>
+</tr>
+<tr>
+<td>5</td>
+<td>05</td>
+<td>Script hash (<a href="../Pay_to_script_hash/">P2SH address</a>)</td>
+<td>3</td>
+<td><tt>3EktnHQD7RiAE6uzMj2ZifT9YgRrkSgzQX</tt></td>
+</tr>
+<tr>
+<td>128</td>
+<td>80</td>
+<td>Private key (<a href="../Wallet_import_format/">WIF</a>, uncompressed pubkey)</td>
+<td>5</td>
+<td><tt>5Hwgr3u458GLafKBgxtssHSPqJnYoGrSzgQsPwLFhLNYskDPyyA</tt></td>
+</tr>
+<tr>
+<td>128</td>
+<td>80</td>
+<td>Private key (WIF, compressed pubkey)</td>
+<td>K <em>or</em>L</td>
+<td><tt>L1aW4aubDFB7yfras2S1mN3bqg9nwySY8nkoLmJebSLD5BWv3ENZ</tt></td>
+</tr>
+<tr>
+<td>4 136 178 30</td>
+<td>0488B21E</td>
+<td><a href="../BIP_0032/">BIP32</a>pubkey</td>
+<td>xpub</td>
+<td><tt>xpub661MyMwAqRbcEYS8w7XLSVeEsBXy79zSzH1J8vCdxAZningWLdN3zgtU6LBpB85b3D2yc8sfvZU521AAwdZafEz7mnzBBsz4wKY5e4cp9LB</tt></td>
+</tr>
+<tr>
+<td>4 136 173 228</td>
+<td>0488ADE4</td>
+<td>BIP32 private key</td>
+<td>xprv</td>
+<td><tt>xprv9s21ZrQH143K24Mfq5zL5MhWK9hUhhGbd45hLXo2Pq2oqzMMo63oStZzF93Y5wvzdUayhgkkFoicQZcP3y52uPPxFnfoLZB21Teqt1VvEHx</tt></td>
+</tr>
+<tr>
+<td>111</td>
+<td>6F</td>
+<td>Testnet pubkey hash</td>
+<td>m <em>or</em>n</td>
+<td><tt>mipcBbFg9gMiCh81Kj8tqqdgoZub1ZJRfn</tt></td>
+</tr>
+<tr>
+<td>196</td>
+<td>C4</td>
+<td>Testnet script hash</td>
+<td>2</td>
+<td><tt>2MzQwSSnBHWHqSAqtTVQ6v47XtaisrJa1Vc</tt></td>
+</tr>
+<tr>
+<td>239</td>
+<td>EF</td>
+<td>Testnet Private key (WIF, uncompressed pubkey)</td>
+<td>9</td>
+<td><tt>92Pg46rUhgTT7romnV7iGW6W1gbGdeezqdbJCzShkCsYNzyyNcc</tt></td>
+</tr>
+<tr>
+<td>239</td>
+<td>EF</td>
+<td>Testnet Private key (WIF, compressed pubkey)</td>
+<td>c</td>
+<td><tt>cNJFgo1driFnPcBdBX8BrJrpxchBWXwXCvNH5SoSkdcF6JXXwHMm</tt></td>
+</tr>
+<tr>
+<td>4 53 135 207</td>
+<td>043587CF</td>
+<td>Testnet BIP32 pubkey</td>
+<td>tpub</td>
+<td><tt>tpubD6NzVbkrYhZ4WLczPJWReQycCJdd6YVWXubbVUFnJ5KgU5MDQrD998ZJLNGbhd2pq7ZtDiPYTfJ7iBenLVQpYgSQqPjUsQeJXH8VQ8xA67D</tt></td>
+</tr>
+<tr>
+<td>4 53 131 148</td>
+<td>04358394</td>
+<td>Testnet BIP32 private key</td>
+<td>tprv</td>
+<td><tt>tprv8ZgxMBicQKsPcsbCVeqqF1KVdH7gwDJbxbzpCxDUsoXHdb6SnTPYxdwSAKDC6KKJzv7khnNWRAJQsRA8BBQyiSfYnRt6zuu4vZQGKjeW4YF</tt></td>
+</tr>
+</tbody>
+</table>
+
+
+<p>Note that private keys for compressed and uncompressed bitcoin public keys use the same version byte. The reason for the compressed form starting with a different character is because a 0x01 byte is appended to the private key before base58 encoding.</p>
+
+<p>The following table shows the leading symbol(s) and address length(s) for 160 bit hashes for each of the possible decimal version values:</p>
+
+<table>
+<thead>
+<tr>
+<th>Decimal version</th>
+<th>Leading symbol</th>
+<th>Address length</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>up to 34</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Q-Z, a-k, m-o</td>
+<td>33</td>
+</tr>
+<tr>
+<td>2</td>
+<td>o-z, 2</td>
+<td>33 or 34</td>
+</tr>
+<tr>
+<td>3</td>
+<td>2</td>
+<td>34</td>
+</tr>
+<tr>
+<td>4</td>
+<td>2 or 3</td>
+<td>34</td>
+</tr>
+<tr>
+<td>5-6</td>
+<td>3</td>
+<td>34</td>
+</tr>
+<tr>
+<td>7</td>
+<td>3 or 4</td>
+<td>34</td>
+</tr>
+<tr>
+<td>8</td>
+<td>4</td>
+<td>34</td>
+</tr>
+<tr>
+<td>9</td>
+<td>4 or 5</td>
+<td>34</td>
+</tr>
+<tr>
+<td>10-11</td>
+<td>5</td>
+<td>34</td>
+</tr>
+<tr>
+<td>12</td>
+<td>5 or 6</td>
+<td>34</td>
+</tr>
+<tr>
+<td>13</td>
+<td>6</td>
+<td>34</td>
+</tr>
+<tr>
+<td>14</td>
+<td>6 or 7</td>
+<td>34</td>
+</tr>
+<tr>
+<td>15-16</td>
+<td>7</td>
+<td>34</td>
+</tr>
+<tr>
+<td>17</td>
+<td>7 or 8</td>
+<td>34</td>
+</tr>
+<tr>
+<td>18</td>
+<td>8</td>
+<td>34</td>
+</tr>
+<tr>
+<td>19</td>
+<td>8 or 9</td>
+<td>34</td>
+</tr>
+<tr>
+<td>20-21</td>
+<td>9</td>
+<td>34</td>
+</tr>
+<tr>
+<td>22</td>
+<td>9 or A</td>
+<td>34</td>
+</tr>
+<tr>
+<td>23</td>
+<td>A</td>
+<td>34</td>
+</tr>
+<tr>
+<td>24</td>
+<td>A or B</td>
+<td>34</td>
+</tr>
+<tr>
+<td>25-26</td>
+<td>B</td>
+<td>34</td>
+</tr>
+<tr>
+<td>27</td>
+<td>B or C</td>
+<td>34</td>
+</tr>
+<tr>
+<td>28</td>
+<td>C</td>
+<td>34</td>
+</tr>
+<tr>
+<td>29</td>
+<td>C or D</td>
+<td>34</td>
+</tr>
+<tr>
+<td>30-31</td>
+<td>D</td>
+<td>34</td>
+</tr>
+<tr>
+<td>32</td>
+<td>D or E</td>
+<td>34</td>
+</tr>
+<tr>
+<td>33</td>
+<td>E</td>
+<td>34</td>
+</tr>
+<tr>
+<td>34</td>
+<td>E or F</td>
+<td>34</td>
+</tr>
+<tr>
+<td>35-36</td>
+<td>F</td>
+<td>34</td>
+</tr>
+<tr>
+<td>37</td>
+<td>F or G</td>
+<td>34</td>
+</tr>
+<tr>
+<td>38</td>
+<td>G</td>
+<td>34</td>
+</tr>
+<tr>
+<td>39</td>
+<td>G or H</td>
+<td>34</td>
+</tr>
+<tr>
+<td>40-41</td>
+<td>H</td>
+<td>34</td>
+</tr>
+<tr>
+<td>42</td>
+<td>H or J</td>
+<td>34</td>
+</tr>
+<tr>
+<td>43</td>
+<td>J</td>
+<td>34</td>
+</tr>
+<tr>
+<td>44</td>
+<td>J or K</td>
+<td>34</td>
+</tr>
+<tr>
+<td>45-46</td>
+<td>K</td>
+<td>34</td>
+</tr>
+<tr>
+<td>47</td>
+<td>K or L</td>
+<td>34</td>
+</tr>
+<tr>
+<td>48</td>
+<td>L</td>
+<td>34</td>
+</tr>
+<tr>
+<td>49</td>
+<td>L or M</td>
+<td>34</td>
+</tr>
+<tr>
+<td>50-51</td>
+<td>M</td>
+<td>34</td>
+</tr>
+<tr>
+<td>52</td>
+<td>M or N</td>
+<td>34</td>
+</tr>
+<tr>
+<td>53</td>
+<td>N</td>
+<td>34</td>
+</tr>
+<tr>
+<td>54</td>
+<td>N or P</td>
+<td>34</td>
+</tr>
+<tr>
+<td>55-56</td>
+<td>P</td>
+<td>34</td>
+</tr>
+<tr>
+<td>57</td>
+<td>P or Q</td>
+<td>34</td>
+</tr>
+<tr>
+<td>58</td>
+<td>Q</td>
+<td>34</td>
+</tr>
+<tr>
+<td>59</td>
+<td>Q or R</td>
+<td>34</td>
+</tr>
+<tr>
+<td>60-61</td>
+<td>R</td>
+<td>34</td>
+</tr>
+<tr>
+<td>62</td>
+<td>R or S</td>
+<td>34</td>
+</tr>
+<tr>
+<td>63</td>
+<td>S</td>
+<td>34</td>
+</tr>
+<tr>
+<td>64</td>
+<td>S or T</td>
+<td>34</td>
+</tr>
+<tr>
+<td>65-66</td>
+<td>T</td>
+<td>34</td>
+</tr>
+<tr>
+<td>67</td>
+<td>T or U</td>
+<td>34</td>
+</tr>
+<tr>
+<td>68</td>
+<td>U</td>
+<td>34</td>
+</tr>
+<tr>
+<td>69</td>
+<td>U or V</td>
+<td>34</td>
+</tr>
+<tr>
+<td>70-71</td>
+<td>V</td>
+<td>34</td>
+</tr>
+<tr>
+<td>72</td>
+<td>V or W</td>
+<td>34</td>
+</tr>
+<tr>
+<td>73</td>
+<td>W</td>
+<td>34</td>
+</tr>
+<tr>
+<td>74</td>
+<td>W or X</td>
+<td>34</td>
+</tr>
+<tr>
+<td>75-76</td>
+<td>X</td>
+<td>34</td>
+</tr>
+<tr>
+<td>77</td>
+<td>X or Y</td>
+<td>34</td>
+</tr>
+<tr>
+<td>78</td>
+<td>Y</td>
+<td>34</td>
+</tr>
+<tr>
+<td>79</td>
+<td>Y or Z</td>
+<td>34</td>
+</tr>
+<tr>
+<td>80-81</td>
+<td>Z</td>
+<td>34</td>
+</tr>
+<tr>
+<td>82</td>
+<td>Z or a</td>
+<td>34</td>
+</tr>
+<tr>
+<td>83</td>
+<td>a</td>
+<td>34</td>
+</tr>
+<tr>
+<td>84</td>
+<td>a or b</td>
+<td>34</td>
+</tr>
+<tr>
+<td>85</td>
+<td>b</td>
+<td>34</td>
+</tr>
+<tr>
+<td>86</td>
+<td>b or c</td>
+<td>34</td>
+</tr>
+<tr>
+<td>87-88</td>
+<td>c</td>
+<td>34</td>
+</tr>
+<tr>
+<td>89</td>
+<td>c or d</td>
+<td>34</td>
+</tr>
+<tr>
+<td>90</td>
+<td>d</td>
+<td>34</td>
+</tr>
+<tr>
+<td>91</td>
+<td>d or e</td>
+<td>34</td>
+</tr>
+<tr>
+<td>92-93</td>
+<td>e</td>
+<td>34</td>
+</tr>
+<tr>
+<td>94</td>
+<td>e or f</td>
+<td>34</td>
+</tr>
+<tr>
+<td>95</td>
+<td>f</td>
+<td>34</td>
+</tr>
+<tr>
+<td>96</td>
+<td>f or g</td>
+<td>34</td>
+</tr>
+<tr>
+<td>97-98</td>
+<td>g</td>
+<td>34</td>
+</tr>
+<tr>
+<td>99</td>
+<td>g or h</td>
+<td>34</td>
+</tr>
+<tr>
+<td>100</td>
+<td>h</td>
+<td>34</td>
+</tr>
+<tr>
+<td>101</td>
+<td>h or i</td>
+<td>34</td>
+</tr>
+<tr>
+<td>102-103</td>
+<td>i</td>
+<td>34</td>
+</tr>
+<tr>
+<td>104</td>
+<td>i or j</td>
+<td>34</td>
+</tr>
+<tr>
+<td>105</td>
+<td>j</td>
+<td>34</td>
+</tr>
+<tr>
+<td>106</td>
+<td>j or k</td>
+<td>34</td>
+</tr>
+<tr>
+<td>107-108</td>
+<td>k</td>
+<td>34</td>
+</tr>
+<tr>
+<td>109</td>
+<td>k or m</td>
+<td>34</td>
+</tr>
+<tr>
+<td>110</td>
+<td>m</td>
+<td>34</td>
+</tr>
+<tr>
+<td>111</td>
+<td>m or n</td>
+<td>34</td>
+</tr>
+<tr>
+<td>112-113</td>
+<td>n</td>
+<td>34</td>
+</tr>
+<tr>
+<td>114</td>
+<td>n or o</td>
+<td>34</td>
+</tr>
+<tr>
+<td>115</td>
+<td>o</td>
+<td>34</td>
+</tr>
+<tr>
+<td>116</td>
+<td>o or p</td>
+<td>34</td>
+</tr>
+<tr>
+<td>117-118</td>
+<td>p</td>
+<td>34</td>
+</tr>
+<tr>
+<td>119</td>
+<td>p or q</td>
+<td>34</td>
+</tr>
+<tr>
+<td>120</td>
+<td>q</td>
+<td>34</td>
+</tr>
+<tr>
+<td>121</td>
+<td>q or r</td>
+<td>34</td>
+</tr>
+<tr>
+<td>122-123</td>
+<td>r</td>
+<td>34</td>
+</tr>
+<tr>
+<td>124</td>
+<td>r or s</td>
+<td>34</td>
+</tr>
+<tr>
+<td>125</td>
+<td>s</td>
+<td>34</td>
+</tr>
+<tr>
+<td>126</td>
+<td>s or t</td>
+<td>34</td>
+</tr>
+<tr>
+<td>127-128</td>
+<td>t</td>
+<td>34</td>
+</tr>
+<tr>
+<td>129</td>
+<td>t or u</td>
+<td>34</td>
+</tr>
+<tr>
+<td>130</td>
+<td>u</td>
+<td>34</td>
+</tr>
+<tr>
+<td>131</td>
+<td>u or v</td>
+<td>34</td>
+</tr>
+<tr>
+<td>132-133</td>
+<td>v</td>
+<td>34</td>
+</tr>
+<tr>
+<td>134</td>
+<td>v or w</td>
+<td>34</td>
+</tr>
+<tr>
+<td>135</td>
+<td>w</td>
+<td>34</td>
+</tr>
+<tr>
+<td>136</td>
+<td>w or x</td>
+<td>34</td>
+</tr>
+<tr>
+<td>137-138</td>
+<td>x</td>
+<td>34</td>
+</tr>
+<tr>
+<td>139</td>
+<td>x or y</td>
+<td>34</td>
+</tr>
+<tr>
+<td>140</td>
+<td>y</td>
+<td>34</td>
+</tr>
+<tr>
+<td>141</td>
+<td>y or z</td>
+<td>34</td>
+</tr>
+<tr>
+<td>142-143</td>
+<td>z</td>
+<td>34</td>
+</tr>
+<tr>
+<td>144</td>
+<td>z or 2</td>
+<td>34 or 35</td>
+</tr>
+<tr>
+<td>145-255</td>
+<td>2</td>
+<td>35</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2 id="References">References</h2>
+
+<p>1.1: https://github.com/bitcoin/bitcoin/blob/master/src/chainparams.cpp#L159-163<br />
+1.2: https://github.com/bitcoin/bitcoin/blob/master/src/chainparams.cpp#L217-221</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Address/">Address</a>
+
+<a href="../Base58Check_encoding/">Base58Check encoding</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-08-17T16:03:48Z">Mon 17 Aug 2015 04:03:48 PM Europe</time>
+<!-- Created <time datetime="2012-02-19T06:31:39Z" pubdate="pubdate">Sun 19 Feb 2012 06:31:39 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>talk</title>
+
+<link rel="stylesheet" href="../../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../../">bitcoin</a>/ 
+
+<a href="../">Help:Installing Bitcoin Core</a>/ 
+
+</span>
+<span class="title">
+talk
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<h2 id="Source_for_informations">Source for informations</h2>
+
+<p>We should be able to port part of the existing documentation on <a href="http://www.bitcoin.org/wiki/doku.php?id=getting_started">(1)</a>, would just need rewrite/cleanup and adaptation to be more newbie-friendy. <a>MagicalTux</a> 17:24, 17 December 2010 (GMT)</p>
+
+<h2 id="nanotube_changes">nanotube changes</h2>
+
+<p>Incorporated the work in progress I had on http://wiki.bitcoin-otc.com/wiki/Bitcoin_Howto. Page is starting to shape up pretty nicely. :) --<a>Nanotube</a> 04:46, 24 December 2010 (GMT)</p>
+
+<blockquote><p>I appreciate your writing and know you also want to make this article great. Please don&#39;t take this offensively but I rolled back your changes. This page is the very first page for beginners and those details are very wordy and off-putting. I deliberately made sure to keep words in the article to a minimum and have big huge pictures. For your howto I do think it&#39;s valuable and should be on this wiki, but lets plan this first. We can either tag it on the end of this for people who wish the continue on deeper and further (now that they&#39;ve been hooked in) or put it in a seperate article (might be redundant). Anyway looking forward to your thoughts. Lets shape this up. <a>Genjix</a> 16:50, 7 January 2011 (GMT)
+Really bad form to roll back all my edits without discussing first. I think a more detailed page is more useful to have - after all our audience /at this point/ is not people who don&#39;t know how to download a file and install, but people who want to know how the system works and whether they can trust it. I think we should put this to a vote of the wiki community. If it is decided that it&#39;s more useful to keep a &quot;how to click&quot; page for noobs under &#39;getting started&#39;, then so be it, and I&#39;ll put my content under a separate page. And once again - really bad form on your part to do this. --<a>Nanotube</a> 23:53, 8 January 2011 (GMT)
+I understand how those information may not fit exactly into the goal of the <a href="../../Getting_started/">Getting started</a> page, which as its name implies is just a page to get started with bitcoin and may not need all the extra details. I could have been better however to discuss the issue before rolling back the changes, especially since both of you are on IRC (fast &amp; easy way to discuss this). Maybe we should also include on pages their intended use &amp; writing guidelines on the discussion page (just throwing an idea). <a>MagicalTux</a> 00:16, 9 January 2011 (GMT)
+Do you know how confusing it is for a person who&#39;s barely competent and doesn&#39;t yet understand Bitcoin? People HATE reading huge paragraphs of text, and if they need that info then they&#39;re better served by going elsewhere on this wiki. Providing users with multiple options: you can do this OR this OR this OR this... is incredibly confusing. We want to get them started now at the most basic level, assuming that they have 0 attention (big pretty pictures, simplistic instructions).
+After they have Bitcoin running, and some BTC to play with, then we can begin to introduce them to alternatives and explain complex things. Simply hurling the thick manual at their head makes people run away. We want to gradually bring them in. Small steps. Push their boundaries slowly rather than quickly. As the page was before, it was too much info, too fast. Remember this is the &#39;getting started&#39; (begin here, step 1, start here, ...) page for the absolute lowest tier beginner. <a>Genjix</a> 16:13, 9 January 2011 (GMT)</p></blockquote>
+
+<p>I&#39;m assuming your linked page is the up-to-date version:</p>
+
+<blockquote><p>&quot;This is a step-by-step tutorial to help new users start using bitcoin. After you read this page, you&#39;ll know the basics of what bitcoin is and how it is structured, how to get and install the bitcoin client, where to get coins, and how to use the client to send and receive transactions.&quot;</p></blockquote>
+
+<p>This is fluff. It&#39;s obvious by glancing at the contents that it&#39;s a step-by-step. People know it&#39;s for bitcoin (they&#39;re on a bitcoin website). The rest can be shortened to &quot;use Bitcoin&quot; and is redundant.</p>
+
+<blockquote><p>&quot;Choose the appropriate link depending on your operating system, and install in the usual manner. For Windows, easiest is probably the executable installer. For Linux, note that the tar.gz contains the binary build, in addition to the source, so if you run a recent distribution, you should be able to just run the binary without compiling yourself.&quot;</p></blockquote>
+
+<p>Linux users will be more saavy. We don&#39;t need to mix the Windows and Linux sections. We can add a new section for Linux but I haven&#39;t done so yet as I&#39;m sure Linux user know how to unpack a gzip file and run a binary.</p>
+
+<blockquote><p>&quot;Bitcoin comes with a GUI client called &quot;bitcoin&quot;, and a CLI (text-mode) client called &quot;bitcoind&quot;. It is probably more user-friendly to start with the GUI, so launch the bitcoin client. <a href="insert">screenshot of client</a>.&quot;</p></blockquote>
+
+<p>Erm, why do users need to even know about bitcoind? TMI.</p>
+
+<blockquote><p>&quot;Your starting bitcoin address (you can have as many as you want - we&#39;ll talk about addresses later) shows in a text box at the top. Right below it is your total bitcoin balance, which, of course, to start with will be zero. There is a list box below it showing all your transactions, which can be variously filtered with tabs, which again will be empty to start with.&quot;</p></blockquote>
+
+<p>Will merge this into the main text.</p>
+
+<blockquote><p>&quot;The status bar at the bottom will display some important information. If you have bitcoin generation (block hashing) turned on, on the left the client will display your hash rate. To the right of that, you will see the number of bitcoin nodes your client is connected to, then, the number of blocks your client has in its chain, and finally, the number of transactions you have in your wallet.&quot;</p></blockquote>
+
+<p>Too much too fast. The block chain can be alluded too, but throwing in those words like &quot;generation&quot;, &quot;block hashing&quot;, &quot;nodes&quot; and &quot;hash rate&quot; = scary. No need for it. Especially since a new user will have no idea what these are because they haven&#39;t yet been explained. Pointless to include it here.</p>
+
+<blockquote><p>&quot;There are few things more exciting than getting your first bitcoins! So once you have all the blocks downloaded, head on over to the bitcoin faucet, fill out the form and put in your bitcoin address, and receive your free bitcoin! (You can do this before finishing the block chain download, but you won&#39;t see the coins in your wallet until you finish downloading the blocks... which would put a damper on the whole excitement bit.) Once you submit the form successfully, you should see a new transaction in your client within seconds.&quot;</p></blockquote>
+
+<p>The pictures adequately explain this, and this text would just be extra filler that&#39;s uneeded (as already the pictures have guided you through this).</p>
+
+<blockquote><p>&quot;But it will be grayed out, and have 0/unconfirmed status. What&#39;s up with that? Read on.&quot;</p></blockquote>
+
+<p>Already in the main text.</p>
+
+<p><a>Genjix</a> 16:27, 9 January 2011 (GMT)</p>
+
+<blockquote><p> Genjix, dude, you just wasted a whole bunch of your time trying to comment on bits of page that are no longer even there. As per your and mt&#39;s feedback regarding the desired simplicity of this page, I have already moved the &#39;more detailed&#39; intro to a separate page. So just let it go, and do what you think is best on the &#39;getting started&#39; page. --<a>Nanotube</a> 17:58, 9 January 2011 (GMT)</p>
+
+<p>It&#39;s fine because we&#39;re all trying to make everything better :) and it&#39;s good to hash everything out to show the reasoning. By having this here then every contributor can make better edits for this page. I also wanted to show you I wasn&#39;t trying to be an ass. <a>Genjix</a> 20:29, 9 January 2011 (GMT)</p></blockquote>
+
+<h2 id="Downloading_every_block_ever_created">Downloading every block ever created</h2>
+
+<p>It took me about 8-12 hours to download every block after I first started the bitcoin client. (I don&#39;t have a slow internet connection) Since bitcoin is still young I consider this amount of time very long. What will happen if bitcoin really goes mainstream? Is it really necessary that everyone stores every transaction ever happened? It will be gigabytes of data on everyones computer and will take really long time to download it. Will bitcoin change to handle this issue? Can someone add this information to this wiki? Thanks</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../">Help:Installing Bitcoin Core</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2014-08-15T01:36:40Z">Fri 15 Aug 2014 01:36:40 AM Europe</time>
+<!-- Created <time datetime="2010-12-17T17:24:21Z" pubdate="pubdate">Fri 17 Dec 2010 05:24:21 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

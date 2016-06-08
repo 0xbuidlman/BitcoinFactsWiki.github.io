@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Best Practices</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Best Practices
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=Best_Practices" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>Bitcoin is a trustless consensus system with no central authority. When you make a payment and it is confirmed into the blockchain, it is not feasible to have a &quot;chargeback&quot; unless the person you paid pays you back themselves. Over the years there have been many losses of money through hacks, scams, software failures and other incidents. (1.1) It is important that Bitcoin investors, users and developers understand these risks so they can be mitigated.</p>
+
+<h1 id="Investing_Risks">Investing Risks</h1>
+
+<h2 id="Bitcoin">Bitcoin</h2>
+
+<p>Bitcoin is a volatile asset. There is no promise that you won&#39;t lose all of your money when you buy bitcoin. In general, it is a good idea to understand something before you invest in it. In short, Bitcoin is a deflationary internet currency that requires a consensus system to work. This consensus system only works if a sufficient number of miners have the proper incentives to be honest. This means before buying bitcoins you should answer the following questions for yourself:</p>
+
+<ul>
+<li>Is deflation <a href="http://krugman.blogs.nytimes.com/2010/08/02/why-is-deflation-bad/">problematic</a> or <a href="https://mises.org/library/deflating-deflation-myth">not</a>? Is it problematic to the point that it will cause Bitcoin to fail?</li>
+<li>How does the Bitcoin consensus system <a href="https://bitcoin.org/bitcoin.pdf">work</a>?</li>
+<li>Are the <a href="https://github.com/kanzure/bitcoin-incentives/blob/master/bitcoin-incentives.tex">incentives</a> of Bitcoin miners and other users in the system sufficient for consensus?</li>
+<li>Can Bitcoin gain sufficient merchants and users to sustain itself?</li>
+<li>Is there some other reason Bitcoin might fail?</li>
+</ul>
+
+
+<p>When buying bitcoin, one should be aware of the risks that come with someone else holding their money. To reduce risk, your bitcoins or dollars should be traded on an exchange that you have researched and trust. Ideally, fiat and bitcoin should be on the exchange for as little time as possible.</p>
+
+<h2 id="Bitcoin_Related_Investments">Bitcoin Related Investments</h2>
+
+<p>Being a pseudonymous currency where users have little recourse if their money is stolen, Bitcoin attracts scammers. There have been many scams and thefts involving Bitcoin. Before giving someone else your money consider whether the offer is too good to be true, whether you can trust the potential bitcoin recipient and what your counterparty risk is.</p>
+
+<p>Some common scams or ripoffs are cloud mining, which usually only returns a fraction of what you pay them, and altcoins which often advertise themselves as being the &quot;next big thing&quot; and claim to solve some problem in Bitcoin, by breaking the security model. (4.1)</p>
+
+<h1 id="Use_Risks">Use Risks</h1>
+
+<p>Once you have bought or earned Bitcoins, keeping them requires that no malicious party can spend the bitcoins in your wallet. If your computer is infected with malware then any time you decrypt your wallet the malware could potentially steal from you.</p>
+
+<h2 id="Wallet_Types">Wallet Types</h2>
+
+<p>Once you have chosen a wallet to use, you must <a href="../Securing_your_wallet/">create and use it securely</a>. <a href="https://bitcoin.org/en/choose-your-wallet">Bitcoin.org</a> has a tool to view the security problems and benefits of many wallets.</p>
+
+<h3 id="Paper_Wallets">Paper Wallets</h3>
+
+<p>A properly created <a href="../Paper_wallet/">Paper wallet</a> removes the risk of theft-by-malware.</p>
+
+<h3 id="Centralized_services">Centralized services</h3>
+
+<p>One of the main advantages of Bitcoin over traditional currencies is the lack of a requirement to trust someone else to own currency (trustlessness). When you give your money to a web wallet such as Coinbase, you are at risk of theft or some other form of loss. (8.1) Services like Coinbase own your bitcoins and display a balance for you, but you aren&#39;t guaranteed to be able to spend that balance, you are trusting them.</p>
+
+<p>There are web wallets that don&#39;t store your private keys such as <span class="createlink"><a href="/ikiwiki.cgi?from=Best_Practices&amp;do=create&amp;page=blockchain.info" rel="nofollow">?</a>blockchain.info</span>. However there are still many risks involved, the service could</p>
+
+<ul>
+<li>withhold your private keys and extort you</li>
+<li>send you malicious code that steals your money</li>
+<li>lie about a payment to you costlessly</li>
+<li>correlate your IP address with your transaction</li>
+<li>have broken Javascript cryptography unintentionally</li>
+</ul>
+
+
+<p>Blockchain.info is particularly bad in terms of security and ethics. It is strongly recommended that individuals and businesses don&#39;t use them. They have had large thefts (8.2) and vulnerabilities that allow attackers to lie about payments. (8.3)</p>
+
+<h3 id="Local_Wallets">Local Wallets</h3>
+
+<p><a href="../Thin_Client_Security/#Simplified_Payment_Verification_.28SPV.29">SPV thin clients</a> allow you to have a secure wallet with the assumption that the majority of the mining power isn&#39;t malicious. These clients verify that a block exists and there was sufficient work done on it, but not that it was valid. Not verifying a block takes orders of magnitude less disk space, bandwidth and processing power, however if a miner has a significant portion of the network hashrate, they can send you an invalid blockchain that has had more work done on it than the valid mainchain. This invalid blockchain might contain an invalid transaction that pays you money that doesn&#39;t exist. It is expensive to use a large portion of the network hashrate to attack, so SPV clients may be considered to have a &quot;good enough&quot; level of security for small payments.</p>
+
+<p>If you are handling a large amount of money, you should use a full-node client that verifies every block, such as Bitcoin Core. When a payment is made to you, it can be reversed with some probability by an attacking miner. As you receive more <a href="../Confirmation/">Confirmations</a> it becomes exponentially more expensive for an attacker to reverse a payment to you. Unconfirmed transactions have no guarantee and can be doublespent for free.</p>
+
+<p>If you use a full node with a consensus reimplementation such as btcd, there is a risk you will lose consensus with the rest of the network and be vulnerable to attacks cheaper than attacks on SPV clients.</p>
+
+<h2 id="Improper_Handling_Of_Money">Improper Handling Of Money</h2>
+
+<p><a href="../Address_reuse/">Address reuse</a> should be avoided, addresses should be used as invoices. The use of &quot;<a href="../From_address/">From addresses</a>&quot; (which don&#39;t actually exist (10.1)) cause confusion, there is no guarantee that a payer controls this address and paying back to it may cause loss of funds.</p>
+
+<h2 id="Anonymity">Anonymity</h2>
+
+<p>Bitcoin is not anonymous, it is pseudonymous. If you reuse addresses you will link your private payments together. If your software redeems multiple transactions paid to you to form a single transaction, as is it typically does, the redeemed transactions may be correlated.</p>
+
+<h1 id="Development_Risks">Development Risks</h1>
+
+<p>Using the <a href="../Testnet/">Testnet</a> is recommended. The Bitcoins on this network are designed to be valueless and there is no risk of monetary loss if your software has unexpected behavior while testing. If none of the faucets are working you can ask for testnetcoins on Freenodes #bitcoin-dev.</p>
+
+<p>Your software should NOT use the gettransaction <a href="../Original_Bitcoin_client/API_Calls_list/">API call</a> to verify that payments are in the blockchain due to <a href="../Transaction_Malleability/">transaction malleability</a>. Instead you can use listsinceblock.</p>
+
+<p>Your businesses software should not handle others money in most cases. If you are planning on handling others bitcoins, the system should be developed by a professional developer with a strong understanding of cryptography and bitcoin.</p>
+
+<h2 id="References">References</h2>
+
+<p>1.1: <a href="https://bitcointalk.org/index.php?topic=83794.0#post_toc_11">List of events by BTC value lost</a><br />
+4.1: <a href="https://download.wpsoftware.net/bitcoin/alts.pdf">A Treatise On Altcoins</a><br />
+8.1: <a href="https://bitcointalk.org/index.php?topic=83794.0#post_toc_11">List of events by BTC value lost</a><br />
+8.2: <a href="https://www.cryptocoinsnews.com/gentleman-hacker-returns-stolen-bitcoins-blockchain-info/">GENTLEMAN HACKER RETURNS STOLEN BITCOINS TO BLOCKCHAIN.INFO</a><br />
+8.3: <a href="https://www.cryptocoinsnews.com/blockchain-info-bug-one-month-fix/">Blockchain.info Bug Took One Month to Fix</a><br />
+10.1: <a href="https://iwilcox.me.uk/2014/no-from-address">There Is No &#39;From&#39; Address</a></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-07-09T01:35:58Z">Thu 09 Jul 2015 01:35:58 AM Europe</time>
+<!-- Created <time datetime="2015-01-23T21:00:31Z" pubdate="pubdate">Fri 23 Jan 2015 09:00:31 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

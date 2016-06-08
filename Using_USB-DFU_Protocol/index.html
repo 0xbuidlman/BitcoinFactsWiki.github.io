@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Using USB-DFU Protocol</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Using USB-DFU Protocol
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=Using_USB-DFU_Protocol" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>|+<big><big>DFU Device Descriptor</big></big>OffsetFieldSizeValueDescripton
+|0 |bLength |1 |12h |Size of this descriptor,in bytes.
+|1 |bDescriptorType |1 |01h |DEVICE descriptor type.
+|2 |bcdUSB |2 |0100h |USB specification release number in binary coded decimal.
+|4 |bDeviceClass |1 |00h |See interface.
+|5 |bDeviceSubClass |1 |00h |See interface
+|6 |bDeviceProtocol |1 |00h |See interface.
+|7 |bMaxPacketSize0 |1 |8,16,32,64 |Maximum packet size for endpoint.
+|8 |idVendor |2 |ID |Vendor ID. Assigned by the USB-IF.
+|10 |idProduct |2 |ID |Product ID. Assigned by manufacturer.
+|12 |bcdDevice |2 |BCD |Device release number in binary coded decimal.
+|14 |iManufacturer |1 |index |index of string descriptor.
+|15 |iProduct |1 |index |index of string descriptor.
+|16 |iSerialNumber |1 |index |index of string descriptor.
+|17 |bNumConfigurations |1 |01h |One configuration only for DFU.</p>
+
+<p>|+<big><big>DFU Interface Descriptor</big></big>Offset Field Size Value Descripton
+|0 |bLength |1 |09h |Size of this descriptor,in bytes.
+|1 |bDescriptorType |1 |04h |INTERFACE descriptor type.
+|2 |bInterfaceNumber |1 |Number |Number of this interface.
+|3 |bAlternateSetting |1 |00h |Alternate setting. Must be zero.
+|4 |bNumEndpoints |1 |00h |Only the control pipe is used.
+|5 |bInterfaceClass |1 |FEh |Application Specific Class Code.
+|6 |bInterfaceSubClass |1 |01h |Device Firmware Upgrade Code.
+|7 |bInterfaceProtocol |1 |01h |Runtime protocol.
+|8 |iInterface |1 |index |Index of string descriptor for this interface.</p>
+
+<p>|+<big><big>DFU Functional Descriptor</big></big>Offset Field Size Value Descripton
+|0 |bLength |1 |09h |Size of this descriptor,in bytes.
+|1 |bDescriptorType |1 |21h |DFU FUNCTIONAL descriptor type.
+|2 |bmAttributes |1 |Bit mask |DFU attributes<br />Bit 7&hellip;&hellip;4: reserved<br />Bit 3: device will perform a bus detach-attach sequence when it receives a DFU_DETACH request. The host must not issue a USB Reset. (bitWillDetach)<br />0 = no<br />1 = yes<br />Bit 2: device is able to communicate via USB afeter Manifestation phase.(bitManifestationTolerant)<br />0 = no, must see bus reset<br />1 = yes<br />Bit1: upload capable(bitCanUpload)<br />0 = no<br />1 = yes<br />Bit0: download capable(bitCanDnload)<br />0 = no<br />1 = yes<br />
+|3 |wDetachTimeOut |2 |Number |Time,in milliseconds, that the device will wait after receipt of the DFU_DETACH request. if this time elapses without a USB reaset, then the device will terminate the Reconfiguration phase and revert back to normal operation . This repreents the maximum time that the device can wait(depending on its timers, etc.).The host may specify a shorter timeout in the DFU_DETACH request.
+|5 |wTransferSize |2 |Number |Maximum number of bytes that the device can accept per control-write transaction.
+|7 |bcdDFUVersion |2 |BCD |Numeric expression identifying the version of the DFU Specification release.</p>
+
+<p>|+<big><big>DFU Mode Interface Descriptor</big></big>Offset Field Size Value Descripton
+|0 |bLength |1 |09h |Size of this descriptor,in bytes.
+|1 |bDescriptorType |1 |04h |INTERFACE descriptor type.
+|2 |bInterfaceNumber |1 |Number |Number of this interface.
+|3 |bAlternateSetting |1 |00h |Alternate setting. Must be zero.
+|4 |bNumEndpoints |1 |00h |Only the control pipe is used.
+|5 |bInterfaceClass |1 |FEh |Application Specific Class Code.
+|6 |bInterfaceSubClass |1 |01h |Device Firmware Upgrade Code.
+|7 |bInterfaceProtocol |1 |02h |DFU mode protocol.
+|8 |iInterface |1 |index |Index of string descriptor for this interface.</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-01-08T03:13:49Z">Fri 08 Jan 2016 03:13:49 AM Europe</time>
+<!-- Created <time datetime="2016-01-08T03:13:49Z" pubdate="pubdate">Fri 08 Jan 2016 03:13:49 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

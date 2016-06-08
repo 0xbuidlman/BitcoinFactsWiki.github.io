@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Funding network security</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Funding network security
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>If you have followed a link to this page from reddit or elsewhere discussing Mike Hearn&#39;s assurance contracts proposal to fund network security, please see <a href="https://bitcointalk.org/index.php?topic=157141.msg1665332#msg1665332">the discussion on bitcointalk</a> for the original document. Below is a general discussion of how network security is funded now and could be in the future, including Mike&#39;s proposal.</p>
+
+<hr />
+
+
+<p>What Bitcoin provides is a means to determine what is the consensus version
+of the transaction history, with the consensus determined by what a majority of
+hashing power applied to the proof of work problem by miners accepts as the
+true history. Since those who own Bitcoins, and who have access to hashing
+power, are not necessarily the same group there needs to be a mechanism for the
+former to fund the latter. The risk is that mechanism failing, and the majority
+of hashing power acting in a way that is against the wishes of the majority of
+economic interests.</p>
+
+<p>An attacker with a majority of hashing power can either publish blocks they
+mine as they mine them, or withhold them. The former simply makes it impossible
+to get transactions confirmed that the attacker does not wish to be confirmed.
+The latter however can be used to rewrite the blockchain after the fact,
+causing transactions that appeared to be confirmed to become unconfirmed and
+vulnerable to reversal. In addition the attacker can exploit <a href="../Transaction_Malleability/">Transaction Malleability</a> to make it impossible for those transactions to ever be included
+in the blockchain again.</p>
+
+<h2 id="What_is_security.3F">What is security?</h2>
+
+<p>The hashing power majority does not need to constitute a single individual or
+coherent group. For instance the economic majority may see <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=fungibility&amp;from=Funding_network_security" rel="nofollow">?</a>fungibility</span> as
+important, and thus want to ensure transaction outputs can not be blacklisted (2.1) to prevent transactions spending them from being confirmed,
+even if those outputs are known to be involved with illegal activity such as theft or fraud.
+However the actions of mining pools are usually public knowledge; which blocks
+they mine is usually published on the pool website. If mining a transaction
+output known to be involved in illegal activity is made illegal, mining pools
+may independently seek out sources of information on transaction outputs known
+to be involved in illegal activity, and prohibit transactions spending those
+outputs from the blocks they mine, as well as delibrately trying to mine blocks
+that would <a href="../Orphan_Block/">orphan blocks</a> with such transactions.</p>
+
+<p>Similarly it could be made illegal to mine a transaction if the identity of the
+person making the transaction is not known, in conjunction with ways for
+transactions to make that identity public. Again, even if the economic majority
+would prefer to be able to make anonymous transactions, the hashing power
+majority may not want to take that risk.</p>
+
+<p>Conversely the opposite may be true in either example - what &quot;security&quot; is may not always be obvious or easily agreed upon.</p>
+
+<h2 id="Inflation_Subsidy">Inflation Subsidy</h2>
+
+<p>Currently each block <a href="../Controlled_Currency_Supply/">creates 25 BTC</a> as the block
+reward; as of April 2013 that inflates the currency supply by about 11% per
+year, in effect transferring 11% of the value of all the Bitcoins in existence
+to miners to pay for the security they provide. However, every four years the
+block reward is decreased by half, thus halving the overall inflation subsidy
+that pays miners.</p>
+
+<p>The inflation subsidy pays miners directly from Bitcoin as a whole; in effect
+everyone holding Bitcoins is paying for security directly. However at some
+point it will become small enough that Bitcoin could be attacked by someone
+with very little resources. In addition a miner can still collect the inflation
+subsidy without including any transactions at all in the blocks they mine, an activity that can be seen as an attack. (3.1)</p>
+
+<p>It is predicted that the inflation subsidy will reach less than 1% of the
+Bitcoin nominal market cap sometime in 2033. However that figure is subject to
+the amount of <span class="createlink"><a href="/ikiwiki.cgi?from=Funding_network_security&amp;page=lost_coins&amp;do=create" rel="nofollow">?</a>lost coins</span> from the early days of Bitcoin; it is unknown what
+the market cap of coins with owners able to spend them actually is or will be.</p>
+
+<h2 id="Transaction_Fees">Transaction Fees</h2>
+
+<p>Transactions may include <a href="../Transaction_fees/">fees</a> which are given to the miner
+who included the transaction in a block. These fees can range from 0% to 100%
+of the transaction inputs technically speaking, although what is economically
+practical is a subset of that.</p>
+
+<p>Fees can align the economic interests of Bitcoin users with the interests of
+miners. For instance in the above example of anonymous transactions fees can
+encourage miners to mine anonymous transactions regardless of the legal risk,
+or to take (possibly expensive) measures to reduce that risk.</p>
+
+<h3 id="The_Blocksize_Limit">The Blocksize Limit</h3>
+
+<p>Currently blocks are limited to 1MB in size, and further limited by &quot;gentlemans
+agreement&quot; in the form of a 500KB default maximum. While miners can choose to
+mine blocks exceeding the 500KB limit, the 1MB limit is fixed and any block
+larger than it is invalid; block space is a scarce resource. Provided that the
+demand for transactions is greater than about <a href="../Maximum_transaction_rate/">seven</a> we can expect transaction fees to be greater than the marginal
+costs required to accept a transaction, thus creating a profit that can be used
+to fund the operation of hashing power.</p>
+
+<h3 id="Off-chain_Transactions">Off-chain Transactions</h3>
+
+<p>If making a transaction becomes too expensive it can become worthwhile to use an <a href="../Off-Chain_Transactions/">off-chain payment system</a> to move the funds instead, either one denominated in Bitcoins, or in a different currency entirely. The availability of off-chain transactions limits the maximum fees that miners can charge, in turn limiting the value of transactions as a way to fund security.</p>
+
+<h2 id="Alternatives">Alternatives</h2>
+
+<p>If transaction fees and the inflation subsidy do not pay for adequate security
+alternatives exist. In particular users who own Bitcoins, yet do not perform
+transactions, possibly because they are holding onto their Bitcoins as an
+investment and/or use off-chain transactions, only pay for security through the
+inflation subsidy.</p>
+
+<p>In addition one approach to the <a href="../Scalability/">scalability problem</a> posed by
+the current 1MB blocksize limit is to remove or increase that limit. Without
+the blocksize limit it is expected that transaction fees will fall to the
+<span class="createlink"><a href="/ikiwiki.cgi?from=Funding_network_security&amp;do=create&amp;page=marginal_costs_of_a_transaction" rel="nofollow">?</a>marginal costs of a transaction</span>, which means that fees will not pay for any
+security at all.</p>
+
+<h3 id="Individual">Individual</h3>
+
+<p>As individuals Bitcoin owners can fund network security in a variety of ways,
+including artifical fee-paying transactions, paying abnormally high fees,
+donating directly to known miners, and operating their own mining equipment.
+The latter two methods have the advantage that the donator has control over the
+policy followed by the miner being funded.</p>
+
+<p>However mining is a public good: any individual can also simply hope that
+others will fund security for them, also known as the
+<a href="http://en.wikipedia.org/wiki/Free_rider_problem">free rider problem</a>.</p>
+
+<h3 id="Assurance_Contracts">Assurance Contracts</h3>
+
+<p>An assurance contract, also known as a provision point mechanism, is a game
+theoretic mechanism and a financial technology that facilitates the voluntary
+creation of public goods and club goods in the face of the free rider
+problem. (9.1)</p>
+
+<p>The free rider problem is that there may be actions that would benefit a large
+group of people, but once the action is taken, there is no way to exclude those
+who did not pay for the action from the benefits. In Bitcoin the problem is
+that mining is costly and benefits everyone who owns Bitcoins and/or performs
+transactions. A mining assurance contract needs to be constructed in such a way
+that participants agree that if some large amount of funds are commited, those
+funds will go to mining in some way, with the amount set to be large enough for
+a sufficiently high percentage of the economic activity of Bitcoin must have
+participated to avoid the free rider problem.</p>
+
+<p>Bitcoin already supports assurance contracts as a transaction
+type (9.2) - for a
+mining assurance contract the transaction output would be set to either an
+<a href="../Script/#Anyone-Can-Spend_Outputs">anyone can spend</a> output, or an address owned
+by a specific miner. However as-is they have a serious problem: a miner can
+always collect the funds pledged to date by simply adding a sufficient amount
+of their own funds to the outstanding contract, and mining that transaction
+themselves, thus turning the contract into a simple
+donation. (9.3)
+(modulo the small chance of the block being orphaned; if the chance is large, the assurance contract is not encouraging orderly mining) The problem can be mitigated somewhat by forcing donators to reveal their identity in a provable way, but then high participation is difficult to achieve.</p>
+
+<p>With <a href="../NLockTime/">nLockTime</a> a transaction can be created where the miner who will
+actually collect it is unknown in advance. As the deadline approaches, if the
+contract is not fully funded, participants double-spend their pledged
+transaction outputs to invalidate the contract. However this mechanism has the
+problem that anyone can make the contract fail, even if it is fully funded.
+That problem can be solved if Bitcoin&#39;s scripting language is extended to allow
+for transaction outputs that can only be spent by transactions following
+certain forms - the outputs would be locked to the contract until some time
+after the contract
+expires. (9.4)</p>
+
+<h2 id="References">References</h2>
+
+<p>2.1: <a href="https://bitcointalk.org/index.php?topic=157130.0">Decentralised crime fighting using private set intersection protocols</a><br />
+3.1: <a href="https://bitcointalk.org/index.php?topic=69423.0">Miners that refuse to include transactions are becoming a problem</a><br />
+9.1: http://en.wikipedia.org/wiki/Assurance_contract<br />
+9.2: <a href="../Contracts/#Example_3:_Assurance_contracts">Contracts</a><br />
+9.3: <a href="https://bitcointalk.org/index.php?topic=157141.msg1821770#msg1821770">https://bitcointalk.org/index.php?topic=157141.msg1821770#msg1821770</a><br />
+9.4: <a href="https://bitcointalk.org/index.php?topic=157141.msg1822138#msg1822138">https://bitcointalk.org/index.php?topic=157141.msg1822138#msg1822138</a></p>
+
+<ul>
+<li><a href="https://bitcointalk.org/index.php?topic=157141.0">Bitcointalk thread</a></li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Contract/">Contract</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-07-10T01:44:08Z">Fri 10 Jul 2015 01:44:08 AM Europe</time>
+<!-- Created <time datetime="2013-04-05T13:22:43Z" pubdate="pubdate">Fri 05 Apr 2013 01:22:43 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

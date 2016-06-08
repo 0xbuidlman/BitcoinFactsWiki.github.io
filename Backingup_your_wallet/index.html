@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Backingup your wallet</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Backingup your wallet
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=Backingup_your_wallet" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<h2 id="Locating_Bitcoin.27s_data_directory">Locating Bitcoin&#39;s data directory</h2>
+
+<p>The <a href="../Data_directory/">data directory</a> is the location where Bitcoin&#39;s data files are stored, including the wallet data file.</p>
+
+<h3 id="Gnu.2FLinux">Gnu/Linux</h3>
+
+<p>By default Bitcoin will put its data here:</p>
+
+<pre><code>~/.bitcoin/
+</code></pre>
+
+<p>You need to do a &quot;ls -a&quot; to see directories that start with a dot.</p>
+
+<p>If that&#39;s not it, you can do a search like this:</p>
+
+<pre><code>find / -name wallet.dat -print 2&gt;/dev/null
+</code></pre>
+
+<p>To change the directory Bitcoin stores its data in:
+    Run in terminal or script: ./bitcoin-qt -datadir=./<span class="createlink"><a href="/ikiwiki.cgi?page=Directory_Name&amp;do=create&amp;from=Backingup_your_wallet" rel="nofollow">?</a>Directory Name</span></p>
+
+<h3 id="Mac_OSX">Mac OSX</h3>
+
+<p>By default Bitcoin will put its data here:</p>
+
+<pre><code>~/Library/Application Support/Bitcoin/
+</code></pre>
+
+<h3 id="Windows">Windows</h3>
+
+<p>Go to Start -&gt; Run (or press WinKey+R) and run this:</p>
+
+<pre><code>explorer %APPDATA%\Bitcoin
+</code></pre>
+
+<p>Bitcoin&#39;s data folder will open. For most users, this is one of the following locations:</p>
+
+<pre><code>C:\Documents and Settings\YourUserName\Application data\Bitcoin (Windows XP)
+
+C:\Users\YourUserName\Appdata\Roaming\Bitcoin (Windows Vista and 7)
+</code></pre>
+
+<p>If you have trouble browsing to these folders, note that &quot;AppData&quot; and &quot;Application data&quot; are hidden by default.</p>
+
+<h2 id="Backing_up_your_wallet_files">Backing up your wallet files</h2>
+
+<p><strong>Note</strong>: Using Dropbox to back up your Bitcoin data is not recommended as doing so introduces the following <a href="https://en.wikipedia.org/wiki/Dropbox_(service">security concerns</a>#Reception):</p>
+
+<ol>
+<li>Dropbox stores your encryption key (meaning that a disgruntled Dropbox employee or an attacker who gained access to the system could decrypt your Dropbox data and steal your bitcoins)</li>
+<li>the Dropbox client only needs a password for the first login. After it authenticates once, the server assigns it a token which it uses to show that, at one time, its user knew the password rather than sending the actual password (meaning that if you ever use the Dropbox client on another PC, that PC&#39;s users can access your Dropbox - even if you change your password - and can steal your bitcoins or get a virus that will steal your bitcoins).</li>
+</ol>
+
+
+<p>For these reasons, an alternative that always uses password authentication such as <a href="http://www.wuala.com/en/bitcoin">Wuala</a> should be used. Wuala&#39;s servers do not store your encryption key and the program authenticates with the password each time it is started.</p>
+
+<p>Whether you use Dropbox as your backup or not, it is advised to use what Steve Gibson calls &quot;pre-Internet encryption&quot; which means to use some form of encryption on your files before you back them up, in case an attacker gains access to that backup. Make sure to pick a password that is memorable but secure.</p>
+
+<p>The only file you need to back up is &quot;wallet.dat&quot; which can be done one of two ways. To make a copy of the wallet.dat file, ensure that Bitcoin is closed and copy this file somewhere else. The other way is to use the <span class="createlink"><a href="/ikiwiki.cgi?page=api&amp;do=create&amp;from=Backingup_your_wallet" rel="nofollow">?</a>backupwallet</span> JSON-RPC command to back up without shutting down Bitcoin.</p>
+
+<p>Once a copy has been made, encrypt it, and put it in two or more safe locations. Consider the risk due to theft, fire, or natural disaster in proportion to the value of bitcoins stored in the wallet.</p>
+
+<h3 id="Backup_wallet_and_blochain_data">Backup wallet and blochain data</h3>
+
+<p>Follow these instructions to backup all the bitcoin data (wallet and block chains) to an encrypted disk image.</p>
+
+<ol>
+<li>Open Disk Utility</li>
+<li>Click New Image and choose a big enough size, 128-bit or 256-bit (faster or more secure) encryption and single partition.</li>
+<li>Save it somewhere you won&#39;t lose it (like your Wuala, Dropbox, Strongspace or whatever)</li>
+<li>Choose a safe and strong password</li>
+<li>Move everything from ~/Library/Application Support/Bitcoin/ to the image</li>
+<li>Symlink it back so the app would be able to use it
+
+<blockquote><p>ln -s /Volumes/Bitcoin ~/Library/Application Support/Bitcoin</p></blockquote></li>
+</ol>
+
+
+<p>Don&#39;t forget to mount your image before using Bitcoin and unmount it after quitting.</p>
+
+<h3 id="Backing_up_just_your_wallet_file">Backing up just your wallet file</h3>
+
+<p>Follow these instructions to backup just the wallet.dat file. This results in a smaller disk image, but it&#39;s more complicated to do.</p>
+
+<ol>
+<li>Open Disk Utility</li>
+<li>Click New Image and choose a big enough size, 128-bit or 256-bit (faster or more secure) encryption and single partition.</li>
+<li>Save it somewhere you won&#39;t lose it (like your Wuala, Dropbox, Strongspace or whatever)</li>
+<li>Choose a safe and strong password</li>
+<li>Move your wallet.dat file to the image</li>
+<li>Symlink it back so the app would be able to use it
+
+<blockquote><p>ln -s /Volumes/Bitcoin/wallet.dat ~/Library/Application Support/Bitcoin/wallet.dat</p></blockquote></li>
+</ol>
+
+
+<p><a href="../MountWalletAndLauchnBitcoin_OSX_Automator.png"><img class="img" height="150" src="./150x150-MountWalletAndLauchnBitcoin_OSX_Automator.png" title="Mount Wallet and launch Bitcoin" width="138" /></a>
+Don&#39;t forget to mount your image before using Bitcoin and unmount after quitting it.</p>
+
+<p><strong>Note</strong>: If you start the Bitcoin application without having the image mounted, the application will overwrite your symlink with a new wallet. If that happens, don&#39;t panic. Just delete the new wallet.dat, mount the image, and recreate the symlink like above.</p>
+
+<p><strong>Automation</strong>: You can create a small application using <a href="http://en.wikipedia.org/wiki/Automator_%28software%29">Automator</a> (included in OS X) to automatically mount the wallet and then launch Bitcoin App. See the Screenshot on how to do this.</p>
+
+<p>If one <em>doesn&#39;t</em> want to use encrypted Disk images, then a <strong>small shell script</strong> can be used instead that takes care of decrypting the wallet, launching bitcoin client, and encrypting it after the client exits. This script works on both OSX and Gnu/Linux: <a href="http://lorelei.kaverit.org/bitcoin.sh">bitcoin-launch-script</a></p>
+
+<h3 id="Email-based_Archival_and_Remote_Backup">Email-based Archival and Remote Backup</h3>
+
+<p>One of the simplest methods for storing an appropriately <strong>encrypted</strong> archive of your wallet.dat file is to send the archive as an email attachment to your own e-mail address.  Services like Gmail use very comprehensive distributed networks that make the loss of data very unlikely.  One can even obfuscate the name of the files within the archive, and name the archive something less inviting, such as: &#39;personal notes&#39; or &#39;car insurance&#39;.</p>
+
+<p>Another solution is to use a file storage service like <a href="http://www.wuala.com/bitcoin">Wuala</a> ( encrypted, <a href="http://www.bitcoin.org/smf/index.php?topic=5817.0">instructions</a>), <a href="http://www.dropbox.com">Dropbox</a> (after encrypting the wallet first) and <a href="http://en.wikipedia.org/wiki/Comparison_of_online_backup_services">others</a>, including the more secure <a href="http://www.spideroak.com">SpiderOak</a>.</p>
+
+<h3 id="Automated_backups_using_Cron.2C_Bash_and_GNU.2FLinux">Automated backups using Cron, Bash and GNU/Linux</h3>
+
+<p>Linux users can setup backups using cron by telling it to run a backup script at set intervals of time. Run &#39;crontab -e&#39; and add this line near the bottom:</p>
+
+<pre><code>01 * * * * /usr/local/bin/backupwallet.sh
+</code></pre>
+
+<p>This cron line will run the /usr/local/bin/backupwallet.sh script at the 01 minute of every hour. Remember to add a newline after the last line of the crontab file, or else the last line won&#39;t run. You may also wish to ignore the script&#39;s output by appending &quot; &gt; /dev/null 2&gt;&amp;1&quot; to the line (this will also prevent emails from being sent).</p>
+
+<p>Create /usr/local/bin/backupwallet.sh:</p>
+
+<pre><code>#!/bin/bash
+# /usr/local/bin/backupwallet.sh
+#
+# Performs backup of bitcoin wallet.
+#
+# Written by: https://en.bitcoin.it/wiki/Securing_your_wallet
+
+#
+# Standard Options
+#
+TS=$(date &quot;+%Y%m%d-%H%M&quot;)
+WALLET=/tmp/wallet-${TS}
+WALLET_E=/tmp/wallet-${TS}.crypt
+BITCOIN=bitcoind  # /path/to/bitcoind
+GPG=gpg  # /path/to/gpg
+GPG_USER=username  # Username of gpg recipient. User should have gpg setup.
+RM=rm
+RM_OPTS=&#39;--force&#39;
+USE_SHRED=0  # Flip to 1 to use `shred` instead of `rm`.
+SHRED=shred
+SHRED_OPTS=&#39;--force --iterations=9 --zero --remove&#39;
+
+#
+# Storage Options
+# Only 1 set of options should be un-commented (the last one will be used).
+# Update CP_DEST paths as neccessary.
+#
+# CP - Storage on a local machine. Could be Dropbox/Wuala folder.
+#CP=cp
+#CP_DEST=&#39;/var/data/backups/&#39;  # &#39;~/Dropbox/&#39;, etc.
+#
+# SSH - Storage on a remote machine.
+CP=scp
+CP_DEST=&#39;remoteuser@example.com:~/wallets/&#39;
+#
+# S3 - Storage on Amazon&#39;s S3. Be sure s3cmd is installed and properly setup.
+# You may need &quot;s3cmd put --force&quot; if you use a sub-directory in CP_DEST.
+#CP=s3cmd put
+#CP_DEST=&#39;s3://bucket&#39;
+
+do_clean() {
+# Remove temporary wallets.
+if  [-eq $USE_SHRED](1); then
+$SHRED $SHRED_OPTS $WALLET $WALLET_E
+else
+$RM $RM_OPTS $WALLET $WALLET_E
+fi
+}
+
+do_fail() {
+do_clean
+echo failed!
+exit 1
+}
+
+# Perform the backup.
+echo -n Making backup...
+$BITCOIN backupwallet $WALLET
+ [-s &quot;$WALLET&quot;](!) &amp;&amp; do_fail  # If the backup does not exist or is empty, fail.
+echo done.
+echo -n Encrypting backup...
+$GPG -r $GPG_USER --output $WALLET_E --encrypt $WALLET
+ [-ne $?](0) &amp;&amp; do_fail  # If gpg returns a non-zero result, fail.
+echo done.
+echo -n Copying to backup location...
+$CP $WALLET_E &quot;$CP_DEST&quot;
+ [-ne $?](0) &amp;&amp; do_fail  # If the $CP command returns a non-zero result, fail.
+echo done.
+do_clean
+
+exit 0
+</code></pre>
+
+<p>The shell script:</p>
+
+<ul>
+<li>Calls bitcoind backupwallet to create a time/date-stamped wallet.</li>
+<li>GPG encrypts the wallet with your public key.</li>
+<li>Copies the result using one of several storage options (cp, scp, and s3cmd).</li>
+<li>Uses the rm or shred command to remove the temporary wallet files.</li>
+</ul>
+
+
+<p>Be sure to modify the script options to fit your setup. After you save, make sure the file can be executed properly by the cron user. Common permissions for files in /usr/local/bin/ can be applied using (verify with your distribution!):</p>
+
+<pre><code>cd /usr/local/bin/ &amp;&amp; chown root:root backupwallet.sh &amp;&amp; chmod 755 backupwallet.sh
+</code></pre>
+
+<h2 id="Restoring_your_wallet_file">Restoring your wallet file</h2>
+
+<p>Assuming your backup is recent enough that you haven&#39;t used up all of your key pool... restoring a wallet to a new (or old) location and rescanning the block chain should leave you with all your coins. Just follow these steps:</p>
+
+<ul>
+<li>Shut down the Bitcoin program.</li>
+<li>Copy your backed-up wallet.dat into your bitcoin data directory.</li>
+<li>If you are copying in a backed-up wallet.dat that was last used on a Bitcoin version prior to 0.3.21 into an existing profile, delete files <em>blk</em>.dat* to make the client re-download the block chain. You may also need to do this if your transactions don&#39;t all show up after you restart Bitcoin.</li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Securing_your_wallet/">Securing your wallet</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2013-12-02T16:29:16Z">Mon 02 Dec 2013 04:29:16 PM Europe</time>
+<!-- Created <time datetime="2013-12-02T16:19:33Z" pubdate="pubdate">Mon 02 Dec 2013 04:19:33 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

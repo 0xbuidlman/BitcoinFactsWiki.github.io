@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Bitcoin Server</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Bitcoin Server
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=Bitcoin_Server" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>Bitcoin Server (bs) is a console application that is included as part of <a href="../Libbitcoin_Server/">libbitcoin-server</a>. It implements a full node on the Bitcoin P2P network as well as a blockchain query service based on <a href="http://zeromq.org">ZeroMQ</a>.</p>
+
+<p><a href="https://github.com/libbitcoin/libbitcoin-server/wiki">Documentation</a> and <a href="https://github.com/libbitcoin/libbitcoin-server/wiki/Download-BS">signed binaries</a> for Linux, OSX and Windows are available on GitHub.</p>
+
+<h2 id="Example">Example</h2>
+
+<pre><code>$ bs
+Using config file: &quot;/usr/local/etc/libbitcoin/bs.cfg&quot;
+Press CTRL-C to stop server.
+INFO &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Bitcoin_Server&amp;amp;do=create&amp;amp;page=worker&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;worker&lt;/span&gt;: worker ready
+INFO &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Bitcoin_Server&amp;amp;page=database&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;database&lt;/span&gt;: Mapping: &quot;/blockchain/blocks_lookup&quot;
+INFO &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Bitcoin_Server&amp;amp;page=database&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;database&lt;/span&gt;: Mapping: &quot;/blockchain/blocks_rows&quot;
+INFO &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Bitcoin_Server&amp;amp;page=database&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;database&lt;/span&gt;: Mapping: &quot;/blockchain/spends&quot;
+INFO &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Bitcoin_Server&amp;amp;page=database&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;database&lt;/span&gt;: Mapping: &quot;/blockchain/txs&quot;
+INFO &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Bitcoin_Server&amp;amp;do=create&amp;amp;page=database&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;database&lt;/span&gt;: Mapping: &quot;/blockchain/history_lookup&quot;
+INFO &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Bitcoin_Server&amp;amp;page=database&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;database&lt;/span&gt;: Mapping: &quot;/blockchain/history_rows&quot;
+INFO &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=database&amp;amp;from=Bitcoin_Server&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;database&lt;/span&gt;: Mapping: &quot;/blockchain/stealth_index&quot;
+INFO &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Bitcoin_Server&amp;amp;page=database&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;database&lt;/span&gt;: Mapping: &quot;/blockchain/stealth_rows&quot;
+06:31:07.201970 FATAL &lt;a href=&quot;../Node/&quot;&gt;node&lt;/a&gt; ================= Startup =================
+06:31:07.213970 ERROR &lt;a href=&quot;../Node/&quot;&gt;node&lt;/a&gt; ================= Startup =================
+06:31:07.224971 INFO &lt;a href=&quot;../Node/&quot;&gt;node&lt;/a&gt; ================= Startup =================
+06:31:07.236972 INFO &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Bitcoin_Server&amp;amp;page=session&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;session&lt;/span&gt; Set start height (364855)
+Server started.
+06:31:07.925011 INFO &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Bitcoin_Server&amp;amp;page=protocol&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;protocol&lt;/span&gt; Connected to peer &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Bitcoin_Server&amp;amp;do=create&amp;amp;page=88.103.255.166%3A8333&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;88.103.255.166:8333&lt;/span&gt; on slot &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=2&amp;amp;do=create&amp;amp;from=Bitcoin_Server&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;2&lt;/span&gt; (1 total)
+06:31:17.958585 INFO &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Bitcoin_Server&amp;amp;page=protocol&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;protocol&lt;/span&gt; Connected to peer &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Bitcoin_Server&amp;amp;page=58.96.171.129%3A8333&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;58.96.171.129:8333&lt;/span&gt; on slot &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Bitcoin_Server&amp;amp;do=create&amp;amp;page=0&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;0&lt;/span&gt; (2 total)
+06:31:22.770860 INFO &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Bitcoin_Server&amp;amp;page=protocol&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;protocol&lt;/span&gt; Connected to peer &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=82.69.121.229%3A8333&amp;amp;from=Bitcoin_Server&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;82.69.121.229:8333&lt;/span&gt; on slot &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=1&amp;amp;from=Bitcoin_Server&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;1&lt;/span&gt; (3 total)
+06:34:35.383877 INFO &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Bitcoin_Server&amp;amp;do=create&amp;amp;page=poller&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;poller&lt;/span&gt; Block #364856 00000000000000001589e050ee0ffeefbf8b37780378fdd8af346e0a8bdec7aa
+06:34:35.882906 INFO &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=poller&amp;amp;from=Bitcoin_Server&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;poller&lt;/span&gt; Block #364857 0000000000000000153080d858e282eb4deaee5147e4bf1644711d1dca8a7f8d
+06:37:58.961521 INFO &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Bitcoin_Server&amp;amp;do=create&amp;amp;page=poller&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;poller&lt;/span&gt; Block #364858 000000000000000008f22ea4b13b2e6d6c0a957f76edaff62de69e64dade09a5
+06:45:17.251590 INFO &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Bitcoin_Server&amp;amp;do=create&amp;amp;page=poller&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;poller&lt;/span&gt; Block #364859 000000000000000014555cf76ab1d82e9a3d529adf3559cc8ea5ce343b9a3d65
+07:05:44.277772 INFO &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=poller&amp;amp;from=Bitcoin_Server&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;poller&lt;/span&gt; Block #364860 000000000000000010985bd204ca899fc8725d8e32896c76d41518ad6281d943
+07:17:37.688576 INFO &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=poller&amp;amp;from=Bitcoin_Server&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;poller&lt;/span&gt; Block #364861 00000000000000000f62b25f4915ad89ef627cfedac15b133aa6f4f1457bd89c
+07:45:43.767015 INFO &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=poller&amp;amp;do=create&amp;amp;from=Bitcoin_Server&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;poller&lt;/span&gt; Block #364862 00000000000000001542a48d1b2fce804be1c59d65c9d151da14b0fdbac9943a
+07:45:45.081090 INFO &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Bitcoin_Server&amp;amp;do=create&amp;amp;page=poller&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;poller&lt;/span&gt; Block #364863 00000000000000000e7bf292d46e24b8ec9fdc8c096672a76506077edf6e1417
+07:48:52.000781 INFO &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=poller&amp;amp;from=Bitcoin_Server&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;poller&lt;/span&gt; Block #364864 0000000000000000078a32b267012a7d0b7aba50cdea76adecba28b1864e2489
+07:51:24.524505 INFO &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Bitcoin_Server&amp;amp;do=create&amp;amp;page=poller&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;poller&lt;/span&gt; Block #364865 000000000000000004af6f65907e8ff5a5d24d22775afd025cba3b78a89a1656
+07:57:45.564299 INFO &lt;a href=&quot;../Network/&quot;&gt;network&lt;/a&gt; Channel failure &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=88.103.255.166%3A8333&amp;amp;do=create&amp;amp;from=Bitcoin_Server&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;88.103.255.166:8333&lt;/span&gt; unable to reach remote host (boost code 121)
+07:57:45.722308 INFO &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Bitcoin_Server&amp;amp;page=protocol&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;protocol&lt;/span&gt; Connected to peer &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=199.192.78.194%3A8333&amp;amp;from=Bitcoin_Server&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;199.192.78.194:8333&lt;/span&gt; on slot &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=2&amp;amp;do=create&amp;amp;from=Bitcoin_Server&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;2&lt;/span&gt; (3 total)
+07:58:22.055386 INFO &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Bitcoin_Server&amp;amp;do=create&amp;amp;page=poller&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;poller&lt;/span&gt; Block #364866 0000000000000000082767768320cfdc92b04a8d605e95db3303d26c0a887f6d
+08:11:32.129576 INFO &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=poller&amp;amp;do=create&amp;amp;from=Bitcoin_Server&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;poller&lt;/span&gt; Block #364867 000000000000000003051b58e27c0377bea22bc571a483fa60c7e8d8f8ff4010
+08:35:22.331379 INFO &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Bitcoin_Server&amp;amp;page=poller&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;poller&lt;/span&gt; Block #364868 000000000000000006909680acefb7ae751b9e6ccf007362dd6738331ad5b1b8
+08:46:59.954280 INFO &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=poller&amp;amp;do=create&amp;amp;from=Bitcoin_Server&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;poller&lt;/span&gt; Block #364869 00000000000000000761ddfcabc066e809336659bb34ae9663df8e9fa86c500a
+09:05:59.489458 INFO &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Bitcoin_Server&amp;amp;page=poller&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;poller&lt;/span&gt; Block #364870 00000000000000000e5e6c456630aa7e00c783bea5b56f79c570e101bb6db4df
+09:15:34.042321 INFO &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Bitcoin_Server&amp;amp;page=poller&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;poller&lt;/span&gt; Block #364871 0000000000000000132c018cd5294fdd2a0a85732a7ab7ab9fffdd9279c07266
+09:23:11.005458 INFO &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=poller&amp;amp;do=create&amp;amp;from=Bitcoin_Server&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;poller&lt;/span&gt; Block #364872 0000000000000000142d68039747b70bc5eca0113fc349d396679630b421bb40
+09:30:55.710037 INFO &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Bitcoin_Server&amp;amp;page=poller&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;poller&lt;/span&gt; Block #364873 00000000000000000a3b280dc91f6d9efee96d56af12a18b5702d6203e3332ab
+09:34:13.029323 INFO &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=poller&amp;amp;do=create&amp;amp;from=Bitcoin_Server&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;poller&lt;/span&gt; Block #364874 000000000000000005c026fcd0b5eab2abab70d367f78f5e64d4dc565ebba394
+10:07:04.751099 INFO &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=poller&amp;amp;from=Bitcoin_Server&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;poller&lt;/span&gt; Block #364875 00000000000000000226556b8e3a5a7336f28155a40a507ead0918230b8d29b5
+...
+</code></pre>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../Libbitcoin/">Libbitcoin</a></li>
+<li><a href="../Libbitcoin_Server/">libbitcoin-server</a></li>
+<li><a href="../Obelisk/">Obelisk</a></li>
+</ul>
+
+
+<h2 id="References">References</h2>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Nodes/" rel="tag">Nodes</a>
+
+<a href="../tags/Open_Source/" rel="tag">Open Source</a>
+
+<a href="../tags/Software__8207____8206__/" rel="tag">Software‏‎</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Libbitcoin/">Libbitcoin</a>
+
+<a href="../Libbitcoin_Client/">Libbitcoin Client</a>
+
+<a href="../Libbitcoin_Server/">Libbitcoin Server</a>
+
+<a href="../Software/">Software</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-07-12T21:21:20Z">Sun 12 Jul 2015 09:21:20 PM Europe</time>
+<!-- Created <time datetime="2015-07-12T17:27:17Z" pubdate="pubdate">Sun 12 Jul 2015 05:27:17 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

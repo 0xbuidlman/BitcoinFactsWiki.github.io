@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Double-spending</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Double-spending
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=Double-spending" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>Double-spending is the result of successfully spending some money more than once.  Bitcoin protects against double spending by verifying each transaction added to the <a href="../Block_chain/">block chain</a> to ensure that the inputs for the transaction had not previously already been spent.</p>
+
+<p>Other electronic systems prevent double-spending by having a master authoritative source that follows business rules for authorizing each transaction.  Bitcoin uses a decentralized system, where a consensus among nodes following the same protocol is substituted for a central authority.</p>
+
+<p>Bitcoin has some exposure to fraudulent double-spending when a transaction is first made, with less and less risk as a transaction gains <a href="../Confirmation/">confirmations</a>.</p>
+
+<h2 id="Attack_vectors">Attack vectors</h2>
+
+<h3 id="Race_attack">Race attack</h3>
+
+<p>Traders and merchants who accept a payment immediately on seeing &quot;0/unconfirmed&quot; are exposed to a double-spend occurring, if there was a fraudulent attempt that successfully communicated one transaction to the merchant yet communicated a different transaction that spends the same coin that was first to eventually make it into the block chain.</p>
+
+<p>Merchants can take precautions (e.g., disable incoming connections, only connect to well connected nodes) to lessen the risk of a race attack but the risk cannot be eliminated.  Therefore, the cost/benefit of the risk needs to be considered when accepting payment on 0/unconfirmed when there is no recourse against the attacker.</p>
+
+<p>The <a href="../Research/">research</a> paper <a href="http://eprint.iacr.org/2012/248.pdf">Two Bitcoins at the Price of One</a> finds that the protocol allows a high degree of success by an attacker in performing race attacks.  The method studied in the research paper depends on access to the merchant&#39;s Bitcoin node which is why that even prior to this paper, recommendations for merchants include disabling incoming connections and to choose specific outgoing connections (3.1).</p>
+
+<h3 id="Finney_attack">Finney attack</h3>
+
+<p>Another attack the trader or merchant is exposed to when accepting payment on 0/unconfirmed.  The Finney attack is a fraudulent double-spend that requires the participation of a miner once a block has been mined (4.1).  The risk of a Finney attack cannot be eliminated regardless of the precautions taken by the merchant, but the participation of a miner is required and a specific sequence of events must occur.  Thus the attack is not trivial nor inexpensive to perform and only makes sense for the attacker when the gains from the attack are significant.  Just like with the race attack, a trader or merchant should consider the cost / benefit when accepting payment on just one confirmation when there is no recourse against the attacker.</p>
+
+<h3 id="Vector76_attack">Vector76 attack</h3>
+
+<p>Also referred to as a one-confirmation attack, is a combination of the race attack and the Finney attack such that a transaction that even has one confirmation can still be double-spent.  The same protective action for the race attack (no incoming connections, explicit outgoing connection to a well-connected node) significantly reduces the risk of this occurring.</p>
+
+<p>It is worth noting that a successful attack costs the attacker one block - they need to &#39;sacrifice&#39; a block by not broadcasting it, and instead relaying it only to the attacked node.</p>
+
+<p>See on <a href="http://bitcointalk.org/index.php?topic=36788.msg463391#msg463391">BitcoinTalk</a> or further <a href="http://www.reddit.com/r/Bitcoin/comments/2e7bfa/vector76_double_spend_attack/cjwya6x">example of an attack scenario</a>.</p>
+
+<h3 id="Brute_force_attack">Brute force attack</h3>
+
+<p>This attack has a chance to work even if the merchant waits for some confirmations, but requires relatively high hashrate.</p>
+
+<p>The attacker submits to the merchant/network a transaction which pays the merchant, while privately mining a blockchain fork in which a double-spending transaction is included instead. After waiting for <em>n</em> confirmations, the merchant sends the product. If the attacker happened to find more than <em>n</em> blocks at this point, he releases his fork and regains his coins; otherwise, he can try to continue extending his fork with the hope of being able to catch up with the network. If he never manages to do this, the attack fails and the payment to the merchant will go through.</p>
+
+<p>The probability of success is a function of the attacker&#39;s hashrate (as a proportion of the total network hashrate) and the number of confirmations the merchant waits for. For example, if the attacker controls 10% of the network hashrate but the merchant waits for 6 confirmations, the success probability is on the order of 0.1% (6.1).</p>
+
+<h3>&gt;50% attack</h3>
+
+<p>Also referred to as a <a href="../Majority_attack/">majority attack</a>.  If the attacker controls more than half of the network hashrate, the previous attack has a probability of 100% to succeed. Since the attacker can generate blocks faster than the rest of the network, he can simply persevere with his private fork until it becomes longer than the branch built by the honest network, from whatever disadvantage.</p>
+
+<p>No amount of confirmations can prevent this attack; however, waiting for confirmations does increase the aggregate resource cost of performing the attack, which could make it unprofitable or delay it long enough for the circumstances to change or slower-acting synchronization methods to kick in.</p>
+
+<h2 id="Risk_management">Risk management</h2>
+
+<p>There are third-party services to assist traders and merchants to help manage the risk or to insure against losses.</p>
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../Weaknesses/">Weaknesses</a></li>
+<li><a href="http://codinginmysleep.com/bitcoin-attacks-in-plain-english">Bitcoin Attacks in Plain English</a> by David Perry</li>
+</ul>
+
+
+<p><span class="createlink"><a href="/ikiwiki.cgi?from=Double-spending&amp;do=create&amp;page=de%3ADoppelausgaben" rel="nofollow">?</a>de:Doppelausgaben</span></p>
+
+<h2 id="References">References</h2>
+
+<p>3.1: <a href="http://bitcointalk.org/index.php?topic=79090.msg881283#msg881283">BitcoinTalk Thread - Two Bitcoins at the Price of One</a><br />
+4.1: <a href="http://www.bitcointalk.org/index.php?topic=3441.msg48384#msg48384">Best practice for fast transaction acceptance - how high is the risk?</a><br />
+6.1: <a href="https://bitcoil.co.il/Doublespend.pdf">Analysis of hashrate-based double-spending</a></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Bit_Gold_proposal/">Bit Gold proposal</a>
+
+<a href="../Block_chain/">Block chain</a>
+
+<a href="../Clearing_Up_Misconceptions_About_Full_Nodes/">Clearing Up Misconceptions About Full Nodes</a>
+
+<a href="../Clients/">Clients</a>
+
+<a href="../Common_Vulnerabilities_and_Exposures/">Common Vulnerabilities and Exposures</a>
+
+<a href="../Contract/">Contract</a>
+
+<a href="../Help:FAQ/">Help:FAQ</a>
+
+<a href="../Help:Introduction/">Help:Introduction</a>
+
+<a href="../How_bitcoin_works/">How bitcoin works</a>
+
+<a href="../Majority_attack/">Majority attack</a>
+
+
+<span class="popup">...
+<span class="balloon">
+
+<a href="../Nanopayments/">Nanopayments</a>
+
+<a href="../Proof_of_Stake/">Proof of Stake</a>
+
+<a href="../Proof_of_blockchain_fair_sharing/">Proof of blockchain fair sharing</a>
+
+<a href="../Securing_online_services/">Securing online services</a>
+
+<a href="../Softfork/">Softfork</a>
+
+<a href="../Vocabulary/">Vocabulary</a>
+
+<a href="../Weaknesses/">Weaknesses</a>
+
+</span>
+</span>
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-04-11T18:49:42Z">Sat 11 Apr 2015 06:49:42 PM Europe</time>
+<!-- Created <time datetime="2012-06-18T16:08:58Z" pubdate="pubdate">Mon 18 Jun 2012 04:08:58 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

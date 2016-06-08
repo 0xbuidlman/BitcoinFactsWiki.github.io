@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Off-Chain Transactions</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Off-Chain Transactions
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Off-Chain_Transactions" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>An off-chain transaction is the movement of value outside of the <a href="../Block_chain/">block chain</a>. While an <a href="../Transactions/">on-chain transaction</a> - usually referred to as simply &#39;a transaction&#39; - modifies the blockchain and depends on the blockchain to determine its validity an off-chain transaction relies on other methods to record and validate the transaction. Like on-chain transactions all parties must agree to accept the particular method by which the transaction occurs, the question then being, how can those parties be convinced that the movement of value has actually happened, will not be reversed, and can be exchanged in the future for something of value?</p>
+
+<p>With an on-chain transaction those questions are answered by the parties faith in the Bitcoin system as a whole. For instance a transaction (after some number of <a href="../Confirmation/">confirmations</a>) can only be reversed if a majority of hashing power agrees to reverse the transaction. The parties to the transaction are trusting that the majority of hashing power in existence is controlled by &quot;honest&quot; parties who will not attempt to reverse the transaction.</p>
+
+<h2 id="Rational">Rational</h2>
+
+<p>On-chain transactions have disadvantages that make them unsuitable for some applications:</p>
+
+<h3 id="Speed">Speed</h3>
+
+<p>On-chain transactions take some time to accumulate enough <a href="../Confirmation/">confirmations</a> to ensure that they can-not be reversed; accepting a transaction without any confirmations is potentially risky. Confirmations take time and the time they take to accumulate is random. Off-chain transaction systems can record that a transaction has happened immediately, and, subject to the guarantees of the system itself, immediately guarantee it won&#39;t be reversed.</p>
+
+<h3 id="Privacy.2FAnonymity">Privacy/Anonymity</h3>
+
+<p>All on-chain transactions are recorded publicly on the block chain; Bitcoin transactions are not inherently <a href="../Anonymity/">anonymous</a>. It may be possible for a third-party to use the block chain transaction data to determine the source and/or destination of a transaction if they can gather enough information linking addresses to identities. Because off-chain transactions do not happen on the block chain they need not be public. Using cryptographic techniques such as <a href="http://en.wikipedia.org/wiki/Blind_signature">chaum tokens</a> it can be made impossible for even the operators of the system itself to determine who participated in a transaction.</p>
+
+<h3 id="Cost.2FScalability">Cost/Scalability</h3>
+
+<p>Miners usually charge <a href="../Transaction_fees/">fees</a> to confirm a transaction. While currently the demand for transactions is sufficiently low that fees are relatively small, and transactions can often be confirmed for free, for many applications even paying a few cents per transaction is unaffordable. (5.1) In addition Bitcoin currently has a limit of 7 transactions per second, the <span class="createlink"><a href="/ikiwiki.cgi?from=Off-Chain_Transactions&amp;do=create&amp;page=blocksize_limit" rel="nofollow">?</a>blocksize limit</span>. This limit is related to the <a href="../Scalability/">scalability</a> of the system as a whole, and one option to achieve higher transaction volumes is to keep the blocksize limit as is and use off-chain transactions for lower-value transactions; with higher volumes fees for transactions done on-chain will rise due to supply and demand.</p>
+
+<h2 id="Methods">Methods</h2>
+
+<p>The most simple example of an off-chain transaction is perhaps two friends who agree on a debt between them. The &quot;transaction&quot; happens by the act of agreeing that the debt exists, and the validity of it is based solely on the trust that one friend has in the other. Further transactions can be agreed upon, possibly in exchange for something of value such one friend buying the other a meal. Multiple mutually trusting parties can participate, creating a network of value owed from one to the other. As an example the <a href="http://en.wikipedia.org/wiki/Ripple_monetary_system">Ripple monetary system</a> takes this concept, and adds to it an automated ledger to record all the mutual debts between participating parties. However actually acting upon those debts is still a matter of trust between the parties; the system only records debts and can-not by itself cause Bitcoins or some other object of value to change hands. In theory, the use of multi-signature techniques offers the promise of secure Off-Chain transactions  (6.1). However, the practical applications of such &quot;CryptoCubic&quot; approaches have yet to be confirmed.</p>
+
+<h3 id="Trusted_Third_Parties">Trusted Third Parties</h3>
+
+<p>If the sender and recipient do not trust each other, or would simply prefer someone else record and guarantee the transaction, they can use a <a href="http://en.wikipedia.org/wiki/Trusted_third_party">trusted third party</a> to record and guarantee the transaction. The vast majority of conventional banking and electronic payment systems work this way. For instance in the PayPal system, PayPal is trusted to keep an accurate record of all transactions, including within the PayPal system, as well as transactions that move funds to and from PayPal. Within Bitcoin <a href="../Redeemable_code/">redeemable code</a> systems exist where a third party, such as Mt. Gox, records codes issued and promise to redeem them for either new codes, balances within the system, or Bitcoins via on-chain transactions. In addition <span class="createlink"><a href="/ikiwiki.cgi?from=Off-Chain_Transactions&amp;do=create&amp;page=E-Wallet" rel="nofollow">?</a>E-Wallet</span> services such as <span class="createlink"><a href="/ikiwiki.cgi?from=Off-Chain_Transactions&amp;do=create&amp;page=Easywallet.org" rel="nofollow">?</a>Easywallet.org</span> often allow users to transfer funds between addresses within the system without creating an on-chain transaction.</p>
+
+<p>The difficulty with third-parties is achieving that trust. Outside of Bitcoin PayPal has been criticized (7.1) for arbitrarily freezing accounts. Within Bitcoin multiple E-Wallet services such as <span class="createlink"><a href="/ikiwiki.cgi?page=MyBitcoin&amp;do=create&amp;from=Off-Chain_Transactions" rel="nofollow">?</a>MyBitcoin</span> and <span class="createlink"><a href="/ikiwiki.cgi?from=Off-Chain_Transactions&amp;do=create&amp;page=Instawallet" rel="nofollow">?</a>Instawallet</span> have failed due to hacks as well as technical mistakes resulting in the loss of some or all funds held on behalf of their customers.</p>
+
+<h3 id="Auditing">Auditing</h3>
+
+<p>In addition to hacks, currently no trusted third party payment systems in Bitcoin provide any way for users to determine if the services actually hold the Bitcoins they claim to hold. Conventionally banks and payment processors are <a href="http://en.wikipedia.org/wiki/Financial_audit">audited</a> regularly by third-parties - because Bitcoin is based on cryptography auditing can be done in a cryptographically provable way.</p>
+
+<p>Gregory Maxwell has proposed (8.1) to use <span class="createlink"><a href="/ikiwiki.cgi?from=Off-Chain_Transactions&amp;do=create&amp;page=merkle-sum_trees" rel="nofollow">?</a>merkle-sum trees</span> of accounts to audit funds held by third parties. Each account with the service is assigned a number, such as a SHA256 digest, and those digests are formed into a merkle tree. Additionally for every node in the tree the sum of the account balances on both leaves is computed, and that sum becomes part of the data hashed by the parent node. The tip of the tree is then the sum of all balances for all accounts.</p>
+
+<p>The service proves they control the Bitcoins they claim to by signing statements with the private keys capable of spending transaction outputs present on the blockchain, and in addition regularly sign statements attesting what is the current tip of the account merkle-sum tree.</p>
+
+<p>Clients check that their account is included in that tree by regularly demanding proof, in the form of a merkle path, that their account leads to the claimed tip. Any discrepancy is evidence of fraud on by the service, or at least poor record-keeping.</p>
+
+<h3 id="Proving_Fraud">Proving Fraud</h3>
+
+<p>If the communication protocol between client and service is designed correctly fraud by the service can be proven to others. For instance if the service cryptographically signs all communications an inconsistency between the claimed merkle-tip of the accounts held by the service and the merkle-path from a particular account to that tip can be proven by providing the signed tip, and the signed merkle-path. This fraud proof can be self-authenticating, and thus anyone who comes in possession of such a proof can broadcast it to their peers. With appropriate software all participating clients of the service can be informed of any fraud immediately taking &quot;advantage of the nature of information being easy to spread but hard to stifle&quot; - a core concept underlying the security of Bitcoin itself. (9.1)</p>
+
+<h2 id="References">References</h2>
+
+<p>5.1: <a href="https://bitcointalk.org/index.php?topic=156334.0">How to send Bitcoins with LOW TX FEE (Not No TX Fee)</a><br />
+6.1: <a href="http://www.bincoin.com/cryptocubic.pdf">A CryptoCubic Protocol for Hacker-Proof Off-Chain Bitcoin Transactions</a><br />
+7.1: <a href="http://en.wikipedia.org/wiki/PayPal#Criticism">PayPal - Criticism</a><br />
+8.1: private communication on IRC (gmaxwell: do you have a writeup somewhere?)<br />
+9.1: <a href="http://sourceforge.net/mailarchive/message.php?msg_id=30482839">Satoshi</a></p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Funding_network_security/">Funding network security</a>
+
+<a href="../Merchant_Howto/">Merchant Howto</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2014-08-02T02:49:57Z">Sat 02 Aug 2014 02:49:57 AM Europe</time>
+<!-- Created <time datetime="2013-04-15T11:54:21Z" pubdate="pubdate">Mon 15 Apr 2013 11:54:21 AM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

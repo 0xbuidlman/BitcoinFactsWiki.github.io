@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Merchant Howto</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Merchant Howto
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>Accepting Bitcoins is easy, and there are several ways to do it.</p>
+
+<h2 id="Manually">Manually</h2>
+
+<ol>
+<li>Download a bitcoin client</li>
+<li>When a customer wants to buy something, send them a Bitcoin address where their payment should be sent.</li>
+<li><ul>
+<li>You can do this by clicking &quot;New..&quot; next to your address in the Bitcoin client and sending that address to the customer.</li>
+</ul>
+</li>
+<li>When payment comes in to that address, send the goods to your customer.  Depending on the value of what you&#39;re selling, you may wish to wait until the payment shows Confirmed.</li>
+<li>To issue a refund, obtain from the customer the <a href="../Address/">bitcoin address</a> where the refund payment should be sent.  The refund address will likely be different from the address used when the customer sent payment, especially if an <a href="../EWallet/">EWallet</a> was used by the customer.</li>
+</ol>
+
+
+<h2 id="Automated">Automated</h2>
+
+<h3 id="Pre-generating_Bitcoin_addresses">Pre-generating Bitcoin addresses</h3>
+
+<p>You can accept Bitcoins on your website without needing to use Bitcoin APIs or third party services if you pre-generate a large number of receiving Bitcoin addresses and store them in a database on your web server, and dispense them one-by-one to customers when they are ready to pay.  This way, your web server never actually handles the bitcoins - it simply gives out addresses belonging to a wallet you maintain elsewhere.  By using a unique address per order, you will always know which payment belongs to which order.  <a href="https://www.casascius.com">Example of website using this method</a></p>
+
+<p>To pre-generate addresses, use a tool such as <a href="../Pywallet/">Pywallet</a> (which can generate a wallet.dat file) or <a href="../Bitcoin_Address_Utility/">Bitcoin Address Utility</a> (which can generate a CSV file).  In both cases, you will be generating a list of <a href="../Address/">Bitcoin address</a>es along with their corresponding <a href="../Private_key/">private key</a>s.  Only the Bitcoin addresses (not the private keys) should be loaded on the web server.</p>
+
+<p>If you are shipping goods manually, you can use the Bitcoin software to check for incoming payments, or alternately consider using <a href="../Block_Explorer/">Block Explorer</a> or <a href="../Abe/">Abe</a> to verify payment when you&#39;re about to ship.  To make this easy, make your website provide you a full hyperlink that includes the proper receiving address:  http://www.blockexplorer.com/address/ADDRESSGOESHERE.</p>
+
+<p>If you are delivering digital goods or services and want to be able to deliver instantly upon payment and/or confirmation, you can use a third-party service such as <a href="../Bitcoin_Notify/">Bitcoin Notify</a> to tell your website when a payment has been received.  This sort of service requires no significant API implementation - they will simply make a POST to your website or send you an e-mail when a payment has been received on one of your addresses.</p>
+
+<p>If you keep Bitcoins off your web server, this ensures your wallet cannot be stolen if your web server experiences a security intrusion.  Your risk becomes limited to the possibility that a successful intruder could add his own addresses to your address pool and steal funds from a few incoming orders until you detect the problem, however, this is a <a href="../Deterministic_wallet/">relatively controllable risk</a>.</p>
+
+<h3 id="Using_offchain_payment_networks">Using offchain payment networks</h3>
+
+<p><a href="../Off-Chain_Transactions/">Off chain</a> networks provides various benefits to Bitcoin, such as instant confirmations and protection against double spending.</p>
+
+<h3 id="Using_a_third-party_plugin">Using a third-party plugin</h3>
+
+<p>You can use an existing <a href="../tags/Shopping_Cart_Interfaces/">shopping cart interface</a> from a 3rd party to automatically handle all Bitcoin payments on your website.  If you want to develop the system yourself, you can utilize the Bitcoin client&#39;s <a href="../API_tutorial_(JSON-RPC)/">JSON-RPC API</a> to automatically accept payments.</p>
+
+<p>Things to note if you build it yourself:</p>
+
+<ol>
+<li>When a customer orders something on your website it records:</li>
+<li><ul>
+<li>Bitcoin address that payment should be sent to</li>
+</ul>
+</li>
+<li><ul>
+<li>Order details (delivery address etc.)</li>
+</ul>
+</li>
+<li><ul>
+<li>Customer&#39;s refund address (optional - if you wish you can ask for this later, only in cases a refund is required)</li>
+</ul>
+</li>
+<li><ul>
+<li>Payment amount</li>
+</ul>
+</li>
+<li>When payment arrives, checks that they have paid the correct amount or not, and informs you</li>
+<li><ul>
+<li>You dispatch the goods to the customer and mark the order as fulfilled</li>
+</ul>
+</li>
+<li><ul>
+<li>If you cannot dispatch the goods you mark the order as denied and ask the customer for a refund address (unless you already have it from earlier) to send a refund.</li>
+</ul>
+</li>
+<li>Forwards the funds to bitcoin address of your choice</li>
+</ol>
+
+
+<h3 id="If_You_have_a_retail_business_and_do_not_have_internet_or_smart_phone">If You have a retail business and do not have internet or smart phone</h3>
+
+<p>You can still accept Bitcoin. <a href="https://easybitz.com/merchant">(1)</a> EasyBitz.com has a very simple way to accept bitcoin with just a print out and a phone that gets sms text messages.</p>
+
+<p><a href="https://easybitz.com/merchant"><img class="img" height="178" src="./400x400-Easybitz_bitcoin_pointofsale.png" title="EasyBitz ZeroClick System" width="400" /></a></p>
+
+<h3 id="Businesses_that_mail_invoices">Businesses that mail invoices</h3>
+
+<p>Does your business send out invoices to customers?  Adding one line may make a huge impact for the Bitcoin economy.  Perhaps you list it as a payment option just after Visa, MasterCard, and American Express, even if that means your customer must call or e-mail to make a payment. However it is possible to create automated invoices by using known payment systems supporting invoicing, and recurring invoice setup.</p>
+
+<h2 id="Common_Errors">Common Errors</h2>
+
+<p>It has been observed on occasion that a business funnels all its orders through the same Bitcoin address, and asks people to send some BTC, then send email describing the timing and the amount of the transaction to &#39;claim&#39; it. This is <strong>not</strong> secure, since anyone can see the transaction details using a tool such as <a href="../Block_Explorer/">Block Explorer</a>, and then try to claim someone else&#39;s transaction as theirs.</p>
+
+<p>Do not do this.  Give each customer a unique Bitcoin address.</p>
+
+<h2 id="Listing_your_business_on_the_Bitcoin_Trade_page">Listing your business on the Bitcoin Trade page</h2>
+
+<p>Anyone can add and update a listing on the <span class="createlink"><a href="/ikiwiki.cgi?from=Merchant_Howto&amp;do=create&amp;page=Trade" rel="nofollow">?</a>trade</span> page.  Just register if you haven&#39;t and add to the appropriate category.  If you&#39;ld like assistance, perhaps someone in the <a href="http://webchat.freenode.net/?channels=#bitcoin-marketing">#bitcoin-marketing</a> IRC channel would be willing to assist. If you have a brick and mortar business that accepts bitcoin you can add it to the bitcoin directories. <a href="https://easybitz.com">https://easybitz.com</a> <a href="http://coinmap.org">http://coinmap.org</a></p>
+
+<h2 id="Services">Services</h2>
+
+<ul>
+<li><a href="http://www.bitcoinpaygate.com"><img class="img" height="20" src="./20x20-Bitfavicon.png" width="20" /></a> <a href="http://www.bitcoinpaygate.com">Bitcoinpaygate</a> Bitcoin payment processing for the web &amp; in store payments</li>
+<li><a href="https://bitcoinpay.com">BitcoinPay</a> Merchant solution for Bitcoin specialized in Middle Europe (Germany, Poland, Slovakia, Czech republic)</li>
+<li><a href="https://www.BitKassa.nl">BitKassa</a> Merchant solution for accepting bitcoins, getting euro&#39;s. No fee. The Netherlands.</li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Merchant_Howto&amp;page=BitPay&amp;do=create" rel="nofollow">?</a>BitPay</span> Merchant solutions for Bitcoin</li>
+<li><a href="http://www.bitpagos.net">BitPagos</a> Payments Gateway for Latin America</li>
+<li><a href="https://coinbase.com/merchants">Coinbase</a> Offers payment buttons, pages, iframes, shopping cart integration, subscription/recurring billing, micro-transactions, and cash out to your local currency for 1%.</li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Merchant_Howto&amp;page=CoinCorner_blue_logo.png&amp;do=create" rel="nofollow">?</a>CoinCorner blue logo.png</span> <a href="https://www.coincorner.com/ForBusiness">CoinCorner</a> - Integrate CoinCorner Checkout in to your eCommerce business using a simple plugin or the API for Bitcoin Payments. Point of Sale solution also available that allows physical retailers to easily accept bitcoin and automatically convert that to fiat, removing the risk of holding bitcoins.</li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Coinkite.gif&amp;from=Merchant_Howto" rel="nofollow">?</a>Coinkite.gif</span> <a href="https://coinkite.com/faq/terminal">Coinkite</a> Secure wallet multisig, payment buttons, invoice pages, hardware POS terminals, and Debit-Cards.</li>
+<li><a href="https://cryptopay.me/">Cryptopay</a> Bitcoin merchant payment processing. UK-based, serving UK and EU clients.</li>
+<li><a href="http://www.dcpos.com">DC POS</a> A Bitcoin browser-based Point-of-Sale app.  It is hardware, OS, wallet, and browser agnostic.  0.5% transaction fee.</li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Merchant_Howto&amp;do=create&amp;page=Coinify" rel="nofollow">?</a>Coinify</span> Merchant solutions for Bitcoin</li>
+<li><a href="https://easybitz.com"><img class="img" height="20" src="./20x20-Easybitz.png" width="20" /></a> <a href="https://easybitz.com">EasyBitz</a> Bitcoin for Retail worldwide. ZeroClick requires only SMS. POS works on SmartPhones and Tablets. Live Transaction Global Map. No fees.</li>
+<li><a href="http://www.fraudlabspro.com/">FraudLabs Pro</a> Fraud screening service for online merchants. Support transactions using Bitcoin as payment method.</li>
+<li><a href="https://www.gocoin.com"><img class="img" height="20" src="./20x20-Gocoin-logo.png" width="20" /></a> <a href="../GoCoin/">GoCoin</a> International Payment Processing for Bitcoin</li>
+<li><a href="https://gourl.io">Gourl.io</a> Bitcoin Payment Gateway with ready to use php scripts - Pay-Per-Download, Pay-Per-Product, Pay-Per-Registration.</li>
+<li><a href="https://inpay.pl/?lang=en"><img class="img" height="16" src="../Inpay_favicon.png" width="16" /></a> <a href="https://inpay.pl/?lang=en">InPay.pl</a> InPay was created to enable entrepreneurs to accept Bitcoin in PLN, EUR and USD.</li>
+<li><a href="http://www.mycoinsolution.com"><img class="img" height="20" src="./20x20-MCS_200by200_logo-01.png" width="20" /></a><a href="http://www.mycoinsolution.com">My Coin Solution</a> - Bitcoin consulting services and solutions</li>
+<li><a href="https://www.spicepay.com/bitcoin-payment-gateway/"><img class="img" height="20" src="./20x20-Spicepay-bitcoin-payment-gateway-96x96.png" width="20" /></a> <a href="https://www.spicepay.com/bitcoin-payment-gateway/">SpicePay</a> Accept Bitcoin for payments at this bitcoin processor that targets Europe, Russia and Latin America.</li>
+<li><a href="https://xbterminal.com/">XBTerminal</a> Brick-and-mortar hardware POS terminals with payment processing integrations.</li>
+<li><a href="http://payful.io"><img class="img" height="20" src="./20x20-Payful.png" width="20" /></a> <a href="http://payful.io">Payful</a> Accept bitcoin - point of sale, shopping cart plugins and API.  Supports payment processing in US dollars, Euros and Canadian dollars.</li>
+<li><a href="http://paysius.com">Paysius</a> Allows merchants to easily and securely accept Bitcoin payments on their website</li>
+</ul>
+
+
+<h2 id="See_Also">See Also</h2>
+
+<ul>
+<li><a href="../In-store_Transactions/">In-store Transactions</a></li>
+<li><a href="../tags/Shopping_Cart_Interfaces/">Shopping Cart Interfaces</a></li>
+<li><a href="../tags/Payment_Processors/">Payment Processors</a></li>
+<li><a href="../Securing_online_services/">Securing online services</a></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Merchant_Howto&amp;do=create&amp;page=Bitcoin_Evolution" rel="nofollow">?</a>Bitcoin Evolution</span> handles sales tracking and order forms; requires Bitcoin client for actual payment</li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Bitcoin_API_Services&amp;do=create&amp;from=Merchant_Howto" rel="nofollow">?</a>Bitcoin API Services</span> an easy solution for securely accepting Bitcoins and updating BTC prices</li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Converter&amp;from=Merchant_Howto" rel="nofollow">?</a>Bitcoin Javascript Converter</span> displays a price in BTCs after converting from USDs.</li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=How_to_accept_Bitcoin%2C_for_small_businesses&amp;from=Merchant_Howto" rel="nofollow">?</a>How to accept Bitcoin, for small businesses</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=tags%2FMarketing&amp;do=create&amp;from=Merchant_Howto" rel="nofollow">?</a>Marketing</span></li>
+<li><a href="../URI_Scheme/">URI Scheme</a></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Merchant_Howto&amp;page=Promotional_graphics&amp;do=create" rel="nofollow">?</a>Promotional graphics</span>, buttons and logos</li>
+<li><a href="https://github.com/cryptoapi/Payment-Gateway">GoUrl Bitcoin Payment API</a> open source php payment api on Github.com</li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Lazy_API&amp;from=Merchant_Howto" rel="nofollow">?</a>Lazy API</span> The lazy (and possibly easiest?) way to accept bitcoin payments on your website</li>
+<li><a href="http://snowcron.com">Snowcron</a> Bitcoin Store Engine: Handles payments, sends your customers information they ordered (reg. codes, passwords...) No web programming required.</li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../In-store_Transactions/">In-store Transactions</a>
+
+<a href="../tags/Shopping_Cart_Interfaces/">tags/Shopping Cart Interfaces</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-06-07T10:45:50Z">Tue 07 Jun 2016 10:45:50 AM Europe</time>
+<!-- Created <time datetime="2011-01-25T14:14:31Z" pubdate="pubdate">Tue 25 Jan 2011 02:14:31 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

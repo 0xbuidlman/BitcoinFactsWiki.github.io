@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Satoshi Client Sockets and Messages</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Satoshi Client Sockets and Messages
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Satoshi_Client_Sockets_and_Messages&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<h2 id="Overview">Overview</h2>
+
+<p>The original bitcoin client uses a multithreaded approach to socket
+handling and messages processing. There is one thread that handles
+socket communication (ThreadSocketHandler) and one (ThreadMessageHandler)
+which handles pulling messages off sockets and calling the
+processing routines. Both of these threads are in <a href="https://github.com/bitcoin/bitcoin/blob/master/src/net.cpp">net.cpp</a>.
+The message processing routines are in <a href="https://github.com/bitcoin/bitcoin/blob/master/src/main.cpp">main.cpp</a>, however.</p>
+
+<h2 id="Socket_Thread">Socket Thread</h2>
+
+<p>The socket thread reads the sockets and places data into a CDataStream
+associated with each node called vRecv. The Satoshi client uses C++
+serialization operators &gt;&gt; and &lt;&lt; to read and write to a CDataStream
+and then it uses generic routines to move the data between the streams
+and sockets.</p>
+
+<h2 id="Message_Thread">Message Thread</h2>
+
+<p>The message thread reads and processes all messages from each node in
+sequence, and then it sends messages to each node that should be sent
+messages. That is all it does.</p>
+
+<p>Specifically, ThreadMessageHandler2 calls ProcessMessages(), which is
+located in <a href="https://github.com/bitcoin/bitcoin/blob/master/src/main.cpp">main.cpp</a>, to pull messages off each node&#39;s socket and
+process them. Then it calls SendMessages(), which is also located
+in <a href="https://github.com/bitcoin/bitcoin/blob/master/src/main.cpp">main.cpp</a> to create and send any messages appropriate for each node.</p>
+
+<p>ProcessMessages() attempts to find a message start signature in the
+vRecv stream. If it finds a message start, it deletes everything
+prior to the start. Then it reads the header, extracts the message
+type, and calls ProcessMessage on the message.</p>
+
+<p>SendMessages() actually creates and sends messages; it does not
+just send preexisting queued messages. It goes through various
+maps looking for work to do and produces a message and calls
+PushMessage method of CNode to send the message. PushMessage
+queues outbound data in the vSend data stream. (See PushMessage() in
+<a href="https://github.com/bitcoin/bitcoin/blob/master/src/net.cpp">net.cpp</a>). The socket thread handler then pulls data off the
+vSend data stream and calls send on the socket to send the data.</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Developer/" rel="tag">Developer</a>
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Bitcoind/">Bitcoind</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2013-01-18T05:05:33Z">Fri 18 Jan 2013 05:05:33 AM Europe</time>
+<!-- Created <time datetime="2011-09-17T21:38:16Z" pubdate="pubdate">Sat 17 Sep 2011 09:38:16 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

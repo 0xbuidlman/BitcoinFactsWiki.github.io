@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Colored Coins</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Colored Coins
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Colored_Coins" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>The term &quot;Colored Coins&quot; loosely describes a class of methods for representing and managing <strong>real world assets</strong> on top of the <a href="../Bitcoin/#The_block_chain">Bitcoin Blockchain</a>.</p>
+
+<p>While originally designed to be a currency, <a href="../Bitcoin/">Bitcoin&#39;s</a> <a href="../Script/">scripting language</a> allows to store small amounts of metadata on the blockchain, which can be used to <strong>represent</strong> asset manipulation instructions. For example, we can encode in a Bitcoin transaction that 100 units of a new asset were issued and are now credited to a given <a href="../Address/">bitcoin address</a>. A <em>colored coins wallet</em> can create a Bitcoin transaction that encodes sending 50 units of an asset from one address to a new address, and so on.</p>
+
+<p>Real world <strong>Value</strong> is attached to those units (or &quot;digital tokens&quot;) by the asset issuer&#39;s promise to <strong>redeem</strong> them for some goods or services. For example, a 100 seat movie theater can issue 100 units of a &quot;watch movie X at time Y&quot; asset and promise to redeem each unit for a right to enter a certain screening of a movie.</p>
+
+<p>The advantage of using Bitcoin&#39;s blockchain as the backbone leverages Bitcoin&#39;s strengths, such as immutability, non-counterfeitability, ease of transfer, robustness and transparency thus allowing asset manipulation with unprecedented security and ease.</p>
+
+<p>In principle one can represent asset manipulation data on other blockchains (e.g. <a href="https://litecoin.org">Litecoin</a>). The term &quot;Colored Coins&quot; is usually associated with implementations that</p>
+
+<ul>
+<li>Use the <strong>Bitcoin</strong> blockchain (as opposed to e.g. <a href="http://nxt.org/">NXT</a>)</li>
+<li>Do not issue an auxiliary coin (e.g. <a href="https://en.wikipedia.org/wiki/Mastercoin">Mastercoin&#39;s MSC</a> or <a href="http://counterparty.io/">counterpary&#39;s XCP</a>)</li>
+</ul>
+
+
+<p>Note that the term <em>Colored Coins</em> stuck from older implementations such as the <a href="https://github.com/chromaway/ngcccbase/wiki/EPOBC_simple">EPOBC</a> protocol where an asset was actually associated with <a href="../Satoshi_(unit)/">satoshis</a> (thus &quot;coloring&quot; them). Other implementations use  <a href="https://github.com/Colored-Coins/Colored-Coins-Protocol-Specification/wiki/Coloring%20Scheme">other</a> ways to encode assets on the blockchain, mostly using the <a href="http://bitcoin.stackexchange.com/questions/29554/explanation-of-what-an-op-return-transaction-looks-like">OP_RETURN</a> scripting code, so it is <a href="https://github.com/Colored-Coins/Colored-Coins-Protocol-Specification/wiki/Faq#coloring-satoshis">no longer the only case</a> that individual satoshis are &quot;colored&quot;.</p>
+
+<h2 id="Use_Cases">Use Cases</h2>
+
+<p>There are many interesting applications to colored coin.</p>
+
+<h3 id="Issuing_shares">Issuing shares</h3>
+
+<p>A company can issue shares using colored coins, taking advantage of the Bitcoin infrastructure for activities such as</p>
+
+<ul>
+<li>Trading</li>
+<li>Voting</li>
+<li>Paying dividends</li>
+</ul>
+
+
+<h3 id="Smart_property">Smart property</h3>
+
+<p>Suppose there is a car rental company. The company can release one colored coin to represent each car, and then configure the car to turn on only if it receives a message signed with the private key that currently owns the colored coin. It can then release a smartphone app that anyone can use to broadcast a message signed with their private key, and put up the colored coins on a trading platform. Anyone will be able to then purchase a colored coin, use the car for whatever period of time using the smartphone app as a &quot;car key&quot;, and sell the coin again at their leisure.</p>
+
+<h3 id="Coupon">Coupon</h3>
+
+<p>A company may wish to issue coupons, such as Air Miles rewards points</p>
+
+<h3 id="Community_Money">Community Money</h3>
+
+<p>A community. e.g. a town, can issue it&#39;s own Currency.</p>
+
+<h3 id="Digital_collectibles">Digital collectibles</h3>
+
+<p>Decentralized management of digital assets. Just like art collectors buy and sell original copies of famous paintings for millions of dollars today, colored coins allow us to do the same with purely digital objects, such as songs, movies, e-books and software, as well, by storing the current ownership of the work as a colored coin on the blockchain.</p>
+
+<h3 id="Access_and_Subscription">Access and Subscription</h3>
+
+<p>Using colored coins to trade and manage access and subscription services. For example, a museum, a subway or an online service like Netflix may issue passes as colored coins and release a smartphone app that can be used to make a signature proving ownership of a pass in person, allowing these passes to be simultaneously transferable, fully digital and securely uncopyable.</p>
+
+<h2 id="Bitcoin_2.0">Bitcoin 2.0</h2>
+
+<h3 id="Using_the_power_of_Bitcoin_Blockchain_technology_for_new_use-cases_other_than_currency">Using the power of Bitcoin Blockchain technology for new use-cases other than currency</h3>
+
+<ul>
+<li>The next generation of bitcoin developments</li>
+<li>Utilizing the power of Bitcoin Blockchain for new use-cases other than currency and extending its flexibility</li>
+<li>Wider range of digital transactions</li>
+<li>A complete multi asset economy</li>
+</ul>
+
+
+<h2 id="Open_Assets_Block_Explorer">Open Assets Block Explorer</h2>
+
+<p><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Coinprism&amp;from=Colored_Coins" rel="nofollow">?</a>Coinprism</span> offers a colored coin <span class="createlink"><a href="/ikiwiki.cgi?from=Colored_Coins&amp;do=create&amp;page=Coinprism.info" rel="nofollow">?</a>Bitcoin blockchain</span> explorer.</p>
+
+<h2 id="Colu.27s_ColoredCoins.org_Block_Explorer">Colu&#39;s ColoredCoins.org Block Explorer</h2>
+
+<p><a href="http://coloredcoins.org/">ColoredCoins.org</a> offers a public <a href="http://coloredcoins.org/#/">search engine</a> for digital assets, all open source based on the Colu Coloredcoins implementation</p>
+
+<h2 id="The_EPOBC_protocol">The EPOBC protocol</h2>
+
+<p><a href="https://github.com/chromaway/ngcccbase/wiki/EPOBC_simple">EPOBC</a> is the <a href="http://chromaway.com/history/">first Coloredcoins implementation</a> which was created By <a href="http://www.ChromaWay.com">ChromaWay</a>. EPOBC  doesn&#39;t use op_return to store metadata on the blockchain</p>
+
+<h3 id="Types_of_transactions">Types of transactions</h3>
+
+<p>EPOBC introduces two types of transactions:
+&bull; genesis transactions create new colored coins (of a new color); they are used for issuance
+&bull; transfer transactions transfers existing colored coins
+If colored coins are used as inputs in a transaction which isn&#39;t a transfer transaction, their value is lost, it is not transferred to outputs of this or other transaction. Also the value of colored coins might be lost in a malformed transaction.</p>
+
+<h3 id="Transaction_tags">Transaction tags</h3>
+
+<p>EPOBC-encoded colored coin transactions are marked in a special way to distinguish them from normal Bitcoin transactions. This is done by putting a certain tag value into a nSequence field of transaction&#39;s first input. nSequence is always present, but is otherwise unused, which means that this way of marking has zero overhead (unlike OP_RETURN-based which increases the size of the transaction).
+nSequence is a 32-bit integer, and 6 of its least-significant bits encode the tag. Transfer transactions and genesis transactions have different tags:
+&bull; bit sequence 110011 is a tag of a transfer transaction. Its hexadecimal value is 0x33.
+&bull; bit sequence 100101 is a tag of a genesis transaction. Its hexadecimal value is 0x25.
+Code which distinguishes transfer and genesis transaction:</p>
+
+<ol>
+<li><p>get nSequence of the first input
+tag_nSequence = transaction.inputs<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=0&amp;from=Colored_Coins" rel="nofollow">?</a>0</span>.nSequence</p></li>
+<li><p>extract its lowest 6 bits
+tag = tag_nSequence &amp; 0x3F
+if tag == 0x25:
+ transaction_type = &#39;genesis&#39;
+elif tag == 0x33:
+ transaction_type = &#39;transfer&#39;
+else:
+ transaction_type = &#39;none&#39;
+Further treatment depends on transaction type. However, both transfer and genesis transactions have padding.
+EPOBC is the first Coloredcoins protocol to have support for thin SPV clients.</p></li>
+</ol>
+
+
+<h3 id="Current_projects.2Fcompanies_which_are_leveraging_EPOBC">Current projects/companies which are leveraging EPOBC</h3>
+
+<ul>
+<li><a href="http://www.chromawallet.com">ChromaWallet</a> Desktop Coloredcoins wallet</li>
+<li><a href="http://www.cuber.ee">Cuber</a> Mobile and Android wallets backed by LHV bank in Estonia</li>
+<li><a href="http://lhv.ee">LHV</a> Issued 100 000 EUR worth of cryptographically protected claims against bank into bitcoin blockchain</li>
+<li><a href="http://Funderbeam.com">Funderbeam</a> <a href="http://www.ibtimes.co.uk/bitcoin-innovators-launch-syndicated-startup-investment-market-using-coloured-coins-1516854">innovators launch syndicated startup investment market</a></li>
+<li><a href="https://github.com/chromaway/coloredcoinjs-lib">JavaScript open-source Colored Coins library</a></li>
+<li><a href="https://github.com/chromaway/chromawallet-proto">a prototype open-source Coloredcoins webwallet</a></li>
+</ul>
+
+
+<h2 id="Open_Assets">Open Assets</h2>
+
+<p><a href="https://github.com/OpenAssets/open-assets-protocol/blob/master/specification.mediawiki">Open Assets</a> is a Colored Coin implementation based on the <a href="../Script/#Provably_Unspendable.2FPrunable_Outputs">OP RETURN</a> operator. Metadata is linked from the Blockchain and stored on the web.</p>
+
+<h3 id="Example_of_an_Open_Assets_OP_RETURN_marker_output">Example of an Open Assets OP_RETURN marker output</h3>
+
+<p>This example illustrates how a marker output is decoded. Assuming the marker output is output 1:</p>
+
+<pre><code>Data in the marker output      Description
+-----------------------------  -------------------------------------------------------------------
+0x6a                           The OP_RETURN opcode.
+0x10                           The marker output is 16 bytes long.
+0x4f 0x41                      The Open Assets Protocol tag.
+0x01 0x00                      Version 1 of the protocol.
+0x03                           There are 3 items in the asset quantity list.
+0xac 0x02 0x00 0xe5 0x8e 0x26  The asset quantity list:
+- &#39;0xac 0x02&#39; means output 0 has an asset quantity of 300.
+- Output 1 is skipped and has an asset quantity of 0
+because it is the marker output.
+- &#39;0x00&#39; means output 2 has an asset quantity of 0.
+- &#39;0xe5 0x8e 0x26&#39; means output 3 has an asset quantity of 624,485.
+- Outputs after output 3 (if any) have an asset quantity of 0.
+0x04                           The metadata is 4 bytes long.
+0x12 0x34 0x56 0x78            Some arbitrary metadata.
+</code></pre>
+
+<h3 id="Current_projects_leveraging_Open_Assets">Current projects leveraging Open Assets</h3>
+
+<ul>
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Coinprism_Favicon.png&amp;from=Colored_Coins" rel="nofollow">?</a>Coinprism Favicon.png</span> <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Coinprism&amp;from=Colored_Coins" rel="nofollow">?</a>Coinprism</span> colored coins web wallet</li>
+<li><a href="https://play.google.com/store/apps/details?id=com.coinprism.wallet">Coinprism</a> colored coins Android app</li>
+<li><a href="https://github.com/OpenAssets/openassets">Reference implementation</a> on GitHub</li>
+<li><a href="https://github.com/OpenAssets/colorcore">Colorcore</a>: Open source wallet for Open Assets</li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Coinprism.info&amp;from=Colored_Coins" rel="nofollow">?</a>Coinprism.info</span> colored coins blockchain explorer</li>
+<li><a href="https://www.coinprism.info/assets">Coinprism Assets directory</a></li>
+<li><a href="https://github.com/OpenAssets/openassets">openassets Python library</a></li>
+<li><a href="https://github.com/NicolasDorier/NBitcoin">.NET Bitcoin library NBitcoin</a></li>
+</ul>
+
+
+<h2 id="CoinSpark">CoinSpark</h2>
+
+<p><a href="http://coinspark.org/">CoinSpark</a> is a Colored Coin implementation that uses a lightweight (SPV) desktop wallet for Windows, Mac or Linux. In CoinSpark, contracts are hosted on the issuer&#39;s website and notarized on the blockchain. Like Open Assets, it uses <a href="../Script/#Provably_Unspendable.2FPrunable_Outputs">OP RETURNs</a> to store metadata, with a highly efficient encoding scheme that allows multiple transfers of different assets to be encoded in a single transaction. CoinSpark <a href="http://coinspark.org/developers/source-libraries/">software libraries</a> are available for C/C++, Java, Javascript, PHP and Python, and there&#39;s a detailed <a href="http://coinspark.org/developers/">developers guide</a> with examples.</p>
+
+<h2 id="Colu_Colored_Coins_Implementation">Colu Colored Coins Implementation</h2>
+
+<p>A new Colored Coins implementation was developed by <a href="http://colu.co/">Colu</a> and fully <a href="https://github.com/Colored-Coins/">open sourced</a> on June 2015. The new implementation is based on attaching data to transactions using the OP_RETURN field. Colu&#39;s <a href="https://github.com/Colored-Coins/Colored-Coins-Protocol-Specification/wiki/Coloring-Scheme/">coloring scheme</a> uses high data compression, can associate unlimited amounts of metadata with bitcoin transactions through the use of publicly available torrent files and supports smart contract functionalities.</p>
+
+<h3 id="Main_Features">Main Features</h3>
+
+<h4 id="Smarts_Contracts_capabilities">Smarts Contracts capabilities</h4>
+
+<p>A <a href="https://github.com/Colored-Coins/Colored-Coins-Protocol-Specification/wiki/Rules/">Rule Engine</a> for issuing digital assets with various capabilities: expiration dates, restricted access, additional fees (supporting <a href="https://en.wikipedia.org/wiki/Affiliate_marketing">affiliate marketing</a>), limitations on further issuance, etc.</p>
+
+<h4 id="Using_Torrents_for_Metadata_storage">Using Torrents for Metadata storage</h4>
+
+<p><a href="https://github.com/Colored-Coins/Colored-Coins-Protocol-Specification/wiki/Metadata/">Metadata</a> is stored in publicly available <a href="https://en.wikipedia.org/wiki/BitTorrent">torrent files</a>, only a reference is stored directly on the blockchain. This allows for</p>
+
+<ul>
+<li><strong>Maximal Decentralization</strong></li>
+<li><strong>Unlimited Size</strong> - Since metadata is not stored directly on the blockchain it&#39;s size is unlimited and can contain information like: track record, history, description, validity or any information the issuer finds relevant.</li>
+</ul>
+
+
+<h4 id="Flexible_metadata_handling">Flexible metadata handling</h4>
+
+<p>Adding <a href="https://github.com/Colored-Coins/Colored-Coins-Protocol-Specification/wiki/Benefits#metadata-on-every-colored-transaction">metadata</a> on every transaction, supporting the addition of relevant metadata that was not yet available during issuance (e.g. mentioning a specific seat number on a movie theater token).</p>
+
+<h4 id="Coherent_Issuance_Policy">Coherent Issuance Policy</h4>
+
+<p>Enforcing a coherent issuance policy by supporting two types of assets, <a href="https://github.com/Colored-Coins/Colored-Coins-Protocol-Specification/wiki/Benefits/">locked and unlocked</a>.</p>
+
+<ul>
+<li><a href="https://github.com/Colored-Coins/Colored-Coins-Protocol-Specification/wiki/Benefits#locked-assets">Locked Assets</a> - A fixed amount is defined during issuance. No one can issue more units of the asset, not even the issuer.</li>
+<li><a href="https://github.com/Colored-Coins/Colored-Coins-Protocol-Specification/wiki/Benefits#unlocked-assets">Unlocked Assets</a> - The issuer can keep issuing more units.</li>
+</ul>
+
+
+<h4 id="Support_for_thin_.28SPV.29_wallets">Support for thin (SPV) wallets</h4>
+
+<p>The new colu implementation supports <a href="https://github.com/Colored-Coins/Colored-Coins-Protocol-Specification/wiki/Benefits#support-for-thin-wallets">SPV clients</a> - nodes that can <strong><em>verify colored transactions</em></strong> without running a <a href="https://bitcoin.org/en/full-node#what-is-a-full-node">full Bitcoin node</a>.</p>
+
+<h4 id="Efficiency_and_Low_Cost">Efficiency and Low Cost</h4>
+
+<ul>
+<li><em>Data compression</em> - high level of data compression using a <a href="https://github.com/Colored-Coins/Colored-Coins-Protocol-Specification/wiki/Number%20Encoding"> precision encoding scheme</a> for encoding asset issuance and transfer amounts.</li>
+<li>Sending <a href="https://github.com/Colored-Coins/Colored-Coins-Protocol-Specification/wiki/Coloring-Scheme#issuance-transaction-encoding/">Multiple Assets in Single Transaction</a></li>
+<li><strong>Minimal Blockchain Bloat</strong></li>
+</ul>
+
+
+<h4 id="Support_for_Zero_Confirmations">Support for Zero Confirmations</h4>
+
+<p>The new architecture supports asset <a href="https://github.com/Colored-Coins/Colored-Coins-Protocol-Specification/wiki/Benefits#support-for-zero-confirmation-transactions">issuance and transfer in zero confirmations</a> (even  within the same transaction) - the Asset ID references only the first UTXO in the transaction and makes no reference to a block.</p>
+
+<h3 id="Resources">Resources</h3>
+
+<ul>
+<li><a href="https://colu.co"><img class="img" height="16" src="./16x16-Colu-favicon.png" width="16" /></a> <a href="https://colu.co">Colu</a></li>
+<li><a href="../Ccorgpresentation.png"><img class="img" height="9" src="./16x16-Ccorgpresentation.png" title="https://docs.google.com/presentation/d/1geJOeTkIvrIsZMBemJl-Iw5eYalG4w0ftIxsEVRp6lc/edit#slide=id.g90c567147_0_23" width="16" /></a> <a href="https://docs.google.com/presentation/d/1geJOeTkIvrIsZMBemJl-Iw5eYalG4w0ftIxsEVRp6lc/edit#slide=id.g90c567147_0_23">A presentation about Colored Coins</a></li>
+<li><a href="../Ccorg.png"><img class="img" height="13" src="./16x16-Ccorg.png" title="http://coloredcoins.org" width="16" /></a> <a href="http://coloredcoins.org">Colu&#39;s ColoredCoins.org</a></li>
+<li><a href="../Ccorg.png"><img class="img" height="13" src="./16x16-Ccorg.png" title="http://coloredcoins.org/explorer" width="16" /></a> <a href="http://coloredcoins.org/explorer">Colu&#39;s ColoredCoins Block Explorer</a></li>
+<li><a href="../Ccorg.png"><img class="img" height="13" src="./16x16-Ccorg.png" title="http://coloredcoins.org/documentation" width="16" /></a> <a href="http://coloredcoins.org/documentation">Colu&#39;s ColoredCoins API</a></li>
+<li><a href="../Github.png"><img class="img" height="16" src="./16x16-Github.png" title="http://coloredcoins.org/documentation" width="16" /></a> <a href="https://github.com/Colored-Coins/Colored-Coins-Protocol-Specification/">Colu&#39;s ColoredCoins Protocol Specification</a></li>
+<li><a href="../Github.png"><img class="img" height="16" src="./16x16-Github.png" title="http://coloredcoins.org/documentation" width="16" /></a> <a href="https://github.com/Colored-Coins/">Colu&#39;s Implementation open source code</a></li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Bitcoin_2.0/" rel="tag">Bitcoin 2.0</a>
+
+<a href="../tags/Blockchain_Technology/" rel="tag">Blockchain Technology</a>
+
+<a href="../tags/Digital_currencies/" rel="tag">Digital Currencies</a>
+
+<a href="../tags/FinTech/" rel="tag">FinTech</a>
+
+<a href="../tags/Financial/" rel="tag">Financial</a>
+
+</nav>
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-06-07T10:45:50Z">Tue 07 Jun 2016 10:45:50 AM Europe</time>
+<!-- Created <time datetime="2014-08-03T21:20:13Z" pubdate="pubdate">Sun 03 Aug 2014 09:20:13 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

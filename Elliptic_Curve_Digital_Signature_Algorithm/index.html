@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Elliptic Curve Digital Signature Algorithm</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Elliptic Curve Digital Signature Algorithm
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Elliptic_Curve_Digital_Signature_Algorithm&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p><strong>Elliptic Curve Digital Signature Algorithm</strong> or <strong>ECDSA</strong> is a cryptographic algorithm used by Bitcoin to ensure that funds can only be spent by their rightful owners.</p>
+
+<p>A few concepts related to ECDSA:</p>
+
+<ul>
+<li><a href="../Private_key/">private key</a>: A secret number, known only to the person that generated it.  A private key is essentially a randomly generated number.  In Bitcoin, someone with the private key that corresponds to funds on the <span class="createlink"><a href="/ikiwiki.cgi?page=public_ledger&amp;do=create&amp;from=Elliptic_Curve_Digital_Signature_Algorithm" rel="nofollow">?</a>public ledger</span> can spend the funds.  In Bitcoin, a private key is a single unsigned 256 bit integer (32 bytes).</li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=public_key&amp;do=create&amp;from=Elliptic_Curve_Digital_Signature_Algorithm" rel="nofollow">?</a>public key</span>: A number that corresponds to a private key, but does not need to be kept secret.  A public key can be calculated from a private key, but not vice versa.  A public key can be used to determine if a signature is genuine (in other words, produced with the proper key) without requiring the private key to be divulged.  In Bitcoin, public key are either compressed or uncompressed. Compressed public keys are 33 bytes, consisting of a prefix either 0x02 or 0x03, and a 256-bit integer called <em>x</em>. The older uncompressed keys are 65 bytes, consisting of constant prefix (0x04), followed by two 256-bit integers called <em>x</em> and <em>y</em> (2 * 32 bytes). The prefix of a compressed key allows for the <em>y</em> value to be derived from the <em>x</em> value.</li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Elliptic_Curve_Digital_Signature_Algorithm&amp;page=signature&amp;do=create" rel="nofollow">?</a>signature</span>: A number that proves that a signing operation took place.  A signature is mathematically generated from a <a href="../Hash/">hash</a> of something to be signed, plus a private key.  The signature itself is two numbers known as <em>r</em> and <em>s</em>.  With the public key, a mathematical algorithm can be used on the signature to determine that it was originally produced from the hash and the private key, without needing to know the private key. Signatures are either 73, 72, or 71 bytes long, with probabilities approximately 25%, 50% and 25% respectively, although sizes even smaller than that are possible with exponentially decreasing probability.</li>
+</ul>
+
+
+<h2 id="External_Links">External Links</h2>
+
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Elliptic_Curve_DSA">Elliptic Curve Digital Signature Algorithm - Wikipedia article</a></li>
+</ul>
+
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../Original_Bitcoin_client/API_calls_list/">Original Bitcoin client/API calls list</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2015-02-10T14:56:30Z">Tue 10 Feb 2015 02:56:30 PM Europe</time>
+<!-- Created <time datetime="2011-11-29T17:12:19Z" pubdate="pubdate">Tue 29 Nov 2011 05:12:19 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

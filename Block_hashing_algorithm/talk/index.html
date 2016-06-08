@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>talk</title>
+
+<link rel="stylesheet" href="../../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../../">bitcoin</a>/ 
+
+<a href="../">Block hashing algorithm</a>/ 
+
+</span>
+<span class="title">
+talk
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>What is licensing/copyright information on that code? Public domain?</p>
+
+<p>&quot;Because transactions aren&#39;t hashed directly, hashing a block with 1 transaction takes exactly the same amount of effort as hashing a block with 10,000 transactions.&quot;</p>
+
+<p>Doesn&#39;t it take more effort to calculate the Merkle root for 10,000 transactions than it does than for 1 transaction? Of course, you only have to do this once per block, but it&#39;s misleading. It seems you&#39;re using &quot;hashing a block&quot; to specifically mean the (iterative) hash calculation, not the process of block generation. I recommend rewording to :</p>
+
+<p>&quot;These are hashed only indirectly through the Merkle root. Because transactions aren&#39;t hashed directly, hashing a block with 1 transaction takes exactly the same amount of effort as hashing a block with 10,000 transactions, once the Merkle root of those transactions is calculated.&quot; <a>Therealplato</a> 23:41, 28 January 2012 (GMT)</p>
+
+<p>I added PHP code this code will help beginners with what is going on. The code is simple and well documented anyone regardless of PHP knowledge should be able to read this and know how to hash Bitcoins. <a>RomanKnight</a> 10:23, 11 January 2014 (EST)</p>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../">Block hashing algorithm</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2014-08-15T00:30:37Z">Fri 15 Aug 2014 12:30:37 AM Europe</time>
+<!-- Created <time datetime="2011-06-09T20:14:54Z" pubdate="pubdate">Thu 09 Jun 2011 08:14:54 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>Proper Money Handling (JSON-RPC)</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+Proper Money Handling (JSON-RPC)
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><a href="./talk/">Talk</a></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<h2 id="Overview">Overview</h2>
+
+<p>The original bitcoin client stores all bitcoin values as 64-bit integers, with 1 BTC stored as 100,000,000 (one-hundred-million of the smallest possible bitcoin unit).  Values are expressed as double-precision Numbers in the JSON API, with 1 BTC expressed as 1.00000000</p>
+
+<p>If you are writing software that uses the JSON-RPC interface you need to be aware of possible floating-point conversion issues.  You, or the JSON library you are using, should convert amounts to either a fixed-point Decimal representation (with 8 digits after the decimal point) or ideally a 64-bit integer representation. In either case, rounding values is required.</p>
+
+<p>Improper value handling can lead to embarrassing errors; for example, if you truncate instead of doing proper rounding and your software will display the value &quot;0.1 BTC&quot; as &quot;0.09999999 BTC&quot; (or, worse, &quot;0.09 BTC&quot;).</p>
+
+<p>The original bitcoin client does proper, full-precision rounding for all values passed to it via the RPC interface.  So, for example, if the value 0.1 is converted to the value &quot;0.099999999999&quot; by your JSON-RPC library, that value will be rounded to the nearest 0.00000001 bitcoin and will be treated as exactly 0.10 BTC.</p>
+
+<p>The rest of this page gives sample code for various JSON libraries and programming languages.</p>
+
+<h2 id="BASH">BASH</h2>
+
+<div class="highlight-bash"><pre class="hl">    <span class="hl kwa">function</span> JSONtoAmount<span class="hl opt">() {</span>
+    <span class="hl kwb">printf</span> <span class="hl str">&#39;%.8f&#39;</span> <span class="hl str">&quot;</span><span class="hl ipl">$1</span><span class="hl str">&quot;</span>  <span class="hl kwc">tr</span> <span class="hl opt">-</span>d <span class="hl str">&#39;.&#39;</span>
+    <span class="hl opt">}</span>
+</pre></div>
+
+
+<h2 id="C.2FC.2B.2B">C/C++</h2>
+
+<p>C/C++ JSON libraries return the JavaScript Number type as type &#39;double&#39;.  To convert, without loss of precision, from a double to a 64-bit integer multiply by 100,000,000 and round to the nearest integer:</p>
+
+<div class="highlight-cpp"><pre class="hl"> <span class="hl kwb">int64_t</span> <span class="hl kwd">JSONtoAmount</span><span class="hl opt">(</span><span class="hl kwb">double</span> value<span class="hl opt">) {</span>
+    <span class="hl kwa">return</span> <span class="hl opt">(</span><span class="hl kwb">int64_t</span><span class="hl opt">)(</span>value <span class="hl opt">*</span> <span class="hl num">1</span>e8 <span class="hl opt">+ (</span>value <span class="hl opt">&lt;</span> <span class="hl num">0.0</span> ? <span class="hl opt">-</span><span class="hl num">.5</span> <span class="hl opt">:</span> <span class="hl num">.5</span><span class="hl opt">));</span>
+    <span class="hl opt">}</span>
+</pre></div>
+
+
+<p>To convert to a JSON value divide by 100,000,000.0, and make sure your JSON implementation outputs doubles with 8 or more digits after the decimal point:</p>
+
+<div class="highlight-cpp"><pre class="hl"> <span class="hl kwb">double</span> forJSON <span class="hl opt">= (</span><span class="hl kwb">double</span><span class="hl opt">)</span>amount <span class="hl opt">/</span> <span class="hl num">1</span>e8<span class="hl opt">;</span>
+</pre></div>
+
+
+<h2 id="ECMAScript">ECMAScript</h2>
+
+<div class="highlight-java"><pre class="hl">    function <span class="hl kwd">JSONtoAmount</span><span class="hl opt">(</span>value<span class="hl opt">) {</span>
+    <span class="hl kwa">return</span> Math<span class="hl opt">.</span><span class="hl kwd">round</span><span class="hl opt">(</span><span class="hl num">1</span>e8 <span class="hl opt">*</span> value<span class="hl opt">);</span>
+    <span class="hl opt">}</span>
+</pre></div>
+
+
+<h2 id="Java">Java</h2>
+
+<div class="highlight-java"><pre class="hl">    <span class="hl kwa">public</span> <span class="hl kwb">long</span> <span class="hl kwd">JSONtoAmount</span><span class="hl opt">(</span><span class="hl kwb">double</span> value<span class="hl opt">){</span>
+    <span class="hl kwa">return</span> <span class="hl opt">(</span><span class="hl kwb">long</span><span class="hl opt">)(</span>value<span class="hl opt">*</span><span class="hl num">100000000L</span><span class="hl opt">);</span>
+    <span class="hl opt">}</span>
+</pre></div>
+
+
+<h2 id="Perl">Perl</h2>
+
+<div class="highlight-perl"><pre class="hl">    <span class="hl kwa">sub</span> JSONtoAmount <span class="hl opt">{</span>
+    <span class="hl kwa">return</span> <span class="hl kwc">sprintf</span> <span class="hl str">&#39;%.0f&#39;</span><span class="hl opt">,</span> <span class="hl num">1</span>e8 <span class="hl opt">*</span> <span class="hl kwc">shift</span><span class="hl opt">;</span>
+    <span class="hl opt">}</span>
+</pre></div>
+
+
+<h2 id="Go">Go</h2>
+
+<p>The <a href="https://github.com/btcsuite/btcd/btcjson">btcjson package</a> provides a more complete version of this function (error checking and so on), but for illustrative purposes, this is useful.</p>
+
+<div class="highlight-go"><pre class="hl">  <span class="hl kwa">func</span> <span class="hl kwd">JSONToAmount</span><span class="hl opt">(</span>jsonAmount <span class="hl kwb">float64</span><span class="hl opt">) (</span><span class="hl kwb">int64</span><span class="hl opt">) {</span>
+    <span class="hl kwa">var</span> amount <span class="hl kwb">int64</span>
+    tempVal <span class="hl opt">:=</span> <span class="hl num">1</span>e8 <span class="hl opt">*</span> jsonAmount
+    <span class="hl kwa">if</span> tempVal <span class="hl opt">&lt;</span> <span class="hl num">0</span> <span class="hl opt">{</span>
+    tempVal <span class="hl opt">=</span> tempVal <span class="hl opt">-</span> <span class="hl num">0.5</span>
+    <span class="hl opt">}</span>
+    <span class="hl kwa">if</span> tempVal <span class="hl opt">&gt;</span> <span class="hl num">0</span> <span class="hl opt">{</span>
+    tempVal <span class="hl opt">=</span> tempVal <span class="hl opt">+</span> <span class="hl num">0.5</span>
+    <span class="hl opt">}</span>
+    <span class="hl slc">// Then just rely on the integer truncating</span>
+    amount <span class="hl opt">=</span> <span class="hl kwb">int64</span><span class="hl opt">(</span>tempVal<span class="hl opt">)</span>
+    <span class="hl kwa">return</span> amount
+    <span class="hl opt">}</span>
+</pre></div>
+
+
+<h2 id="PHP">PHP</h2>
+
+<div class="highlight-php"><pre class="hl"> <span class="hl kwa">function</span> <span class="hl kwd">JSONtoAmount</span><span class="hl opt">(</span><span class="hl kwc">$value</span><span class="hl opt">) {</span>
+    <span class="hl kwa">return</span> <span class="hl kwd">round</span><span class="hl opt">(</span><span class="hl kwc">$value</span> <span class="hl opt">*</span> <span class="hl num">1</span>e8<span class="hl opt">);</span>
+    <span class="hl opt">}</span>
+</pre></div>
+
+
+<h2 id="Python">Python</h2>
+
+<div class="highlight-python"><pre class="hl">  <span class="hl kwa">def</span> <span class="hl kwd">JSONtoAmount</span><span class="hl opt">(</span>value<span class="hl opt">):</span>
+    <span class="hl kwa">return</span> <span class="hl kwb">long</span><span class="hl opt">(</span><span class="hl kwb">round</span><span class="hl opt">(</span>value <span class="hl opt">*</span> <span class="hl num">1</span>e8<span class="hl opt">))</span>
+    <span class="hl kwa">def</span> <span class="hl kwd">AmountToJSON</span><span class="hl opt">(</span>amount<span class="hl opt">):</span>
+    <span class="hl kwa">return</span> <span class="hl kwb">float</span><span class="hl opt">(</span>amount <span class="hl opt">/</span> <span class="hl num">1</span>e8<span class="hl opt">)</span>
+</pre></div>
+
+
+<h2 id="Common_Lisp">Common Lisp</h2>
+
+<div class="highlight-lisp"><pre class="hl">    <span class="hl opt">(</span><span class="hl kwa">defun</span> json-to-amount <span class="hl opt">(</span><span class="hl kwa">n</span><span class="hl opt">)</span>
+    <span class="hl opt">(</span><span class="hl kwa">coerce</span> <span class="hl opt">(</span><span class="hl kwa">round</span> <span class="hl opt">(*</span> n <span class="hl num">1</span>e8<span class="hl opt">)) &#39;</span>integer<span class="hl opt">))</span>
+</pre></div>
+
+
+<p><strong>CAUTION</strong>: The CL-JSON library parses numbers as <em>single</em> precision floating-point by
+default. The default parsing behavior can be overridden as follows:</p>
+
+<pre><code>(set-custom-vars :real (lambda (n)
+(json::parse-number (concatenate &#39;string n &quot;d0&quot;))))
+</code></pre>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+<nav class="tags">
+Tags:
+
+<a href="../tags/Developer/" rel="tag">Developer</a>
+
+<a href="../tags/Technical/" rel="tag">Technical</a>
+
+</nav>
+
+
+
+<nav id="backlinks">
+Links:
+
+<a href="../API_reference_(JSON-RPC)/">API reference (JSON-RPC)</a>
+
+
+</nav>
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-06-07T14:24:02Z">Tue 07 Jun 2016 02:24:02 PM Europe</time>
+<!-- Created <time datetime="2011-03-03T13:47:22Z" pubdate="pubdate">Thu 03 Mar 2011 01:47:22 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>
