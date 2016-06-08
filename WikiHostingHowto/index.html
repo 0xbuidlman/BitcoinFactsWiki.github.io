@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<title>WikiHostingHowto</title>
+
+<link rel="stylesheet" href="../style.css" type="text/css" />
+
+<link rel="stylesheet" href="../local.css" type="text/css" />
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<article class="page">
+
+<section class="pageheader">
+<header class="header">
+<span>
+<span class="parentlinks">
+
+<a href="../">bitcoin</a>/ 
+
+</span>
+<span class="title">
+WikiHostingHowto
+
+</span>
+</span>
+
+
+
+</header>
+
+
+<nav class="actions">
+<ul>
+
+
+
+
+
+
+
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=WikiHostingHowto" rel="nofollow">?</a>Talk</span></li>
+
+
+</ul>
+</nav>
+
+
+
+
+
+
+
+
+</section>
+
+<div id="pagebody">
+
+<section id="content" role="main">
+<p>This HOWTO is about hosting the wiki itself on a web-server under your control.</p>
+
+<p>Preparation;</p>
+
+<p>install ikiwiki;
+    apt-get install ikiwiki libhighlight-perl libimage-magick-perl</p>
+
+<p>Ikiwiki checks the upstream git repo while building (after every single
+edit), to see if its up to date. For that reason you likely want to have a
+double git setup so as to avoid any slowness due to a remote site not
+giving answers fast.</p>
+
+<p>Easy setup to avoid this is to have a local bare wiki that you manually
+keep up-to-date with &#39;upstream&#39;.</p>
+
+<pre><code># keep this one up-to-date manually
+git clone --mirror  https://github.com/BitcoinFactsWiki/english.git bitcoinfactswiki.git
+#this one you actually use for your website
+git clone bitcoinfactswiki.git
+</code></pre>
+
+<p>cp bitcoinfactswiki/bitcoin.setup mysite.setup</p>
+
+<p>You want to edit your setup file.
+Please consider changing these fields. I&#39;m providing example values too;</p>
+
+<ul>
+<li>adminemail: tomz@freedommail.ch</li>
+<li>srcdir: /home/wiki/bitcoinfactswiki/pages/</li>
+<li>destdir: /var/www/btcwiki/html/</li>
+<li>cgi_wrapper: /var/www/btcwiki/html/ikiwiki.cgi</li>
+<li>url: http://hbdcxlms37r732tu.onion</li>
+<li>cgiurl: http://hbdcxlms37r732tu.onion/ikiwiki.cgi</li>
+<li># - editpage</li>
+</ul>
+
+
+<p>The last one is a line to comment out or delete, in the default config the
+<code>editpage</code> plugin is disabled. You may want to allow editing, if
+so you should remove the line &#39;editpage&#39; in the list if disabled plugins.</p>
+
+<p>After that is done, be sure to actually generate your wiki the first time.</p>
+
+<blockquote><p> <code> ikiwiki --setup mysite.setup</code></p></blockquote>
+
+<h3 id="webserver.">webserver.</h3>
+
+<p>In NGINX make sure you have this in your site-settings (the file in
+sites-available) to enable the cgi processing. This you need when allowing
+users to edit;</p>
+
+<pre><code>location ~ ^/ikiwiki.cgi {
+  fastcgi_split_path_info ^(ikiwiki.cgi)(/.+)$;
+  include fastcgi_params;
+  # Intercepting errors will cause CGI errors to appear in Nginx logs
+  fastcgi_intercept_errors on;
+  fastcgi_pass unix:/var/run/fcgiwrap.socket;
+}
+</code></pre>
+
+</section>
+
+
+
+
+
+
+
+</div>
+
+<footer id="footer" class="pagefooter" role="contentinfo">
+
+<nav id="pageinfo">
+
+
+
+
+
+
+
+<div class="copyrightinfo">
+Content is available under under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC by-sa</a>
+</div>
+
+<div class="pagedate">
+Last edited <time datetime="2016-06-08T13:52:52Z">Wed 08 Jun 2016 01:52:52 PM Europe</time>
+<!-- Created <time datetime="2016-06-08T13:52:52Z" pubdate="pubdate">Wed 08 Jun 2016 01:52:52 PM Europe</time> -->
+</div>
+
+</nav>
+
+
+<!-- from bitcoin -->
+</footer>
+</article>
+
+</body>
+</html>
