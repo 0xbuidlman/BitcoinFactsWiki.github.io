@@ -148,8 +148,8 @@ require &#39;json&#39;</source></p>
 <pre><code>def method_missing(name, *args)
 post_body = { &#39;method&#39; =&gt; name, &#39;params&#39; =&gt; args, &#39;id&#39; =&gt; &#39;jsonrpc&#39; }.to_json
 resp = JSON.parse( http_post_request(post_body) )
-raise JSONRPCError, resp&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=__39__error__39__&amp;amp;from=API_reference_%28JSON-RPC%29&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;&amp;#39;error&amp;#39;&lt;/span&gt; if resp&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=__39__error__39__&amp;amp;from=API_reference_%28JSON-RPC%29&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;&amp;#39;error&amp;#39;&lt;/span&gt;
-resp&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=__39__result__39__&amp;amp;from=API_reference_%28JSON-RPC%29&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;&amp;#39;result&amp;#39;&lt;/span&gt;
+raise JSONRPCError, resp&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=__39__error__39__&amp;amp;do=create&amp;amp;from=API_reference_%28JSON-RPC%29&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;&amp;#39;error&amp;#39;&lt;/span&gt; if resp&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=API_reference_%28JSON-RPC%29&amp;amp;page=__39__error__39__&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;&amp;#39;error&amp;#39;&lt;/span&gt;
+resp&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=__39__result__39__&amp;amp;do=create&amp;amp;from=API_reference_%28JSON-RPC%29&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;&amp;#39;result&amp;#39;&lt;/span&gt;
 end
 
 def http_post_request(post_body)
@@ -212,7 +212,7 @@ end
     &lt;&lt;&quot;curtime&quot;&gt;&gt; =&gt; 1420421249,
     &lt;&lt;&quot;height&quot;&gt;&gt; =&gt; 337533,
     &lt;&lt;&quot;mintime&quot;&gt;&gt; =&gt; 1420416332,
-    &lt;&lt;&quot;mutable&quot;&gt;&gt; =&gt; &lt;&quot;time&quot;&gt;&lt;&quot;transactions&quot;&gt;&lt;&quot;prevblock&quot;&gt;<span class="createlink"><a href="/ikiwiki.cgi?page=__62__&amp;do=create&amp;from=API_reference_%28JSON-RPC%29" rel="nofollow">?</a>&gt;</span>,
+    &lt;&lt;&quot;mutable&quot;&gt;&gt; =&gt; &lt;&quot;time&quot;&gt;&lt;&quot;transactions&quot;&gt;&lt;&quot;prevblock&quot;&gt;<span class="createlink"><a href="/ikiwiki.cgi?from=API_reference_%28JSON-RPC%29&amp;do=create&amp;page=__62__" rel="nofollow">?</a>&gt;</span>,
     &lt;&lt;&quot;noncerange&quot;&gt;&gt; =&gt; &lt;&lt;&quot;00000000ffffffff&quot;&gt;&gt;,
     &lt;&lt;&quot;previousblockhash&quot;&gt;&gt; =&gt; &lt;&lt;&quot;000000000000000017ce0a0d328bf84cc597785844393e899e9a971a81679a5f&quot;&gt;&gt;,
     &lt;&lt;&quot;sigoplimit&quot;&gt;&gt; =&gt; 20000,
@@ -329,7 +329,7 @@ accounts, err := client.ListAccounts()
 if err != nil {
 log.Fatalf(&quot;error listing accounts: %v&quot;, err)
 }
-// iterate over accounts (map&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=string&amp;amp;do=create&amp;amp;from=API_reference_%28JSON-RPC%29&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;string&lt;/span&gt;btcutil.Amount) and write to stdout
+// iterate over accounts (map&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=API_reference_%28JSON-RPC%29&amp;amp;do=create&amp;amp;page=string&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;string&lt;/span&gt;btcutil.Amount) and write to stdout
 for label, amount := range accounts {
 log.Printf(&quot;%s: %s&quot;, label, amount)
 }
@@ -664,7 +664,7 @@ qDebug() &lt;&lt; response.toJson();
 <ul>
 <li><a href="../Original_Bitcoin_client/API_Calls_list/">API calls list</a></li>
 <li><a href="../Running_Bitcoin/">Running Bitcoin</a></li>
-<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Lazy_API&amp;from=API_reference_%28JSON-RPC%29" rel="nofollow">?</a>Lazy API</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=API_reference_%28JSON-RPC%29&amp;do=create&amp;page=Lazy_API" rel="nofollow">?</a>Lazy API</span></li>
 <li><a href="../Raw_Transactions/">Raw Transactions API</a></li>
 <li><a href="https://gourl.io/bitcoin-payment-gateway-api.html">GoUrl Bitcoin PHP Payment API</a></li>
 <li><a href="http://blockchain.info/api/json_rpc_api">Web Based JSON RPC interface.</a></li>

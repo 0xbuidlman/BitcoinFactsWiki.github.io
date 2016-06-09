@@ -52,7 +52,7 @@ Bitcoin Core 0.11 (ch 5): Initial Block Download
 
 
 
-<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=Bitcoin_Core_0.11_%28ch_5%29%3A_Initial_Block_Download" rel="nofollow">?</a>Talk</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Bitcoin_Core_0.11_%28ch_5%29%3A_Initial_Block_Download&amp;page=Talk&amp;do=create" rel="nofollow">?</a>Talk</span></li>
 
 
 </ul>
@@ -78,7 +78,7 @@ Bitcoin Core 0.11 (ch 5): Initial Block Download
 
 <p>As the blockchain grows in size, the time required for IBD increases unless optimizations are made to the code.  Various optimizations have been made since Satoshi&#39;s original client was released, but as of 2014, with increasing transaction volume, initial download on laptop hardware with an average connection could still take up to 24 hours.  Developers agreed that this was unacceptable and a new approach was developed called &quot;headers first&quot; mode.  This approach resulted in a substantial speedup.</p>
 
-<h2 id="z-quot.3BHeaders_First.26quot.3B_mode">&quot;Headers First&quot; mode</h2>
+<h2 id="Headers_First_mode">&quot;Headers First&quot; mode</h2>
 
 <p>With &quot;headers-first&quot; mode, a new node downloads all of the block headers first, which are very small (about 80 bytes, whereas a block can be up to 1MB).  Once the node has all of the headers, from the genesis block up to the current tip of the blockchain (380,000 as of October 2015), only then does it begins downloading the full blocks.</p>
 
@@ -183,7 +183,7 @@ std::vector&lt;uint256&gt; vHave;
 
 <p>In normal operation, we would generally expect to be within a few blocks of our peers.  Thus, the vector starts with the 10 last block hashes before &quot;jumping back&quot; exponentially.  Thus the comment &quot;the futher back it is, the futher before the fork it might be:&quot;  what is meant is that firstly, if you and your peer are within 10 blocks of one another, the fork point will be included in the list of hashes.  If you and your peer are 15 blocks away from one another, you&#39;ll surely find a common block that&#39;s within a few blocks of the fork point and only one further iteration of Locator will be reuqired to find the fork point.  However, if you and your peer diverge by 10,000 blocks, the Locator may only find a common trunk that&#39;s a few hundred (or more) blocks before the fork point, so another two or three Locator objects will need to be exchanged to zero in on the fork point.</p>
 
-<p>See CChain::GetLocator and CBlockIndex::GetAncestor <u></u><span class="createlink"><a href="/ikiwiki.cgi?from=Bitcoin_Core_0.11_%28ch_5%29%3A_Initial_Block_Download&amp;do=create&amp;page=chain.cpp" rel="nofollow">?</a>chain.cpp</span>.</p>
+<p>See CChain::GetLocator and CBlockIndex::GetAncestor <u></u><span class="createlink"><a href="/ikiwiki.cgi?from=Bitcoin_Core_0.11_%28ch_5%29%3A_Initial_Block_Download&amp;page=chain.cpp&amp;do=create" rel="nofollow">?</a>chain.cpp</span>.</p>
 
 <p><strong>Block Skiplist Pointer</strong></p>
 

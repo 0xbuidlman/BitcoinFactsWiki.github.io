@@ -52,7 +52,7 @@ Bitcoin Core 0.11 (ch 2): Data Storage
 
 
 
-<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Bitcoin_Core_0.11_%28ch_2%29%3A_Data_Storage" rel="nofollow">?</a>Talk</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Bitcoin_Core_0.11_%28ch_2%29%3A_Data_Storage&amp;page=Talk&amp;do=create" rel="nofollow">?</a>Talk</span></li>
 
 
 </ul>
@@ -442,7 +442,7 @@ Note:  if the cache&#39;s backend is another cache, then the term &quot;database
 <p>The matter is complicated slightly by the fact that if the coin is the last one being spent by its transaction, the undo data needs to store the transaction&#39;s metadata (the txn&#39;s block height, whether it&#39;s a coinbase, and its version.) So, if you have a transaction T with outputs O1,O2,O3 spent in that order, for O1 and O2 all that will be written to the undo file is the amount and the script.  For 03, the undo file will have the amount, the script, plus T&#39;s height and version, and whether T is a coinbase.</p>
 
 <p>The undo data is written to the raw file with the following code:
-    fileout &lt;&lt; blockundo; (main.cpp:1567 <span class="createlink"><a href="/ikiwiki.cgi?from=Bitcoin_Core_0.11_%28ch_2%29%3A_Data_Storage&amp;do=create&amp;page=UndoWriteToDisk" rel="nofollow">?</a>UndoWriteToDisk</span>)</p>
+    fileout &lt;&lt; blockundo; (main.cpp:1567 <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=UndoWriteToDisk&amp;from=Bitcoin_Core_0.11_%28ch_2%29%3A_Data_Storage" rel="nofollow">?</a>UndoWriteToDisk</span>)</p>
 
 <p>This line of code calls the serialization function on the CBlockUndo - which is basically just a vector of coins (CTxOuts.)  Finally, a checksum is written to the undo file. The checksum  is used during initialization to verify that any undo data being checked is intact.  See <a href="https://github.com/bitcoin/bitcoin/pull/2145">Pull 2145</a></p>
 

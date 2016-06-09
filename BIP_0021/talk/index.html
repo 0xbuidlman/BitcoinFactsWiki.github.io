@@ -70,16 +70,16 @@ talk
 <div id="pagebody">
 
 <section id="content" role="main">
-<p>Marian on IRC reports: &quot;The BNF <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=here&amp;from=BIP_0021%2Ftalk" rel="nofollow">?</a>here</span> is erroneous, regarding the params, it says  <a title="?">bitcoinparams</a> while bitcoinparams is just *bitcoinparam, thus with that BNF there are no separators between the parameters&quot;. --<a>Gmaxwell</a> (<span class="createlink"><a href="/ikiwiki.cgi?page=User_talk%3AGmaxwell&amp;do=create&amp;from=BIP_0021%2Ftalk" rel="nofollow">?</a>talk</span>) 23:04, 23 April 2013 (GMT)</p>
+<p>Marian on IRC reports: &quot;The BNF <span class="createlink"><a href="/ikiwiki.cgi?page=here&amp;do=create&amp;from=BIP_0021%2Ftalk" rel="nofollow">?</a>here</span> is erroneous, regarding the params, it says  <a title="?">bitcoinparams</a> while bitcoinparams is just *bitcoinparam, thus with that BNF there are no separators between the parameters&quot;. --<a>Gmaxwell</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=BIP_0021%2Ftalk&amp;do=create&amp;page=User_talk%3AGmaxwell" rel="nofollow">?</a>talk</span>) 23:04, 23 April 2013 (GMT)</p>
 
-<p>--&gt; (<a>Michael_S</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=BIP_0021%2Ftalk&amp;page=User_talk%3AMichael_S&amp;do=create" rel="nofollow">?</a>talk</span>) 8 Sept 2013) So should it rather be written something like this (I am not a BNF expert, just following my logic):
-    bitcoinurn      = &quot;bitcoin:&quot; bitcoinaddress   <span class="createlink"><a href="/ikiwiki.cgi?from=BIP_0021%2Ftalk&amp;do=create&amp;page=bitcoinparams" rel="nofollow">?</a>bitcoinparams</span>
+<p>--&gt; (<a>Michael_S</a> (<span class="createlink"><a href="/ikiwiki.cgi?page=User_talk%3AMichael_S&amp;do=create&amp;from=BIP_0021%2Ftalk" rel="nofollow">?</a>talk</span>) 8 Sept 2013) So should it rather be written something like this (I am not a BNF expert, just following my logic):
+    bitcoinurn      = &quot;bitcoin:&quot; bitcoinaddress   <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=bitcoinparams&amp;from=BIP_0021%2Ftalk" rel="nofollow">?</a>bitcoinparams</span>
     bitcoinparams   = *bitcoinparamamp
     bitcoinparamamp = &quot;&amp;&quot; bitcoinparam</p>
 
-<h2 id="Suggesting_usability_enhancement_in_BIP_0021_for_paying_tips_in_restaurant.2Fbar_conveniently_.28.26quot.3Btips_w.2Fo_taps.26quot.3B.29">Suggesting usability enhancement in BIP 0021 for paying tips in restaurant/bar conveniently (&quot;tips w/o taps&quot;)</h2>
+<h2 id="Suggesting_usability_enhancement_in_BIP_0021_for_paying_tips_in_restaurant.2Fbar_conveniently_.28tips_w.2Fo_taps.29">Suggesting usability enhancement in BIP 0021 for paying tips in restaurant/bar conveniently (&quot;tips w/o taps&quot;)</h2>
 
-<p>(<a>Michael_S</a> (<span class="createlink"><a href="/ikiwiki.cgi?page=User_talk%3AMichael_S&amp;do=create&amp;from=BIP_0021%2Ftalk" rel="nofollow">?</a>talk</span>) 8 Sept 2013)</p>
+<p>(<a>Michael_S</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=BIP_0021%2Ftalk&amp;do=create&amp;page=User_talk%3AMichael_S" rel="nofollow">?</a>talk</span>) 8 Sept 2013)</p>
 
 <p>I am suggesting a simple downward compatible enhancement of BIP 0021 to allow effortless tipping in restaurants, bars, pubs, etc.</p>
 
@@ -94,7 +94,7 @@ bitcoinparam   = amountparam  labelparam  messageparam  &lt;span style=&quot;col
 amountparam    = &quot;amount=&quot; *digit  [*digit](&quot;.&quot;)
 labelparam     = &quot;label=&quot; *pchar
 messageparam   = &quot;message=&quot; *pchar
-&lt;span style=&quot;color:#0000FF&quot;&gt;**tipparam       = &quot;tip=&quot;   [*digit](&quot;.&quot;)   &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=__34__25__34__&amp;amp;do=create&amp;amp;from=BIP_0021%2Ftalk&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;&amp;#34;25&amp;#34;&lt;/span&gt;  **&lt;/span&gt;
+&lt;span style=&quot;color:#0000FF&quot;&gt;**tipparam       = &quot;tip=&quot;   [*digit](&quot;.&quot;)   &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=__34__25__34__&amp;amp;from=BIP_0021%2Ftalk&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;&amp;#34;25&amp;#34;&lt;/span&gt;  **&lt;/span&gt;
 otherparam     = pchar *pchar &quot;=&quot; *pchar
 reqparam       = &quot;req-&quot; pchar *pchar &quot;=&quot; *pchar
 </code></pre>
@@ -149,9 +149,9 @@ reqparam       = &quot;req-&quot; pchar *pchar &quot;=&quot; *pchar
 
 <p>But this is only partly true. Certainly enhancement of the wallet app to provide an advanced &quot;send&quot; dialog for easy tipping is crucial. However, with the legacy BIP 0021 the wallet app cannot know whether it shall display the standard send dialog (no tip) or the advanced send dialog (with tip option) to the user. So the user has to select this manually. With the optional &quot;tip&quot; parameter in the URI, the wallet app can readily display the appropriate send dialog without extra user interaction, thereby providing ultimate user experience.</p>
 
-<h2 id="Further_enhancement_for_paying_tips_in_restaurant.2Fbar.3A_.26quot.3Btip_address.26quot.3B">Further enhancement for paying tips in restaurant/bar: &quot;tip address&quot;</h2>
+<h2 id="Further_enhancement_for_paying_tips_in_restaurant.2Fbar.3A_tip_address">Further enhancement for paying tips in restaurant/bar: &quot;tip address&quot;</h2>
 
-<p>(<a>Michael_S</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=BIP_0021%2Ftalk&amp;page=User_talk%3AMichael_S&amp;do=create" rel="nofollow">?</a>talk</span>) 9 Sept 2013)</p>
+<p>(<a>Michael_S</a> (<span class="createlink"><a href="/ikiwiki.cgi?page=User_talk%3AMichael_S&amp;do=create&amp;from=BIP_0021%2Ftalk" rel="nofollow">?</a>talk</span>) 9 Sept 2013)</p>
 
 <p>Further enhancement: Sending billing amount and tip to separate addresses:</p>
 
@@ -187,7 +187,7 @@ reqparam       = &quot;req-&quot; pchar *pchar &quot;=&quot; *pchar
 
 <h2 id="Short_parameter_tags_yielding_shorter_URIs_for_QR_codes">Short parameter tags yielding shorter URIs for QR codes</h2>
 
-<p>(<a>Michael_S</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=BIP_0021%2Ftalk&amp;do=create&amp;page=User_talk%3AMichael_S" rel="nofollow">?</a>talk</span>) 10 Sept 2013)</p>
+<p>(<a>Michael_S</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=BIP_0021%2Ftalk&amp;page=User_talk%3AMichael_S&amp;do=create" rel="nofollow">?</a>talk</span>) 10 Sept 2013)</p>
 
 <p>Another proposal: Allow short forms for the parameter tags, to shorten the URIs.</p>
 
@@ -214,9 +214,9 @@ req-aal=            -aal=
 <p>129 characters:
     bitcoin:175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?a=.567&amp;t=15%25&amp;-ta=1waiter7b38klseWrTZm5sE8PrrupPB2Q2&amp;m=Thank%20You&amp;l=Charly%27s%20Bar</p>
 
-<h2 id="Critical_Improvement_of_BIP_0021_for_.26quot.3Breq-.26quot.3B_param">Critical Improvement of BIP 0021 for &quot;req-&quot; param</h2>
+<h2 id="Critical_Improvement_of_BIP_0021_for_req-_param">Critical Improvement of BIP 0021 for &quot;req-&quot; param</h2>
 
-<p>(<a>Michael_S</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=BIP_0021%2Ftalk&amp;page=User_talk%3AMichael_S&amp;do=create" rel="nofollow">?</a>talk</span>) 12 Sept 2013)</p>
+<p>(<a>Michael_S</a> (<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=User_talk%3AMichael_S&amp;from=BIP_0021%2Ftalk" rel="nofollow">?</a>talk</span>) 12 Sept 2013)</p>
 
 <p>One aspect of current BIP 0021 is critical:</p>
 
@@ -230,12 +230,12 @@ req-aal=            -aal=
     bitcoin:<strong>R-</strong>175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?amount=0.567&amp;tip=15%25&amp;<strong>req-</strong>tipaddr=1waiter7b38klseWrTZm5sE8PrrupPB2Q2&amp;message=Thank%20You&amp;label=Charly%27s%20Bar</p>
 
 <p>The BFN Syntax then looks as follows:
-    bitcoinurn     = &quot;bitcoin:&quot; <strong> <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=__34__R-__34__&amp;from=BIP_0021%2Ftalk" rel="nofollow">?</a>&quot;R-&quot;</span></strong> bitcoinaddress  <a title="?">bitcoinparams</a>
+    bitcoinurn     = &quot;bitcoin:&quot; <strong> <span class="createlink"><a href="/ikiwiki.cgi?from=BIP_0021%2Ftalk&amp;page=__34__R-__34__&amp;do=create" rel="nofollow">?</a>&quot;R-&quot;</span></strong> bitcoinaddress  <a title="?">bitcoinparams</a>
 where &quot;R-&quot; is mandatory as soon as at least one &quot;reqparam&quot; is used.</p>
 
 <h2 id="Paying_to_Multiple_Outputs">Paying to Multiple Outputs</h2>
 
-<p>(<a>Michael_S</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=BIP_0021%2Ftalk&amp;do=create&amp;page=User_talk%3AMichael_S" rel="nofollow">?</a>talk</span>) 12 Sept 2013)</p>
+<p>(<a>Michael_S</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=BIP_0021%2Ftalk&amp;page=User_talk%3AMichael_S&amp;do=create" rel="nofollow">?</a>talk</span>) 12 Sept 2013)</p>
 
 <p>Another Enhancement relates to the &quot;Humble Bundle&quot; scenario: Paying one transaction with multiple outputs, specifying a dedicated amount for each output address.</p>
 

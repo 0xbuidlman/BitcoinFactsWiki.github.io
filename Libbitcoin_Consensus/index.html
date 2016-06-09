@@ -52,7 +52,7 @@ Libbitcoin Consensus
 
 
 
-<li><span class="createlink"><a href="/ikiwiki.cgi?from=Libbitcoin_Consensus&amp;page=Talk&amp;do=create" rel="nofollow">?</a>Talk</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Libbitcoin_Consensus&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
 
 
 </ul>
@@ -109,7 +109,7 @@ std::vector&lt;uint8_t&gt; tx_data, ps_data;
 /* bool */ bc::decode_base16(ps_data, ps);
 
 const auto result = verify_script(&amp;tx_data&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=0&amp;amp;from=Libbitcoin_Consensus&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;0&lt;/span&gt;, tx_data.size(),
-&amp;ps_data&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=0&amp;amp;do=create&amp;amp;from=Libbitcoin_Consensus&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;0&lt;/span&gt;, ps_data.size(), tx_input_index, flags);
+&amp;ps_data&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Libbitcoin_Consensus&amp;amp;do=create&amp;amp;page=0&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;0&lt;/span&gt;, ps_data.size(), tx_input_index, flags);
 
 return result == verify_result_eval_true ? 0 : 1;
 }

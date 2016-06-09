@@ -96,7 +96,7 @@ How bitcoin works
 
 <p>The hashcash <a href="../Difficulty/">difficulty</a> factor is achieved by requiring that the hash output has a number of leading zeros.  Technically, to allow more fine-grained control than Hashcash number of leading 0-bits method, Bitcoin extends the hashcash solution definition by treating the hash as a large big-endian integer, and checking that the integer is below a certain threshold.  The hashcash cost-function iterates by perturbing data in the block by a <a href="../Nonce/">nonce</a> value, until the data in the block hashes to produce an integer below the threshold - which takes a lot of processing power. This low hash value for the block serves as an easily-verifiable <a href="../Proof_of_work/">proof of work</a> - every node on the network can instantly verify that the block meets the required criteria.</p>
 
-<p>With this framework, we are able to achieve the essential functions of the Bitcoin system. We have verifiable ownership of bitcoins, and a distributed database of all transactions, which prevents <span class="createlink"><a href="/ikiwiki.cgi?page=double%20spending__124__&amp;do=create&amp;from=How_bitcoin_works" rel="nofollow">?</a>double spending|</span>.</p>
+<p>With this framework, we are able to achieve the essential functions of the Bitcoin system. We have verifiable ownership of bitcoins, and a distributed database of all transactions, which prevents <span class="createlink"><a href="/ikiwiki.cgi?from=How_bitcoin_works&amp;page=double%20spending__124__&amp;do=create" rel="nofollow">?</a>double spending|</span>.</p>
 
 <h2>Bitcoin <a href="../Mining/">Mining</a></h2>
 

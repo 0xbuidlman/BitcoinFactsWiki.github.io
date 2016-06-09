@@ -52,7 +52,7 @@ Da2ce7:New Transaction
 
 
 
-<li><span class="createlink"><a href="/ikiwiki.cgi?from=Da2ce7%3ANew_Transaction&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=Da2ce7%3ANew_Transaction" rel="nofollow">?</a>Talk</span></li>
 
 
 </ul>
@@ -159,17 +159,17 @@ addoutput {txuniqueid} {address} {amount} {comment}
 response  {txuniqueid} {iouniqueid}
 
 // add many send outputs
-addoutputlist {txuniqueid} {}{}&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Da2ce7%3ANew_Transaction&amp;amp;do=create&amp;amp;page=amount&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;amount&lt;/span&gt;
+addoutputlist {txuniqueid} {}{}&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Da2ce7%3ANew_Transaction&amp;amp;page=amount&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;amount&lt;/span&gt;
 
-response {txuniqueid}  {}&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Da2ce7%3ANew_Transaction&amp;amp;page=iouniqueid&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;iouniqueid&lt;/span&gt;
+response {txuniqueid}  {}&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Da2ce7%3ANew_Transaction&amp;amp;do=create&amp;amp;page=iouniqueid&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;iouniqueid&lt;/span&gt;
 
 
 /// remove input or outpus (1 override)
 remove {txuniqueid} {iouniqueid}
-remove {txuniqueid} {}&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Da2ce7%3ANew_Transaction&amp;amp;page=iouniqueid&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;iouniqueid&lt;/span&gt;
+remove {txuniqueid} {}&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=iouniqueid&amp;amp;do=create&amp;amp;from=Da2ce7%3ANew_Transaction&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;iouniqueid&lt;/span&gt;
 
 response {txuniqueid} droped: {iouniqueid}
-response {txuniqueid} droped: {}&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Da2ce7%3ANew_Transaction&amp;amp;page=iouniqueid&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;iouniqueid&lt;/span&gt;
+response {txuniqueid} droped: {}&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Da2ce7%3ANew_Transaction&amp;amp;do=create&amp;amp;page=iouniqueid&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;iouniqueid&lt;/span&gt;
 
 
 /// prints out human readable information about the tranaction
@@ -189,7 +189,7 @@ shownewtransaction {txid} (1 override)
 response {txid}
 in: {}{}{}&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=%2C%28comment%29&amp;amp;do=create&amp;amp;from=Da2ce7%3ANew_Transaction&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;,(comment)&lt;/span&gt;
 in total: {amount}
-out: {}{}&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Da2ce7%3ANew_Transaction&amp;amp;do=create&amp;amp;page=%2C%28comment%29&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;,(comment)&lt;/span&gt;
+out: {}{}&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=%2C%28comment%29&amp;amp;from=Da2ce7%3ANew_Transaction&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;,(comment)&lt;/span&gt;
 out total: {amount}
 fee: {amount}
 size: {readytxn bit}
@@ -207,7 +207,7 @@ response {txuniqueid} {buildingreadydone}
 exporttransaction {txuniqueid}
 exporttransaction &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Da2ce7%3ANew_Transaction&amp;amp;do=create&amp;amp;page=txuniqueid&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;txuniqueid&lt;/span&gt;
 exporttransaction {txid}
-exporttransaction &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=txid&amp;amp;do=create&amp;amp;from=Da2ce7%3ANew_Transaction&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;txid&lt;/span&gt;
+exporttransaction &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=txid&amp;amp;from=Da2ce7%3ANew_Transaction&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;txid&lt;/span&gt;
 
 response {binary data}
 
@@ -216,7 +216,7 @@ response {binary data}
 inporttransaction {binary data}
 inporttransaction {}[data](binary)
 
-response {}&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=txuniqueid&amp;amp;from=Da2ce7%3ANew_Transaction&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;txuniqueid&lt;/span&gt;
+response {}&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Da2ce7%3ANew_Transaction&amp;amp;page=txuniqueid&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;txuniqueid&lt;/span&gt;
 
 
 /// check and complete *build* translation (1 override)
@@ -236,7 +236,7 @@ signtransaction -r {}&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/
 
 // sign a pre-signed/partial transaction (signs for owned private keys)
 signtransaction -o {txuniqueid}
-signtransaction -o {}&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=txuniqueid&amp;amp;from=Da2ce7%3ANew_Transaction&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;txuniqueid&lt;/span&gt;
+signtransaction -o {}&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Da2ce7%3ANew_Transaction&amp;amp;page=txuniqueid&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;txuniqueid&lt;/span&gt;
 
 response {}{}[failed](done)
 
@@ -249,9 +249,9 @@ submittransaction -a
 submittransaction {txuniqueid}
 
 //  submits a list of &#39;done&#39;  transaction
-submittransaction {}&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Da2ce7%3ANew_Transaction&amp;amp;page=txuniqueid&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;txuniqueid&lt;/span&gt;
+submittransaction {}&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Da2ce7%3ANew_Transaction&amp;amp;do=create&amp;amp;page=txuniqueid&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;txuniqueid&lt;/span&gt;
 
-response {}{}&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=txid&amp;amp;from=Da2ce7%3ANew_Transaction&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;txid&lt;/span&gt;
+response {}{}&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Da2ce7%3ANew_Transaction&amp;amp;do=create&amp;amp;page=txid&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;txid&lt;/span&gt;
 
 
 /// complete transaction from any stage and publish it (1 override)

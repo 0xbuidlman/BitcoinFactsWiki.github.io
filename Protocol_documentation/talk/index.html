@@ -70,7 +70,7 @@ talk
 <div id="pagebody">
 
 <section id="content" role="main">
-<h1 id="What_is_.26quot.3B77x.26quot.3B.3F_Header_size_wrong.3F">What is &quot;77x&quot;? Header size wrong?</h1>
+<h1 id="What_is_77x.3F_Header_size_wrong.3F">What is &quot;77x&quot;? Header size wrong?</h1>
 
 <p>The description for the headers command says &quot;77x?&quot; as the size for the block_headers[] returned.  However, the description of the block_header structure is 81 bytes (4+32+32+4+4+4+1).  What exactly is returned by the headers command? -- <a>AndyParkins</a></p>
 
@@ -162,19 +162,19 @@ C0 3E 03 00
 <a>Jdnavarro</a> (<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=User_talk%3AJdnavarro&amp;from=Protocol_documentation%2Ftalk" rel="nofollow">?</a>talk</span>) 16:15, 12 September 2012 (GMT)</p>
 
 <p>It seems that the magic bytes for the testnet in version 0.7.0 is 0x0709110B. Am I missing something?
-<a>Jdnavarro</a> (<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=User_talk%3AJdnavarro&amp;from=Protocol_documentation%2Ftalk" rel="nofollow">?</a>talk</span>) 12:28, 23 September 2012 (GMT)</p>
+<a>Jdnavarro</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Protocol_documentation%2Ftalk&amp;do=create&amp;page=User_talk%3AJdnavarro" rel="nofollow">?</a>talk</span>) 12:28, 23 September 2012 (GMT)</p>
 
 <p>When a <strong>getdata</strong> message with multiple blocks is sent (i.e. initial block download), the remote node, after sending all the requested block messages, it sends an <strong>inv</strong> message with its top block.
-<a>Jdnavarro</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Protocol_documentation%2Ftalk&amp;do=create&amp;page=User_talk%3AJdnavarro" rel="nofollow">?</a>talk</span>) 16:08, 8 October 2012 (GMT)</p>
+<a>Jdnavarro</a> (<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=User_talk%3AJdnavarro&amp;from=Protocol_documentation%2Ftalk" rel="nofollow">?</a>talk</span>) 16:08, 8 October 2012 (GMT)</p>
 
 <p>The maximum size for a Block or a Transaction is 1MB. The overall message size is 32MB, which I think is deliberately redundant because it shouldn&#39;t be possible to generate a message of such size with the other limits. Should this be part of the protocol?
 <a>Jdnavarro</a> (<span class="createlink"><a href="/ikiwiki.cgi?page=User_talk%3AJdnavarro&amp;do=create&amp;from=Protocol_documentation%2Ftalk" rel="nofollow">?</a>talk</span>) 18:20, 15 October 2012 (GMT)</p>
 
 <h2 id="txn_count">txn_count</h2>
 
-<p>In <a href="../../Header/#Block_Headers">Header</a>, it says txn_count is always zero. Why is this? --<a>Rebroad</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Protocol_documentation%2Ftalk&amp;page=User_talk%3ARebroad&amp;do=create" rel="nofollow">?</a>talk</span>) 03:32, 10 September 2014 (UTC)</p>
+<p>In <a href="../../Header/#Block_Headers">Header</a>, it says txn_count is always zero. Why is this? --<a>Rebroad</a> (<span class="createlink"><a href="/ikiwiki.cgi?page=User_talk%3ARebroad&amp;do=create&amp;from=Protocol_documentation%2Ftalk" rel="nofollow">?</a>talk</span>) 03:32, 10 September 2014 (UTC)</p>
 
-<blockquote><p> IIRC, it&#39;s because the txn_count is the number of transactions <em>actually</em> being sent - which in the header request is zero because you&#39;re only getting the headers. --<a>Luke-jr</a> (<span class="createlink"><a href="/ikiwiki.cgi?page=User_talk%3ALuke-jr&amp;do=create&amp;from=Protocol_documentation%2Ftalk" rel="nofollow">?</a>talk</span>) 05:23, 10 September 2014 (UTC)</p></blockquote>
+<blockquote><p> IIRC, it&#39;s because the txn_count is the number of transactions <em>actually</em> being sent - which in the header request is zero because you&#39;re only getting the headers. --<a>Luke-jr</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Protocol_documentation%2Ftalk&amp;page=User_talk%3ALuke-jr&amp;do=create" rel="nofollow">?</a>talk</span>) 05:23, 10 September 2014 (UTC)</p></blockquote>
 
 </section>
 

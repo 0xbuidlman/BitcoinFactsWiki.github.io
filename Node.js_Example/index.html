@@ -87,7 +87,7 @@ var querystring = require(&#39;querystring&#39;),
 if (typeof args != &quot;object&quot;) args = {};
 
 // generate a nonce
-args&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Node.js_Example&amp;amp;page=__39__nonce__39__&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;&amp;#39;nonce&amp;#39;&lt;/span&gt; = (new Date()).getTime() * 1000;
+args&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=__39__nonce__39__&amp;amp;do=create&amp;amp;from=Node.js_Example&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;&amp;#39;nonce&amp;#39;&lt;/span&gt; = (new Date()).getTime() * 1000;
 // compute the post data
 var post = querystring.stringify(args);
 // compute the sha512 signature of the post data

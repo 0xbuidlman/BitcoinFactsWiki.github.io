@@ -52,7 +52,7 @@ Base58Check encoding
 
 
 
-<li><span class="createlink"><a href="/ikiwiki.cgi?from=Base58Check_encoding&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=Base58Check_encoding" rel="nofollow">?</a>Talk</span></li>
 
 
 </ul>
@@ -120,12 +120,12 @@ A more detailed example is provided on the page describing the  <a href="../Tech
 
 <ul>
 <li>Pay-to-script-hash (p2sh): payload is <a href="../RIPEMD160/">RIPEMD160</a>(<span class="createlink"><a href="/ikiwiki.cgi?page=SHA256&amp;do=create&amp;from=Base58Check_encoding" rel="nofollow">?</a>SHA256</span>(redeemScript the wallet knows how to spend)); version 0x05 (these addresses begin with the digit &#39;3&#39;)</li>
-<li>Pay-to-pubkey-hash (p2pkh): payload is <a href="../RIPEMD160/">RIPEMD160</a>(<span class="createlink"><a href="/ikiwiki.cgi?page=SHA256&amp;do=create&amp;from=Base58Check_encoding" rel="nofollow">?</a>SHA256</span>(ECDSA public key the wallet knows the private key for)); version 0x00 (these addresses begin with the digit &#39;1&#39;)</li>
+<li>Pay-to-pubkey-hash (p2pkh): payload is <a href="../RIPEMD160/">RIPEMD160</a>(<span class="createlink"><a href="/ikiwiki.cgi?from=Base58Check_encoding&amp;do=create&amp;page=SHA256" rel="nofollow">?</a>SHA256</span>(ECDSA public key the wallet knows the private key for)); version 0x00 (these addresses begin with the digit &#39;1&#39;)</li>
 </ul>
 
 
 <p>The resulting hash in both of these cases is always exactly 20 bytes.
-These are big-endian (most significant byte first).  (Beware of <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=bignumber&amp;from=Base58Check_encoding" rel="nofollow">?</a>bignumber</span> implementations that clip leading 0x00 bytes, or prepend extra 0x00 bytes to indicate sign - your code must handle these cases properly or else you may generate valid-looking addresses which can be sent to, but cannot be spent from - which would lead to the permanent loss of coins.)</p>
+These are big-endian (most significant byte first).  (Beware of <span class="createlink"><a href="/ikiwiki.cgi?from=Base58Check_encoding&amp;do=create&amp;page=bignumber" rel="nofollow">?</a>bignumber</span> implementations that clip leading 0x00 bytes, or prepend extra 0x00 bytes to indicate sign - your code must handle these cases properly or else you may generate valid-looking addresses which can be sent to, but cannot be spent from - which would lead to the permanent loss of coins.)</p>
 
 <h2 id="Encoding_a_private_key">Encoding a private key</h2>
 
@@ -315,12 +315,12 @@ output_string = &quot;&quot;
 while(x &gt; 0) 
 {
 (x, remainder) = divide(x, 58)
-output_string.append(code_string&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=remainder&amp;amp;do=create&amp;amp;from=Base58Check_encoding&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;remainder&lt;/span&gt;)
+output_string.append(code_string&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Base58Check_encoding&amp;amp;page=remainder&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;remainder&lt;/span&gt;)
 }
 
 repeat(number_of_leading_zero_bytes_in_hash)
 {
-output_string.append(code_string&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Base58Check_encoding&amp;amp;do=create&amp;amp;page=0&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;0&lt;/span&gt;);
+output_string.append(code_string&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Base58Check_encoding&amp;amp;page=0&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;0&lt;/span&gt;);
 }
 
 output_string.reverse();
@@ -396,7 +396,7 @@ output_string.reverse();
 </ul>
 
 
-<p><span class="createlink"><a href="/ikiwiki.cgi?from=Base58Check_encoding&amp;do=create&amp;page=es%3ACodificaci%C3%B3n%20Base58Check" rel="nofollow">?</a>es:Codificaci&oacute;n Base58Check</span></p>
+<p><span class="createlink"><a href="/ikiwiki.cgi?page=es%3ACodificaci%C3%B3n%20Base58Check&amp;do=create&amp;from=Base58Check_encoding" rel="nofollow">?</a>es:Codificaci&oacute;n Base58Check</span></p>
 
 </section>
 

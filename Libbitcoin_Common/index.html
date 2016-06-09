@@ -82,8 +82,8 @@ Libbitcoin Common
 int main()
 {
 const auto block = bc::genesis_block();
-const auto&amp; tx = block.transactions&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=0&amp;amp;from=Libbitcoin_Common&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;0&lt;/span&gt;;
-const auto&amp; input = tx.inputs&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=0&amp;amp;from=Libbitcoin_Common&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;0&lt;/span&gt;;
+const auto&amp; tx = block.transactions&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=0&amp;amp;do=create&amp;amp;from=Libbitcoin_Common&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;0&lt;/span&gt;;
+const auto&amp; input = tx.inputs&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Libbitcoin_Common&amp;amp;do=create&amp;amp;page=0&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;0&lt;/span&gt;;
 const auto script = bc::save_script(input.script);
 std::string message(script.begin(), script.end());
 std::cout &lt;&lt; message &lt;&lt; std::endl;

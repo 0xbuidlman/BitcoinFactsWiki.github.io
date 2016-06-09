@@ -52,7 +52,7 @@ Deterministic wallet
 
 
 
-<li><span class="createlink"><a href="/ikiwiki.cgi?from=Deterministic_wallet&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Deterministic_wallet" rel="nofollow">?</a>Talk</span></li>
 
 
 </ul>
@@ -78,7 +78,7 @@ Deterministic wallet
 
 <p>Certain types of deterministic wallet (BIP0032, Armory, <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Coinkite&amp;from=Deterministic_wallet" rel="nofollow">?</a>Coinkite</span> and <a href="https://coinb.in/#newHDaddress">Coinb.in</a> ) additionally allow for the complete separation of private and public key creation for greater security and convenience. In this model a server can be set up to only know the Master Public Key of a particular deterministic wallet. This allows the server to create as many public keys as is necessary for receiving funds, but a compromise of the MPK will not allow an attacker to spend from the wallet. They can alternatively be used in <a href="../Electrum/">Electrum</a> and <a href="../Armory/">Armory</a> to enable completely offline storage and spending, where an offline computer knows the private key and an online one knows only the MPK. Transactions spending coins are ferried between the two computers via USB storage which avoids exposing the offline computer to a network-based attack.</p>
 
-<p>Deterministic wallets implemented by hardware wallets (<span class="createlink"><a href="/ikiwiki.cgi?from=Deterministic_wallet&amp;page=TREZOR&amp;do=create" rel="nofollow">?</a>TREZOR</span>) keep the generated private keys offline and do not expose them to the computer even when spending coins.</p>
+<p>Deterministic wallets implemented by hardware wallets (<span class="createlink"><a href="/ikiwiki.cgi?page=TREZOR&amp;do=create&amp;from=Deterministic_wallet" rel="nofollow">?</a>TREZOR</span>) keep the generated private keys offline and do not expose them to the computer even when spending coins.</p>
 
 <h2 id="Types">Types</h2>
 
@@ -90,7 +90,7 @@ Deterministic wallet
 
 <h3 id="Type_2_hierarchical_deterministic_wallet">Type 2 hierarchical deterministic wallet</h3>
 
-<p>This wallet type is described in <a href="../BIP_0032/">BIP 0032</a> and is fully implemented in <span class="createlink"><a href="/ikiwiki.cgi?page=TREZOR&amp;do=create&amp;from=Deterministic_wallet" rel="nofollow">?</a>TREZOR</span>, <a href="../Electrum/">Electrum</a> and <span class="createlink"><a href="/ikiwiki.cgi?page=CarbonWallet&amp;do=create&amp;from=Deterministic_wallet" rel="nofollow">?</a>CarbonWallet</span>. The seed is a random 128 bit value presented to the user as a 12 word mnemonic using common English words. The seed is used after 100,000 rounds of SHA256 to slow down attacks against weak user-chosen strings. <a href="https://bitcointalk.org/index.php?topic=330672.msg3547258#msg3547258">(1)</a>.</p>
+<p>This wallet type is described in <a href="../BIP_0032/">BIP 0032</a> and is fully implemented in <span class="createlink"><a href="/ikiwiki.cgi?from=Deterministic_wallet&amp;page=TREZOR&amp;do=create" rel="nofollow">?</a>TREZOR</span>, <a href="../Electrum/">Electrum</a> and <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=CarbonWallet&amp;from=Deterministic_wallet" rel="nofollow">?</a>CarbonWallet</span>. The seed is a random 128 bit value presented to the user as a 12 word mnemonic using common English words. The seed is used after 100,000 rounds of SHA256 to slow down attacks against weak user-chosen strings. <a href="https://bitcointalk.org/index.php?topic=330672.msg3547258#msg3547258">(1)</a>.</p>
 
 <p>The initial description and workings of this wallet type is credited to Gregory Maxwell. <a href="https://bitcointalk.org/index.php?topic=19137.msg239768#msg239768">(2)</a></p>
 

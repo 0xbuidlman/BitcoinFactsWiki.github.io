@@ -141,7 +141,7 @@ import sun.misc.BASE64Encoder;</p>
   connection.getOutputStream().write(post_data.getBytes());</p>
 
 <p>  // read info
-  byte buffer[] = new byte<span class="createlink"><a href="/ikiwiki.cgi?from=Java_Example&amp;do=create&amp;page=16384" rel="nofollow">?</a>16384</span>;
+  byte buffer[] = new byte<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=16384&amp;from=Java_Example" rel="nofollow">?</a>16384</span>;
   int len = connection.getInputStream().read(buffer, 0, 16384);
   System.out.print(new String(buffer, 0, len, &quot;UTF-8&quot;));
   } catch (Exception ex) {

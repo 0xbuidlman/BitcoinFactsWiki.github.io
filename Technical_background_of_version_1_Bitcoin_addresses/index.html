@@ -52,7 +52,7 @@ Technical background of version 1 Bitcoin addresses
 
 
 
-<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Technical_background_of_version_1_Bitcoin_addresses" rel="nofollow">?</a>Talk</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=Technical_background_of_version_1_Bitcoin_addresses" rel="nofollow">?</a>Talk</span></li>
 
 
 </ul>
@@ -77,7 +77,7 @@ This article may be too technical for some users. The more basic article on <a h
 
 <p>A new keypair is generated for each receiving address (with newer  <a href="../Deterministic_wallet/">HD wallets</a>, this is done deterministically).
 The public key and their associated private keys (or the seed needed to generate them) are stored in the <a href="../Wallet/">wallet</a> data file.
-This is the only file users should need to <span class="createlink"><a href="/ikiwiki.cgi?from=Technical_background_of_version_1_Bitcoin_addresses&amp;page=backup&amp;do=create" rel="nofollow">?</a>backup</span>.
+This is the only file users should need to <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=backup&amp;from=Technical_background_of_version_1_Bitcoin_addresses" rel="nofollow">?</a>backup</span>.
 A &quot;send&quot; transaction to a specific Bitcoin address requires that the corresponding wallet knows the private key implementing it.
 This has the implication that if you create an address and receive coins to that address, then restore the wallet from an earlier backup, before the address was generated, then the coins received with that address are lost; this is not an issue for HD wallets where all addresses are generated from a single seed.
 Addresses are added to an address <a href="../Key_pool/">key pool</a> prior to being used for receiving coins. If you lose your wallet entirely, all of your coins are lost and can never be recovered.</p>

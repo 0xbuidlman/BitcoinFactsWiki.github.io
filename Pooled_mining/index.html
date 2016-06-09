@@ -90,30 +90,30 @@ Pooled mining
 
 <h3 id="The_Pay-per-Share_approach">The Pay-per-Share approach</h3>
 
-<p>The Pay-per-Share (PPS) approach, first described by <span class="createlink"><a href="/ikiwiki.cgi?from=Pooled_mining&amp;do=create&amp;page=BitPenny" rel="nofollow">?</a>BitPenny</span>, is to offer an instant flat payout for each share that is solved.  The payout is offered from the pool&#39;s existing balance and can therefore be withdrawn immediately, without waiting for a block to be solved or confirmed.  The possibility of cheating the miners by the pool operator and by timing attacks is thus completely eliminated.</p>
+<p>The Pay-per-Share (PPS) approach, first described by <span class="createlink"><a href="/ikiwiki.cgi?page=BitPenny&amp;do=create&amp;from=Pooled_mining" rel="nofollow">?</a>BitPenny</span>, is to offer an instant flat payout for each share that is solved.  The payout is offered from the pool&#39;s existing balance and can therefore be withdrawn immediately, without waiting for a block to be solved or confirmed.  The possibility of cheating the miners by the pool operator and by timing attacks is thus completely eliminated.</p>
 
 <p>This method results in the least possible variance for miners while transferring all risk to the pool operator.  The resulting possibility of loss for the server is offset by setting a payout lower than the full expected value.</p>
 
-<h3>Luke-Jr&#39;s approach (&quot;<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Eligius&amp;from=Pooled_mining" rel="nofollow">?</a>Eligius</span>&quot;)</h3>
+<h3>Luke-Jr&#39;s approach (&quot;<span class="createlink"><a href="/ikiwiki.cgi?from=Pooled_mining&amp;do=create&amp;page=Eligius" rel="nofollow">?</a>Eligius</span>&quot;)</h3>
 
 <p><a>Luke</a> came up with a third approach borrowing strengths from the earlier two.
 Like slush&#39;s approach, miners submit proofs-of-work to earn shares.
 Like puddinpop&#39;s approach, the pool pays out immediately via block generation.
 When distributing block rewards, it is divided equally among all shares since the last valid block.
 Unlike any preexisting pool approach, this means that the shares contributed toward stale blocks are recycled into the next block&#39;s shares.
-In order to spare participating miners from transaction fees, rewards are only paid out if a miner has earned at least 0.67108864 BTC (400 <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Tonal_Bitcoin&amp;from=Pooled_mining" rel="nofollow">?</a>TBC</span>). If the amount owed is less, it will be added to the earnings of a later block (which may then total over the threshold amount).
+In order to spare participating miners from transaction fees, rewards are only paid out if a miner has earned at least 0.67108864 BTC (400 <span class="createlink"><a href="/ikiwiki.cgi?from=Pooled_mining&amp;do=create&amp;page=Tonal_Bitcoin" rel="nofollow">?</a>TBC</span>). If the amount owed is less, it will be added to the earnings of a later block (which may then total over the threshold amount).
 If a miner does not submit a share for over a week, the pool sends any balance remaining, regardless of its size.</p>
 
 <h3 id="P2Pool_approach">P2Pool approach</h3>
 
-<p><span class="createlink"><a href="/ikiwiki.cgi?from=Pooled_mining&amp;do=create&amp;page=P2Pool" rel="nofollow">?</a>P2Pool</span> mining nodes work on a chain of shares similar to Bitcoin&rsquo;s blockchain. When a block is found, the reward is divided among the most recent shares in this share-blockchain. Like the puddinpop and Luke-Jr approaches, p2pool pays via generation.</p>
+<p><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=P2Pool&amp;from=Pooled_mining" rel="nofollow">?</a>P2Pool</span> mining nodes work on a chain of shares similar to Bitcoin&rsquo;s blockchain. When a block is found, the reward is divided among the most recent shares in this share-blockchain. Like the puddinpop and Luke-Jr approaches, p2pool pays via generation.</p>
 
 <h3 id="Comparison">Comparison</h3>
 
 <p>The cooperative mining approach (slush and Luke-Jr) uses a lot less resources on the pool server, since rather than continuously checking metahashes, all that has to be checked is the validity of submitted shares. The number of shares sent can be adjusted by adjusting the artificial difficulty level.</p>
 
 <p>Further, the cooperative mining approach allows the clients to use existing miners without any modification, while the puddinpop approach requires the custom pool miner, which are as of now not as efficient on GPU mining as the existing GPU miners.
-<span class="createlink"><a href="/ikiwiki.cgi?from=Pooled_mining&amp;page=Smallgeneration.png&amp;do=create" rel="nofollow">?</a>Smallgeneration.png</span></p>
+<span class="createlink"><a href="/ikiwiki.cgi?page=Smallgeneration.png&amp;do=create&amp;from=Pooled_mining" rel="nofollow">?</a>Smallgeneration.png</span></p>
 
 <p>Additionally, the puddinpop and Luke-Jr approaches of distributing the earnings by way of including precise sub-cent amounts in the generation transaction for the participants, results in the presence of sub-cent bitcoin amounts in your wallet, which are liable to disappear (as unnecessary fees) later due to a bug in old (before 0.3.21) bitcoin nodes. (E.g., if you have a transaction with 0.052 in your wallet, and you later send .05 to someone, your .002 will disappear.).</p>
 
@@ -122,9 +122,9 @@ If a miner does not submit a share for over a week, the pool sends any balance r
 <h2 id="See_Also">See Also</h2>
 
 <ul>
-<li><span class="createlink"><a href="/ikiwiki.cgi?page=tags%2FMiners&amp;do=create&amp;from=Pooled_mining" rel="nofollow">?</a>Miners</span></li>
-<li><span class="createlink"><a href="/ikiwiki.cgi?from=Pooled_mining&amp;do=create&amp;page=Poolservers" rel="nofollow">?</a>Poolservers</span></li>
-<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Comparison_of_mining_pools&amp;from=Pooled_mining" rel="nofollow">?</a>Comparison of mining pools</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=tags%2FMiners&amp;from=Pooled_mining" rel="nofollow">?</a>Miners</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Poolservers&amp;from=Pooled_mining" rel="nofollow">?</a>Poolservers</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Comparison_of_mining_pools&amp;do=create&amp;from=Pooled_mining" rel="nofollow">?</a>Comparison of mining pools</span></li>
 <li><a href="../tags/Pool_Operators/">Pool Operators</a></li>
 <li><a href="../Why_a_GPU_mines_faster_than_a_CPU/">Why a GPU mines faster than a CPU</a></li>
 <li><a href="../Why_pooled_mining/">Why pooled mining</a></li>
@@ -149,7 +149,7 @@ If a miner does not submit a share for over a week, the pool sends any balance r
 </ul>
 
 
-<p><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=ru%3A%D0%BC%D0%B0%D0%B9%D0%BD%D0%B8%D0%BD%D0%B3%20%D0%B2%20%D0%BF%D1%83%D0%BB%D0%B0%D1%85&amp;from=Pooled_mining" rel="nofollow">?</a>ru:&#x43C;&#x430;&#x439;&#x43D;&#x438;&#x43D;&#x433; &#x432; &#x43F;&#x443;&#x43B;&#x430;&#x445;</span></p>
+<p><span class="createlink"><a href="/ikiwiki.cgi?page=ru%3A%D0%BC%D0%B0%D0%B9%D0%BD%D0%B8%D0%BD%D0%B3%20%D0%B2%20%D0%BF%D1%83%D0%BB%D0%B0%D1%85&amp;do=create&amp;from=Pooled_mining" rel="nofollow">?</a>ru:&#x43C;&#x430;&#x439;&#x43D;&#x438;&#x43D;&#x433; &#x432; &#x43F;&#x443;&#x43B;&#x430;&#x445;</span></p>
 
 </section>
 

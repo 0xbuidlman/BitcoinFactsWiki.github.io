@@ -106,12 +106,12 @@ BIP UNOFFICIAL DRAFT 0
 
 <p>Additionally a new standard scriptPubKey will be defined:</p>
 
-<pre><code>OP_CHECKMULTISIGVERIFY OP_HASH160 &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=BIP_UNOFFICIAL_DRAFT_0&amp;amp;do=create&amp;amp;page=20-byte-hash-value&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;20-byte-hash-value&lt;/span&gt; OP_EQUAL
+<pre><code>OP_CHECKMULTISIGVERIFY OP_HASH160 &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=20-byte-hash-value&amp;amp;from=BIP_UNOFFICIAL_DRAFT_0&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;20-byte-hash-value&lt;/span&gt; OP_EQUAL
 </code></pre>
 
 <p>Redeemed by a new standard scriptSig (M-of-N)</p>
 
-<pre><code>OP_0  &lt;sig&gt; OP_NO_SKIP &lt;OP_SWAP {1 &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=pubkey1&amp;amp;from=BIP_UNOFFICIAL_DRAFT_0&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;pubkey1&lt;/span&gt; &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=pubkey2&amp;amp;from=BIP_UNOFFICIAL_DRAFT_0&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;pubkey2&lt;/span&gt; 2} &gt;
+<pre><code>OP_0  &lt;sig&gt; OP_NO_SKIP &lt;OP_SWAP {1 &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=pubkey1&amp;amp;from=BIP_UNOFFICIAL_DRAFT_0&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;pubkey1&lt;/span&gt; &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=BIP_UNOFFICIAL_DRAFT_0&amp;amp;do=create&amp;amp;page=pubkey2&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;pubkey2&lt;/span&gt; 2} &gt;
 </code></pre>
 
 <h2 id="Example_Execution">Example Execution</h2>
@@ -162,26 +162,26 @@ BIP UNOFFICIAL DRAFT 0
 <tbody>
 <tr>
 <td></td>
-<td>32 OP_NO_SKIP 22 <a href="/ikiwiki.cgi?from=BIP_UNOFFICIAL_DRAFT_0&amp;do=create&amp;page=pubkey" rel="nofollow">?</a>pubkey2&gt; OP_CHECKMULTISIGVERIFY OP_HASH160 20 OP_EQUAL</td>
+<td>32 OP_NO_SKIP 22 <a href="/ikiwiki.cgi?from=BIP_UNOFFICIAL_DRAFT_0&amp;page=pubkey&amp;do=create" rel="nofollow">?</a>pubkey2&gt; OP_CHECKMULTISIGVERIFY OP_HASH160 20 OP_EQUAL</td>
 </tr>
 <tr>
 <td></td>
-<td>OP_NO_SKIP 22 <a href="/ikiwiki.cgi?from=BIP_UNOFFICIAL_DRAFT_0&amp;page=pubkey&amp;do=create" rel="nofollow">?</a>pubkey2&gt; OP_CHECKMULTISIGVERIFY  OP_HASH160 20 OP_EQUAL</td>
+<td>OP_NO_SKIP 22 <a href="/ikiwiki.cgi?page=pubkey&amp;do=create&amp;from=BIP_UNOFFICIAL_DRAFT_0" rel="nofollow">?</a>pubkey2&gt; OP_CHECKMULTISIGVERIFY  OP_HASH160 20 OP_EQUAL</td>
 </tr>
 <tr>
 <td></td>
-<td>22 <a href="/ikiwiki.cgi?do=create&amp;page=pubkey&amp;from=BIP_UNOFFICIAL_DRAFT_0" rel="nofollow">?</a>pubkey2&gt; OP_CHECKMULTISIGVERIFY OP_HASH160 20 OP_EQUAL</td>
+<td>22 <a href="/ikiwiki.cgi?from=BIP_UNOFFICIAL_DRAFT_0&amp;page=pubkey&amp;do=create" rel="nofollow">?</a>pubkey2&gt; OP_CHECKMULTISIGVERIFY OP_HASH160 20 OP_EQUAL</td>
+</tr>
+<tr>
+<td><a href="/ikiwiki.cgi?from=BIP_UNOFFICIAL_DRAFT_0&amp;do=create&amp;page=pubkey" rel="nofollow">?</a>pubkey2&gt; </td>
+<td>OP_SWAP 1 <span class="createlink"><a href="/ikiwiki.cgi?from=BIP_UNOFFICIAL_DRAFT_0&amp;page=pubkey&amp;do=create" rel="nofollow">?</a>pubkey</span>2 OP_CHECKMULTISIGVERIFY OP_HASH160 20 OP_EQUAL</td>
+</tr>
+<tr>
+<td><a href="/ikiwiki.cgi?page=pubkey&amp;do=create&amp;from=BIP_UNOFFICIAL_DRAFT_0" rel="nofollow">?</a>pubkey2&gt; </td>
+<td>1 <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=pubkey&amp;from=BIP_UNOFFICIAL_DRAFT_0" rel="nofollow">?</a>pubkey</span>2 OP_CHECKMULTISIGVERIFY OP_HASH160 20 OP_EQUAL</td>
 </tr>
 <tr>
 <td><a href="/ikiwiki.cgi?from=BIP_UNOFFICIAL_DRAFT_0&amp;page=pubkey&amp;do=create" rel="nofollow">?</a>pubkey2&gt; </td>
-<td>OP_SWAP 1 <span class="createlink"><a href="/ikiwiki.cgi?page=pubkey&amp;do=create&amp;from=BIP_UNOFFICIAL_DRAFT_0" rel="nofollow">?</a>pubkey</span>2 OP_CHECKMULTISIGVERIFY OP_HASH160 20 OP_EQUAL</td>
-</tr>
-<tr>
-<td><a href="/ikiwiki.cgi?from=BIP_UNOFFICIAL_DRAFT_0&amp;do=create&amp;page=pubkey" rel="nofollow">?</a>pubkey2&gt; </td>
-<td>1 <span class="createlink"><a href="/ikiwiki.cgi?from=BIP_UNOFFICIAL_DRAFT_0&amp;do=create&amp;page=pubkey" rel="nofollow">?</a>pubkey</span>2 OP_CHECKMULTISIGVERIFY OP_HASH160 20 OP_EQUAL</td>
-</tr>
-<tr>
-<td><a href="/ikiwiki.cgi?from=BIP_UNOFFICIAL_DRAFT_0&amp;do=create&amp;page=pubkey" rel="nofollow">?</a>pubkey2&gt; </td>
 <td>OP_HASH160 20 OP_EQUAL</td>
 </tr>
 <tr>
@@ -251,7 +251,7 @@ BIP UNOFFICIAL DRAFT 0
 
 <p>with</p>
 
-<pre><code>&lt;OP_SWAP {1 &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=BIP_UNOFFICIAL_DRAFT_0&amp;amp;do=create&amp;amp;page=pubkey1&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;pubkey1&lt;/span&gt; &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=BIP_UNOFFICIAL_DRAFT_0&amp;amp;do=create&amp;amp;page=pubkey2&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;pubkey2&lt;/span&gt; 2} &gt; OP_0 &lt;miner&#39;s_sig&gt; OP_1 &lt;miner&#39;s_pubkey&gt; OP_1
+<pre><code>&lt;OP_SWAP {1 &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=pubkey1&amp;amp;do=create&amp;amp;from=BIP_UNOFFICIAL_DRAFT_0&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;pubkey1&lt;/span&gt; &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=BIP_UNOFFICIAL_DRAFT_0&amp;amp;do=create&amp;amp;page=pubkey2&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;pubkey2&lt;/span&gt; 2} &gt; OP_0 &lt;miner&#39;s_sig&gt; OP_1 &lt;miner&#39;s_pubkey&gt; OP_1
 </code></pre>
 
 <h2 id="See_Also">See Also</h2>

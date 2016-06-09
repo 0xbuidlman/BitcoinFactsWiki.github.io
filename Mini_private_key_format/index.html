@@ -79,7 +79,7 @@ The <strong>mini private key format</strong> is a method of encoding a Bitcoin p
 
 <p>The way it might appear within a physical bitcoin is on a round card printed as follows:</p>
 
-<p>Side of discs showing mini private key: (from <span class="createlink"><a href="/ikiwiki.cgi?from=Mini_private_key_format&amp;page=Casascius_physical_bitcoins&amp;do=create" rel="nofollow">?</a>Casascius physical bitcoins</span>)<br />
+<p>Side of discs showing mini private key: (from <span class="createlink"><a href="/ikiwiki.cgi?page=Casascius_physical_bitcoins&amp;do=create&amp;from=Mini_private_key_format" rel="nofollow">?</a>Casascius physical bitcoins</span>)<br />
 <a href="../Miniprivkeys.jpg"><img class="img" height="90" src="./300x300-Miniprivkeys.jpg" width="299" /></a></p>
 
 <p>Side of discs showing prefix of bitcoin address (printed on the opposite side):<br />
@@ -117,19 +117,19 @@ The <strong>mini private key format</strong> is a method of encoding a Bitcoin p
 <h3 id="Web">Web</h3>
 
 <ul>
-<li><span class="createlink"><a href="/ikiwiki.cgi?from=Mini_private_key_format&amp;page=BlockChain.info&amp;do=create" rel="nofollow">?</a>BlockChain.info</span>
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=BlockChain.info&amp;do=create&amp;from=Mini_private_key_format" rel="nofollow">?</a>BlockChain.info</span>
 
 <ul>
 <li>Private keys can be imported into a Blockchain.info wallet and bitcoins can be sent to another address immediately upon import without needing to wait for any confirmations.  Even after import, funds remain associated with the private key until they are actually spent to a different address.</li>
 </ul>
 </li>
-<li><span class="createlink"><a href="/ikiwiki.cgi?from=Mini_private_key_format&amp;page=StrongCoin&amp;do=create" rel="nofollow">?</a>StrongCoin</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=StrongCoin&amp;from=Mini_private_key_format" rel="nofollow">?</a>StrongCoin</span></li>
 </ul>
 
 
 <h2 id="Decoding">Decoding</h2>
 
-<p>The private key encoding consists of 30 alphanumeric characters from the <span class="createlink"><a href="/ikiwiki.cgi?page=base58&amp;do=create&amp;from=Mini_private_key_format" rel="nofollow">?</a>base58</span> alphabet used in Bitcoin.  The first of the characters is always the uppercase letter S.</p>
+<p>The private key encoding consists of 30 alphanumeric characters from the <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=base58&amp;from=Mini_private_key_format" rel="nofollow">?</a>base58</span> alphabet used in Bitcoin.  The first of the characters is always the uppercase letter S.</p>
 
 <p>To determine whether the minikey is valid:</p>
 
@@ -170,7 +170,7 @@ The <strong>mini private key format</strong> is a method of encoding a Bitcoin p
 
 <h2 id="Creating_mini_private_keys">Creating mini private keys</h2>
 
-<p>Creating mini private keys is relatively simple.  One program which can create such keys is <span class="createlink"><a href="/ikiwiki.cgi?page=Casascius_Bitcoin_Utility&amp;do=create&amp;from=Mini_private_key_format" rel="nofollow">?</a>Casascius Bitcoin Utility</span>.</p>
+<p>Creating mini private keys is relatively simple.  One program which can create such keys is <span class="createlink"><a href="/ikiwiki.cgi?from=Mini_private_key_format&amp;page=Casascius_Bitcoin_Utility&amp;do=create" rel="nofollow">?</a>Casascius Bitcoin Utility</span>.</p>
 
 <p>Mini private keys must be created &quot;from scratch&quot;, as the conversion from mini private key to full-size private key is one-way.  In other words, there is no way to convert an existing full-size private key into a mini private key.</p>
 
@@ -216,7 +216,7 @@ import hashlib</source></p>
     # Take one round of SHA256
     candHash = hashlib.sha256(t).digest()
     # Check if the first eight bits of the hash are 0
-    if candHash<span class="createlink"><a href="/ikiwiki.cgi?from=Mini_private_key_format&amp;page=0&amp;do=create" rel="nofollow">?</a>0</span> == &#39;\x00&#39;:
+    if candHash<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=0&amp;from=Mini_private_key_format" rel="nofollow">?</a>0</span> == &#39;\x00&#39;:
     privateKey = GetPrivateKey(cand)
     print(&#39;\n%s\nSHA256( ): %s\nsha256(?): %s&#39; %
     (cand, privateKey, candHash.encode(&#39;hex_codec&#39;)))
@@ -254,7 +254,7 @@ import hashlib</source></p>
     t = &#39;%s?&#39; % shortKey
     tHash = hashlib.sha256(t).digest()
     # Check to see that first byte is \x00
-    if tHash<span class="createlink"><a href="/ikiwiki.cgi?page=0&amp;do=create&amp;from=Mini_private_key_format" rel="nofollow">?</a>0</span> == &#39;\x00&#39;:
+    if tHash<span class="createlink"><a href="/ikiwiki.cgi?from=Mini_private_key_format&amp;page=0&amp;do=create" rel="nofollow">?</a>0</span> == &#39;\x00&#39;:
     return True
     return False
 </p>

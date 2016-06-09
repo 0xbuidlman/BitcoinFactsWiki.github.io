@@ -52,7 +52,7 @@ Getblocktemplate
 
 
 
-<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Getblocktemplate" rel="nofollow">?</a>Talk</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Getblocktemplate&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
 
 
 </ul>
@@ -133,7 +133,7 @@ getblocktemplate is designed from the start to be flexible for future extensions
 
 <h3 id="For_pool_operators">For pool operators</h3>
 
-<p>See also: <span class="createlink"><a href="/ikiwiki.cgi?from=Getblocktemplate&amp;do=create&amp;page=Poolservers" rel="nofollow">?</a>Poolservers</span></p>
+<p>See also: <span class="createlink"><a href="/ikiwiki.cgi?page=Poolservers&amp;do=create&amp;from=Getblocktemplate" rel="nofollow">?</a>Poolservers</span></p>
 
 <p>If you are implementing your own pool server, see the <span class="createlink"><a href="/ikiwiki.cgi?from=Getblocktemplate&amp;page=section%20for%20poolserver%20development__124__&amp;do=create" rel="nofollow">?</a>section for poolserver development|</span>.</p>
 
@@ -180,7 +180,7 @@ A short example Python script is included that finds a prepared share using CPU 
     &quot;height&quot;: 23957,
     &quot;version&quot;: 2,
     &quot;curtime&quot;: 1346886758,
-    &quot;mutable&quot;: <span class="createlink"><a href="/ikiwiki.cgi?page=__34__coinbase%2Fappend__34__&amp;do=create&amp;from=Getblocktemplate" rel="nofollow">?</a>append&quot;</span>,
+    &quot;mutable&quot;: <span class="createlink"><a href="/ikiwiki.cgi?from=Getblocktemplate&amp;do=create&amp;page=__34__coinbase%2Fappend__34__" rel="nofollow">?</a>append&quot;</span>,
     &quot;bits&quot;: &quot;ffff001d&quot;
     },
     &quot;id&quot;: 0
@@ -196,12 +196,12 @@ So when/if you want to add on to the coinbase data, simply insert it 42+DataLen 
 
 <p>Python example:
     import binascii
-    coinbase = binascii.a2b_hex(template<span class="createlink"><a href="/ikiwiki.cgi?from=Getblocktemplate&amp;page=__39__coinbasetxn__39__&amp;do=create" rel="nofollow">?</a>&#39;coinbasetxn&#39;</span><span class="createlink"><a href="/ikiwiki.cgi?from=Getblocktemplate&amp;page=__39__data__39__&amp;do=create" rel="nofollow">?</a>&#39;data&#39;</span>)
+    coinbase = binascii.a2b_hex(template<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=__39__coinbasetxn__39__&amp;from=Getblocktemplate" rel="nofollow">?</a>&#39;coinbasetxn&#39;</span><span class="createlink"><a href="/ikiwiki.cgi?page=__39__data__39__&amp;do=create&amp;from=Getblocktemplate" rel="nofollow">?</a>&#39;data&#39;</span>)
     extradata = b&#39;my block&#39;
     # The following can be done better in both Python 2 and Python 3, but this way works with both
     origLen = ord(coinbase<span class="createlink"><a href="/ikiwiki.cgi?page=41%3A42&amp;do=create&amp;from=Getblocktemplate" rel="nofollow">?</a>41:42</span>)
     newLen = origLen + len(extradata)
-    coinbase = coinbase<span class="createlink"><a href="/ikiwiki.cgi?from=Getblocktemplate&amp;page=0%3A41&amp;do=create" rel="nofollow">?</a>0:41</span> + chr(newLen).encode(&#39;ascii&#39;) + coinbase<a>+ origLen</a> + extradata + coinbase<a href="42">+ origLen:</a></p>
+    coinbase = coinbase<span class="createlink"><a href="/ikiwiki.cgi?page=0%3A41&amp;do=create&amp;from=Getblocktemplate" rel="nofollow">?</a>0:41</span> + chr(newLen).encode(&#39;ascii&#39;) + coinbase<a>+ origLen</a> + extradata + coinbase<a href="42">+ origLen:</a></p>
 
 <p>======How to build merkle root======
 Collect your coinbase transaction (modified or not) at the front of the &quot;transactions&quot; list provided by the server.
@@ -218,13 +218,13 @@ that is your merkle root.</p>
     def dblsha(data):
     return hashlib.sha256(hashlib.sha256(data).digest()).digest()</p>
 
-<pre><code>txnlist = &lt;a href=&quot;../Coinbase/&quot;&gt;coinbase&lt;/a&gt; + &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Getblocktemplate&amp;amp;page=__39__data__39__&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;&amp;#39;data&amp;#39;&lt;/span&gt;) for a in template&lt;a href=&quot;../Transactions/&quot;&gt;transactions&lt;/a&gt;
+<pre><code>txnlist = &lt;a href=&quot;../Coinbase/&quot;&gt;coinbase&lt;/a&gt; + &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Getblocktemplate&amp;amp;do=create&amp;amp;page=__39__data__39__&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;&amp;#39;data&amp;#39;&lt;/span&gt;) for a in template&lt;a href=&quot;../Transactions/&quot;&gt;transactions&lt;/a&gt;
 merklehashes = [for t in txnlist](dblsha(t))
 while len(merklehashes) &gt; 1:
 if len(merklehashes) % 2:
-merklehashes.append(merklehashes&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Getblocktemplate&amp;amp;page=-1&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;-1&lt;/span&gt;)
-merklehashes = &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=i&amp;amp;do=create&amp;amp;from=Getblocktemplate&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;i&lt;/span&gt; + merklehashes[+ 1](i)) for i in range(0, len(merklehashes), 2)
-merkleroot = merklehashes&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Getblocktemplate&amp;amp;page=0&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;0&lt;/span&gt;
+merklehashes.append(merklehashes&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=-1&amp;amp;do=create&amp;amp;from=Getblocktemplate&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;-1&lt;/span&gt;)
+merklehashes = &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Getblocktemplate&amp;amp;do=create&amp;amp;page=i&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;i&lt;/span&gt; + merklehashes[+ 1](i)) for i in range(0, len(merklehashes), 2)
+merkleroot = merklehashes&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=0&amp;amp;from=Getblocktemplate&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;0&lt;/span&gt;
 </code></pre>
 
 <p>======How to build block header======
@@ -234,11 +234,11 @@ As of this time, the current Bitcoin block version is 3.</p>
 
 <p>Python example:
     import struct
-    blkheader = struct.pack(&#39;&lt;I&#39;, template<span class="createlink"><a href="/ikiwiki.cgi?page=__39__version__39__&amp;do=create&amp;from=Getblocktemplate" rel="nofollow">?</a>&#39;version&#39;</span>) + \
-    binascii.a2b_hex(template<span class="createlink"><a href="/ikiwiki.cgi?page=__39__previousblockhash__39__&amp;do=create&amp;from=Getblocktemplate" rel="nofollow">?</a>&#39;previousblockhash&#39;</span>) + \
+    blkheader = struct.pack(&#39;&lt;I&#39;, template<span class="createlink"><a href="/ikiwiki.cgi?from=Getblocktemplate&amp;page=__39__version__39__&amp;do=create" rel="nofollow">?</a>&#39;version&#39;</span>) + \
+    binascii.a2b_hex(template<span class="createlink"><a href="/ikiwiki.cgi?from=Getblocktemplate&amp;page=__39__previousblockhash__39__&amp;do=create" rel="nofollow">?</a>&#39;previousblockhash&#39;</span>) + \
     merkleroot + \
-    struct.pack(&#39;&lt;I&#39;, template<span class="createlink"><a href="/ikiwiki.cgi?from=Getblocktemplate&amp;page=__39__curtime__39__&amp;do=create" rel="nofollow">?</a>&#39;curtime&#39;</span>) + \
-    binascii.a2b_hex(template<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=__39__bits__39__&amp;from=Getblocktemplate" rel="nofollow">?</a>&#39;bits&#39;</span>) + \
+    struct.pack(&#39;&lt;I&#39;, template<span class="createlink"><a href="/ikiwiki.cgi?page=__39__curtime__39__&amp;do=create&amp;from=Getblocktemplate" rel="nofollow">?</a>&#39;curtime&#39;</span>) + \
+    binascii.a2b_hex(template<span class="createlink"><a href="/ikiwiki.cgi?from=Getblocktemplate&amp;do=create&amp;page=__39__bits__39__" rel="nofollow">?</a>&#39;bits&#39;</span>) + \
     b&#39;NONC&#39;</p>
 
 <p>======While you&#39;re mining======
@@ -271,7 +271,7 @@ If the server has listed &quot;submit/coinbase&quot; in its &quot;mutable&quot; 
     return b&#39;\xfd&#39; + struct.pack(&#39;&lt;H&#39;, n)
     blkdata = blkheader + varintEncode(len(txnlist)) + coinbase
     if &#39;submit/coinbase&#39; not in template.get(&#39;mutable&#39;, ()):
-    for txn in txnlist<span class="createlink"><a href="/ikiwiki.cgi?page=1%3A&amp;do=create&amp;from=Getblocktemplate" rel="nofollow">?</a>1:</span>:
+    for txn in txnlist<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=1%3A&amp;from=Getblocktemplate" rel="nofollow">?</a>1:</span>:
     blkdata += txn</p>
 
 <h4 id="Poolserver_software">Poolserver software</h4>
@@ -299,18 +299,18 @@ If the server has listed &quot;submit/coinbase&quot; in its &quot;mutable&quot; 
 <h2 id="History">History</h2>
 
 <p>Getblocktemplate&#39;s origins trace back to forrestv&#39;s getmemorypool JSON-RPC method for bitcoind.
-He created it so that his pool (<span class="createlink"><a href="/ikiwiki.cgi?page=P2Pool&amp;do=create&amp;from=Getblocktemplate" rel="nofollow">?</a>P2Pool</span>) could piggy-back on bitcoind so as to avoid harming the Bitcoin network (up to this point, it mined only empty blocks that never confirmed transactions).
-Having been fighting with scalability problems in pushpool/bitcoind for months on his pool (<span class="createlink"><a href="/ikiwiki.cgi?page=Eligius&amp;do=create&amp;from=Getblocktemplate" rel="nofollow">?</a>Eligius</span>), Luke-Jr set out to implement a fast pool server using getmemorypool to do its own block production (this became <span class="createlink"><a href="/ikiwiki.cgi?from=Getblocktemplate&amp;do=create&amp;page=Eloipool" rel="nofollow">?</a>Eloipool</span>, this first open source makes-its-own-blocks poolserver).
+He created it so that his pool (<span class="createlink"><a href="/ikiwiki.cgi?from=Getblocktemplate&amp;do=create&amp;page=P2Pool" rel="nofollow">?</a>P2Pool</span>) could piggy-back on bitcoind so as to avoid harming the Bitcoin network (up to this point, it mined only empty blocks that never confirmed transactions).
+Having been fighting with scalability problems in pushpool/bitcoind for months on his pool (<span class="createlink"><a href="/ikiwiki.cgi?page=Eligius&amp;do=create&amp;from=Getblocktemplate" rel="nofollow">?</a>Eligius</span>), Luke-Jr set out to implement a fast pool server using getmemorypool to do its own block production (this became <span class="createlink"><a href="/ikiwiki.cgi?page=Eloipool&amp;do=create&amp;from=Getblocktemplate" rel="nofollow">?</a>Eloipool</span>, this first open source makes-its-own-blocks poolserver).
 Other poolservers also implemented block creation using getmemorypool over the months following.</p>
 
 <p>At about the same time, interest in decentralizing pooled mining became a hot topic.
-While <span class="createlink"><a href="/ikiwiki.cgi?page=BitPenny&amp;do=create&amp;from=Getblocktemplate" rel="nofollow">?</a>BitPenny</span> had initially released its own decentralized mining proxy months prior, <span class="createlink"><a href="/ikiwiki.cgi?page=P2Pool&amp;do=create&amp;from=Getblocktemplate" rel="nofollow">?</a>P2Pool</span>&#39;s implementation became rapidly popular.
+While <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=BitPenny&amp;from=Getblocktemplate" rel="nofollow">?</a>BitPenny</span> had initially released its own decentralized mining proxy months prior, <span class="createlink"><a href="/ikiwiki.cgi?from=Getblocktemplate&amp;do=create&amp;page=P2Pool" rel="nofollow">?</a>P2Pool</span>&#39;s implementation became rapidly popular.
 Anyone involved in Bitcoin mining protocols could see the need to move control of block creation back into the hands of the miners.
 Unfortunately, both <span class="createlink"><a href="/ikiwiki.cgi?from=Getblocktemplate&amp;do=create&amp;page=BitPenny" rel="nofollow">?</a>BitPenny</span> and <span class="createlink"><a href="/ikiwiki.cgi?from=Getblocktemplate&amp;do=create&amp;page=P2Pool" rel="nofollow">?</a>P2Pool</span> had used very pool-specific proprietary protocols to implement their decentralization.
 On the other hand, getmemorypool was <em>almost</em> a perfect fit for the task - it just lacked support for the now-ubiquitous pooled mining extensions that had developed around the getwork protocol over time.</p>
 
-<p>In February of 2012, Luke implemented and <a href="https://bitcointalk.org/?topic=23768.msg774497#msg774497">deployed</a> a first draft of getmemorypool mining support in <span class="createlink"><a href="/ikiwiki.cgi?from=Getblocktemplate&amp;do=create&amp;page=Eloipool" rel="nofollow">?</a>Eloipool</span> (and on <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Eligius&amp;from=Getblocktemplate" rel="nofollow">?</a>Eligius</span>) along with a proof-of-concept getwork proxy (now known as gmp-proxy), adding revisions as needed to function as a general-purpose decentralized mining protocol.
-After he had confirmed it was working, he documented and proposed it on the <span class="createlink"><a href="/ikiwiki.cgi?from=Getblocktemplate&amp;page=Bitcoin_development_mailing_list&amp;do=create" rel="nofollow">?</a>Bitcoin development mailing list</span> for review on February 28th, where discussion began on what was missing and what needed to be changed or clarified.
+<p>In February of 2012, Luke implemented and <a href="https://bitcointalk.org/?topic=23768.msg774497#msg774497">deployed</a> a first draft of getmemorypool mining support in <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Eloipool&amp;from=Getblocktemplate" rel="nofollow">?</a>Eloipool</span> (and on <span class="createlink"><a href="/ikiwiki.cgi?from=Getblocktemplate&amp;do=create&amp;page=Eligius" rel="nofollow">?</a>Eligius</span>) along with a proof-of-concept getwork proxy (now known as gmp-proxy), adding revisions as needed to function as a general-purpose decentralized mining protocol.
+After he had confirmed it was working, he documented and proposed it on the <span class="createlink"><a href="/ikiwiki.cgi?from=Getblocktemplate&amp;do=create&amp;page=Bitcoin_development_mailing_list" rel="nofollow">?</a>Bitcoin development mailing list</span> for review on February 28th, where discussion began on what was missing and what needed to be changed or clarified.
 During the following few months, a number of others, both developers and testers, provided constructive criticism and suggestions, which were integrated into the standard.
 Luke also actively encouraged participation in the development of the standard among pool operators and poolserver authors, especially as it became necessary to move forward into the ASIC &quot;mining generation&quot;.
 Eventually, it was decided it would be best to rename it to the more appropriate &quot;getblocktemplate&quot; name and drop backward compatibility with getmemorypool for simplicity.

@@ -72,7 +72,7 @@ Wallet encryption
 <section id="content" role="main">
 <p>This page describes the algorithm used for encrypting the <strong><a href="../Wallet/#Bitcoin_Qt">wallet.dat</a></strong> file used in the original <a href="../Bitcoin_client/">Bitcoin client</a>.</p>
 
-<p>Wallet encryption uses <span title="Advanced Encryption Standard with 256 bit key and Cipher Block Chaining"></span><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=AES-256-CBC&amp;from=Wallet_encryption" rel="nofollow">?</a>AES-256-CBC</span> to encrypt only the private keys that are held in a wallet.  The keys are encrypted with a master key
+<p>Wallet encryption uses <span title="Advanced Encryption Standard with 256 bit key and Cipher Block Chaining"></span><span class="createlink"><a href="/ikiwiki.cgi?from=Wallet_encryption&amp;do=create&amp;page=AES-256-CBC" rel="nofollow">?</a>AES-256-CBC</span> to encrypt only the private keys that are held in a wallet.  The keys are encrypted with a master key
 which is entirely random.  This master key is then encrypted with
 AES-256-CBC with a key derived from the passphrase using <a href="https://en.wikipedia.org/wiki/SHA-512">SHA-512</a> and
 OpenSSL&#39;s <code>EVP_BytesToKey</code> and a dynamic number of rounds determined by

@@ -108,7 +108,7 @@ header_bin = header_hex.decode(&#39;hex&#39;)
 hash = hashlib.sha256(hashlib.sha256(header_bin).digest()).digest()
 hash.encode(&#39;hex_codec&#39;)
 &#39;1dbd981fe6985776b644b173a4d0385ddc1aa2a829688d1e0000000000000000&#39;
-hash<span class="createlink"><a href="/ikiwiki.cgi?from=Block_hashing_algorithm&amp;page=%3A%3A-1&amp;do=create" rel="nofollow">?</a>::-1</span>.encode(&#39;hex_codec&#39;)
+hash<span class="createlink"><a href="/ikiwiki.cgi?page=%3A%3A-1&amp;do=create&amp;from=Block_hashing_algorithm" rel="nofollow">?</a>::-1</span>.encode(&#39;hex_codec&#39;)
 &#39;00000000000000001e8d6829a8a21adc5d38d0a473b144b6765798e61f98bd1d&#39;
 </p></blockquote></blockquote></blockquote>
 
@@ -128,7 +128,7 @@ hash<span class="createlink"><a href="/ikiwiki.cgi?from=Block_hashing_algorithm&
     $Split = str_split(strrev($in));
     $x=*;
     for ($i = 0; $i &lt; count($Split); $i+=2) {
-    $x .= $Split<span class="createlink"><a href="/ikiwiki.cgi?page=__36__i%2B1&amp;do=create&amp;from=Block_hashing_algorithm" rel="nofollow">?</a>$i+1</span>.$Split<span class="createlink"><a href="/ikiwiki.cgi?page=__36__i&amp;do=create&amp;from=Block_hashing_algorithm" rel="nofollow">?</a>$i</span>;
+    $x .= $Split<span class="createlink"><a href="/ikiwiki.cgi?page=__36__i%2B1&amp;do=create&amp;from=Block_hashing_algorithm" rel="nofollow">?</a>$i+1</span>.$Split<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=__36__i&amp;from=Block_hashing_algorithm" rel="nofollow">?</a>$i</span>;
     }
     return $x;
     }</source></p>

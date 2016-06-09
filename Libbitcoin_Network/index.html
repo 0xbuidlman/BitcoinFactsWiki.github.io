@@ -52,7 +52,7 @@ Libbitcoin Network
 
 
 
-<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=Libbitcoin_Network" rel="nofollow">?</a>Talk</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Libbitcoin_Network&amp;page=Talk&amp;do=create" rel="nofollow">?</a>Talk</span></li>
 
 
 </ul>
@@ -84,7 +84,7 @@ Libbitcoin Network
     
     <span class="hl slc">// Decode a base16-encoded Bitcoin transaction. </span>
     data_chunk decoded<span class="hl opt">;</span>
-    <span class="hl kwa">if</span> <span class="hl opt">(</span>argc <span class="hl opt">&lt;</span> <span class="hl num">1</span>  <span class="hl opt">!</span><span class="hl kwd">decode_base16</span><span class="hl opt">(</span>decoded<span class="hl opt">,</span> argv<span class="hl opt"><span class="createlink"><a href="/ikiwiki.cgi?from=Libbitcoin_Network&amp;page=__60__%2Fspan__62____60__span%20class__61____34__hl%20num__34____62__0__60__%2Fspan__62____60__span%20class__61____34__hl%20opt__34____62__&amp;do=create" rel="nofollow">?</a>span&gt;&lt;span class=&quot;hl opt&quot;&gt;</span>))</span>
+    <span class="hl kwa">if</span> <span class="hl opt">(</span>argc <span class="hl opt">&lt;</span> <span class="hl num">1</span>  <span class="hl opt">!</span><span class="hl kwd">decode_base16</span><span class="hl opt">(</span>decoded<span class="hl opt">,</span> argv<span class="hl opt"><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=__60__%2Fspan__62____60__span%20class__61____34__hl%20num__34____62__0__60__%2Fspan__62____60__span%20class__61____34__hl%20opt__34____62__&amp;from=Libbitcoin_Network" rel="nofollow">?</a>span&gt;&lt;span class=&quot;hl opt&quot;&gt;</span>))</span>
         <span class="hl kwa">return</span> <span class="hl opt">-</span><span class="hl num">1</span><span class="hl opt">;</span>
     
     <span class="hl slc">// Parse the decoded transaction.</span>
@@ -104,7 +104,7 @@ Libbitcoin Network
     <span class="hl slc">// Declare completion signal.</span>
     std<span class="hl opt">::</span>promise<span class="hl opt">&lt;</span>nowiki<span class="hl opt">&gt;&lt;</span>code<span class="hl opt">&gt;&lt;/</span>nowiki<span class="hl opt">&gt;</span> complete<span class="hl opt">;</span>
     
-    <span class="hl kwb">const</span> <span class="hl kwc">auto</span> send_handler <span class="hl opt">= <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=%26amp__59____60__%2Fspan__62__complete__60__span%20class__61____34__hl%20opt__34____62__&amp;from=Libbitcoin_Network" rel="nofollow">?</a>span&gt;complete&lt;span class=&quot;hl opt&quot;&gt;</span>(</span>code ec<span class="hl opt">)</span>
+    <span class="hl kwb">const</span> <span class="hl kwc">auto</span> send_handler <span class="hl opt">= <span class="createlink"><a href="/ikiwiki.cgi?page=%26amp__59____60__%2Fspan__62__complete__60__span%20class__61____34__hl%20opt__34____62__&amp;do=create&amp;from=Libbitcoin_Network" rel="nofollow">?</a>span&gt;complete&lt;span class=&quot;hl opt&quot;&gt;</span>(</span>code ec<span class="hl opt">)</span>
     <span class="hl opt">{</span>
         complete<span class="hl opt">.</span><span class="hl kwd">set_value</span><span class="hl opt">(</span>ec<span class="hl opt">);</span>
     <span class="hl opt">};</span>

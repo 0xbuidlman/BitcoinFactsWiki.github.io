@@ -354,11 +354,11 @@ The more bizarre the sentence, the better you remember it.</p></li>
 
 <p>Secure the only file you need is the wallet.dat. Advance to make sure that Bitcoin not running anymore! The best way would be to encrypt the file and store somewhere safe.</p>
 
-<p>You can also  <span class="createlink"><a href="/ikiwiki.cgi?page=API&amp;do=create&amp;from=Securing_your_wallet%2Ftalk" rel="nofollow">?</a>backupwallet</span> JSON-RPC command used to create a backup on the fly.</p>
+<p>You can also  <span class="createlink"><a href="/ikiwiki.cgi?from=Securing_your_wallet%2Ftalk&amp;page=API&amp;do=create" rel="nofollow">?</a>backupwallet</span> JSON-RPC command used to create a backup on the fly.</p>
 
 <h4 id="Where_to_find_the_Bitcoin_folder">Where to find the Bitcoin folder</h4>
 
-<p>The <span class="createlink"><a href="/ikiwiki.cgi?from=Securing_your_wallet%2Ftalk&amp;page=Bitcoin_folder&amp;do=create" rel="nofollow">?</a>Bitcoin folder</span> is the folder where the data is wallet.dat along with the file.</p>
+<p>The <span class="createlink"><a href="/ikiwiki.cgi?from=Securing_your_wallet%2Ftalk&amp;do=create&amp;page=Bitcoin_folder" rel="nofollow">?</a>Bitcoin folder</span> is the folder where the data is wallet.dat along with the file.</p>
 
 <h5 id="Windows">Windows</h5>
 
@@ -407,7 +407,7 @@ These steps (chain wallet and block) of all data stored on Bitcoin an encrypted 
 
 <h1 id="Disk_Utility_Open">Disk Utility Open</h1>
 
-<h1 id="Click_on_.26quot.3BNew_Image.26quot.3B.2C_500MB.2C_128-bit_or_256-bit_.28faster_or_more_secure.29_encryption_specify_eintelne_partition.">Click on &quot;New Image&quot;, 500MB, 128-bit or 256-bit (faster or more secure) encryption specify eintelne partition.</h1>
+<h1 id="Click_on_New_Image.2C_500MB.2C_128-bit_or_256-bit_.28faster_or_more_secure.29_encryption_specify_eintelne_partition.">Click on &quot;New Image&quot;, 500MB, 128-bit or 256-bit (faster or more secure) encryption specify eintelne partition.</h1>
 
 <h1 id="Copy_in_a_place_where_you_will_not_lose_the_image_.28eg_Wuala.2C_Strong_Space_ofer_whatever.29">Copy in a place where you will not lose the image (eg Wuala, Strong Space ofer whatever)</h1>
 
@@ -427,7 +427,7 @@ These steps only protect the file wallet.dat. This causes a small memory dump, b
 
 <h1 id="Disk_Utility_Open">Disk Utility Open</h1>
 
-<h1 id="Click_on_.26quot.3BNew_Image.26quot.3B.2C_40MB.2C_128-bit_or_256-bit.2C_single_select_partition.">Click on &quot;New Image&quot;, 40MB, 128-bit or 256-bit, single select partition.</h1>
+<h1 id="Click_on_New_Image.2C_40MB.2C_128-bit_or_256-bit.2C_single_select_partition.">Click on &quot;New Image&quot;, 40MB, 128-bit or 256-bit, single select partition.</h1>
 
 <h1 id="Store_in_a_place_where_you_will_not_lose_the_backup.">Store in a place where you will not lose the backup.</h1>
 
@@ -440,7 +440,7 @@ These steps only protect the file wallet.dat. This causes a small memory dump, b
 <pre><code>:: Ln-s / Volumes / Bitcoin / wallet.dat ~ / Library / Application Support / Bitcoin / wallet.dat
 </code></pre>
 
-<p><span class="createlink"><a href="/ikiwiki.cgi?from=Securing_your_wallet%2Ftalk&amp;do=create&amp;page=%20thumbnail%20__124__%20150px%20__124__%20Mount%20Wallet%20and%20launch%20Bitcoin" rel="nofollow">?</a>File: MountWalletAndLauchnBitcoin OSX Automator.png </span>
+<p><span class="createlink"><a href="/ikiwiki.cgi?page=%20thumbnail%20__124__%20150px%20__124__%20Mount%20Wallet%20and%20launch%20Bitcoin&amp;do=create&amp;from=Securing_your_wallet%2Ftalk" rel="nofollow">?</a>File: MountWalletAndLauchnBitcoin OSX Automator.png </span>
 Do not forget to mount the image before using Bitcoin and unmount afterwards.</p>
 
 <p>&#39;&#39;&#39;Note:&#39;&#39;&#39; If you start the application Bitcoin without the image is mounted, the program is the symlink (a kind of shortcut) wallet.dat with the new one. Do not panic! Rename the new order wallet.dat or delete it, mount the image, and just put a new symlink. The old wallet.dat may of course be canceled under any circumstances.</p>
@@ -491,9 +491,9 @@ bitcoin to gain access to the wallet.</p>
 <p>= &lsquo;Shred&rsquo; cannot always be assumed to be secure on modern filesystems! =</p>
 
 <p>I don&#39;t feel entirely comfortable with the suggested usage of the &lsquo;shred&rsquo; command in the given Linux script.  My understanding (and according to shred&#39;s manpage) is that on modern (especially journaled) filesystems, there is &#39;&#39;no&#39;&#39; guarantee that when an application like shred asks the OS to overwrite a file, that the file will actually be physically overwritten in place on the disk.  Unless there have been features implemented to allow special handling by the kernel for such security applications (I haven&#39;t investigated, so maybe there are, or maybe not), it would probably be safer to disable all system swap (i.e., with &lsquo;swapoff&rsquo;) and then store the unencrypted data on a temporary RAM disk only, then unmount the RAM disk afterwards to ensure it never gets written to disk.  I&#39;ve done this before, though unfortunately it&#39;s a bit of a hassle and normally requires running commands that need root privileges or sudo, etc.  Comments?
-~&nbsp;<span class="createlink"><a href="/ikiwiki.cgi?page=Ijel&amp;do=create&amp;from=Securing_your_wallet%2Ftalk" rel="nofollow">?</a>User:Ijel</span> 03:49, 11 February 2012 (GMT)</p>
+~&nbsp;<span class="createlink"><a href="/ikiwiki.cgi?from=Securing_your_wallet%2Ftalk&amp;page=Ijel&amp;do=create" rel="nofollow">?</a>User:Ijel</span> 03:49, 11 February 2012 (GMT)</p>
 
-<p>@Ijel Well, TrueCrypt uses RAM-only storage when mounting a file. I&#39;m pretty sure it has anti-swap protection too. <span class="createlink"><a href="/ikiwiki.cgi?from=Securing_your_wallet%2Ftalk&amp;do=create&amp;page=Lordcirth" rel="nofollow">?</a>User:Lordcirth</span> 23:55, 27 May 2012 (GMT)</p>
+<p>@Ijel Well, TrueCrypt uses RAM-only storage when mounting a file. I&#39;m pretty sure it has anti-swap protection too. <span class="createlink"><a href="/ikiwiki.cgi?from=Securing_your_wallet%2Ftalk&amp;page=Lordcirth&amp;do=create" rel="nofollow">?</a>User:Lordcirth</span> 23:55, 27 May 2012 (GMT)</p>
 
 <p>== Automated backup: inotify v.s. cron ==</p>
 

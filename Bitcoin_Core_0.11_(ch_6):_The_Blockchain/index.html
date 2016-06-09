@@ -52,7 +52,7 @@ Bitcoin Core 0.11 (ch 6): The Blockchain
 
 
 
-<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=Bitcoin_Core_0.11_%28ch_6%29%3A_The_Blockchain" rel="nofollow">?</a>Talk</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Bitcoin_Core_0.11_%28ch_6%29%3A_The_Blockchain&amp;page=Talk&amp;do=create" rel="nofollow">?</a>Talk</span></li>
 
 
 </ul>
@@ -250,7 +250,7 @@ C -- D
 <li>Reads the undo file from disk.</li>
 <li>Processes transactions in reverse order (must be reverse order because CreateNewBlock creates zero-conf transactions &quot;in order&quot;, meaning that if a block contains T1 and T2 and T2 spends a T1 coin, then T1 must come before T2 in its transaction vector;  therefore, when un-spending the coins, T2 must be un-spent before T1).</li>
 <li>Looks up the spent coins</li>
-<li>Un-spends the coins in a helper function, ApplyTxInUndo:  coins-&gt;vout<span class="createlink"><a href="/ikiwiki.cgi?from=Bitcoin_Core_0.11_%28ch_6%29%3A_The_Blockchain&amp;page=out.n&amp;do=create" rel="nofollow">?</a>out.n</span> = undo.txout;</li>
+<li>Un-spends the coins in a helper function, ApplyTxInUndo:  coins-&gt;vout<span class="createlink"><a href="/ikiwiki.cgi?page=out.n&amp;do=create&amp;from=Bitcoin_Core_0.11_%28ch_6%29%3A_The_Blockchain" rel="nofollow">?</a>out.n</span> = undo.txout;</li>
 </ul>
 
 

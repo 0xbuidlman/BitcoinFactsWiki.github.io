@@ -52,7 +52,7 @@ Libbitcoin Database
 
 
 
-<li><span class="createlink"><a href="/ikiwiki.cgi?from=Libbitcoin_Database&amp;page=Talk&amp;do=create" rel="nofollow">?</a>Talk</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Libbitcoin_Database&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
 
 
 </ul>
@@ -84,7 +84,7 @@ std::string prefix(&quot;blockchain&quot;);
 const auto genesis = bc::chain::block::genesis_mainnet();
 
 if (argc &gt; 1)
-prefix = argv&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=1&amp;amp;from=Libbitcoin_Database&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;1&lt;/span&gt;;
+prefix = argv&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Libbitcoin_Database&amp;amp;page=1&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;1&lt;/span&gt;;
 
 if (!bc::database::data_base::initialize(prefix, genesis)
 return -1;
@@ -97,7 +97,7 @@ return 0;
 
 <p>The database is built directly on the operating system&#39;s <a href="https://en.wikipedia.org/wiki/Memory-mapped_file">memory-mapped file</a> system. Logical queries are performed using a set of hash tables. The number of hash buckets is optimized to minimize hash collisions, though collisions are accommodated. These changes resulted in a substantial performance increase, near constant time, for queries against the blockchain. Insert performance was not materially affected. The database uses sequence locking to avoid writer starvation while never blocking the reader. This is ideal for a high performance blockchain server as reads are significantly more frequent than writes and yet writes must proceed wtihout delay.</p>
 
-<p><a href="../Libbitcoin-blockchain-gets.png"><img class="img" height="375" src="./500x500-Libbitcoin-blockchain-gets.png" width="500" /></a> <span class="createlink"><a href="/ikiwiki.cgi?page=Libbitcoin-blockchain-gets-normalised.png&amp;do=create&amp;from=Libbitcoin_Database" rel="nofollow">?</a>Libbitcoin-blockchain-gets-normalised.png</span></p>
+<p><a href="../Libbitcoin-blockchain-gets.png"><img class="img" height="375" src="./500x500-Libbitcoin-blockchain-gets.png" width="500" /></a> <span class="createlink"><a href="/ikiwiki.cgi?from=Libbitcoin_Database&amp;page=Libbitcoin-blockchain-gets-normalised.png&amp;do=create" rel="nofollow">?</a>Libbitcoin-blockchain-gets-normalised.png</span></p>
 
 <h2 id="Database">Database</h2>
 
@@ -130,7 +130,7 @@ return 0;
 <ul>
 <li>The original implementation used <a href="http://leveldb.org">LevelDB</a>.</li>
 <li>In late 2014 by <span class="createlink"><a href="/ikiwiki.cgi?from=Libbitcoin_Database&amp;do=create&amp;page=Amir_Taaki" rel="nofollow">?</a>Amir Taaki</span> (genjix) replaced LevelDB with memory-mapped hash table storage and indexing.</li>
-<li>In early 2016 <span class="createlink"><a href="/ikiwiki.cgi?page=Eric_Voskuil&amp;do=create&amp;from=Libbitcoin_Database" rel="nofollow">?</a>Eric Voskuil</span> separated the database from <a href="../Libbitcoin_Blockchain/">libbitcoin-blockchain</a> into an independent library.</li>
+<li>In early 2016 <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Eric_Voskuil&amp;from=Libbitcoin_Database" rel="nofollow">?</a>Eric Voskuil</span> separated the database from <a href="../Libbitcoin_Blockchain/">libbitcoin-blockchain</a> into an independent library.</li>
 </ul>
 
 

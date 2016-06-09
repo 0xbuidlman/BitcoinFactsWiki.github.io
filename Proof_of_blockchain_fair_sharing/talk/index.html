@@ -74,12 +74,12 @@ talk
 
 <p>How about the following implementation.  Everything stays the same as current Bitcoin except the definition of best chain.  Instead of total chain work as defined by</p>
 
-<pre><code>SUM(difficulty&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=i&amp;amp;do=create&amp;amp;from=Proof_of_blockchain_fair_sharing%2Ftalk&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;i&lt;/span&gt;)
+<pre><code>SUM(difficulty&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Proof_of_blockchain_fair_sharing%2Ftalk&amp;amp;page=i&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;i&lt;/span&gt;)
 </code></pre>
 
 <p>over all blocks <em>i</em> in the chain, we define chain weight as <em>work-fee since checkpoint</em>:</p>
 
-<pre><code>SUM(fee&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Proof_of_blockchain_fair_sharing%2Ftalk&amp;amp;do=create&amp;amp;page=j&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;j&lt;/span&gt;*difficulty&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=i&amp;amp;do=create&amp;amp;from=Proof_of_blockchain_fair_sharing%2Ftalk&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;i&lt;/span&gt;)
+<pre><code>SUM(fee&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Proof_of_blockchain_fair_sharing%2Ftalk&amp;amp;page=j&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;j&lt;/span&gt;*difficulty&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Proof_of_blockchain_fair_sharing%2Ftalk&amp;amp;page=i&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;i&lt;/span&gt;)
 </code></pre>
 
 <p>Here, <em>j</em> ranges over all fee-bearing transactions in a given branch <strong>since the last checkpoint,</strong> and <em>i</em> ranges over all valid blocks that contain transaction <em>j,</em> directly or through an ancestor, <strong>including orphaned blocks.</strong>  Checkpoints may be specified by administrative fiat, by a central authority (as currently), or by one of the proposed proof-of-stake checkpointing schemes, so long as one can disregard questionable checkpoints when one notices an attack in progress.</p>
