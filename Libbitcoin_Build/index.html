@@ -9,6 +9,7 @@
 
 <link rel="stylesheet" href="../local.css" type="text/css" />
 
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 
 
 
@@ -77,16 +78,16 @@ Libbitcoin Build
 autogen.sh
 configure.ac
 install.sh
-&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=library&amp;amp;from=Libbitcoin_Build&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;library&lt;/span&gt;.pc.in
+&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=library&amp;amp;do=create&amp;amp;from=Libbitcoin_Build&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;library&lt;/span&gt;.pc.in
 &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=library&amp;amp;do=create&amp;amp;from=Libbitcoin_Build&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;library&lt;/span&gt;_test_runner.sh
 Makefile.am
-include/bitcoin/&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Libbitcoin_Build&amp;amp;do=create&amp;amp;page=library&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;library&lt;/span&gt;.hpp
-include/bitcoin/&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Libbitcoin_Build&amp;amp;do=create&amp;amp;page=library&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;library&lt;/span&gt;/version.hpp
+include/bitcoin/&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=library&amp;amp;do=create&amp;amp;from=Libbitcoin_Build&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;library&lt;/span&gt;.hpp
+include/bitcoin/&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=library&amp;amp;from=Libbitcoin_Build&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;library&lt;/span&gt;/version.hpp
 </code></pre>
 
 <h2 id="Design_Overview">Design Overview</h2>
 
-<p>The Libbitcoin build system uses <a href="https://github.com/imatix/gsl">GSL</a> for generation of build artifacts from a declarative XML model of each repository (3.1). The system also enumerates source files within each repository in order to generate a master <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=library&amp;from=Libbitcoin_Build" rel="nofollow">?</a>library</span>.hpp and Makefile.am. Visual Studio projects and solutions are not currently generated (3.2). Scripts invoking <a href="http://www.swig.org">SWIG</a> are used to generate source code for Java and Python bindings (3.3).</p>
+<p>The Libbitcoin build system uses <a href="https://github.com/imatix/gsl">GSL</a> for generation of build artifacts from a declarative XML model of each repository (3.1). The system also enumerates source files within each repository in order to generate a master <span class="createlink"><a href="/ikiwiki.cgi?from=Libbitcoin_Build&amp;page=library&amp;do=create" rel="nofollow">?</a>library</span>.hpp and Makefile.am. Visual Studio projects and solutions are not currently generated (3.2). Scripts invoking <a href="http://www.swig.org">SWIG</a> are used to generate source code for Java and Python bindings (3.3).</p>
 
 <h2 id="Change_Control_Process">Change Control Process</h2>
 

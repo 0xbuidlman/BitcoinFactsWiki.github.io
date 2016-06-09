@@ -9,6 +9,7 @@
 
 <link rel="stylesheet" href="../local.css" type="text/css" />
 
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 
 
 
@@ -99,7 +100,7 @@ addresses via the &quot;getaddr&quot; message. By understanding the role of
 timestamps, it will become more clear why timestamps are kept the way
 they are for each of the different ways an address is discovered.</p>
 
-<h2 id="Handling_Message_getaddr">Handling Message &quot;getaddr&quot;</h2>
+<h2 id="Handling_Message_.26quot.3Bgetaddr.26quot.3B">Handling Message &quot;getaddr&quot;</h2>
 
 <p>When a node receives a &quot;getaddr&quot; request, it first figures out how many
 addresses it has that have a timestamp in the last 3 hours.
@@ -111,7 +112,7 @@ recent addresses by using random selection.</p>
 
 <h2 id="Discovery_Methods">Discovery Methods</h2>
 
-<h3 id="Local_Client.27s_External_Address">Local Client&#39;s External Address</h3>
+<h3 id="Local_Client.26.2339.3Bs_External_Address">Local Client&#39;s External Address</h3>
 
 <p>The client uses public web services which return the information to determine its own external, routable IP address.</p>
 
@@ -166,7 +167,7 @@ address).</p>
 
 <p>Addresses discovered via DNS are initially given a zero timestamp, therefore they are not advertised in response to a &quot;getaddr&quot; request.</p>
 
-<h3 id="Hard_Coded_Seed_Addresses">Hard Coded &quot;Seed&quot; Addresses</h3>
+<h3 id="Hard_Coded_.26quot.3BSeed.26quot.3B_Addresses">Hard Coded &quot;Seed&quot; Addresses</h3>
 
 <p>The client contains hard coded IP addresses that represent bitcoin nodes.</p>
 
@@ -177,7 +178,7 @@ address).</p>
 <p>Seed Addresses are initially given a zero timestamp,
 therefore they are not advertised in response to a &quot;getaddr&quot; request.</p>
 
-<h3 id="Ongoing_addr_advertisements">Ongoing &quot;addr&quot; advertisements</h3>
+<h3 id="Ongoing_.26quot.3Baddr.26quot.3B_advertisements">Ongoing &quot;addr&quot; advertisements</h3>
 
 <p>Nodes may receive addresses in an &quot;addr&quot; message after having sent a &quot;getaddr&quot; request, or &quot;addr&quot; messages may arrive  unsolicited, because nodes advertise addresses gratuitously when they relay addresses (see below), when they advertise their own address periodically, and when a connection is made.</p>
 

@@ -9,6 +9,7 @@
 
 <link rel="stylesheet" href="../../local.css" type="text/css" />
 
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 
 
 
@@ -83,7 +84,7 @@ talk
 <li>Two trades needed means not easy to figure out buy/sell prices at a glance</li>
 <li>Arbitrarily limits on &quot;fractions of USD&quot; and SLL amounts means you will likely loose a dollar in their system (can&#39;t cash out completely).</li>
 <li><p>Not a good/straightforward experience for those new to Bitcoin</p></li>
-<li><p><a>Asperous</a> (<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=User_talk%3AAsperous&amp;from=Help%3AFAQ%2Ftalk" rel="nofollow">?</a>talk</span>) 08:10, 27 August 2014 (UTC)</p></li>
+<li><p><a>Asperous</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Help%3AFAQ%2Ftalk&amp;do=create&amp;page=User_talk%3AAsperous" rel="nofollow">?</a>talk</span>) 08:10, 27 August 2014 (UTC)</p></li>
 </ol>
 
 
@@ -143,11 +144,11 @@ talk
 
 <p> OK, you won. I am not going to change the section again. I know you&#39;ll put your (untrue) words back anyway and I have better things to do than push this back and forth on an idealistic crusade. But I try again and urge you to help people understand things by providing facts <em>ONLY</em>, rather than personal beliefs/wishes/opinions. Something backed with references to reliable sources, showing clearly, beyond doubt that your words provide a solid information.</p>
 
-<p><a>Silverdr</a> (<span class="createlink"><a href="/ikiwiki.cgi?page=User_talk%3ASilverdr&amp;do=create&amp;from=Help%3AFAQ%2Ftalk" rel="nofollow">?</a>talk</span>) 20:20, 28 October 2014 (UTC)</p>
+<p><a>Silverdr</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Help%3AFAQ%2Ftalk&amp;do=create&amp;page=User_talk%3ASilverdr" rel="nofollow">?</a>talk</span>) 20:20, 28 October 2014 (UTC)</p>
 
 <p>While I agree that address reuse should be discouraged, saying that addresses were designed to be single-use is probably not true. See the following transactions, broadcast by Satoshi Nakamoto:</p>
 
-<p><em>f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16 (the 10 BTC sent to <span class="createlink"><a href="/ikiwiki.cgi?from=Help%3AFAQ%2Ftalk&amp;do=create&amp;page=Hal" rel="nofollow">?</a>Hal</span>)
+<p><em>f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16 (the 10 BTC sent to <span class="createlink"><a href="/ikiwiki.cgi?from=Help%3AFAQ%2Ftalk&amp;page=Hal&amp;do=create" rel="nofollow">?</a>Hal</span>)
 </em>a16f3ce4dd5deb92d98ef5cf8afeaf0775ebca408f708b2146c4fb42b41e14be
 <em>591e91f809d716912ca1d4a9295e70c3e78bab077683f79350f101da64588073
 </em>12b5633bad1f9c167d523ad1aa1947b2732a865bf5414eab2f9e5ae5d5c191ba
@@ -159,7 +160,7 @@ talk
 <p>Bitcoin was designed as a scripting-based consensus system. Payments were sent to a specific IP address: you would connect to the IP you wanted to pay, and it would give you a unique script to use for the pubkey-script in the Bitcoin consensus system. Manually-conveyed addresses were only later added on top of this as an abstractional hack until a proper solution could be found/implemented to solve the MITM attack it had earlier.
 Address reuses does <em>not</em> always work, and you cannot assume it will work. Even when it works, it does not work correctly since it is insecure and harms the privacy of not only the users involved, but the whole network.
 As for reference, please see section 10 of bitcoin.pdf, which focuses on privacy. For actual reuse-CAUSED losses, you can Google to find various incidents; the obvious case is when people pay an address they&#39;ve paid before, but is no longer recognised by the recipient as valid: many with the address reuse misconception have tried to double-deposit to exchanges this way, to find their coins lost forever. Less obvious are the reused r/k constants in signatures, which allowed attackers to calculate the private key holding the rest of the bitcoins received by the addresses in question. There are other ways to lose bitcoins when addresses are being used, but I think these two cases cover both major risk vectors.
- --<a>Luke-jr</a> (<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=User_talk%3ALuke-jr&amp;from=Help%3AFAQ%2Ftalk" rel="nofollow">?</a>talk</span>) 03:08, 29 October 2014 (UTC)</p>
+ --<a>Luke-jr</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Help%3AFAQ%2Ftalk&amp;page=User_talk%3ALuke-jr&amp;do=create" rel="nofollow">?</a>talk</span>) 03:08, 29 October 2014 (UTC)</p>
 
 <ul>
 <li>Address reuses does <em>not</em> always work,</li>
@@ -231,13 +232,13 @@ As for reference, please see section 10 of bitcoin.pdf, which focuses on privacy
 
 <p> As there are many other ways to lose them when addresses are NOT being <span class="createlink"><a href="/ikiwiki.cgi?from=Help%3AFAQ%2Ftalk&amp;do=create&amp;page=re" rel="nofollow">?</a>re</span>used. I believe that you know that the only real cause for loss of bitcoins is the loss or disclosure of private portion of a keypair. It doesn&#39;t matter at all for how many transactions the keypair has been used. If you lose the private key for an address that has been used only once, your coins are lost the same way as when the address has been used multiple times and vice-versa. It is NOT the number of transactions that causes losses (some implementation problems aside). It is the loss of private key, which causes them.</p>
 
-<p>P.S. @Taras: yes. Very well said. And I fully agree: address reuse should be discouraged. By giving full and reliable information. Not by spreading FUD and misinformation. I tried already twice to change the words in the FAQ into something more correct and unbiased, only to find the changes reversed back the next moment. The problem is that those who try to learn and understand this very difficult for new users subject - are instead of facts, presented with opinions of little informational value (if not plainly untrue) with no explanations and no proper references to help them gather the important knowledge. Instead of explaining what really causes the coin losses, they are told that address reuse causes the loss and that sending coins to the same address works by &quot;accident&quot;... <a>Silverdr</a> (<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=User_talk%3ASilverdr&amp;from=Help%3AFAQ%2Ftalk" rel="nofollow">?</a>talk</span>) 04:33, 29 October 2014 (UTC)</p></blockquote>
+<p>P.S. @Taras: yes. Very well said. And I fully agree: address reuse should be discouraged. By giving full and reliable information. Not by spreading FUD and misinformation. I tried already twice to change the words in the FAQ into something more correct and unbiased, only to find the changes reversed back the next moment. The problem is that those who try to learn and understand this very difficult for new users subject - are instead of facts, presented with opinions of little informational value (if not plainly untrue) with no explanations and no proper references to help them gather the important knowledge. Instead of explaining what really causes the coin losses, they are told that address reuse causes the loss and that sending coins to the same address works by &quot;accident&quot;... <a>Silverdr</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Help%3AFAQ%2Ftalk&amp;do=create&amp;page=User_talk%3ASilverdr" rel="nofollow">?</a>talk</span>) 04:33, 29 October 2014 (UTC)</p></blockquote>
 
 <p>Since you don&#39;t seem to provide any support for them, can we eventually remove the false statements? luke-jr?
 <a>Silverdr</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Help%3AFAQ%2Ftalk&amp;page=User_talk%3ASilverdr&amp;do=create" rel="nofollow">?</a>talk</span>) 14:51, 30 October 2014 (UTC)</p>
 
 <ul>
-<li>There are no false statements. You may not remove the true ones simply because you wish they were not true. --<a>Luke-jr</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Help%3AFAQ%2Ftalk&amp;page=User_talk%3ALuke-jr&amp;do=create" rel="nofollow">?</a>talk</span>) 01:09, 31 October 2014 (UTC)</li>
+<li>There are no false statements. You may not remove the true ones simply because you wish they were not true. --<a>Luke-jr</a> (<span class="createlink"><a href="/ikiwiki.cgi?page=User_talk%3ALuke-jr&amp;do=create&amp;from=Help%3AFAQ%2Ftalk" rel="nofollow">?</a>talk</span>) 01:09, 31 October 2014 (UTC)</li>
 </ul>
 
 
@@ -251,14 +252,14 @@ As for reference, please see section 10 of bitcoin.pdf, which focuses on privacy
 
 
 <p>plus a few more that could use less offensive and more informative language plus proper references. You can&#39;t give any backup to those claims and yet when other people try to improve this to be more accurate and factual rather than &quot;wishful&quot; or propaganda style, you bring back the claims which you can&#39;t support with evidence. Please prove me wrong and I will eat my greens all the way down. But if you can&#39;t, then please stop wasting/destroying other people&#39;s work because - I don&#39;t know - maybe you believe that you have a mission to save the world and you know how to steer people to do what you want them to do with false or at least not fully correct information on this wiki. I don&#39;t understand this approach of yours but I still kindly ask you to reconsider your practices and keep (or at least allow others to keep) the information quality standards that Bitcoin IMHO clearly deserves.
-<a>Silverdr</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Help%3AFAQ%2Ftalk&amp;do=create&amp;page=User_talk%3ASilverdr" rel="nofollow">?</a>talk</span>) 01:37, 31 October 2014 (UTC)</p>
+<a>Silverdr</a> (<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=User_talk%3ASilverdr&amp;from=Help%3AFAQ%2Ftalk" rel="nofollow">?</a>talk</span>) 01:37, 31 October 2014 (UTC)</p>
 
 <ul>
-<li>Both of those are true; ie, when/if bitcoins are lost because of address reuse, it is the fault of whoever decided to reuse the address, and not a bug nor the fault of the other party. --<a>Luke-jr</a> (<span class="createlink"><a href="/ikiwiki.cgi?page=User_talk%3ALuke-jr&amp;do=create&amp;from=Help%3AFAQ%2Ftalk" rel="nofollow">?</a>talk</span>) 01:56, 31 October 2014 (UTC)</li>
+<li>Both of those are true; ie, when/if bitcoins are lost because of address reuse, it is the fault of whoever decided to reuse the address, and not a bug nor the fault of the other party. --<a>Luke-jr</a> (<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=User_talk%3ALuke-jr&amp;from=Help%3AFAQ%2Ftalk" rel="nofollow">?</a>talk</span>) 01:56, 31 October 2014 (UTC)</li>
 </ul>
 
 
-<p>Unfortunately none of those became true because you said or wrote so. To make them true, please provide solid evidence. If you can&#39;t - remove them yourself of let others remove them. You can always present them as your personal opinions on your blog/site though.<a>Silverdr</a> (<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=User_talk%3ASilverdr&amp;from=Help%3AFAQ%2Ftalk" rel="nofollow">?</a>talk</span>) 00:32, 2 November 2014 (UTC)</p>
+<p>Unfortunately none of those became true because you said or wrote so. To make them true, please provide solid evidence. If you can&#39;t - remove them yourself of let others remove them. You can always present them as your personal opinions on your blog/site though.<a>Silverdr</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Help%3AFAQ%2Ftalk&amp;do=create&amp;page=User_talk%3ASilverdr" rel="nofollow">?</a>talk</span>) 00:32, 2 November 2014 (UTC)</p>
 
 </section>
 

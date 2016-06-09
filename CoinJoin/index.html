@@ -9,6 +9,7 @@
 
 <link rel="stylesheet" href="../local.css" type="text/css" />
 
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 
 
 
@@ -129,13 +130,13 @@ The outputs to addresses 1MUzngtNnrQRXRqqRTeDmpULW8X1aaGWeR and 1Fufjpf9RM2aQsGe
 
 <h2 id="FAQ">FAQ</h2>
 
-<h3 id="Don.27t_you_need_tor_or_something_to_prevent_everyone_from_learning_everyone.27s_IP.3F">Don&#39;t you need tor or something to prevent everyone from learning everyone&#39;s IP?</h3>
+<h3 id="Don.26.2339.3Bt_you_need_tor_or_something_to_prevent_everyone_from_learning_everyone.26.2339.3Bs_IP.3F">Don&#39;t you need tor or something to prevent everyone from learning everyone&#39;s IP?</h3>
 
 <p>Any transaction privacy system that hopes to hide user&#39;s addresses should start with some kind of anonymity network. This is no different. Fortunately networks like Tor, I2P, Bitmessage, and Freenet all already exist and could all be used for this. (Freenet would result in rather slow transactions, however)</p>
 
 <p>However, gumming up &quot;taint analysis&quot; and reducing transaction sizes doesn&#39;t even require that the users be private from each other. So even without things like tor this would be no worse than regular transactions.</p>
 
-<h3 id="Don.27t_the_users_learn_which_inputs_match_up_to_which_outputs.3F">Don&#39;t the users learn which inputs match up to which outputs?</h3>
+<h3 id="Don.26.2339.3Bt_the_users_learn_which_inputs_match_up_to_which_outputs.3F">Don&#39;t the users learn which inputs match up to which outputs?</h3>
 
 <p>In the simplest possible implementation where users meet up on IRC over tor or the like, yes they do. The next simplest implementation is where the users send their input and output information to some meeting point server, and the server creates the transaction and asks people to sign it. The server learns the mapping, but no one else does, and the server still can&#39;t steal the coins.</p>
 
@@ -149,7 +150,7 @@ The outputs to addresses 1MUzngtNnrQRXRqqRTeDmpULW8X1aaGWeR and 1Fufjpf9RM2aQsGe
 
 <p>No. The same privacy can be achieved in a decentralized manner where all users act as blind-signing servers. This ends up needing n<sup>2</sup> signatures, and distributed systems are generally a lot harder to create.  I don&#39;t know if there is, or ever would be, a reason to bother with a fully distributed version with full privacy, but it&#39;s certainly possible.</p>
 
-<h3 id="What_about_DOS_attacks.3F_Can.27t_someone_refuse_to_sign_even_if_the_transaction_is_valid.3F">What about DOS attacks? Can&#39;t someone refuse to sign even if the transaction is valid?</h3>
+<h3 id="What_about_DOS_attacks.3F_Can.26.2339.3Bt_someone_refuse_to_sign_even_if_the_transaction_is_valid.3F">What about DOS attacks? Can&#39;t someone refuse to sign even if the transaction is valid?</h3>
 
 <p>Yes, this can be DOS attacked in two different ways: someone can refuse to sign a valid joint transaction, or someone can spend their input out from under the joint transaction before it completes.</p>
 
@@ -161,7 +162,7 @@ The outputs to addresses 1MUzngtNnrQRXRqqRTeDmpULW8X1aaGWeR and 1Fufjpf9RM2aQsGe
 
 <p>In all cases you could supplement anti-DOS mechanisms with proof of work, a fidelity bond, or other scarce resource usage. But I suspect that it&#39;s better to adapt to actual attacks as they arise, as we don&#39;t have to commit to a single security mechanism in advance and for all users. I also believe that bad input exclusion provides enough protection to get started.</p>
 
-<h3 id="Isn.27t_the_anonymity_set_size_limited_by_how_many_parties_you_can_get_in_a_single_transaction.3F">Isn&#39;t the anonymity set size limited by how many parties you can get in a single transaction?</h3>
+<h3 id="Isn.26.2339.3Bt_the_anonymity_set_size_limited_by_how_many_parties_you_can_get_in_a_single_transaction.3F">Isn&#39;t the anonymity set size limited by how many parties you can get in a single transaction?</h3>
 
 <p>Not quite. The anonymity set size of a single transaction is limited by the number of parties in it, obviously. And transaction size limits as well as failure (retry) risk mean that really huge joint transactions would not be wise. But because these transactions are cheap, there is no limit to the number of transactions you can cascade.</p>
 
@@ -222,7 +223,7 @@ The outputs to addresses 1MUzngtNnrQRXRqqRTeDmpULW8X1aaGWeR and 1Fufjpf9RM2aQsGe
 <h2 id="See_Also">See Also</h2>
 
 <ul>
-<li><span class="createlink"><a href="/ikiwiki.cgi?page=User%3AGmaxwell%2Fstate_of_coinjoin&amp;do=create&amp;from=CoinJoin" rel="nofollow">?</a>state of coinjoin</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=CoinJoin&amp;do=create&amp;page=User%3AGmaxwell%2Fstate_of_coinjoin" rel="nofollow">?</a>state of coinjoin</span></li>
 </ul>
 
 

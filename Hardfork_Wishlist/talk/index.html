@@ -9,6 +9,7 @@
 
 <link rel="stylesheet" href="../../local.css" type="text/css" />
 
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 
 
 
@@ -69,11 +70,11 @@ talk
 <div id="pagebody">
 
 <section id="content" role="main">
-<h2 id="Obsolete_item_in_Bug_Fixes.3F">Obsolete item in &quot;Bug Fixes&quot;?</h2>
+<h2 id="Obsolete_item_in_.26quot.3BBug_Fixes.26quot.3B.3F">Obsolete item in &quot;Bug Fixes&quot;?</h2>
 
 <ul>
 <li>Use the previous block hash as an explicit or implicit prev_in in coinbases when hashing them to make it ~impossible to get a duplicate coinbase, thus removing the need for a pruning node to remember coinbase hashes to prevent duplicates consistently with the rest of the network
-As of <a href="https://github.com/bitcoin/bips/blob/master/bip-0034.mediawiki">BIP 34</a>, isn&#39;t this item obsolete? --<a>Airbreather</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Hardfork_Wishlist%2Ftalk&amp;page=User_talk%3AAirbreather&amp;do=create" rel="nofollow">?</a>talk</span>) 19:06, 9 February 2014 (GMT)</li>
+As of <a href="https://github.com/bitcoin/bips/blob/master/bip-0034.mediawiki">BIP 34</a>, isn&#39;t this item obsolete? --<a>Airbreather</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Hardfork_Wishlist%2Ftalk&amp;do=create&amp;page=User_talk%3AAirbreather" rel="nofollow">?</a>talk</span>) 19:06, 9 February 2014 (GMT)</li>
 </ul>
 
 
@@ -91,10 +92,10 @@ As of <a href="https://github.com/bitcoin/bips/blob/master/bip-0034.mediawiki">B
 
 <p>Perhaps we should change the page to tabular layout so that we can link to for and against arguments for features where ones exist? --<a>Gmaxwell</a> 19:59, 4 January 2012 (GMT)</p>
 
-<blockquote><p>And yet another variant of this: * Replace the 10 minute block finding target with a dynamic target decided by the market <a href="https://bitcointalk.org/index.php?topic=79837.0">(2)</a>.  This one misses that the interblock time is important for convergence, also a naive implementation would change the payout schedule. --<a>Gmaxwell</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Hardfork_Wishlist%2Ftalk&amp;page=User_talk%3AGmaxwell&amp;do=create" rel="nofollow">?</a>talk</span>) 03:03, 28 July 2012 (GMT)</p></blockquote>
+<blockquote><p>And yet another variant of this: * Replace the 10 minute block finding target with a dynamic target decided by the market <a href="https://bitcointalk.org/index.php?topic=79837.0">(2)</a>.  This one misses that the interblock time is important for convergence, also a naive implementation would change the payout schedule. --<a>Gmaxwell</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Hardfork_Wishlist%2Ftalk&amp;do=create&amp;page=User_talk%3AGmaxwell" rel="nofollow">?</a>talk</span>) 03:03, 28 July 2012 (GMT)</p></blockquote>
 
 <p>Trying to eliminate hard-coded time parameters means working in the &quot;Partially Synchronous&quot; communications model <a href="http://www.podc.org/dijkstra/2007.html">(3)</a>. It&#39;s also equivalent to building a &quot;partition tolerant&quot; system in the sense of P in the CAP theorem. This is a difficult problem, and most proposed solutions to it are going to be broken. Still it&#39;s a fundamental goal, and it deserves its own section in the wishlist.
---<a>Amiller</a> (<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=User_talk%3AAmiller&amp;from=Hardfork_Wishlist%2Ftalk" rel="nofollow">?</a>talk</span>) 08:46, 9 August 2012 (GMT)</p>
+--<a>Amiller</a> (<span class="createlink"><a href="/ikiwiki.cgi?page=User_talk%3AAmiller&amp;do=create&amp;from=Hardfork_Wishlist%2Ftalk" rel="nofollow">?</a>talk</span>) 08:46, 9 August 2012 (GMT)</p>
 
 <h3 id="OP_FAIL_FAILS">OP_FAIL FAILS</h3>
 
@@ -109,7 +110,7 @@ As of <a href="https://github.com/bitcoin/bips/blob/master/bip-0034.mediawiki">B
 
 <p>Because it&#39;s idiotic. You could already use undefined opcodes for this&mdash; but even that is stupid, the reason the the OP_NOPs are useful for futureproofing is specifically because they pass. The fact that they pass is what enables you to run a mixed network.  If you use an opcode that always fails for old nodes as an extension mechanism the instant that it gets mined the network forks. --<a>Gmaxwell</a> 17:13, 19 February 2012 (GMT)</p>
 
-<h2 id="Removed_.27Proof_of_Stake.27">Removed &#39;Proof of Stake&#39;</h2>
+<h2 id="Removed_.26.2339.3BProof_of_Stake.26.2339.3B">Removed &#39;Proof of Stake&#39;</h2>
 
 <p>I&#39;ve removed:</p>
 
@@ -126,16 +127,16 @@ A proof-of-stake system is likely the only viable long-term solution. Preparing 
 <h2 id="Merkle_trees.2C_lite_clients.2C_coinbase_commitments.2C_UTXOs">Merkle trees, lite clients, coinbase commitments, UTXOs</h2>
 
 <p>There have been at least four generations now of essentially the same proposal. I just added etotheipi&#39;s and DiThi&#39;s. The language for them has changed has many times. Should this be consolidated somewhere else? For what it&#39;s worth, I now prefer &quot;hash graph&quot; as the general term including chains, trees, and skiplists.
---<a>Amiller</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Hardfork_Wishlist%2Ftalk&amp;do=create&amp;page=User_talk%3AAmiller" rel="nofollow">?</a>talk</span>) 08:37, 9 August 2012 (GMT)</p>
+--<a>Amiller</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Hardfork_Wishlist%2Ftalk&amp;page=User_talk%3AAmiller&amp;do=create" rel="nofollow">?</a>talk</span>) 08:37, 9 August 2012 (GMT)</p>
 
-<h2 id="z-Permanent_Forwarding.27">&#39;Permanent Forwarding&#39;</h2>
+<h2 id="z-.2339.3BPermanent_Forwarding.26.2339.3B">&#39;Permanent Forwarding&#39;</h2>
 
 <p>As roughly sketched in the proposal bullet, this proposes some kind of new blockchain transaction-like directive to indicate permanent retirement of an old key and by-rule delegation of outputs to a new key. (This could solve some usability problems with prominently-advertised, but then lost or compromised, or suspected-compromised, keys.)</p>
 
-<p>This new categorical directive would not be understood by older nodes/mining software, so they&#39;d reject blocks containing the directive. Even if it could be crafted to be ignored by older nodes... they&#39;d then accept transactions/blocks which spend outputs from the &#39;dead&#39; key according to old rules, leaving contradictory info in the shared chain. Thus as far as I can tell, to work this feature requires a hard fork. Of course, if there&#39;s a way to implement the same benefit in a compatible way, I&#39;d appreciate hearing about it here on the talk page or elsewhere on the wiki. <a>WargeGeoshington</a> (<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=User_talk%3AWargeGeoshington&amp;from=Hardfork_Wishlist%2Ftalk" rel="nofollow">?</a>talk</span>) 10:52, 13 June 2013 (GMT)</p>
+<p>This new categorical directive would not be understood by older nodes/mining software, so they&#39;d reject blocks containing the directive. Even if it could be crafted to be ignored by older nodes... they&#39;d then accept transactions/blocks which spend outputs from the &#39;dead&#39; key according to old rules, leaving contradictory info in the shared chain. Thus as far as I can tell, to work this feature requires a hard fork. Of course, if there&#39;s a way to implement the same benefit in a compatible way, I&#39;d appreciate hearing about it here on the talk page or elsewhere on the wiki. <a>WargeGeoshington</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Hardfork_Wishlist%2Ftalk&amp;do=create&amp;page=User_talk%3AWargeGeoshington" rel="nofollow">?</a>talk</span>) 10:52, 13 June 2013 (GMT)</p>
 
 <ul>
-<li>Something like this really makes sense as a higher level of abstraction - part of a merged-mined timestamp block, for example. Clients would just consult this database for forwarding information when sending, and use the output for the new destination instead. It doesn&#39;t need to involve miners or other nodes at all. Even if you wanted miners to block sending to the forwarded output, that would be at most a soft-fork (making something formerly legal, now illegal). BUT, since addresses are single-use, I&#39;m not sure it makes sense to do this at the address level at all - and it&#39;s effectively &quot;default&quot; in the payment protocol. --<a>Luke-jr</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Hardfork_Wishlist%2Ftalk&amp;do=create&amp;page=User_talk%3ALuke-jr" rel="nofollow">?</a>talk</span>) 19:11, 13 June 2013 (GMT)</li>
+<li>Something like this really makes sense as a higher level of abstraction - part of a merged-mined timestamp block, for example. Clients would just consult this database for forwarding information when sending, and use the output for the new destination instead. It doesn&#39;t need to involve miners or other nodes at all. Even if you wanted miners to block sending to the forwarded output, that would be at most a soft-fork (making something formerly legal, now illegal). BUT, since addresses are single-use, I&#39;m not sure it makes sense to do this at the address level at all - and it&#39;s effectively &quot;default&quot; in the payment protocol. --<a>Luke-jr</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Hardfork_Wishlist%2Ftalk&amp;page=User_talk%3ALuke-jr&amp;do=create" rel="nofollow">?</a>talk</span>) 19:11, 13 June 2013 (GMT)</li>
 </ul>
 
 
@@ -143,17 +144,17 @@ A proof-of-stake system is likely the only viable long-term solution. Preparing 
 
 <p> In idealized theory -- and perhaps in Satoshi&#39;s vision -- addresses are single-use. But that&#39;s not protocol-required and in practice, many users/apps reuse addresses and advertise long-lived addresses... which gives rise to the exact security/usability problem this proposal attempts to address.</p>
 
-<p> So, you (and several others I&#39;ve floated this to) think this is an &quot;interesting idea&quot;. Maybe there&#39;s a way to do it with a soft fork (though I don&#39;t yet see it; it seems any such approach would be fragile or not offer the full benefits). There&#39;s a way to get the full benefits if it were in a &#39;hard fork&#39;. So why shouldn&#39;t this idea appear on a page that&#39;s a unprioritized &quot;wishlist&quot;, about changes that &quot;might be desirable&quot;? By deleting it you prevent evaluation and discussion of its possible value and possible implementations. --<a>WargeGeoshington</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Hardfork_Wishlist%2Ftalk&amp;page=User_talk%3AWargeGeoshington&amp;do=create" rel="nofollow">?</a>talk</span>) 05:15, 15 June 2013 (GMT)</p></blockquote>
+<p> So, you (and several others I&#39;ve floated this to) think this is an &quot;interesting idea&quot;. Maybe there&#39;s a way to do it with a soft fork (though I don&#39;t yet see it; it seems any such approach would be fragile or not offer the full benefits). There&#39;s a way to get the full benefits if it were in a &#39;hard fork&#39;. So why shouldn&#39;t this idea appear on a page that&#39;s a unprioritized &quot;wishlist&quot;, about changes that &quot;might be desirable&quot;? By deleting it you prevent evaluation and discussion of its possible value and possible implementations. --<a>WargeGeoshington</a> (<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=User_talk%3AWargeGeoshington&amp;from=Hardfork_Wishlist%2Ftalk" rel="nofollow">?</a>talk</span>) 05:15, 15 June 2013 (GMT)</p></blockquote>
 
 <pre><code>    * You can break address-compatibility without a hardfork. A soft-fork is sufficient to ban usage of forwarded addresses, as well. As new features such as HD wallets and the payment protocol becomes more widespread, address reuse should quickly decline out of usage anyway, making this a solution begging for a problem in the long-term (and remember, a hardfork is a long-term thing...). --[Luke-jr](User:Luke-jr) (&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Hardfork_Wishlist%2Ftalk&amp;amp;page=User_talk%3ALuke-jr&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;talk&lt;/span&gt;) 02:50, 16 June 2013 (GMT)
 </code></pre>
 
-<blockquote><p> Maybe we&#39;re using different definitions of hard vs. soft forks. I see a &#39;hard fork&#39; as a situation where old software, if it keeps running as nodes/miners, generates transactions and blocks that are not accepted by the post-hard-fork mainline. (A compatibility break that forces upgrades.) Is this definition wrong or imprecise? If not, how would a soft fork prevent someone with non-upgraded software from (a) sending a payment to an obsolete address which is then (b) minted into a block by miners running the old software? <a>WargeGeoshington</a> (<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=User_talk%3AWargeGeoshington&amp;from=Hardfork_Wishlist%2Ftalk" rel="nofollow">?</a>talk</span>) 18:42, 12 August 2013 (GMT)</p></blockquote>
+<blockquote><p> Maybe we&#39;re using different definitions of hard vs. soft forks. I see a &#39;hard fork&#39; as a situation where old software, if it keeps running as nodes/miners, generates transactions and blocks that are not accepted by the post-hard-fork mainline. (A compatibility break that forces upgrades.) Is this definition wrong or imprecise? If not, how would a soft fork prevent someone with non-upgraded software from (a) sending a payment to an obsolete address which is then (b) minted into a block by miners running the old software? <a>WargeGeoshington</a> (<span class="createlink"><a href="/ikiwiki.cgi?page=User_talk%3AWargeGeoshington&amp;do=create&amp;from=Hardfork_Wishlist%2Ftalk" rel="nofollow">?</a>talk</span>) 18:42, 12 August 2013 (GMT)</p></blockquote>
 
-<pre><code>            * A hard fork is where the blockchain protocol changes such that blocks which were considered invalid previously, are now considered valid. Addresses are a concept that don&#39;t even enter into the equation really. --[Luke-jr](User:Luke-jr) (&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Hardfork_Wishlist%2Ftalk&amp;amp;page=User_talk%3ALuke-jr&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;talk&lt;/span&gt;) 07:27, 13 August 2013 (GMT)
+<pre><code>            * A hard fork is where the blockchain protocol changes such that blocks which were considered invalid previously, are now considered valid. Addresses are a concept that don&#39;t even enter into the equation really. --[Luke-jr](User:Luke-jr) (&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=User_talk%3ALuke-jr&amp;amp;from=Hardfork_Wishlist%2Ftalk&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;talk&lt;/span&gt;) 07:27, 13 August 2013 (GMT)
 </code></pre>
 
-<blockquote><p> Exactly, so a public, permanent forwarding order, via a new directive in the blockchain, would be seen as invalid to (or cause malfunction by) old software. Alternatively, a block created by old software, illegally spending from an address that&#39;s been permanently-forwarded, because the old software didn&#39;t recognize the forwarding-order, would be considered invalid to later software. Strong forwarding support means incompatible blocks. The wishlist idea is for this kind of strong protocol-support for irreversible forwarding; how can that happen short of a hard fork? -<a>WargeGeoshington</a> (<span class="createlink"><a href="/ikiwiki.cgi?page=User_talk%3AWargeGeoshington&amp;do=create&amp;from=Hardfork_Wishlist%2Ftalk" rel="nofollow">?</a>talk</span>) 02:14, 15 August 2013 (GMT)</p></blockquote>
+<blockquote><p> Exactly, so a public, permanent forwarding order, via a new directive in the blockchain, would be seen as invalid to (or cause malfunction by) old software. Alternatively, a block created by old software, illegally spending from an address that&#39;s been permanently-forwarded, because the old software didn&#39;t recognize the forwarding-order, would be considered invalid to later software. Strong forwarding support means incompatible blocks. The wishlist idea is for this kind of strong protocol-support for irreversible forwarding; how can that happen short of a hard fork? -<a>WargeGeoshington</a> (<span class="createlink"><a href="/ikiwiki.cgi?from=Hardfork_Wishlist%2Ftalk&amp;page=User_talk%3AWargeGeoshington&amp;do=create" rel="nofollow">?</a>talk</span>) 02:14, 15 August 2013 (GMT)</p></blockquote>
 
 </section>
 

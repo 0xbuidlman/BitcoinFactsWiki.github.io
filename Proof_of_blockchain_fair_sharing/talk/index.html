@@ -9,6 +9,7 @@
 
 <link rel="stylesheet" href="../../local.css" type="text/css" />
 
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 
 
 
@@ -78,7 +79,7 @@ talk
 
 <p>over all blocks <em>i</em> in the chain, we define chain weight as <em>work-fee since checkpoint</em>:</p>
 
-<pre><code>SUM(fee&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=j&amp;amp;do=create&amp;amp;from=Proof_of_blockchain_fair_sharing%2Ftalk&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;j&lt;/span&gt;*difficulty&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Proof_of_blockchain_fair_sharing%2Ftalk&amp;amp;page=i&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;i&lt;/span&gt;)
+<pre><code>SUM(fee&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Proof_of_blockchain_fair_sharing%2Ftalk&amp;amp;do=create&amp;amp;page=j&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;j&lt;/span&gt;*difficulty&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=i&amp;amp;do=create&amp;amp;from=Proof_of_blockchain_fair_sharing%2Ftalk&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;i&lt;/span&gt;)
 </code></pre>
 
 <p>Here, <em>j</em> ranges over all fee-bearing transactions in a given branch <strong>since the last checkpoint,</strong> and <em>i</em> ranges over all valid blocks that contain transaction <em>j,</em> directly or through an ancestor, <strong>including orphaned blocks.</strong>  Checkpoints may be specified by administrative fiat, by a central authority (as currently), or by one of the proposed proof-of-stake checkpointing schemes, so long as one can disregard questionable checkpoints when one notices an attack in progress.</p>
@@ -133,9 +134,9 @@ talk
 <pre><code>&lt;nowiki&gt;// Public domain.
 </code></pre>
 
-<h1>include &lt;stdio.h&gt;</h1>
+<h1 id="include_.26lt.3Bstdio.h.26gt.3B">include &lt;stdio.h&gt;</h1>
 
-<h1>include &lt;stdlib.h&gt;</h1>
+<h1 id="include_.26lt.3Bstdlib.h.26gt.3B">include &lt;stdlib.h&gt;</h1>
 
 <p>static int
 usage ()
@@ -338,7 +339,7 @@ blocks per run: 10000
 
 <p>Until now, I have ignored difficulty adjustments.  To the extent that changing difficulty affects these scenarios, it will permit relatively faster extension of honest branches, since the honest network has less hashing power than the attacker.  This benefit is limited, but not entirely negated, by the weighting of difficulty in the chain-selection formula.</p>
 
-<p><a>JohnTobey253</a> (<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=User_talk%3AJohnTobey253&amp;from=Proof_of_blockchain_fair_sharing%2Ftalk" rel="nofollow">?</a>talk</span>) 23:38, 2 May 2013 (GMT)</p>
+<p><a>JohnTobey253</a> (<span class="createlink"><a href="/ikiwiki.cgi?page=User_talk%3AJohnTobey253&amp;do=create&amp;from=Proof_of_blockchain_fair_sharing%2Ftalk" rel="nofollow">?</a>talk</span>) 23:38, 2 May 2013 (GMT)</p>
 
 </section>
 

@@ -9,6 +9,7 @@
 
 <link rel="stylesheet" href="../local.css" type="text/css" />
 
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 
 
 
@@ -51,7 +52,7 @@ Multisignature
 
 
 
-<li><span class="createlink"><a href="/ikiwiki.cgi?from=Multisignature&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Multisignature" rel="nofollow">?</a>Talk</span></li>
 
 
 </ul>
@@ -81,9 +82,9 @@ Multisignature
 
 <p>Shamir&#39;s <a href="https://en.wikipedia.org/wiki/Secret_sharing">Secret Sharing</a> Scheme (ssss) (2.1) is a general software implementation of multisig.</p>
 
-<p>Specific to Bitcoin, <span class="createlink"><a href="/ikiwiki.cgi?page=GreenAddress&amp;do=create&amp;from=Multisignature" rel="nofollow">?</a>GreenAddress.it</span>, for example, has 2-of-2 and 2-of-3 accounts (requiring at least two keys to authorize a transaction). <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Coinbase_%28business%29&amp;from=Multisignature" rel="nofollow">?</a>Coinbase</span> also offers 2-of-3 and 3-of-5 multisig, which they call <a href="https://support.coinbase.com/customer/portal/articles/1743782-what-is-the-multisig-vault-">Vault</a>.</p>
+<p>Specific to Bitcoin, <span class="createlink"><a href="/ikiwiki.cgi?from=Multisignature&amp;do=create&amp;page=GreenAddress" rel="nofollow">?</a>GreenAddress.it</span>, for example, has 2-of-2 and 2-of-3 accounts (requiring at least two keys to authorize a transaction). <span class="createlink"><a href="/ikiwiki.cgi?from=Multisignature&amp;do=create&amp;page=Coinbase_%28business%29" rel="nofollow">?</a>Coinbase</span> also offers 2-of-3 and 3-of-5 multisig, which they call <a href="https://support.coinbase.com/customer/portal/articles/1743782-what-is-the-multisig-vault-">Vault</a>.</p>
 
-<h2>Multisignature Transactionshttps://bitcoinarmory.com/faq/#q14</h2>
+<h2 id="Multisignature_Transactionshttps.3A.2F.2Fbitcoinarmory.com.2Ffaq.2F.23q14">Multisignature Transactionshttps://bitcoinarmory.com/faq/#q14</h2>
 
 <blockquote>Standard transactions on the Bitcoin network could be called &ldquo;single-signature transactions,&rdquo; because transfers require only one signature &mdash; from the owner of the private key associated with the Bitcoin address. However, the Bitcoin network supports much more complicated transactions that require the signatures of multiple people before the funds can be transferred. These are often referred to as M-of-N transactions. The idea is that Bitcoins become &ldquo;encumbered&rdquo; by providing addresses of multiple parties, thus requiring cooperation of those parties in order to do anything with them. Here are some examples:
 
@@ -110,7 +111,7 @@ Multisignature
 <p>A 2of3 multisig address can be created by following these steps: (5.1)</p>
 
 <blockquote><ol><li>Gather (or generate) 3 bitcoin addresses, on whichever machines will be participating, using getnewaddress or getaccountaddress RPC commands (or copy and paste from the GUI).</li>
-<li>Get their public keys using the <tt>validateaddress</tt> <span class="createlink"><a href="/ikiwiki.cgi?page=API_reference_%2528JSON-RPC%2529&amp;do=create&amp;from=Multisignature" rel="nofollow">?</a>RPC</span> command 3 times.</li>
+<li>Get their public keys using the <tt>validateaddress</tt> <span class="createlink"><a href="/ikiwiki.cgi?from=Multisignature&amp;do=create&amp;page=API_reference_%2528JSON-RPC%2529" rel="nofollow">?</a>RPC</span> command 3 times.</li>
 <li>Then create a 2-of-3 multisig address using addmultisigaddress; e.g.<blockquote><code>bitcoind addmultisigaddress 2 &#39;[&quot;044322868cb17d64dcc22185ae2d4493111d73244c3668f8ac79ecc79c0ba8d30a6756d0fa20157 709af3281cc721c7f53321a8cabda29b77900b7e4fe0174b114&quot;,&quot;..second pubkey..&quot;,&quot;..third pubkey..&quot;]&#39;</code></blockquote></li></ol><tt>addmultisigaddress</tt> returns the multisignature address. Be a little careful, the public keys are raw hexadecimal and don&#39;t contain checksums like bitcoin addresses do. You can then send funds into that 2-of-3 transaction using the normal sendtoaddress/sendmany RPC commands, or the GUI (or anything that&#39;s been updated to recognize multisig addresses). (5.2)</blockquote>
 
 
@@ -124,14 +125,14 @@ Multisignature
 
 <ul>
 <li><a href="../Armory/">Armory</a></li>
-<li><span class="createlink"><a href="/ikiwiki.cgi?page=Copay&amp;do=create&amp;from=Multisignature" rel="nofollow">?</a>Copay</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Multisignature&amp;page=Copay&amp;do=create" rel="nofollow">?</a>Copay</span></li>
 <li><span class="createlink"><a href="/ikiwiki.cgi?page=Bitgo&amp;do=create&amp;from=Multisignature" rel="nofollow">?</a>Bitgo</span></li>
 <li><span class="createlink"><a href="/ikiwiki.cgi?page=Blocktrail&amp;do=create&amp;from=Multisignature" rel="nofollow">?</a>Blocktrail</span></li>
-<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Greenaddress&amp;from=Multisignature" rel="nofollow">?</a>Greenaddress</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Multisignature&amp;do=create&amp;page=Greenaddress" rel="nofollow">?</a>Greenaddress</span></li>
 <li><a href="../Coinbase/">Coinbase</a></li>
 <li><a href="../Electrum/">Electrum</a></li>
-<li><span class="createlink"><a href="/ikiwiki.cgi?from=Multisignature&amp;page=Xapo&amp;do=create" rel="nofollow">?</a>Xapo</span></li>
-<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Coinkite&amp;from=Multisignature" rel="nofollow">?</a>Coinkite</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Xapo&amp;do=create&amp;from=Multisignature" rel="nofollow">?</a>Xapo</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Coinkite&amp;do=create&amp;from=Multisignature" rel="nofollow">?</a>Coinkite</span></li>
 </ul>
 
 

@@ -9,6 +9,7 @@
 
 <link rel="stylesheet" href="../local.css" type="text/css" />
 
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 
 
 
@@ -51,7 +52,7 @@ Scalability FAQ
 
 
 
-<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=Scalability_FAQ" rel="nofollow">?</a>Talk</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Scalability_FAQ&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
 
 
 </ul>
@@ -149,7 +150,7 @@ theoretical maximum at 7 TPS with current Bitcoin consensus rules
 
 <p>Emphasis on the total validation resource requirements is suggested by some individuals to be misleading, as they claim it obfuscates the growth of the supporting base of full nodes that the total validation resource effort is split amongst. The validation resource effort made by each individual full node increases at O(n), and critics say this is the only pertinent fact with respect to scaling. Some critics also point out that the O(n<sup>2</sup>) network total validation resource requirements claim is assuming decentralization must be held constant as the network scales, and that this is not a founding principle of Bitcoin.</p>
 
-<h3 id="What.E2.80.99s_the_difference_between_on-chain_and_off-chain_transactions.3F">What&rsquo;s the difference between on-chain and off-chain transactions?</h3>
+<h3 id="What.26rsquo.3Bs_the_difference_between_on-chain_and_off-chain_transactions.3F">What&rsquo;s the difference between on-chain and off-chain transactions?</h3>
 
 <p>On-chain Bitcoin transactions are those that appear in the Bitcoin block chain. Off-chain transactions are those that transfer ownership of bitcoins without putting a transaction on the block chain.</p>
 
@@ -171,7 +172,7 @@ theoretical maximum at 7 TPS with current Bitcoin consensus rules
 
 <p>When miners assemble a block, they are free to include whatever transactions they wish. They usually include as many as possible up to the maximum block size and then prioritize the transactions that pay the most fees per kilobyte of data. (10.1) This confirms higher-fee transactions before lower-fee transactions. If blocks become full on a regular basis, users who pay a fee that&#39;s too small will have to wait a longer and longer time for their transactions to confirm. At this point, a demand-driven fee market may arise where transactions that pay higher fees get confirmed significantly faster than transactions that pay low fees. (10.2)</p>
 
-<p>In a competitive market, prices are driven by supply and demand and the emerging equilibrium price asymptotically approaches marginal costs over time. However, the current version of Bitcoin limits the supply to 1 MB per block, only allowing demand to adjust. To establish a free market, one would need to come up with a mechanism that allows the number of included transactions per block to adjust dynamically as well. The design of such a mechanism, however, is not trivial. Simply allowing individual miners to include as many transactions as they want is problematic due to the externalities (10.3) of including additional blocks and explained further in section <span class="createlink"><a href="/ikiwiki.cgi?from=Scalability_FAQ&amp;do=create&amp;page=__39__should%20miners%20be%20allowed%20to%20decide%20the%20block%20size%3F__39____124__" rel="nofollow">?</a>&#39;should miners be allowed to decide the block size?&#39;|</span> .</p>
+<p>In a competitive market, prices are driven by supply and demand and the emerging equilibrium price asymptotically approaches marginal costs over time. However, the current version of Bitcoin limits the supply to 1 MB per block, only allowing demand to adjust. To establish a free market, one would need to come up with a mechanism that allows the number of included transactions per block to adjust dynamically as well. The design of such a mechanism, however, is not trivial. Simply allowing individual miners to include as many transactions as they want is problematic due to the externalities (10.3) of including additional blocks and explained further in section <span class="createlink"><a href="/ikiwiki.cgi?page=__39__should%20miners%20be%20allowed%20to%20decide%20the%20block%20size%3F__39____124__&amp;do=create&amp;from=Scalability_FAQ" rel="nofollow">?</a>&#39;should miners be allowed to decide the block size?&#39;|</span> .</p>
 
 <h3 id="What_is_the_most_efficient_way_to_scale_Bitcoin.3F">What is the most efficient way to scale Bitcoin?</h3>
 
@@ -263,7 +264,7 @@ specific proposal.</p>
 
 <p>As a result of the sensitivity of demand to price increases, growth in the Bitcoin economy, and thus growth in the fees paid to secure the Bitcoin network, could be stunted if the block size is not allowed to increase sufficiently.</p>
 
-<h3 id="What_happens_if_blocks_aren.27t_big_enough_to_include_all_pending_transactions.3F">What happens if blocks aren&#39;t big enough to include all pending transactions?</h3>
+<h3 id="What_happens_if_blocks_aren.26.2339.3Bt_big_enough_to_include_all_pending_transactions.3F">What happens if blocks aren&#39;t big enough to include all pending transactions?</h3>
 
 <p>This is already the case more often than not (19.1), so we know that miners will simply queue transactions. The transactions eligible for block inclusion that pay the highest fee per kilobyte will be confirmed earlier than transactions that pay comparatively lower fees. (10.1)</p>
 
@@ -273,8 +274,8 @@ specific proposal.</p>
 
 <ul>
 <li>BitcoinJ lead developer Mike Hearn believes there would be &ldquo;crashing nodes, a swelling transaction backlog, a sudden spike in double spending, <span class="createlink"><a href="/ikiwiki.cgi?from=Scalability_FAQ&amp;page=and&amp;do=create" rel="nofollow">?</a>and</span> skyrocketing fees.&rdquo; (19.2)</li>
-<li>Bitcoin Foundation chief scientist Gavin Andresen believes that the &ldquo;average transaction fee paid will rise, people or applications unwilling or unable to pay the rising fees will stop submitting transactions, <span class="createlink"><a href="/ikiwiki.cgi?page=and&amp;do=create&amp;from=Scalability_FAQ" rel="nofollow">?</a>and</span> people and businesses will shelve plans to use Bitcoin, stunting growth and adoption.&rdquo;  (19.3)</li>
-<li>Bitcoin Core developer Pieter Wuille replies to Andresen&rsquo;s comment above: &ldquo;Is it fair to summarize this as &lsquo;Some use cases won&rsquo;t fit any more, people will decide to no longer use the blockchain for these purposes, and the fees will adapt.&rsquo;? I think that is already happening <span class="createlink"><a href="/ikiwiki.cgi?from=Scalability_FAQ&amp;do=create&amp;page=__8230__" rel="nofollow">?</a>&hellip;</span> I don&rsquo;t think we should be afraid of this change or try to stop it.&rdquo;  (19.4)</li>
+<li>Bitcoin Foundation chief scientist Gavin Andresen believes that the &ldquo;average transaction fee paid will rise, people or applications unwilling or unable to pay the rising fees will stop submitting transactions, <span class="createlink"><a href="/ikiwiki.cgi?from=Scalability_FAQ&amp;do=create&amp;page=and" rel="nofollow">?</a>and</span> people and businesses will shelve plans to use Bitcoin, stunting growth and adoption.&rdquo;  (19.3)</li>
+<li>Bitcoin Core developer Pieter Wuille replies to Andresen&rsquo;s comment above: &ldquo;Is it fair to summarize this as &lsquo;Some use cases won&rsquo;t fit any more, people will decide to no longer use the blockchain for these purposes, and the fees will adapt.&rsquo;? I think that is already happening <span class="createlink"><a href="/ikiwiki.cgi?from=Scalability_FAQ&amp;page=__8230__&amp;do=create" rel="nofollow">?</a>&hellip;</span> I don&rsquo;t think we should be afraid of this change or try to stop it.&rdquo;  (19.4)</li>
 <li>Bitcoin Core developer Jeff Garzik writes, &quot;as blocks get full and the bidding war ensues, the bitcoin user experience rapidly degrades to poor.  In part due to bitcoin wallet software&rsquo;s relative immaturity, and in part due to bitcoin&rsquo;s settlement based design, the end user experience of their transaction competing for block size results in erratic, and unpredictably extended validation times.&quot;</li>
 </ul>
 
@@ -349,7 +350,7 @@ specific proposal.</p>
 <li>The patch needs to be accepted into Bitcoin Core, Bitcoin XT, or both.</li>
 <li>If accepted into Bitcoin Core, miners using that software will need to upgrade (this probably requires a new released version of Bitcoin Core). If accepted only into Bitcoin XT, miners will need to switch to using XT.</li>
 <li>After 75% of miners have upgraded, 8MB blocks will become allowed at the the latest of (1) 11 January 2016 or (2) two weeks after the 75% upgrade threshold. (24.1)</li>
-<li>After the effective date has passed, any miner may create a block larger than 8MB. When a miner does this, upgraded full nodes will accept that block and non-upgraded full nodes will reject it, forking the network. (24.1) See <span class="createlink"><a href="/ikiwiki.cgi?from=Scalability_FAQ&amp;do=create&amp;page=hard%20fork%20dangers__124__" rel="nofollow">?</a>hard fork dangers|</span> for what his might mean.</li>
+<li>After the effective date has passed, any miner may create a block larger than 8MB. When a miner does this, upgraded full nodes will accept that block and non-upgraded full nodes will reject it, forking the network. (24.1) See <span class="createlink"><a href="/ikiwiki.cgi?from=Scalability_FAQ&amp;page=hard%20fork%20dangers__124__&amp;do=create" rel="nofollow">?</a>hard fork dangers|</span> for what his might mean.</li>
 </ul>
 
 
@@ -359,7 +360,7 @@ specific proposal.</p>
 
 <p>The longer it takes to upload a block, the higher the risk it will become a stale block&mdash;meaning the miner who created it will not receive the block subsidy or transaction fees (currently about 25 BTC per block).</p>
 
-<p>However, if technology like Invertible Bloom Lookup Tables (IBLTs) is deployed and found to work as expected (26.2), or if mining <span class="createlink"><a href="/ikiwiki.cgi?page=centralizes%20further__124__&amp;do=create&amp;from=Scalability_FAQ" rel="nofollow">?</a>centralizes further|</span>, adding additional transactions may not have a significant enough cost to discourage miners from creating full blocks. In that case, blocks will be filled as soon as there are enough people wanting to make transactions paying the default relay fee (26.3) of 0.00001000 BTC/kilobyte.</p>
+<p>However, if technology like Invertible Bloom Lookup Tables (IBLTs) is deployed and found to work as expected (26.2), or if mining <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=centralizes%20further__124__&amp;from=Scalability_FAQ" rel="nofollow">?</a>centralizes further|</span>, adding additional transactions may not have a significant enough cost to discourage miners from creating full blocks. In that case, blocks will be filled as soon as there are enough people wanting to make transactions paying the default relay fee (26.3) of 0.00001000 BTC/kilobyte.</p>
 
 <h4 id="What_tests_have_been_performed_related_to_this_proposal.3F">What tests have been performed related to this proposal?</h4>
 
@@ -367,7 +368,7 @@ specific proposal.</p>
 <li><strong>20MB block processing</strong> (Gavin Andresen) &ldquo;if we increased the maximum block size to 20 megabytes tomorrow, and every single miner decided to start creating 20MB blocks and there was a sudden increase in the number of transactions on the network to fill up those blocks&hellip; the 0.10.0 version of <a href="Bitcoin">Core</a> would run just fine.&rdquo; (27.1) (ellipses in original)</li>
 <li><strong>Mining &amp; relay simulation</strong> (Gavin Andresen) &ldquo;if blocks take 20 seconds to propagate, a network with a miner that has 30% of the hashing power will get 30.3% of the blocks.&rdquo; (27.2)</li>
 <li><strong>Mining on a home DSL connection</strong> (Rusty Russell) &ldquo;Using the rough formula of 1-exp(-t/600), I would expect orphan rates of 10.5% generating 1MB blocks, and 56.6% with 8MB blocks; that&rsquo;s a huge cut in expected profits.&rdquo; (26.1)</li>
-<li><strong>Mining centralization pressure</strong> (Pieter Wuille) &ldquo;<span class="createlink"><a href="/ikiwiki.cgi?from=Scalability_FAQ&amp;do=create&amp;page=This" rel="nofollow">?</a>This</span> does very clearly show the effects of larger blocks on centralization pressure of the system.&rdquo; (27.3)</li>
+<li><strong>Mining centralization pressure</strong> (Pieter Wuille) &ldquo;<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=This&amp;from=Scalability_FAQ" rel="nofollow">?</a>This</span> does very clearly show the effects of larger blocks on centralization pressure of the system.&rdquo; (27.3)</li>
 </ul>
 
 
@@ -422,7 +423,7 @@ without any additional risk of a fork.</p>
 
 <p>Dr. Adam Back has said, &quot;I expect we can get something running inside a year.&quot; (34.4)</p>
 
-<h4 id="Doesn.E2.80.99t_Lightning_require_bigger_blocks_anyway.3F">Doesn&rsquo;t Lightning require bigger blocks anyway?</h4>
+<h4 id="Doesn.26rsquo.3Bt_Lightning_require_bigger_blocks_anyway.3F">Doesn&rsquo;t Lightning require bigger blocks anyway?</h4>
 
 <p>Lightning is block-size neutral. It requires one on-chain transaction to open a channel between a hub and a client, and one on-chain transaction to close a channel. (33.1) In between it can support an unlimited number of transactions between anyone on the Lightning network. (33.4)</p>
 
@@ -444,7 +445,7 @@ without any additional risk of a fork.</p>
 
 <p>No. Sidechains have the same fundamental scaling problems as Bitcoin does. Moving some transactions to sidechains simply moves some problems elsewhere on the network&mdash;the total difficulty of the problem remains the same. (38.1)</p>
 
-<h4 id="But_couldn.E2.80.99t_I_create_a_sidechain_that_had_100_GB_blocks.3F">But couldn&rsquo;t I create a sidechain that had 100 GB blocks?</h4>
+<h4 id="But_couldn.26rsquo.3Bt_I_create_a_sidechain_that_had_100_GB_blocks.3F">But couldn&rsquo;t I create a sidechain that had 100 GB blocks?</h4>
 
 <p>Certainly, sidechain code is open source (39.1)&mdash;so you can create your own sidechain. But you&rsquo;d still have the difficulty of finding people who are willing to validate 100 GB blocks with their own full nodes.</p>
 
@@ -461,7 +462,7 @@ without any additional risk of a fork.</p>
 3.5: <a href="https://www.biteasy.com/blockchain/blocks/000000000021d821ec06be7173f413690bc5c4bc648dfa70b3b6763236f055b7">Block height 79400</a> , dated 12 September 2010<br />
 3.6: <a href="https://bitcointalk.org/index.php?topic=1347.msg15139#msg15139">Increasing the block size when needed</a> , Satoshi Nakamoto, 3 October 2010<br />
 3.7: <a href="https://bitcointalk.org/index.php?topic=532.msg6306#msg6306">the number of network nodes consolidates into a smaller number of professional server farms</a><br />
-4.1: <span class="createlink"><a href="/ikiwiki.cgi?page=__60__code__62__MAX_BLOCK_SIZE&amp;do=create&amp;from=Scalability_FAQ" rel="nofollow">?</a>&lt;code&gt;MAX BLOCK SIZE</span> , retrieved 2 July 2015<br />
+4.1: <span class="createlink"><a href="/ikiwiki.cgi?from=Scalability_FAQ&amp;page=__60__code__62__MAX_BLOCK_SIZE&amp;do=create" rel="nofollow">?</a>&lt;code&gt;MAX BLOCK SIZE</span> , retrieved 2 July 2015<br />
 4.2: <a href="https://bitcoin.org/en/developer-reference#serialized-blocks">Block serialization description</a> , Bitcoin.org Developer Reference<br />
 4.3: <a href="http://lists.linuxfoundation.org/pipermail/bitcoin-dev/2015-May/007986.html">Max TPS based on current average transaction size</a> , Mike Hearn, 8 May 2015<br />
 4.4: <a href="https://www.reddit.com/r/Bitcoin/comments/39yaod/bitcoinorg_position_on_hard_forks/cs7qz5c">&quot;No one proposing 3 TPS forever&quot;</a> , Gregory Maxwell, 15 June 2015<br />

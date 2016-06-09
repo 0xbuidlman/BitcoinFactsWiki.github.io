@@ -9,6 +9,7 @@
 
 <link rel="stylesheet" href="../../local.css" type="text/css" />
 
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 
 
 
@@ -87,7 +88,7 @@ talk
 
 <p>Also the developers noted that QR codes are much more efficient when they are made strictly from the set of uppercase alphanumerics, as it switches to a QR encoding that spends fewer bits per character.  Mixed case QR codes require a full 8-bit character set (IIRC), which takes up significantly more space than the QR alphanumeric encoding which doesn&#39;t support lowercase.  The developers expressed a willingness to entertain an alternate encoding of full Bitcoin private keys that used base36 (or perhaps base44, since that&#39;s how many printable characters in the QR alphanumeric set), which would result in a significantly reduced footprint in QR codes. <a>Casascius</a> 03:32, 10 November 2011 (GMT)</p></blockquote>
 
-<h1 id="Purpose_of_appending_the_.27.3F.27_for_determining_algorithm.3F">Purpose of appending the &#39;?&#39; for determining algorithm?</h1>
+<h1 id="Purpose_of_appending_the_.26.2339.3B.3F.26.2339.3B_for_determining_algorithm.3F">Purpose of appending the &#39;?&#39; for determining algorithm?</h1>
 
 <p>At first I was wondering why this should be appended, why not just checking the first byte of SHA256 of the minikey as is. The reason I now could think of is that you don&#39;t want someone to be able to tell whether a bitcoin private key was generated from a minikey. Is that a good or a bad thing? Is that the main reason? Are there any other reasons? Maybe such reasons should be explained on the wiki page? --<a>T X</a> 16:32, 26 November 2011 (GMT)</p>
 

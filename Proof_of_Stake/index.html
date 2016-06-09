@@ -9,6 +9,7 @@
 
 <link rel="stylesheet" href="../local.css" type="text/css" />
 
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 
 
 
@@ -73,7 +74,7 @@ Proof of Stake
 
 <p>It was probably first proposed <a href="https://bitcointalk.org/index.php?topic=27787.0">here</a> by Quantum Mechanic. With Proof of Work, the probability of mining a block depends on the work done by the miner (e.g. CPU/GPU cycles spent checking hashes). With Proof of Stake, the resource that&#39;s compared is the amount of Bitcoin a miner holds - someone holding 1% of the Bitcoin can mine 1% of the &quot;Proof of Stake blocks&quot;.</p>
 
-<p>Some argue that methods based on Proof of Work alone might lead to a low network security in a cryptocurrency with block incentives that decline over time (like bitcoin) due to <span class="createlink"><a href="/ikiwiki.cgi?page=Tragedy_of_the_Commons&amp;do=create&amp;from=Proof_of_Stake" rel="nofollow">?</a>Tragedy of the Commons</span>, and Proof of Stake is one way of changing the miner&#39;s incentives in favor of higher network security.</p>
+<p>Some argue that methods based on Proof of Work alone might lead to a low network security in a cryptocurrency with block incentives that decline over time (like bitcoin) due to <span class="createlink"><a href="/ikiwiki.cgi?from=Proof_of_Stake&amp;page=Tragedy_of_the_Commons&amp;do=create" rel="nofollow">?</a>Tragedy of the Commons</span>, and Proof of Stake is one way of changing the miner&#39;s incentives in favor of higher network security.</p>
 
 <h1 id="Motivation_For_Proof_of_Stake">Motivation For Proof of Stake</h1>
 
@@ -107,11 +108,11 @@ Proof of Stake
 
 <p>There are currently a few distinct proposals on how to implement PoS</p>
 
-<h2 id="Cunicula.27s_Implementation_of_Mixed_Proof-of-Work_and_Proof-of-Stake">Cunicula&#39;s Implementation of Mixed Proof-of-Work and Proof-of-Stake</h2>
+<h2 id="Cunicula.26.2339.3Bs_Implementation_of_Mixed_Proof-of-Work_and_Proof-of-Stake">Cunicula&#39;s Implementation of Mixed Proof-of-Work and Proof-of-Stake</h2>
 
 <p>This suggestion is of a mixed Proof-of-Work / Proof-of-Stake system.</p>
 
-<h3 id="Cunicula.27s_Note">Cunicula&#39;s Note</h3>
+<h3 id="Cunicula.26.2339.3Bs_Note">Cunicula&#39;s Note</h3>
 
 <p>Check the page history for the older implementation. I am replacing my description with a new system which I believe to be much more secure. The new system is a greatly improved version of Coblee&#39;s Proof of Activity <a href="https://bitcointalk.org/index.php?topic=102355.0">proposal</a>. It provides extremely strong protection against PoW attacks, both double-spends and denials of service. It is not vulnerable even if PoW attackers also have substantial (but non majority) stake. It provides strong incentives to maintain full nodes. The system is supported through taxes on coin owners who fail to maintain full nodes. Tax revenue is redistributed to coin owners who maintain full nodes. The maintenance of full nodes is the key element providing security in the system.</p>
 
@@ -287,7 +288,7 @@ If receipt of coins but no send, Coin_age_t = <a href="Coin_age_(t-1">coins</a>*
 
 <p>Other demurrage fees are transfers of revenue from one private key to another. Some keys are net beneficiaries of these transfers, while other keys are net losers. Collectively, these fees do not make coin owners better or worse off. Their effects are neutral. However, individually, the fees do create winners and losers. <em>Active</em> users that spend infrequently gain from the system. An <em>active</em> user with average spend frequency is likely to gain from the system as well, but only by a small amount. An <em>active</em> user that spends very frequently will probably lose from the system. <em>Dead</em> users will certainly lose from the system. This loss serves as a punishment for failure to maintain an <em>active</em> node.</p>
 
-<h2 id="Meni.27s_implementation">Meni&#39;s implementation</h2>
+<h2 id="Meni.26.2339.3Bs_implementation">Meni&#39;s implementation</h2>
 
 <p>This proposal is for a proof-of-work (PoW) skeleton on which occasional checkpoints set by stakeholders are placed. In one variant, double-spending is prevented by waiting for a transaction to be included in a checkpoint; the variant described here uses cementing to prevent double-spending, and checkpoints to resolve cementing conflicts.</p>
 

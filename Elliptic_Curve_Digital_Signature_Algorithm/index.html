@@ -9,6 +9,7 @@
 
 <link rel="stylesheet" href="../local.css" type="text/css" />
 
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 
 
 
@@ -51,7 +52,7 @@ Elliptic Curve Digital Signature Algorithm
 
 
 
-<li><span class="createlink"><a href="/ikiwiki.cgi?from=Elliptic_Curve_Digital_Signature_Algorithm&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=Elliptic_Curve_Digital_Signature_Algorithm" rel="nofollow">?</a>Talk</span></li>
 
 
 </ul>
@@ -74,9 +75,9 @@ Elliptic Curve Digital Signature Algorithm
 <p>A few concepts related to ECDSA:</p>
 
 <ul>
-<li><a href="../Private_key/">private key</a>: A secret number, known only to the person that generated it.  A private key is essentially a randomly generated number.  In Bitcoin, someone with the private key that corresponds to funds on the <span class="createlink"><a href="/ikiwiki.cgi?page=public_ledger&amp;do=create&amp;from=Elliptic_Curve_Digital_Signature_Algorithm" rel="nofollow">?</a>public ledger</span> can spend the funds.  In Bitcoin, a private key is a single unsigned 256 bit integer (32 bytes).</li>
-<li><span class="createlink"><a href="/ikiwiki.cgi?page=public_key&amp;do=create&amp;from=Elliptic_Curve_Digital_Signature_Algorithm" rel="nofollow">?</a>public key</span>: A number that corresponds to a private key, but does not need to be kept secret.  A public key can be calculated from a private key, but not vice versa.  A public key can be used to determine if a signature is genuine (in other words, produced with the proper key) without requiring the private key to be divulged.  In Bitcoin, public key are either compressed or uncompressed. Compressed public keys are 33 bytes, consisting of a prefix either 0x02 or 0x03, and a 256-bit integer called <em>x</em>. The older uncompressed keys are 65 bytes, consisting of constant prefix (0x04), followed by two 256-bit integers called <em>x</em> and <em>y</em> (2 * 32 bytes). The prefix of a compressed key allows for the <em>y</em> value to be derived from the <em>x</em> value.</li>
-<li><span class="createlink"><a href="/ikiwiki.cgi?from=Elliptic_Curve_Digital_Signature_Algorithm&amp;page=signature&amp;do=create" rel="nofollow">?</a>signature</span>: A number that proves that a signing operation took place.  A signature is mathematically generated from a <a href="../Hash/">hash</a> of something to be signed, plus a private key.  The signature itself is two numbers known as <em>r</em> and <em>s</em>.  With the public key, a mathematical algorithm can be used on the signature to determine that it was originally produced from the hash and the private key, without needing to know the private key. Signatures are either 73, 72, or 71 bytes long, with probabilities approximately 25%, 50% and 25% respectively, although sizes even smaller than that are possible with exponentially decreasing probability.</li>
+<li><a href="../Private_key/">private key</a>: A secret number, known only to the person that generated it.  A private key is essentially a randomly generated number.  In Bitcoin, someone with the private key that corresponds to funds on the <span class="createlink"><a href="/ikiwiki.cgi?from=Elliptic_Curve_Digital_Signature_Algorithm&amp;do=create&amp;page=public_ledger" rel="nofollow">?</a>public ledger</span> can spend the funds.  In Bitcoin, a private key is a single unsigned 256 bit integer (32 bytes).</li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Elliptic_Curve_Digital_Signature_Algorithm&amp;page=public_key&amp;do=create" rel="nofollow">?</a>public key</span>: A number that corresponds to a private key, but does not need to be kept secret.  A public key can be calculated from a private key, but not vice versa.  A public key can be used to determine if a signature is genuine (in other words, produced with the proper key) without requiring the private key to be divulged.  In Bitcoin, public key are either compressed or uncompressed. Compressed public keys are 33 bytes, consisting of a prefix either 0x02 or 0x03, and a 256-bit integer called <em>x</em>. The older uncompressed keys are 65 bytes, consisting of constant prefix (0x04), followed by two 256-bit integers called <em>x</em> and <em>y</em> (2 * 32 bytes). The prefix of a compressed key allows for the <em>y</em> value to be derived from the <em>x</em> value.</li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Elliptic_Curve_Digital_Signature_Algorithm&amp;do=create&amp;page=signature" rel="nofollow">?</a>signature</span>: A number that proves that a signing operation took place.  A signature is mathematically generated from a <a href="../Hash/">hash</a> of something to be signed, plus a private key.  The signature itself is two numbers known as <em>r</em> and <em>s</em>.  With the public key, a mathematical algorithm can be used on the signature to determine that it was originally produced from the hash and the private key, without needing to know the private key. Signatures are either 73, 72, or 71 bytes long, with probabilities approximately 25%, 50% and 25% respectively, although sizes even smaller than that are possible with exponentially decreasing probability.</li>
 </ul>
 
 

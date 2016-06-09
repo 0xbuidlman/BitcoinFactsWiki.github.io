@@ -9,6 +9,7 @@
 
 <link rel="stylesheet" href="../local.css" type="text/css" />
 
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 
 
 
@@ -88,11 +89,11 @@ it is established that there will be a limited and scheduled release of no more 
 
 <p>In 2008, Satoshi Nakamoto published a <a href="../Bitcoin_white_paper/">paper</a> (2.7) (2.8) on The Cryptography Mailing list at metzdowd.com (2.9) describing the Bitcoin protocol.</p>
 
-<p>The Bitcoin network came into existence on 3 January 2009 with the release of the first Bitcoin client, <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=wxBitcoin&amp;from=Bitcoin" rel="nofollow">?</a>wxBitcoin</span>, and the issuance of the first Bitcoins. (2.10) (2.11) (2.12)
+<p>The Bitcoin network came into existence on 3 January 2009 with the release of the first Bitcoin client, <span class="createlink"><a href="/ikiwiki.cgi?from=Bitcoin&amp;page=wxBitcoin&amp;do=create" rel="nofollow">?</a>wxBitcoin</span>, and the issuance of the first Bitcoins. (2.10) (2.11) (2.12)
 A year after, the initial exchange rates for Bitcoin were set by individuals on the bitcointalk forums. The most significant transaction involved a 10,000 BTC pizza. (2.13)
 Today, the majority of Bitcoin exchanges occur on the <a href="../BitStamp/">Bitstamp</a> Bitcoin exchange. (2.14)</p>
 
-<p>In 2011, Wikileaks, (2.15) <span class="createlink"><a href="/ikiwiki.cgi?page=Freenet&amp;do=create&amp;from=Bitcoin" rel="nofollow">?</a>Freenet</span>, (2.16) Singularity Institute, (2.17) Internet Archive, (2.18) Free Software Foundation (2.19) and others, began to accept donations in Bitcoin. The Electronic Frontier Foundation did so for a while but has since stopped, citing concerns about a lack of legal precedent about new currency systems, and because they &quot;generally don&#39;t endorse any type of product or service.&quot; (2.20) Some small businesses had started to adopt Bitcoin. LaCie, a public company, accepts Bitcoin for its Wuala service. (2.21)</p>
+<p>In 2011, Wikileaks, (2.15) <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Freenet&amp;from=Bitcoin" rel="nofollow">?</a>Freenet</span>, (2.16) Singularity Institute, (2.17) Internet Archive, (2.18) Free Software Foundation (2.19) and others, began to accept donations in Bitcoin. The Electronic Frontier Foundation did so for a while but has since stopped, citing concerns about a lack of legal precedent about new currency systems, and because they &quot;generally don&#39;t endorse any type of product or service.&quot; (2.20) Some small businesses had started to adopt Bitcoin. LaCie, a public company, accepts Bitcoin for its Wuala service. (2.21)</p>
 
 <p>In 2012, BitPay reports of having over 1000 merchants accepting Bitcoin under its payment processing service. (2.22)</p>
 
@@ -150,7 +151,7 @@ the price of a Bitcoin is not static.</p>
 
 <p>In August 2012, 1 BTC traded at around $10.00 USD. Taking into account the total number of Bitcoins mined, the monetary base of the Bitcoin network stands at over 110 million USD. (10.1)</p>
 
-<h2>Anonymity</h2>
+<h2 id="Anonymity">Anonymity</h2>
 
 <p> <em>Main article: <a href="../Anonymity_&amp;_Security/">Anonymity &amp; Security</a></em></p>
 
@@ -170,7 +171,7 @@ the price of a Bitcoin is not static.</p>
 
 <p><a href="http://anonymity.co.in/mixing_services.html">Mixing services</a> are used to avoid compromising of privacy and security. Mixing services provide to periodically exchange your bitcoins for different ones which cannot be associated with the original owner.</p>
 
-<h2>Security</h2>
+<h2 id="Security">Security</h2>
 
 <p>In the history of bitcoin, there have been a few <a href="../Incidents/">incidents</a>, caused by problematic as well as malicious transactions. In the worst such incident, and the only one of its type, a person was able to pretend that he had a practically infinite supply of bitcoins, for almost 9 hours.</p>
 
@@ -196,7 +197,7 @@ the price of a Bitcoin is not static.</p>
 
 <p>Satoshi Nakamoto designed the first Bitcoin node and mining software (17.1) and developed the majority of the first implementation, Bitcoind, from 2007 to mid-2010. (17.2)</p>
 
-<p>Node implementations include core software such as Bitcoind/Bitcoin-Qt, <a href="../Libbitcoin/">libbitcoin</a>, <span class="createlink"><a href="/ikiwiki.cgi?from=Bitcoin&amp;page=cbitcoin&amp;do=create" rel="nofollow">?</a>cbitcoin</span> (17.3) and <a href="../BitCoinJ/">bitcoinj</a>. (17.4) (17.5)</p>
+<p>Node implementations include core software such as Bitcoind/Bitcoin-Qt, <a href="../Libbitcoin/">libbitcoin</a>, <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=cbitcoin&amp;from=Bitcoin" rel="nofollow">?</a>cbitcoin</span> (17.3) and <a href="../BitCoinJ/">bitcoinj</a>. (17.4) (17.5)</p>
 
 <p>Every node in the Bitcoin network collects all the unacknowledged transactions it knows of in a file called a <em>block</em>, which also contains a reference to the previous valid block known to that node. It then appends a <a href="../Nonce/">nonce</a> value to this previous block and computes the SHA-256 cryptographic hash of the block and the appended nonce value. The node repeats this process until it adds a nonce that allows for the generation of a hash with a value lower than a specified <em>target</em>. Because computers cannot practically reverse the hash function, finding such a nonce is hard and requires on average a predictable amount of repetitious trial and error. This is where the <em><a href="../Proof-of-work/">proof-of-work</a></em> concept comes in to play.  When a node finds such a solution, it announces it to the rest of the network. Peers receiving the new solved block validate it by computing the hash and checking that it really starts with the given number of zero bits (i.e., that the hash is within the target). Then they accept it and add it to the chain.</p>
 
@@ -204,7 +205,7 @@ the price of a Bitcoin is not static.</p>
 
 <p>In addition to receiving the pending transactions confirmed in the block, a generating node adds a <em>generate</em> transaction, which awards new Bitcoins to the operator of the node that generated the block. The system sets the payout of this generated transaction according to its defined inflation schedule.  The miner that generates a block also receives the fees that users have paid as an incentive to give particular transactions priority for faster confirmation. (18.1)</p>
 
-<p>The network never creates more than a 50 BTC reward per block and this amount will decrease over time towards zero, such that no more than 21 million BTC will ever exist. (9.5) As this payout decreases, the incentive for users to run block-generating nodes is intended to change to earning <span class="createlink"><a href="/ikiwiki.cgi?from=Bitcoin&amp;do=create&amp;page=transaction%20fees__124__" rel="nofollow">?</a>transaction fees|</span>.</p>
+<p>The network never creates more than a 50 BTC reward per block and this amount will decrease over time towards zero, such that no more than 21 million BTC will ever exist. (9.5) As this payout decreases, the incentive for users to run block-generating nodes is intended to change to earning <span class="createlink"><a href="/ikiwiki.cgi?page=transaction%20fees__124__&amp;do=create&amp;from=Bitcoin" rel="nofollow">?</a>transaction fees|</span>.</p>
 
 <h3 id="Mining_pools">Mining pools</h3>
 
@@ -275,9 +276,9 @@ Schumer described the use of Bitcoins at Silk Road as a form of money laundering
 
 <p>In September 2012, the Intra-European Organization of Tax Administrations (IOTA), in Tbilisi, Georgia, held a workshop titled &quot;Auditing Individuals and Legal Entities in the Use of e-Money.&quot; The workshop was attended by representatives from 23 countries. (30.1)  Jerry Taylor, IOTA&#39;s technical taxation expert, said, &quot;There&#39;s an awful lot happening on the Internet environment which is fascinating at the moment and introducing new challenges for auditors when it comes to virtual currency.&quot; (30.2)  Bitcoin was mentioned during the workshop. (30.3)</p>
 
-<p>Matthew Elias, founder of the <span class="createlink"><a href="/ikiwiki.cgi?page=Cryptocurrency_Legal_Advocacy_Group&amp;do=create&amp;from=Bitcoin" rel="nofollow">?</a>Cryptocurrency Legal Advocacy Group</span> (CLAG) published &quot;Staying Between the Lines: A Survey of U.S. Income Taxation and its Ramifications on Cryptocurrencies&quot;, which discusses &quot;the taxability of cryptocurrencies such as bitcoin.&quot; (30.4)  CLAG &quot;stressed the importance for taxpayers to determine on their own whether taxes are due on a bitcoin-related transaction based on whether one has &quot;experienced a realization event.&quot; (30.5)  Such examples are &quot;when a taxpayer has provided a service in exchange for bitcoins, a realization event has probably occurred, and any gain or loss would likely be calculated using fair market values for the service provided.&quot; (30.6)</p>
+<p>Matthew Elias, founder of the <span class="createlink"><a href="/ikiwiki.cgi?from=Bitcoin&amp;page=Cryptocurrency_Legal_Advocacy_Group&amp;do=create" rel="nofollow">?</a>Cryptocurrency Legal Advocacy Group</span> (CLAG) published &quot;Staying Between the Lines: A Survey of U.S. Income Taxation and its Ramifications on Cryptocurrencies&quot;, which discusses &quot;the taxability of cryptocurrencies such as bitcoin.&quot; (30.4)  CLAG &quot;stressed the importance for taxpayers to determine on their own whether taxes are due on a bitcoin-related transaction based on whether one has &quot;experienced a realization event.&quot; (30.5)  Such examples are &quot;when a taxpayer has provided a service in exchange for bitcoins, a realization event has probably occurred, and any gain or loss would likely be calculated using fair market values for the service provided.&quot; (30.6)</p>
 
-<p><span class="createlink"><a href="/ikiwiki.cgi?page=Peter_Vessenes&amp;do=create&amp;from=Bitcoin" rel="nofollow">?</a>Peter Vessenes</span>, <span class="createlink"><a href="/ikiwiki.cgi?page=Bitcoin_Foundation&amp;do=create&amp;from=Bitcoin" rel="nofollow">?</a>Bitcoin Foundation&#39;s</span> executive director, said, since the foundation is trying to pay for everything in bitcoin, including salaries, &quot;How do we W-2 someone for their bitcoins? Do we mark-to-market every time a transfer happens? Payroll companies cringe.&quot; (30.7)  The Bitcoin Foundation hopes &quot;to push for solid guidance about its legal and tax treatment.&quot; <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Patrick_Murck&amp;from=Bitcoin" rel="nofollow">?</a>Patrick Murck</span>, legal counsel for the Bitcoin Foundation, said he would like &quot;to help regulators understand the technology better so they can make better decisions.&quot; (30.8) Murck said, &quot;Bitcoin has the potential to become much more than a niche currency, but it needs the guidance and understanding of regulators.&quot; and &quot;The full potential of bitcoin could be realized through clearer guidelines and a better understanding by financial and tax regulators.&quot; and &quot;Part of making that happen is to talk to regulators, the IRS, and tax professionals and helping them understand that bitcoin is not this nefarious thing, it&#39;s just software, it&#39;s a community, and there&#39;s nothing inherently nefarious about either of those things.&quot; (30.9)</p>
+<p><span class="createlink"><a href="/ikiwiki.cgi?from=Bitcoin&amp;page=Peter_Vessenes&amp;do=create" rel="nofollow">?</a>Peter Vessenes</span>, <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Bitcoin_Foundation&amp;from=Bitcoin" rel="nofollow">?</a>Bitcoin Foundation&#39;s</span> executive director, said, since the foundation is trying to pay for everything in bitcoin, including salaries, &quot;How do we W-2 someone for their bitcoins? Do we mark-to-market every time a transfer happens? Payroll companies cringe.&quot; (30.7)  The Bitcoin Foundation hopes &quot;to push for solid guidance about its legal and tax treatment.&quot; <span class="createlink"><a href="/ikiwiki.cgi?from=Bitcoin&amp;do=create&amp;page=Patrick_Murck" rel="nofollow">?</a>Patrick Murck</span>, legal counsel for the Bitcoin Foundation, said he would like &quot;to help regulators understand the technology better so they can make better decisions.&quot; (30.8) Murck said, &quot;Bitcoin has the potential to become much more than a niche currency, but it needs the guidance and understanding of regulators.&quot; and &quot;The full potential of bitcoin could be realized through clearer guidelines and a better understanding by financial and tax regulators.&quot; and &quot;Part of making that happen is to talk to regulators, the IRS, and tax professionals and helping them understand that bitcoin is not this nefarious thing, it&#39;s just software, it&#39;s a community, and there&#39;s nothing inherently nefarious about either of those things.&quot; (30.9)</p>
 
 <h2 id="See_Also">See Also</h2>
 
@@ -388,7 +389,10 @@ Schumer described the use of Bitcoins at Silk Road as a form of money laundering
 30.8: Stewart, David D. and Soong Johnston, Stephanie D. Issue: 2012 TNT 209-4 Journal: Tax Notes Today Month: October 29 Volume: 2012 TNT 209-4 Year: 2012<br />
 30.9: Stewart, David D. and Soong Johnston, Stephanie D. Issue: 2012 TNT 209-4 Journal: Tax Notes Today Month: October 29 Volume: 2012 TNT 209-4 Year: 2012</span></span></p>
 
-<p><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=es%3ABitcoin&amp;from=Bitcoin" rel="nofollow">?</a>es:Bitcoin</span><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=de%3ABitcoin&amp;from=Bitcoin" rel="nofollow">?</a>de:Bitcoin</span></p>
+<p>[[!template <span class="error">Error: failed to process template &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=%2Ftemplates%2Fp-move&amp;amp;do=create&amp;amp;from=Bitcoin&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;p-move&lt;/span&gt; template p-move not found
+</span>]][[!template <span class="error">Error: failed to process template &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=%2Ftemplates%2Fgood&amp;amp;from=Bitcoin&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;good&lt;/span&gt; template good not found
+</span>]]
+<span class="createlink"><a href="/ikiwiki.cgi?from=Bitcoin&amp;page=es%3ABitcoin&amp;do=create" rel="nofollow">?</a>es:Bitcoin</span><span class="createlink"><a href="/ikiwiki.cgi?from=Bitcoin&amp;page=de%3ABitcoin&amp;do=create" rel="nofollow">?</a>de:Bitcoin</span></p>
 
 </section>
 

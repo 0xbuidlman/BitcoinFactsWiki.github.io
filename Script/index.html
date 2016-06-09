@@ -9,6 +9,7 @@
 
 <link rel="stylesheet" href="../local.css" type="text/css" />
 
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 
 
 
@@ -210,7 +211,7 @@ Byte vectors are interpreted as Booleans where False is represented by any repre
 <td>OP_IF</td>
 <td>99</td>
 <td>0x63</td>
-<td>colspan=&quot;2&quot;if <span class="createlink"><a href="/ikiwiki.cgi?from=Script&amp;page=statements&amp;do=create" rel="nofollow">?</a>statements</span><span class="createlink"><a href="/ikiwiki.cgi?page=statements&amp;do=create&amp;from=Script" rel="nofollow">?</a>statements</span>* endif</td>
+<td>colspan=&quot;2&quot;if <span class="createlink"><a href="/ikiwiki.cgi?page=statements&amp;do=create&amp;from=Script" rel="nofollow">?</a>statements</span><span class="createlink"><a href="/ikiwiki.cgi?page=statements&amp;do=create&amp;from=Script" rel="nofollow">?</a>statements</span>* endif</td>
 <td>If the top stack value is not 0, the statements are executed. The top stack value is removed.</td>
 <td></td>
 </tr>
@@ -218,7 +219,7 @@ Byte vectors are interpreted as Booleans where False is represented by any repre
 <td>OP_NOTIF</td>
 <td>100</td>
 <td>0x64</td>
-<td>colspan=&quot;2&quot;if <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=statements&amp;from=Script" rel="nofollow">?</a>statements</span><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=statements&amp;from=Script" rel="nofollow">?</a>statements</span>* endif</td>
+<td>colspan=&quot;2&quot;if <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=statements&amp;from=Script" rel="nofollow">?</a>statements</span><span class="createlink"><a href="/ikiwiki.cgi?page=statements&amp;do=create&amp;from=Script" rel="nofollow">?</a>statements</span>* endif</td>
 <td>If the top stack value is 0, the statements are executed. The top stack value is removed.</td>
 <td></td>
 </tr>
@@ -226,7 +227,7 @@ Byte vectors are interpreted as Booleans where False is represented by any repre
 <td>OP_ELSE</td>
 <td>103</td>
 <td>0x67</td>
-<td>colspan=&quot;2&quot;if <span class="createlink"><a href="/ikiwiki.cgi?from=Script&amp;page=statements&amp;do=create" rel="nofollow">?</a>statements</span><span class="createlink"><a href="/ikiwiki.cgi?from=Script&amp;page=statements&amp;do=create" rel="nofollow">?</a>statements</span>* endif</td>
+<td>colspan=&quot;2&quot;if <span class="createlink"><a href="/ikiwiki.cgi?from=Script&amp;page=statements&amp;do=create" rel="nofollow">?</a>statements</span><span class="createlink"><a href="/ikiwiki.cgi?page=statements&amp;do=create&amp;from=Script" rel="nofollow">?</a>statements</span>* endif</td>
 <td>If the preceding OP_IF or OP_NOTIF or OP_ELSE was not executed then these statements are and if the preceding OP_IF or OP_NOTIF or OP_ELSE was executed then these statements are not.</td>
 <td></td>
 </tr>
@@ -234,7 +235,7 @@ Byte vectors are interpreted as Booleans where False is represented by any repre
 <td>OP_ENDIF</td>
 <td>104</td>
 <td>0x68</td>
-<td>colspan=&quot;2&quot;if <span class="createlink"><a href="/ikiwiki.cgi?from=Script&amp;do=create&amp;page=statements" rel="nofollow">?</a>statements</span><span class="createlink"><a href="/ikiwiki.cgi?from=Script&amp;do=create&amp;page=statements" rel="nofollow">?</a>statements</span>* endif</td>
+<td>colspan=&quot;2&quot;if <span class="createlink"><a href="/ikiwiki.cgi?from=Script&amp;page=statements&amp;do=create" rel="nofollow">?</a>statements</span><span class="createlink"><a href="/ikiwiki.cgi?from=Script&amp;page=statements&amp;do=create" rel="nofollow">?</a>statements</span>* endif</td>
 <td>Ends an if/else block. All blocks must end, or the transaction is <strong>invalid</strong>. An OP_ENDIF without OP_IF earlier is also <strong>invalid</strong>.</td>
 <td></td>
 </tr>

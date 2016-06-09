@@ -9,6 +9,7 @@
 
 <link rel="stylesheet" href="../local.css" type="text/css" />
 
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 
 
 
@@ -51,7 +52,7 @@ Bitcoin Core 0.11 (ch 2): Data Storage
 
 
 
-<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=Bitcoin_Core_0.11_%28ch_2%29%3A_Data_Storage" rel="nofollow">?</a>Talk</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Bitcoin_Core_0.11_%28ch_2%29%3A_Data_Storage" rel="nofollow">?</a>Talk</span></li>
 
 
 </ul>
@@ -459,7 +460,7 @@ Note:  if the cache&#39;s backend is another cache, then the term &quot;database
 
 <p>Greg Maxwell stated the following in <a href="http://bitcoin-development.narkive.com/XAPoxKZU/patch-switching-bitcoin-core-to-sqlite-db">the same thread referenced above (in response to a proposal to switch to using sqlite)</a>:</p>
 
-<blockquote><p> ...<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=D&amp;from=Bitcoin_Core_0.11_%28ch_2%29%3A_Data_Storage" rel="nofollow">?</a>D</span>atabases sometimes have errors which cause them to fail to return records, or to return stale data. And if those exist consistency must be maintained; and &quot;fixing&quot; the bug can cause a divergence in consensus state that could open users up to theft.</p>
+<blockquote><p> ...<span class="createlink"><a href="/ikiwiki.cgi?page=D&amp;do=create&amp;from=Bitcoin_Core_0.11_%28ch_2%29%3A_Data_Storage" rel="nofollow">?</a>D</span>atabases sometimes have errors which cause them to fail to return records, or to return stale data. And if those exist consistency must be maintained; and &quot;fixing&quot; the bug can cause a divergence in consensus state that could open users up to theft.</p>
 
 <p> Case in point, prior to leveldb&#39;s use in Bitcoin Core it had a bug that, under rare conditions, could cause it to consistently return not found on records that were really there. . . Leveldb fixed this serious bug in a minor update.  But deploying a fix like this in an uncontrolled manner in the bitcoin network would potentially cause a fork in the consensus state; so any such fix would need to be rolled out in an orderly manner.</p></blockquote>
 

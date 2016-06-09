@@ -9,6 +9,7 @@
 
 <link rel="stylesheet" href="../local.css" type="text/css" />
 
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 
 
 
@@ -70,7 +71,7 @@ Stratum mining protocol
 
 <section id="content" role="main">
 <p>The <span class="createlink"><a href="/ikiwiki.cgi?from=Stratum_mining_protocol&amp;do=create&amp;page=stratum" rel="nofollow">?</a>stratum</span> overlay protocol was extended to support pooled mining as a replacement for obsolete <a href="../Getwork/">getwork</a> protocol in late 2012.
-The mining service specification was initially announced via <span class="createlink"><a href="/ikiwiki.cgi?from=Stratum_mining_protocol&amp;page=Slushs_pool&amp;do=create" rel="nofollow">?</a>Slushs pool</span>&#39;s website (1.1).
+The mining service specification was initially announced via <span class="createlink"><a href="/ikiwiki.cgi?from=Stratum_mining_protocol&amp;do=create&amp;page=Slushs_pool" rel="nofollow">?</a>Slushs pool</span>&#39;s website (1.1).
 Shortly thereafter, alternative &quot;cheat sheet&quot; style documentation was provided by <a href="../BTCGuild/">BTCGuild</a> (1.2).
 As the extension lacks a formal <a href="../BIP/">BIP</a> describing an official standard, it has further developed only by discussion and implementation (1.3).</p>
 
@@ -147,7 +148,7 @@ If provided, a server MAY (at its option) issue the connection the same extranon
 Note that the extranonce1 may be the same (allowing a resumed connection) even if the subscription id is changed!</p>
 
 <p>The client receives a result:
-    <a href="%22mining.set_difficulty%22,">&quot;subscription id 1&quot;</a>, <span class="createlink"><a href="/ikiwiki.cgi?from=Stratum_mining_protocol&amp;page=mining.notify%2C_subscription_id_2&amp;do=create" rel="nofollow">?</a>mining.notify, subscription id 2</span>, &quot;extranonce1&quot;, extranonce2_size
+    <a href="%22mining.set_difficulty%22,">&quot;subscription id 1&quot;</a>, <span class="createlink"><a href="/ikiwiki.cgi?from=Stratum_mining_protocol&amp;do=create&amp;page=mining.notify%2C_subscription_id_2" rel="nofollow">?</a>mining.notify, subscription id 2</span>, &quot;extranonce1&quot;, extranonce2_size
 The result contains three items:</p>
 
 <ul>
@@ -248,7 +249,7 @@ Miners may assume goals with the same name are equivalent, but should recognise 
 <p>Tables showing miner/server support for Stratum mining protocol:</p>
 
 <ul>
-<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Mining_software&amp;from=Stratum_mining_protocol" rel="nofollow">?</a>Mining software</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Stratum_mining_protocol&amp;page=Mining_software&amp;do=create" rel="nofollow">?</a>Mining software</span></li>
 <li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Poolservers&amp;from=Stratum_mining_protocol" rel="nofollow">?</a>Poolservers</span></li>
 </ul>
 

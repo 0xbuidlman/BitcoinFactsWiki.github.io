@@ -9,6 +9,7 @@
 
 <link rel="stylesheet" href="../local.css" type="text/css" />
 
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 
 
 
@@ -51,7 +52,7 @@ Merged mining specification
 
 
 
-<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=Merged_mining_specification" rel="nofollow">?</a>Talk</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Merged_mining_specification&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
 
 
 </ul>
@@ -91,20 +92,20 @@ AuxPOW Block: This is a new type of block that is similar to a standard blockcha
 <p>When receiving an Aux proof-of-work block in a <tt></tt><a href="../Protocol_specification/#block">&quot;</a>, the data received is similar to a standard block, but extra data is inserted between the <tt>nonce</tt> and <tt>txn_count</tt> elements. In the below table, the shaded rows are the same as the standard block definition:</p>
 
 <p>style=&quot;background-color:#DDD; color:#999;&quot;|4 |version |uint32_t |
-style=&quot;background-color:#DDD; color:#999;&quot;|32 |prev_block |char<span class="createlink"><a href="/ikiwiki.cgi?page=32&amp;do=create&amp;from=Merged_mining_specification" rel="nofollow">?</a>32</span>|
-style=&quot;background-color:#DDD; color:#999;&quot;|32 |merkle_root |char<span class="createlink"><a href="/ikiwiki.cgi?from=Merged_mining_specification&amp;page=32&amp;do=create" rel="nofollow">?</a>32</span>|
+style=&quot;background-color:#DDD; color:#999;&quot;|32 |prev_block |char<span class="createlink"><a href="/ikiwiki.cgi?from=Merged_mining_specification&amp;page=32&amp;do=create" rel="nofollow">?</a>32</span>|
+style=&quot;background-color:#DDD; color:#999;&quot;|32 |merkle_root |char<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=32&amp;from=Merged_mining_specification" rel="nofollow">?</a>32</span>|
 style=&quot;background-color:#DDD; color:#999;&quot;|4 |timestamp |uint32_t |
 style=&quot;background-color:#DDD; color:#999;&quot;|4 |bits |uint32_t |
 style=&quot;background-color:#DDD; color:#999;&quot;|4 |nonce |uint32_t |
-|? |coinbase_txn |<a href="../Protocol_specification/#tx">txn</a>|Coinbase transaction that is in the parent block, <span class="createlink"><a href="/ikiwiki.cgi?from=Merged_mining_specification&amp;do=create&amp;page=linking__124__" rel="nofollow">?</a>linking|</span>the AuxPOW block to its parent block
-|32 |block_hash |char<span class="createlink"><a href="/ikiwiki.cgi?from=Merged_mining_specification&amp;page=32&amp;do=create" rel="nofollow">?</a>32</span>|Hash of the <tt>parent_block</tt>header
-|? |coinbase_branch |<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Merkle%20branch__124__&amp;from=Merged_mining_specification" rel="nofollow">?</a>Merkle branch|</span>|The merkle branch linking the <tt>coinbase_txn</tt>to the parent block&#39;s <tt>merkle_root</tt>
+|? |coinbase_txn |<a href="../Protocol_specification/#tx">txn</a>|Coinbase transaction that is in the parent block, <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=linking__124__&amp;from=Merged_mining_specification" rel="nofollow">?</a>linking|</span>the AuxPOW block to its parent block
+|32 |block_hash |char<span class="createlink"><a href="/ikiwiki.cgi?from=Merged_mining_specification&amp;do=create&amp;page=32" rel="nofollow">?</a>32</span>|Hash of the <tt>parent_block</tt>header
+|? |coinbase_branch |<span class="createlink"><a href="/ikiwiki.cgi?from=Merged_mining_specification&amp;do=create&amp;page=Merkle%20branch__124__" rel="nofollow">?</a>Merkle branch|</span>|The merkle branch linking the <tt>coinbase_txn</tt>to the parent block&#39;s <tt>merkle_root</tt>
 |? |blockchain_branch |<span class="createlink"><a href="/ikiwiki.cgi?page=Merkle%20branch__124__&amp;do=create&amp;from=Merged_mining_specification" rel="nofollow">?</a>Merkle branch|</span>|The merkle branch linking this auxiliary blockchain to the others, when used in a merged mining setup with multiple auxiliary chains
 |80 |parent_block |<a href="../Protocol_specification/#block">Block header</a>|Parent block header
 style=&quot;background-color:#DDD; color:#999;&quot;|? |txn_count |var_int |
 style=&quot;background-color:#DDD; color:#999;&quot;|? |txns |tx[]|</p>
 
-<p>For the <tt>coinbase_branch</tt> merkle branch, because the coinbase transaction is the first transaction in the block (if using Bitcoin as a parent chain, i.e. hash #7 in the example given <span class="createlink"><a href="/ikiwiki.cgi?page=below__124__&amp;do=create&amp;from=Merged_mining_specification" rel="nofollow">?</a>below|</span>), the <tt>branch_side_mask</tt> is always going to be all zeroes, because the branch hashes will always be &quot;on the right&quot; of the working hash.</p>
+<p>For the <tt>coinbase_branch</tt> merkle branch, because the coinbase transaction is the first transaction in the block (if using Bitcoin as a parent chain, i.e. hash #7 in the example given <span class="createlink"><a href="/ikiwiki.cgi?from=Merged_mining_specification&amp;do=create&amp;page=below__124__" rel="nofollow">?</a>below|</span>), the <tt>branch_side_mask</tt> is always going to be all zeroes, because the branch hashes will always be &quot;on the right&quot; of the working hash.</p>
 
 <p>When only working on one auxiliary blockchain, the <tt>blockchain_branch</tt> link is not needed, and is nulled-out by being presented as 5 bytes of zeros (interpreted as a one-byte <tt>var_int</tt> indicating a <tt>branch_length</tt> of zero, and a 32-bit (4 byte) <tt>branch_side_mask</tt> of all zeroes).</p>
 
@@ -141,8 +142,8 @@ style=&quot;background-color:#DDD; color:#999;&quot;|? |txns |tx[]|</p>
 
 <p>Insert exactly one of these headers into the <tt>scriptSig</tt> of the coinbase transaction in the parent block.</p>
 
-<p>|4 |magic |char<span class="createlink"><a href="/ikiwiki.cgi?from=Merged_mining_specification&amp;page=4&amp;do=create" rel="nofollow">?</a>4</span>|<tt>0xfa</tt>, <tt>0xbe</tt>, &#39;m&#39;, &#39;m&#39; <strong>(only required if over 20 bytes past the start of the script; optional otherwise)</strong>
-|32 |block_hash |char<span class="createlink"><a href="/ikiwiki.cgi?from=Merged_mining_specification&amp;page=32&amp;do=create" rel="nofollow">?</a>32</span>|Hash of the AuxPOW block header / root of the chain merkle branch
+<p>|4 |magic |char<span class="createlink"><a href="/ikiwiki.cgi?page=4&amp;do=create&amp;from=Merged_mining_specification" rel="nofollow">?</a>4</span>|<tt>0xfa</tt>, <tt>0xbe</tt>, &#39;m&#39;, &#39;m&#39; <strong>(only required if over 20 bytes past the start of the script; optional otherwise)</strong>
+|32 |block_hash |char<span class="createlink"><a href="/ikiwiki.cgi?page=32&amp;do=create&amp;from=Merged_mining_specification" rel="nofollow">?</a>32</span>|Hash of the AuxPOW block header / root of the chain merkle branch
 |4 |merkle_size |int32_t |Number of entries in aux work merkle tree. <strong>(Must be a power of 2)</strong>
 |4 |merkle_nonce |int32_t |Nonce used to calculate indexes into aux work merkle tree; you may as well leave this at zero</p>
 

@@ -9,6 +9,7 @@
 
 <link rel="stylesheet" href="../local.css" type="text/css" />
 
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 
 
 
@@ -51,7 +52,7 @@ Bitcoin Core 0.11 (ch 1): Overview
 
 
 
-<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=Bitcoin_Core_0.11_%28ch_1%29%3A_Overview" rel="nofollow">?</a>Talk</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Bitcoin_Core_0.11_%28ch_1%29%3A_Overview&amp;page=Talk&amp;do=create" rel="nofollow">?</a>Talk</span></li>
 
 
 </ul>
@@ -199,7 +200,7 @@ P2P Messages
 
 <p>Most of the code resides in the top-level directory, although there has been some effort to modularize the code base with subdirectories (wallet, consensus, primitives, etc.)  Also, certain components (QT, LevelDB, etc) live in subdirectories.</p>
 
-<p>Key files in the src/ directory include:  (file.* means the header file <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=file.h&amp;from=Bitcoin_Core_0.11_%28ch_1%29%3A_Overview" rel="nofollow">?</a>file.h</span> and the source file <span class="createlink"><a href="/ikiwiki.cgi?from=Bitcoin_Core_0.11_%28ch_1%29%3A_Overview&amp;do=create&amp;page=file.cpp" rel="nofollow">?</a>file.cpp</span>)</p>
+<p>Key files in the src/ directory include:  (file.* means the header file <span class="createlink"><a href="/ikiwiki.cgi?page=file.h&amp;do=create&amp;from=Bitcoin_Core_0.11_%28ch_1%29%3A_Overview" rel="nofollow">?</a>file.h</span> and the source file <span class="createlink"><a href="/ikiwiki.cgi?page=file.cpp&amp;do=create&amp;from=Bitcoin_Core_0.11_%28ch_1%29%3A_Overview" rel="nofollow">?</a>file.cpp</span>)</p>
 
 <table>
 <thead>
@@ -292,7 +293,7 @@ P2P Messages
 <tr>
 <td>consensus </td>
 <td>consensus.<em><br />merkle.</em><br />params.<em><br />validation.</em>  </td>
-<td>Code implementing (or defining, as the case may be) the block &amp; transaction validation rules.<br />Purpose: Moving this code into a subdirectory is a step towards modularizing the consensus code.<br />The idea is that in a future version of bitcoin, the consensus code should be packaged as a library, so that alternative implementations of the protocol could simply include this library and guarantee validation compatibility.  &quot;...<span class="createlink"><a href="/ikiwiki.cgi?page=T&amp;do=create&amp;from=Bitcoin_Core_0.11_%28ch_1%29%3A_Overview" rel="nofollow">?</a>T</span>he goal is not reimplementing the consensus rules but rather extract them from Bitcoin Core so that nobody needs to re-implement them again. It is not only exposing it but also separating it from Bitcoin Core so that they can be changed without having to also change/take into account non-consensus Bitcoin Core specific things.&quot; -- Jorge Timon, on bitcoin-development mailing list, 20 Aug 2015.<br />Discussion on github: <a href="https://github.com/bitcoin/bitcoin/issues/6714">PR6714</a></td>
+<td>Code implementing (or defining, as the case may be) the block &amp; transaction validation rules.<br />Purpose: Moving this code into a subdirectory is a step towards modularizing the consensus code.<br />The idea is that in a future version of bitcoin, the consensus code should be packaged as a library, so that alternative implementations of the protocol could simply include this library and guarantee validation compatibility.  &quot;...<span class="createlink"><a href="/ikiwiki.cgi?from=Bitcoin_Core_0.11_%28ch_1%29%3A_Overview&amp;do=create&amp;page=T" rel="nofollow">?</a>T</span>he goal is not reimplementing the consensus rules but rather extract them from Bitcoin Core so that nobody needs to re-implement them again. It is not only exposing it but also separating it from Bitcoin Core so that they can be changed without having to also change/take into account non-consensus Bitcoin Core specific things.&quot; -- Jorge Timon, on bitcoin-development mailing list, 20 Aug 2015.<br />Discussion on github: <a href="https://github.com/bitcoin/bitcoin/issues/6714">PR6714</a></td>
 </tr>
 <tr>
 <td>crypto </td>

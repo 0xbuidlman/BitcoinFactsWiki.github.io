@@ -9,6 +9,7 @@
 
 <link rel="stylesheet" href="../local.css" type="text/css" />
 
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 
 
 
@@ -239,7 +240,7 @@ d7 = dhash(d5 concat d6)
 
 <p>In a transaction, the sum of all inputs must be equal to or greater than the sum of all outputs.  If the inputs exceed the outputs, the difference is considered a <a href="../Transaction_Fee/">transaction fee</a>, and is redeemable by whoever first includes the transaction into the block chain.</p>
 
-<p>A special kind of transaction, called a <a href="../Coinbase_transaction/">coinbase transaction</a>, has no inputs.  It is created by <span class="createlink"><a href="/ikiwiki.cgi?page=miners&amp;do=create&amp;from=Protocol_documentation" rel="nofollow">?</a>miners</span>, and there is one coinbase transaction per block.  Because each block comes with a reward of newly created Bitcoins (e.g. 50 BTC for the first 210,000 blocks), the first transaction of a block is, with few exceptions, the transaction that grants those coins to their recipient (the miner).  In addition to the newly created Bitcoins, the coinbase transaction is also used for assigning the recipient of any transaction fees that were paid within the other transactions being included in the same block.  The coinbase transaction can assign the entire reward to a single Bitcoin address, or split it in portions among multiple addresses, just like any other transaction.  Coinbase transactions always contain outputs totalling the sum of the block reward plus all transaction fees collected from the other transactions in the same block.</p>
+<p>A special kind of transaction, called a <a href="../Coinbase_transaction/">coinbase transaction</a>, has no inputs.  It is created by <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=miners&amp;from=Protocol_documentation" rel="nofollow">?</a>miners</span>, and there is one coinbase transaction per block.  Because each block comes with a reward of newly created Bitcoins (e.g. 50 BTC for the first 210,000 blocks), the first transaction of a block is, with few exceptions, the transaction that grants those coins to their recipient (the miner).  In addition to the newly created Bitcoins, the coinbase transaction is also used for assigning the recipient of any transaction fees that were paid within the other transactions being included in the same block.  The coinbase transaction can assign the entire reward to a single Bitcoin address, or split it in portions among multiple addresses, just like any other transaction.  Coinbase transactions always contain outputs totalling the sum of the block reward plus all transaction fees collected from the other transactions in the same block.</p>
 
 <p>The <a href="../Coinbase_transaction/">coinbase transaction</a> in block zero cannot be spent. This is due to a quirk of the reference client implementation that would open the potential for a block chain fork if some nodes accepted the spend and others did not (6.1).</p>
 

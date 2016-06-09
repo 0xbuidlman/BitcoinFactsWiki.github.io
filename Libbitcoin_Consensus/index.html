@@ -9,6 +9,7 @@
 
 <link rel="stylesheet" href="../local.css" type="text/css" />
 
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 
 
 
@@ -51,7 +52,7 @@ Libbitcoin Consensus
 
 
 
-<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Libbitcoin_Consensus" rel="nofollow">?</a>Talk</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Libbitcoin_Consensus&amp;page=Talk&amp;do=create" rel="nofollow">?</a>Talk</span></li>
 
 
 </ul>
@@ -107,7 +108,7 @@ std::vector&lt;uint8_t&gt; tx_data, ps_data;
 /* bool */ bc::decode_base16(tx_data, tx);
 /* bool */ bc::decode_base16(ps_data, ps);
 
-const auto result = verify_script(&amp;tx_data&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=0&amp;amp;do=create&amp;amp;from=Libbitcoin_Consensus&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;0&lt;/span&gt;, tx_data.size(),
+const auto result = verify_script(&amp;tx_data&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=0&amp;amp;from=Libbitcoin_Consensus&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;0&lt;/span&gt;, tx_data.size(),
 &amp;ps_data&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=0&amp;amp;do=create&amp;amp;from=Libbitcoin_Consensus&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;0&lt;/span&gt;, ps_data.size(), tx_input_index, flags);
 
 return result == verify_result_eval_true ? 0 : 1;
@@ -118,7 +119,7 @@ return result == verify_result_eval_true ? 0 : 1;
 
 <p>The consensus library exists to provide consensus validation identical in outcome to <a href="../Bitcoind/">bitcoind</a>. The integral <a href="../Libbitcoin_Common/">libbitcoin</a> script engine provides the same checks. However given the complexity of the validation code it is effectively impossible to prove that two implementations are identical in outcome, even with extensive testing. This effectively makes the bitcoind <em>implementation</em> a standard (as opposed to an RFC or BIP).</p>
 
-<p>That has helped stifle the adoption of alternative full node implementations. While it has been argued that consensus risk from any particular implementation is a red herring (3.1) it was decided to give Libbitcoin developers and users the option. Following much deliberation (3.2) and a recommendation by <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Peter_Todd&amp;from=Libbitcoin_Consensus" rel="nofollow">?</a>Peter Todd</span> (3.3) (3.4) it was decided to package this library independently in order to provide better consistency, a leaner dependency, and more formal isolation from bitcoind. The library is free of both libbitcoin and bitcoind dependencies. (3.5)</p>
+<p>That has helped stifle the adoption of alternative full node implementations. While it has been argued that consensus risk from any particular implementation is a red herring (3.1) it was decided to give Libbitcoin developers and users the option. Following much deliberation (3.2) and a recommendation by <span class="createlink"><a href="/ikiwiki.cgi?page=Peter_Todd&amp;do=create&amp;from=Libbitcoin_Consensus" rel="nofollow">?</a>Peter Todd</span> (3.3) (3.4) it was decided to package this library independently in order to provide better consistency, a leaner dependency, and more formal isolation from bitcoind. The library is free of both libbitcoin and bitcoind dependencies. (3.5)</p>
 
 <h2 id="Verification">Verification</h2>
 

@@ -9,6 +9,7 @@
 
 <link rel="stylesheet" href="../local.css" type="text/css" />
 
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 
 
 
@@ -51,7 +52,7 @@ Raw Transactions
 
 
 
-<li><span class="createlink"><a href="/ikiwiki.cgi?from=Raw_Transactions&amp;page=Talk&amp;do=create" rel="nofollow">?</a>Talk</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;do=create&amp;from=Raw_Transactions" rel="nofollow">?</a>Talk</span></li>
 
 
 </ul>
@@ -79,7 +80,7 @@ Raw Transactions
 
 <p>Returns an array of unspent transaction outputs in the wallet that have between minconf and maxconf (inclusive) confirmations. Each output is a 5-element object with keys: txid, output, scriptPubKey, amount, confirmations. txid is the hexadecimal transaction id, output is which output of that transaction, scriptPubKey is the hexadecimal-encoded CScript for that output, amount is the value of that output and confirmations is the transaction&#39;s depth in the chain.</p>
 
-<h3 id="lockunspent_unlock.3F_.5B.7Btxid.3Atxid.2Cvout.3An.7D.2C....5D">lockunspent unlock? [{&quot;txid&quot;:txid,&quot;vout&quot;:n},...]</h3>
+<h3 id="lockunspent_unlock.3F_.5B.7B.26quot.3Btxid.26quot.3B.3Atxid.2C.26quot.3Bvout.26quot.3B.3An.7D.2C....5D">lockunspent unlock? [{&quot;txid&quot;:txid,&quot;vout&quot;:n},...]</h3>
 
 <p>Temporarily lock (unlock=false) or unlock (unlock=true) specified transaction outputs. A locked transaction output will not be chosen by automatic coin selection, when spending bitcoins.  Locks are stored in memory only.  Nodes start with zero locked outputs, and the locked output list is always cleared (by virtue of process exit) when a node stops or fails.</p>
 
@@ -87,21 +88,21 @@ Raw Transactions
 
 <p>List all temporarily locked transaction outputs.</p>
 
-<h3 id="createrawtransaction_.5B.7Btxid.3Atxid.2Cvout.3An.7D.2C....5D_.7Baddress.3Aamount.2C....7D">createrawtransaction [{&quot;txid&quot;:txid,&quot;vout&quot;:n},...] {address:amount,...}</h3>
+<h3 id="createrawtransaction_.5B.7B.26quot.3Btxid.26quot.3B.3Atxid.2C.26quot.3Bvout.26quot.3B.3An.7D.2C....5D_.7Baddress.3Aamount.2C....7D">createrawtransaction [{&quot;txid&quot;:txid,&quot;vout&quot;:n},...] {address:amount,...}</h3>
 
 <p>Create a transaction spending given inputs (array of objects containing transaction outputs to spend), sending to given address(es). Returns the hex-encoded transaction in a string. Note that the transaction&#39;s inputs are not signed, and it is not stored in the wallet or transmitted to the network.</p>
 
 <p>Also note that NO transaction validity checks are done; it is easy to create invalid transactions or transactions that will not be relayed/mined by the network because they contain insufficient fees.</p>
 
-<h3>decoderawtransaction &lt;hex string&gt;</h3>
+<h3 id="decoderawtransaction_.26lt.3Bhex_string.26gt.3B">decoderawtransaction &lt;hex string&gt;</h3>
 
 <p>Returns JSON object with information about a serialized, hex-encoded transaction.</p>
 
-<h3>getrawtransaction &lt;txid&gt; [verbose=0]=</h3>
+<h3 id="getrawtransaction_.26lt.3Btxid.26gt.3B_.5Bverbose.3D0.5D.3D">getrawtransaction &lt;txid&gt; [verbose=0]=</h3>
 
 <p>If verbose=0, returns serialized, hex-encoded data for transaction txid. If verbose is non-zero, returns a JSON Object containing information about the transaction. Returns an error if  is unknown.</p>
 
-<h3>signrawtransaction &lt;hex string&gt; [{&quot;txid&quot;:txid,&quot;vout&quot;:n,&quot;scriptPubKey&quot;:hex},...] [&lt;privatekey1&gt;,...] [sighash=&quot;ALL&quot;]=</h3>
+<h3 id="signrawtransaction_.26lt.3Bhex_string.26gt.3B_.5B.7B.26quot.3Btxid.26quot.3B.3Atxid.2C.26quot.3Bvout.26quot.3B.3An.2C.26quot.3BscriptPubKey.26quot.3B.3Ahex.7D.2C....5D_.5B.26lt.3Bprivatekey1.26gt.3B.2C....5D_.5Bsighash.3D.26quot.3BALL.26quot.3B.5D.3D">signrawtransaction &lt;hex string&gt; [{&quot;txid&quot;:txid,&quot;vout&quot;:n,&quot;scriptPubKey&quot;:hex},...] [&lt;privatekey1&gt;,...] [sighash=&quot;ALL&quot;]=</h3>
 
 <p>Sign as many inputs as possible for raw transaction (serialized, hex-encoded). The first argument may be several variations of the same transaction concatenated together; signatures from all of them will be combined together, along with signatures for keys in the local wallet. The optional second argument is an array of parent transaction outputs, so you can create a chain of raw transactions that depend on each other before sending them to the network. Third optional argument is an array of base58-encoded private keys that, if given, will be the only keys used to sign the transaction. The fourth optional argument is a string that specifies how the <a href="../OP_CHECKSIG/">signature hash</a> is computed, and can be &quot;ALL&quot;, &quot;NONE&quot;, &quot;SINGLE&quot;, &quot;ALLANYONECANPAY&quot;, &quot;NONEANYONECANPAY&quot;, or &quot;SINGLEANYONECANPAY&quot;.
 Returns json object with keys:</p>
@@ -113,7 +114,7 @@ If no private keys are given and the wallet is locked, requires that the wallet 
 </ul>
 
 
-<h3>sendrawtransaction &lt;hex string&gt;</h3>
+<h3 id="sendrawtransaction_.26lt.3Bhex_string.26gt.3B">sendrawtransaction &lt;hex string&gt;</h3>
 
 <p>Submits raw transaction (serialized, hex-encoded) to local node and network. Returns transaction id, or an error if the transaction is invalid for any reason.</p>
 

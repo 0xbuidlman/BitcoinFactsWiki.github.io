@@ -9,6 +9,7 @@
 
 <link rel="stylesheet" href="../local.css" type="text/css" />
 
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 
 
 
@@ -87,7 +88,7 @@ This is an attempt to explain readably but fairly completely in one easily linka
 </ul>
 
 
-<h2 id="It_depends_what_your_definition_of_.E2.80.98from.E2.80.99_is">It depends what your definition of &lsquo;from&rsquo; is</h2>
+<h2 id="It_depends_what_your_definition_of_.26lsquo.3Bfrom.26rsquo.3B_is">It depends what your definition of &lsquo;from&rsquo; is</h2>
 
 <p>OK, so before you had these coins, someone else had them (2.1) &mdash; let&rsquo;s say your friend Monica paid you back her share of your restaurant bill right there in the restaurant.
 The reason for avoiding the word &lsquo;from&rsquo; is that in common English usage it&rsquo;s tempting to assume that if something came <em>from somewhere</em>, and you need to return it or correspond later about something else, that&rsquo;s where you should <em>return it to/reply to</em>.
@@ -101,12 +102,10 @@ people (especially <span class="createlink"><a href="/ikiwiki.cgi?page=Satoshi_D
 <ol>
 <li>We often learn by comparing new phenomena to those we&rsquo;re already familiar with, and in most other payment systems and sender/recipient models the sender has a single permanent identifier.</li>
 <li>Most blockchain explorers (2.3) attempt to show all last-sent-to addresses for a transaction in an effort to be user-friendly, and either show a suggestive arrow or even (in the case of blockexplorer.com) actually label the last-sent-to as &ldquo;From&rdquo;. All those I checked represent addresses as having a &ldquo;balance&rdquo; which tempts people to think addresses operate like bank accounts.</li>
-<li>The depiction or use of addresses in some local wallets somewhat encourages it:</li>
-<li><ul>
+<li>The depiction or use of addresses in some local wallets somewhat encourages it:
+
+<ul>
 <li>Multibit prefers simpler key management over privacy, <a href="https://bitcointalk.org/index.php?topic=208808.msg2191181#msg2191181">sending change &ldquo;back&rdquo; to one of the last-sent-to addresses</a></li>
-</ul>
-</li>
-<li><ul>
 <li>Electrum <a href="https://iwilcox.me.uk/2014/no-from/electrum-screenshot">represents addresses as having balances</a></li>
 </ul>
 </li>
@@ -114,11 +113,11 @@ people (especially <span class="createlink"><a href="/ikiwiki.cgi?page=Satoshi_D
 </ol>
 
 
-<p>2.1: Unless you were <span class="createlink"><a href="/ikiwiki.cgi?from=From_address&amp;do=create&amp;page=Coinbasemining" rel="nofollow">?</a>Coinbasemining</span>.<br />
+<p>2.1: Unless you were <span class="createlink"><a href="/ikiwiki.cgi?page=Coinbasemining&amp;do=create&amp;from=From_address" rel="nofollow">?</a>Coinbasemining</span>.<br />
 2.2: Secondarily, understanding why it&rsquo;s unreliable is useful both for sound understanding of Bitcoin and for writing robust financial code that doesn&rsquo;t lose other people&rsquo;s money or cause support headaches for you.<br />
 2.3: <a href="https://blockr.io">blockr.io</a> At least , ,  and  (at time of writing).</p>
 
-<h2 id="Why_there.E2.80.99s_no_.E2.80.98from.E2.80.99_address">Why there&rsquo;s no &lsquo;from&rsquo; address</h2>
+<h2 id="Why_there.26rsquo.3Bs_no_.26lsquo.3Bfrom.26rsquo.3B_address">Why there&rsquo;s no &lsquo;from&rsquo; address</h2>
 
 <h3 id="By_analogy">By analogy</h3>
 
@@ -170,13 +169,13 @@ Since this is more than you&rsquo;re likely to know with sufficient confidence a
 <p>The following sections briefly look at why each listed assumption about the last-sent-to address is risky.</p>
 
 <ul>
-<li><span class="createlink"><a href="/ikiwiki.cgi?page=Recipient%20created%20the%20private%20key__124__&amp;do=create&amp;from=From_address" rel="nofollow">?</a>Recipient created the private key|</span></li>
-<li><span class="createlink"><a href="/ikiwiki.cgi?page=Recipient%20still%20has%20a%20copy%20of%20the%20private%20key__124__&amp;do=create&amp;from=From_address" rel="nofollow">?</a>Recipient still has a copy of the private key|</span></li>
-<li><span class="createlink"><a href="/ikiwiki.cgi?page=Recipient%20has%20maintained%20exclusive%20control%20of%20the%20private%20key__124__&amp;do=create&amp;from=From_address" rel="nofollow">?</a>Recipient has maintained exclusive control of the private key|</span></li>
-<li><span class="createlink"><a href="/ikiwiki.cgi?page=Recipient%20used%20coins%20they%20recieved%20through%20pay-to-pubkey-hash%20transactions__124__&amp;do=create&amp;from=From_address" rel="nofollow">?</a>Recipient used coins they recieved through pay-to-pubkey-hash transactions|</span></li>
-<li><span class="createlink"><a href="/ikiwiki.cgi?page=Recipient%20can%20work%20out%20the%20origin%20reliably__124__&amp;do=create&amp;from=From_address" rel="nofollow">?</a>Recipient can work out the origin reliably|</span></li>
-<li><span class="createlink"><a href="/ikiwiki.cgi?from=From_address&amp;page=Recipient%20is%20comfortable%20with%20the%20security%20implications%20of%20address%20re-use__124__&amp;do=create" rel="nofollow">?</a>Recipient is comfortable with the security implications of address re-use|</span></li>
-<li><span class="createlink"><a href="/ikiwiki.cgi?page=Recipient%20is%20comfortable%20with%20the%20privacy%20implications%20of%20address%20re-use__124__&amp;do=create&amp;from=From_address" rel="nofollow">?</a>Recipient is comfortable with the privacy implications of address re-use|</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=From_address&amp;do=create&amp;page=Recipient%20created%20the%20private%20key__124__" rel="nofollow">?</a>Recipient created the private key|</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=From_address&amp;do=create&amp;page=Recipient%20still%20has%20a%20copy%20of%20the%20private%20key__124__" rel="nofollow">?</a>Recipient still has a copy of the private key|</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=From_address&amp;do=create&amp;page=Recipient%20has%20maintained%20exclusive%20control%20of%20the%20private%20key__124__" rel="nofollow">?</a>Recipient has maintained exclusive control of the private key|</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=From_address&amp;page=Recipient%20used%20coins%20they%20recieved%20through%20pay-to-pubkey-hash%20transactions__124__&amp;do=create" rel="nofollow">?</a>Recipient used coins they recieved through pay-to-pubkey-hash transactions|</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=From_address&amp;do=create&amp;page=Recipient%20can%20work%20out%20the%20origin%20reliably__124__" rel="nofollow">?</a>Recipient can work out the origin reliably|</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Recipient%20is%20comfortable%20with%20the%20security%20implications%20of%20address%20re-use__124__&amp;do=create&amp;from=From_address" rel="nofollow">?</a>Recipient is comfortable with the security implications of address re-use|</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=From_address&amp;page=Recipient%20is%20comfortable%20with%20the%20privacy%20implications%20of%20address%20re-use__124__&amp;do=create" rel="nofollow">?</a>Recipient is comfortable with the privacy implications of address re-use|</span></li>
 </ul>
 
 
@@ -360,7 +359,7 @@ Content is available under under <a href="https://creativecommons.org/licenses/b
 </div>
 
 <div class="pagedate">
-Last edited <time datetime="2015-04-12T21:32:55Z">Sun 12 Apr 2015 09:32:55 PM Europe</time>
+Last edited <time datetime="2016-06-08T18:58:23Z">Wed 08 Jun 2016 06:58:23 PM Europe</time>
 <!-- Created <time datetime="2014-08-07T09:10:20Z" pubdate="pubdate">Thu 07 Aug 2014 09:10:20 AM Europe</time> -->
 </div>
 

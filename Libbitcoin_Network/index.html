@@ -9,6 +9,7 @@
 
 <link rel="stylesheet" href="../local.css" type="text/css" />
 
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 
 
 
@@ -73,64 +74,65 @@ Libbitcoin Network
 
 <h2 id="Example">Example</h2>
 
-<pre><code>#include &lt;future&gt;
-#include &lt;bitcoin/network.hpp&gt;
+<div class="highlight-cpp"><pre class="hl"><span class="hl ppc">#include &lt;future&gt;</span>
+<span class="hl ppc">#include &lt;bitcoin/network.hpp&gt;</span>
+    
+<span class="hl slc">// Send a transaction to a single P2P node.</span>
+<span class="hl kwb">int</span> <span class="hl kwd">main</span><span class="hl opt">(</span><span class="hl kwb">int</span> argc<span class="hl opt">,</span> <span class="hl kwb">char</span><span class="hl opt">*</span> argv<span class="hl opt">[])</span>
+<span class="hl opt">{</span>
+    <span class="hl kwa">using namespace</span> bc<span class="hl opt">;</span>
+    
+    <span class="hl slc">// Decode a base16-encoded Bitcoin transaction. </span>
+    data_chunk decoded<span class="hl opt">;</span>
+    <span class="hl kwa">if</span> <span class="hl opt">(</span>argc <span class="hl opt">&lt;</span> <span class="hl num">1</span>  <span class="hl opt">!</span><span class="hl kwd">decode_base16</span><span class="hl opt">(</span>decoded<span class="hl opt">,</span> argv<span class="hl opt"><span class="createlink"><a href="/ikiwiki.cgi?from=Libbitcoin_Network&amp;page=__60__%2Fspan__62____60__span%20class__61____34__hl%20num__34____62__0__60__%2Fspan__62____60__span%20class__61____34__hl%20opt__34____62__&amp;do=create" rel="nofollow">?</a>span&gt;&lt;span class=&quot;hl opt&quot;&gt;</span>))</span>
+        <span class="hl kwa">return</span> <span class="hl opt">-</span><span class="hl num">1</span><span class="hl opt">;</span>
+    
+    <span class="hl slc">// Parse the decoded transaction.</span>
+    <span class="hl kwb">const</span> <span class="hl kwc">auto</span> tx <span class="hl opt">=</span> chain<span class="hl opt">::</span>transaction<span class="hl opt">::</span><span class="hl kwd">factory_from_data</span><span class="hl opt">(</span>decoded<span class="hl opt">);</span>
+    
+    <span class="hl slc">// Configure the P2P network session for best performance.</span>
+    <span class="hl kwc">auto</span> settings <span class="hl opt">=</span> network<span class="hl opt">::</span>settings<span class="hl opt">::</span>mainnet<span class="hl opt">;</span>
+    settings<span class="hl opt">.</span>inbound_port <span class="hl opt">=</span> <span class="hl num">0</span><span class="hl opt">;</span>
+    settings<span class="hl opt">.</span>host_pool_capacity <span class="hl opt">=</span> <span class="hl num">0</span><span class="hl opt">;</span>
+    settings<span class="hl opt">.</span>outbound_connections <span class="hl opt">=</span> <span class="hl num">0</span><span class="hl opt">;</span>
+    settings<span class="hl opt">.</span>relay_transactions <span class="hl opt">=</span> <span class="hl kwa">false</span><span class="hl opt">;</span>
+    settings<span class="hl opt">.</span>manual_retry_limit <span class="hl opt">=</span> <span class="hl num">3</span><span class="hl opt">;</span>
+    
+    <span class="hl slc">// Start a network session.</span>
+    network<span class="hl opt">::</span>p2p <span class="hl kwd">network</span><span class="hl opt">(</span>settings<span class="hl opt">);</span>
+    
+    <span class="hl slc">// Declare completion signal.</span>
+    std<span class="hl opt">::</span>promise<span class="hl opt">&lt;</span>nowiki<span class="hl opt">&gt;&lt;</span>code<span class="hl opt">&gt;&lt;/</span>nowiki<span class="hl opt">&gt;</span> complete<span class="hl opt">;</span>
+    
+    <span class="hl kwb">const</span> <span class="hl kwc">auto</span> send_handler <span class="hl opt">= <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=%26amp__59____60__%2Fspan__62__complete__60__span%20class__61____34__hl%20opt__34____62__&amp;from=Libbitcoin_Network" rel="nofollow">?</a>span&gt;complete&lt;span class=&quot;hl opt&quot;&gt;</span>(</span>code ec<span class="hl opt">)</span>
+    <span class="hl opt">{</span>
+        complete<span class="hl opt">.</span><span class="hl kwd">set_value</span><span class="hl opt">(</span>ec<span class="hl opt">);</span>
+    <span class="hl opt">};</span>
+    
+    <span class="hl kwb">const</span> <span class="hl kwc">auto</span> connect_handler <span class="hl opt">= [&amp;</span>tx <span class="hl opt">, &amp;</span>send_handler<span class="hl opt">](&amp;</span>complete<span class="hl opt">,)(</span>
+    code ec<span class="hl opt">,</span> network<span class="hl opt">::</span>channel<span class="hl opt">::</span>ptr node<span class="hl opt">)</span>
+    <span class="hl opt">{</span>
+         <span class="hl kwa">if</span> <span class="hl opt">(</span>ec<span class="hl opt">)</span>
+              complete<span class="hl opt">.</span><span class="hl kwd">set_value</span><span class="hl opt">(</span>ec<span class="hl opt">);</span>
+         <span class="hl kwa">else</span>
+              node<span class="hl opt">-&gt;</span><span class="hl kwd">send</span><span class="hl opt">(</span>tx<span class="hl opt">,</span> send_handler<span class="hl opt">);</span>
+    <span class="hl opt">};</span>
+    
+    <span class="hl slc">// Connect to the one specified host with retry.</span>
+    network<span class="hl opt">.</span><span class="hl kwd">connect</span><span class="hl opt">(</span><span class="hl str">&quot;localhost&quot;</span><span class="hl opt">,</span> <span class="hl num">8333</span><span class="hl opt">,</span> connect_handler<span class="hl opt">);</span>
+    
+    <span class="hl slc">// Wait for completion and return result.</span>
+    <span class="hl kwa">return</span> complete<span class="hl opt">.</span><span class="hl kwd">get_future</span><span class="hl opt">().</span><span class="hl kwd">get</span><span class="hl opt">()</span> ? <span class="hl opt">-</span><span class="hl num">1</span> <span class="hl opt">:</span> <span class="hl num">0</span><span class="hl opt">;</span>
+<span class="hl opt">}</span>
+</pre></div>
 
-// Send a transaction to a single P2P node.
-int main(int argc, char* argv[])
-{
-using namespace bc;
-
-// Decode a base16-encoded Bitcoin transaction. 
-data_chunk decoded;
-if (argc &lt; 1  !decode_base16(decoded, argv&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=0&amp;amp;do=create&amp;amp;from=Libbitcoin_Network&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;0&lt;/span&gt;))
-return -1;
-
-// Parse the decoded transaction.
-const auto tx = chain::transaction::factory_from_data(decoded);
-
-// Configure the P2P network session for best performance.
-auto settings = network::settings::mainnet;
-settings.inbound_port = 0;
-settings.host_pool_capacity = 0;
-settings.outbound_connections = 0;
-settings.relay_transactions = false;
-settings.manual_retry_limit = 3;
-
-// Start a network session.
-network::p2p network(settings);
-
-// Declare completion signal.
-std::promise&lt;nowiki&gt;&lt;code&gt;&lt;/nowiki&gt; complete;
-
-const auto send_handler = &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=Libbitcoin_Network&amp;amp;do=create&amp;amp;page=%26complete&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;&amp;complete&lt;/span&gt;(code ec)
-{
-complete.set_value(ec);
-};
-
-const auto connect_handler = [&amp;tx , &amp;send_handler](&amp;complete,)(
-code ec, network::channel::ptr node)
-{
-if (ec)
-complete.set_value(ec);
-else
-node-&gt;send(tx, send_handler);
-};
-
-// Connect to the one specified host with retry.
-network.connect(&quot;localhost&quot;, 8333, connect_handler);
-
-// Wait for completion and return result.
-return complete.get_future().get() ? -1 : 0;
-}
-</code></pre>
 
 <h2 id="History">History</h2>
 
 <ul>
 <li><p>The P2P protocol was originally contained within the <a href="../Libbitcoin_Common/">libbitcoin</a> library.</p></li>
-<li><p>In late 2014 <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=William_Swanson&amp;from=Libbitcoin_Network" rel="nofollow">?</a>William Swanson</span> reorganized libbitcoin sources (3.1) in accordance with the roadmap (3.2) agreed in Toronto earlier that year. Later sources were moved into the libbitcoin::network namespace.</p></li>
-<li><p>By early 2016 <span class="createlink"><a href="/ikiwiki.cgi?page=Eric_Voskuil&amp;do=create&amp;from=Libbitcoin_Network" rel="nofollow">?</a>Eric Voskuil</span> completed the version 3 redesign to improve reliability, performance and readability. The namespace was forked into its own repository and integrated with dependent repositories.</p></li>
+<li><p>In late 2014 William Swanson reorganized libbitcoin sources (3.1) in accordance with the roadmap (3.2) agreed in Toronto earlier that year. Later sources were moved into the libbitcoin::network namespace.</p></li>
+<li><p>By early 2016 Eric Voskuil completed the version 3 redesign to improve reliability, performance and readability. The namespace was forked into its own repository and integrated with dependent repositories.</p></li>
 </ul>
 
 
@@ -200,7 +202,7 @@ Content is available under under <a href="https://creativecommons.org/licenses/b
 </div>
 
 <div class="pagedate">
-Last edited <time datetime="2016-02-22T12:30:56Z">Mon 22 Feb 2016 12:30:56 PM Europe</time>
+Last edited <time datetime="2016-06-09T08:48:46Z">Thu 09 Jun 2016 08:48:46 AM Europe</time>
 <!-- Created <time datetime="2016-02-04T09:57:58Z" pubdate="pubdate">Thu 04 Feb 2016 09:57:58 AM Europe</time> -->
 </div>
 

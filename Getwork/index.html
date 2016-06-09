@@ -9,6 +9,7 @@
 
 <link rel="stylesheet" href="../local.css" type="text/css" />
 
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 
 
 
@@ -154,7 +155,7 @@ This means for pdifficulty 1, you want to check that the <em>last</em> 32 bits a
 
 <p>If not, increment the <a href="../Nonce/">Nonce</a> that is a number stored in portion of the data that starts 608 bits in (bytes 76 to 79), and try again.</p>
 
-<p>If the incremented portion overflows, get new work (see also <span class="createlink"><a href="/ikiwiki.cgi?from=Getwork&amp;page=rollntime%20extension__124__&amp;do=create" rel="nofollow">?</a>rollntime extension|</span>).</p>
+<p>If the incremented portion overflows, get new work (see also <span class="createlink"><a href="/ikiwiki.cgi?from=Getwork&amp;do=create&amp;page=rollntime%20extension__124__" rel="nofollow">?</a>rollntime extension|</span>).</p>
 
 <h2 id="Extensions">Extensions</h2>
 
@@ -254,7 +255,7 @@ Also note that the headers of a share submission should not influence the behavi
 
 <p><a href="https://deepbit.net/failover.php">Original specification from Deepbit</a></p>
 
-<p>The server may include a X-Switch-To header containing a single JSON object formatted in the same fashon as items in the <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=hostlist%20array%20extension__124__&amp;from=Getwork" rel="nofollow">?</a>hostlist array extension|</span>.
+<p>The server may include a X-Switch-To header containing a single JSON object formatted in the same fashon as items in the <span class="createlink"><a href="/ikiwiki.cgi?page=hostlist%20array%20extension__124__&amp;do=create&amp;from=Getwork" rel="nofollow">?</a>hostlist array extension|</span>.
 If this header is present, the miner should switch to the specified server for at least ttr minutes after finishing current &quot;getwork&quot; and submitting its results.</p>
 
 <p>Example:

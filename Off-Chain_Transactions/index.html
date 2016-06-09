@@ -9,6 +9,7 @@
 
 <link rel="stylesheet" href="../local.css" type="text/css" />
 
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 
 
 
@@ -51,7 +52,7 @@ Off-Chain Transactions
 
 
 
-<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Off-Chain_Transactions" rel="nofollow">?</a>Talk</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?from=Off-Chain_Transactions&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
 
 
 </ul>
@@ -87,7 +88,7 @@ Off-Chain Transactions
 
 <h3 id="Cost.2FScalability">Cost/Scalability</h3>
 
-<p>Miners usually charge <a href="../Transaction_fees/">fees</a> to confirm a transaction. While currently the demand for transactions is sufficiently low that fees are relatively small, and transactions can often be confirmed for free, for many applications even paying a few cents per transaction is unaffordable. (5.1) In addition Bitcoin currently has a limit of 7 transactions per second, the <span class="createlink"><a href="/ikiwiki.cgi?from=Off-Chain_Transactions&amp;do=create&amp;page=blocksize_limit" rel="nofollow">?</a>blocksize limit</span>. This limit is related to the <a href="../Scalability/">scalability</a> of the system as a whole, and one option to achieve higher transaction volumes is to keep the blocksize limit as is and use off-chain transactions for lower-value transactions; with higher volumes fees for transactions done on-chain will rise due to supply and demand.</p>
+<p>Miners usually charge <a href="../Transaction_fees/">fees</a> to confirm a transaction. While currently the demand for transactions is sufficiently low that fees are relatively small, and transactions can often be confirmed for free, for many applications even paying a few cents per transaction is unaffordable. (5.1) In addition Bitcoin currently has a limit of 7 transactions per second, the <span class="createlink"><a href="/ikiwiki.cgi?page=blocksize_limit&amp;do=create&amp;from=Off-Chain_Transactions" rel="nofollow">?</a>blocksize limit</span>. This limit is related to the <a href="../Scalability/">scalability</a> of the system as a whole, and one option to achieve higher transaction volumes is to keep the blocksize limit as is and use off-chain transactions for lower-value transactions; with higher volumes fees for transactions done on-chain will rise due to supply and demand.</p>
 
 <h2 id="Methods">Methods</h2>
 
@@ -95,9 +96,9 @@ Off-Chain Transactions
 
 <h3 id="Trusted_Third_Parties">Trusted Third Parties</h3>
 
-<p>If the sender and recipient do not trust each other, or would simply prefer someone else record and guarantee the transaction, they can use a <a href="http://en.wikipedia.org/wiki/Trusted_third_party">trusted third party</a> to record and guarantee the transaction. The vast majority of conventional banking and electronic payment systems work this way. For instance in the PayPal system, PayPal is trusted to keep an accurate record of all transactions, including within the PayPal system, as well as transactions that move funds to and from PayPal. Within Bitcoin <a href="../Redeemable_code/">redeemable code</a> systems exist where a third party, such as Mt. Gox, records codes issued and promise to redeem them for either new codes, balances within the system, or Bitcoins via on-chain transactions. In addition <span class="createlink"><a href="/ikiwiki.cgi?from=Off-Chain_Transactions&amp;do=create&amp;page=E-Wallet" rel="nofollow">?</a>E-Wallet</span> services such as <span class="createlink"><a href="/ikiwiki.cgi?from=Off-Chain_Transactions&amp;do=create&amp;page=Easywallet.org" rel="nofollow">?</a>Easywallet.org</span> often allow users to transfer funds between addresses within the system without creating an on-chain transaction.</p>
+<p>If the sender and recipient do not trust each other, or would simply prefer someone else record and guarantee the transaction, they can use a <a href="http://en.wikipedia.org/wiki/Trusted_third_party">trusted third party</a> to record and guarantee the transaction. The vast majority of conventional banking and electronic payment systems work this way. For instance in the PayPal system, PayPal is trusted to keep an accurate record of all transactions, including within the PayPal system, as well as transactions that move funds to and from PayPal. Within Bitcoin <a href="../Redeemable_code/">redeemable code</a> systems exist where a third party, such as Mt. Gox, records codes issued and promise to redeem them for either new codes, balances within the system, or Bitcoins via on-chain transactions. In addition <span class="createlink"><a href="/ikiwiki.cgi?from=Off-Chain_Transactions&amp;do=create&amp;page=E-Wallet" rel="nofollow">?</a>E-Wallet</span> services such as <span class="createlink"><a href="/ikiwiki.cgi?from=Off-Chain_Transactions&amp;page=Easywallet.org&amp;do=create" rel="nofollow">?</a>Easywallet.org</span> often allow users to transfer funds between addresses within the system without creating an on-chain transaction.</p>
 
-<p>The difficulty with third-parties is achieving that trust. Outside of Bitcoin PayPal has been criticized (7.1) for arbitrarily freezing accounts. Within Bitcoin multiple E-Wallet services such as <span class="createlink"><a href="/ikiwiki.cgi?page=MyBitcoin&amp;do=create&amp;from=Off-Chain_Transactions" rel="nofollow">?</a>MyBitcoin</span> and <span class="createlink"><a href="/ikiwiki.cgi?from=Off-Chain_Transactions&amp;do=create&amp;page=Instawallet" rel="nofollow">?</a>Instawallet</span> have failed due to hacks as well as technical mistakes resulting in the loss of some or all funds held on behalf of their customers.</p>
+<p>The difficulty with third-parties is achieving that trust. Outside of Bitcoin PayPal has been criticized (7.1) for arbitrarily freezing accounts. Within Bitcoin multiple E-Wallet services such as <span class="createlink"><a href="/ikiwiki.cgi?from=Off-Chain_Transactions&amp;page=MyBitcoin&amp;do=create" rel="nofollow">?</a>MyBitcoin</span> and <span class="createlink"><a href="/ikiwiki.cgi?from=Off-Chain_Transactions&amp;page=Instawallet&amp;do=create" rel="nofollow">?</a>Instawallet</span> have failed due to hacks as well as technical mistakes resulting in the loss of some or all funds held on behalf of their customers.</p>
 
 <h3 id="Auditing">Auditing</h3>
 
