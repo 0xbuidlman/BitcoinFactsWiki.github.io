@@ -52,7 +52,7 @@ Hardfork
 
 
 
-<li><span class="createlink"><a href="/ikiwiki.cgi?from=Hardfork&amp;do=create&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Hardfork" rel="nofollow">?</a>Talk</span></li>
 
 
 </ul>
@@ -70,13 +70,85 @@ Hardfork
 <div id="pagebody">
 
 <section id="content" role="main">
-<p>A hardfork is a change to the bitcoin protocol that makes previously invalid blocks/transactions valid, and therefore requires all users to upgrade.</p>
+<p>A hardfork is a technical way to upgrade the Bitcoin protocol to include new
+rules which can not be rolled out normally since they would make older clients
+reject the new constructs used as invalid and &quot;not bitcoin&quot;.<br />
+All users that want to continue using Bitcoin after a hardfork is accepted are
+required to first upgrade to a version of their software which recognizes the new rules.</p>
 
-<p>Any alteration to bitcoin which changes the block structure (including block hash), difficulty rules, or increases the set of valid transactions is a hardfork.
-However, some of these changes can be implemented by having the new transaction appear to older clients as a pay-to-anybody transaction (of a special form), and getting the miners to agree to reject blocks including the pay-to-anybody transaction unless the transaction validates under the new rules.
-This is known as a <a href="../Softfork/">softfork</a>, and how <a href="../P2SH/">P2SH</a> was added to Bitcoin.</p>
+<div class="toc">
+	<ol>
+		<li class="L2"><a href="#index1h2">Myths</a>
+		</li>
+		<li class="L2"><a href="#index2h2">Save upgrade process</a>
+		</li>
+		<li class="L2"><a href="#index3h2">See Also</a>
+		</li>
+	</ol>
+</div>
 
-<h2 id="See_Also">See Also</h2>
+
+<h2 id="Myths"><a name="index1h2"></a>Myths</h2>
+
+<p>There are various myths about risks of hardforks. It is useful to address them head-on.</p>
+
+<h3 id="Myth.3B_A_hardfork_can_cause_people_to_lose_bitcoins."><a name="index1h3"></a>Myth; A hardfork can cause people to lose bitcoins.</h3>
+
+<p>Lets assume the change itself is not about people losing money, but the method of
+deploying it is the one under discussion.
+Users that didn&#39;t get the memo they need to update will, after the fork, end up not
+getting any updates from the Bitcoin network any more. When a node gets no updates
+it is much like not being connected to the internet.  You don&#39;t lose your coins that way.</p>
+
+<h3><a name="index2h3"></a>Myth; A hardfork may cause miners to <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Chain_fork&amp;from=Hardfork" rel="nofollow">?</a>Chain fork</span> and two currencies will exist.</h3>
+
+<p>There is no economic or practical reason to think this is true. While technically possible,
+the people doing this would have to do so willingly and they would loose an immense amount
+of money in the process. Which makes it practically and economically improbable.</p>
+
+<p>Should a miner, or a group of miners, decide to not upgrade while the majority of the
+miners did upgrade they would end up creating a <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Chain_fork&amp;from=Hardfork" rel="nofollow">?</a>Chain fork</span>. There are several problems
+that those miners that are in minority will face;</p>
+
+<ol>
+<li>The network still assumes all miners on the chain, so they will have minority hashing power
+and the rate at which they find blocks will slow down a factor of 10 or more. This directly
+influences the usefulness of the chain. If no transactions are being processed users may
+prefer to use the upgraded chain.</li>
+<li>Miners mining on the minority chain will get paid in bitcoins that will have zero value
+on the main chain. This is because they are unknown there. A miner mining on a minority
+chain thus needs to find people willing to pay for his electricity bills otherwise.</li>
+<li>Mining profits are not spendable until 100 blocks have been mined on top of it. Which is
+normally about a day of mining. But due to point 1, it may take considerably longer.</li>
+<li>All above points combine to make it uncertain to mine. Should a part of the miners mining
+on the minority chain leave and go to the majority chain, they will make it even more difficult
+for any of them left to get any payment for their work.</li>
+</ol>
+
+
+<p>The high risk and near certainty that you won&#39;t get paid for working on a minority chain
+makes this myth totally busted.</p>
+
+<h2 id="Save_upgrade_process"><a name="index2h2"></a>Save upgrade process</h2>
+
+<p>A hardfork is a moment in time when the first transaction or block is accepted in the
+network that formerly would not be accepted. An old client not aware of the new rules
+would reject this new block or transaction. Before that point in time, there is no hardfork.</p>
+
+<p>At the time of the hardfork, all the miners need to be running the new software version.
+If they are not, they can&#39;t mine because they reject correct blocks made by other miners.
+Also there need to be an amount of full-nodes in production that support the new rules.</p>
+
+<p>A safe way to upgrade is thus to agree on a time in the future that is far enough away
+to allow miners and various nodes to run the new version of the software. Make sure that
+all the miners are aware of the actual switch-over date so they can prepare.</p>
+
+<p>Typical solution is to pick a specific block-number or a specific date that is the point
+where the new rules come into effect.</p>
+
+<p>This way there is nobody left behind, and the upgrade will be completely safe.</p>
+
+<h2 id="See_Also"><a name="index3h2"></a>See Also</h2>
 
 <ul>
 <li><a href="../Softfork/">Softfork</a></li>
@@ -124,7 +196,7 @@ Content is available under under <a href="https://creativecommons.org/licenses/b
 </div>
 
 <div class="pagedate">
-Last edited <time datetime="2016-01-13T13:23:04Z">Wed 13 Jan 2016 01:23:04 PM Europe</time>
+Last edited <time datetime="2016-06-09T12:17:39Z">Thu 09 Jun 2016 12:17:39 PM Europe</time>
 <!-- Created <time datetime="2014-03-22T17:44:00Z" pubdate="pubdate">Sat 22 Mar 2014 05:44:00 PM Europe</time> -->
 </div>
 
