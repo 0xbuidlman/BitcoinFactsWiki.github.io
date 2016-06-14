@@ -52,7 +52,7 @@ Hardfork
 
 
 
-<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Hardfork" rel="nofollow">?</a>Talk</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;from=Hardfork&amp;do=create" rel="nofollow">?</a>Talk</span></li>
 
 
 </ul>
@@ -70,66 +70,87 @@ Hardfork
 <div id="pagebody">
 
 <section id="content" role="main">
-<p>A hardfork is a technical way to upgrade the Bitcoin protocol to include new
-rules which can not be rolled out normally since they would make older clients
-reject the new constructs used as invalid and &quot;not bitcoin&quot;.<br />
-All users that want to continue using Bitcoin after a hardfork is accepted are
-required to first upgrade to a version of their software which recognizes the new rules.</p>
+<p>A hardfork is a way to upgrade the Bitcoin protocol to include new rules.
+Older bitcoin software would mark transactions and blocks following these
+new rules as invalid, which means that a hardfork requires everyone to
+upgrade their software in order to continue being part of the Bitcoin
+network.</p>
 
 <div class="toc">
 	<ol>
-		<li class="L2"><a href="#index1h2">Myths</a>
+		<li class="L2"><a href="#index1h2">General principles</a>
 		</li>
-		<li class="L2"><a href="#index2h2">Safe upgrade process</a>
+		<li class="L2"><a href="#index2h2">Risks</a>
 		</li>
-		<li class="L2"><a href="#index3h2">See Also</a>
+		<li class="L2"><a href="#index3h2">Safe upgrade process</a>
+		</li>
+		<li class="L2"><a href="#index4h2">Myths</a>
+		</li>
+		<li class="L2"><a href="#index5h2">See Also</a>
 		</li>
 	</ol>
 </div>
 
 
-<h2 id="Myths"><a name="index1h2"></a>Myths</h2>
+<p>Fundamentally, any fork changes the basic rules of Bitcoin. This can be a very
+subtle rule but also a new payment type or something as big and fundamental as the
+<a href="../Controlled_supply/">maximum about</a> of bitcoins that can exist. This page
+focuses on the technique only.  The specific changes that can be done in a
+hardfork are out of scope for this page.</p>
 
-<p>There are various myths about risks of hardforks. It is useful to address them head-on.</p>
+<h2 id="General_principles"><a name="index1h2"></a>General principles</h2>
 
-<h3 id="Myth.3B_A_hardfork_can_cause_people_to_lose_bitcoins."><a name="index1h3"></a>Myth; A hardfork can cause people to lose bitcoins.</h3>
+<p>A hardfork picks one point in time after which new protocol-level rules
+come into effect.
+For instance a new type of transaction is allowed and validated after the
+hardfork time.  All the old rules will still be valid and the entire
+history recorded on the blockchain can still be validated. A client that
+doesn&#39;t follow that rule will reject the new transaction type and thus
+reject blocks including it. Which means it can no longer understand
+Bitcoin. They will stop being part of the network.</p>
 
-<p>Lets assume the change itself is not about people losing money, but the method of
-deploying it is the one under discussion.
-Users that didn&#39;t get the memo they need to update will, after the fork, end up not
-getting any updates from the Bitcoin network any more. When a node gets no updates
-it is much like not being connected to the internet.  You don&#39;t lose your coins that way.</p>
+<p>Due the the nature of deployment (see below for details) all miners and all
+full nodes that want to continue being part of Bitcoin need to run software
+with the new Protocol rules.</p>
 
-<h3><a name="index2h3"></a>Myth; A hardfork may cause miners to <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Chain_fork&amp;from=Hardfork" rel="nofollow">?</a>Chain fork</span> and two currencies will exist.</h3>
+<p>The politics of getting all nodes to upgrade to the new version means that
+a large range of the Bitcoin ecosystem has to agree with the change of
+rules before it can be deployed. People that disagree with the rules can
+avoid running software that enables the new rules and as long as there are
+not enough supporting nodes and miners the upgrade of Bitcoin will not
+happen.</p>
 
-<p>There is no economic or practical reason to think this is true. While technically possible,
-the people doing this would have to do so willingly and they would loose an immense amount
-of money in the process. Which makes it practically and economically improbable.</p>
+<h2 id="Risks"><a name="index2h2"></a>Risks</h2>
 
-<p>Should a miner, or a group of miners, decide to not upgrade while the majority of the
-miners did upgrade they would end up creating a <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Chain_fork&amp;from=Hardfork" rel="nofollow">?</a>Chain fork</span>. There are several problems
-that those miners that are in minority will face;</p>
+<p>A hardfork is a change in rules such that old clients no longer accept new
+blocks made by miners following the new rules.  This has the effect that
+old nodes reject the new blocks.  In the Bitcoin software this rejection is
+typically accompanied by a disconnect and ban of the node that tried to
+send the new block to the old node.  In very short term this will mean that
+old nodes will be completely isolated from new nodes after a block was
+mined that violates the old-nodes rules.<br />
+A similar issue may exist when a new transaction type is introduced, a new
+node relays a transaction that an old one doesn&#39;t thing is valid. Causing
+a disconnect.</p>
+
+<p>The result is the creation of two networks. One that follows all the new
+rules and one that doesn&#39;t. Most of the risks involve this basic problem.</p>
 
 <ol>
-<li>The network still assumes all miners on the chain, so they will have minority hashing power
-and the rate at which they find blocks will slow down a factor of 10 or more. This directly
-influences the usefulness of the chain. If no transactions are being processed users may
-prefer to use the upgraded chain.</li>
-<li>Miners mining on the minority chain will get paid in bitcoins that will have zero value
-on the main chain. This is because they are unknown there. A miner mining on a minority
-chain thus needs to find people willing to pay for his electricity bills otherwise.</li>
-<li>Mining profits are not spendable until 100 blocks have been mined on top of it. Which is
-normally about a day of mining. But due to point 1, it may take considerably longer.</li>
-<li>All above points combine to make it uncertain to mine. Should a part of the miners mining
-on the minority chain leave and go to the majority chain, they will make it even more difficult
-for any of them left to get any payment for their work.</li>
+<li><p>The risk is there if there are miners on the old rules still creating
+blocks while new miners create new blocks.  This creates a <span class="createlink"><a href="/ikiwiki.cgi?page=Chain_fork&amp;from=Hardfork&amp;do=create" rel="nofollow">?</a>Chain fork</span>.
+Various scenarios are possible depending on the amount of luck and amount
+of hashpower on each side.  The risk itself is based on the fact that we
+can&#39;t predict what kind of reorganizations will happen.  It is typically
+best to wait for more confirmations in the hours that a fork is scheduled
+to take place.</p></li>
+<li><p>There are not enough (non-miner) nodes to support the new rules.  This
+in reality is unlikely to be an actual issue because miners user a separate
+relay network.</p></li>
 </ol>
 
 
-<p>The high risk and near certainty that you won&#39;t get paid for working on a minority chain
-makes this myth totally busted.</p>
-
-<h2 id="Safe_upgrade_process"><a name="index2h2"></a>Safe upgrade process</h2>
+<h2 id="Safe_upgrade_process"><a name="index3h2"></a>Safe upgrade process</h2>
 
 <p>A hardfork is a moment in time when the first transaction or block is accepted in the
 network that formerly would not be accepted. An old client not aware of the new rules
@@ -139,16 +160,86 @@ would reject this new block or transaction. Before that point in time, there is 
 If they are not, they can&#39;t mine because they reject correct blocks made by other miners.
 Also there need to be an amount of full-nodes in production that support the new rules.</p>
 
-<p>A safe way to upgrade is thus to agree on a time in the future that is far enough away
-to allow miners and various nodes to run the new version of the software. Make sure that
-all the miners are aware of the actual switch-over date so they can prepare.</p>
+<p>A safe way to upgrade is thus to agree on two things;</p>
 
-<p>Typical solution is to pick a specific block-number or a specific date that is the point
-where the new rules come into effect.</p>
+<ol>
+<li>That the majority of the community wants this hardfork.</li>
+<li>What point in time to pick after which the new rules will be
+operational.</li>
+</ol>
+
+
+<p>There are multiple ways we have seen this being done in the past. The simplest
+by far is to have some discussions and then in all the software decide on a
+block-number that introduces the new rules.  This is possible for upgrades
+that everyone will accept without issues and are planned a considerable
+amount of time in the future.</p>
+
+<p>Another solution is to use BIP9 voting for the upgrade. Good example of a
+safe way to do this is the way that BIP109 was introduced with
+<a href="../Bitcoin_Classic/">Bitcoin Classic</a>. The design is that miners can choose to support the
+feature by signaling a bit in each block they mine. If 750 out of 1000
+blocks have this bit this means that a very generous super-majority of the
+hashing power has this feature running.  After the required count is hit
+another 4 weeks has to go by before the new rules go into effect.
+This is to allow anyone in Bitcoin to upgrade their software if they
+haven&#39;t done so yet.</p>
 
 <p>This way there is nobody left behind, and the upgrade will be completely safe.</p>
 
-<h2 id="See_Also"><a name="index3h2"></a>See Also</h2>
+<h2 id="Myths"><a name="index4h2"></a>Myths</h2>
+
+<p>There are various myths about risks of hardforks. Issues people see as
+risks, but in reality are not.</p>
+
+<ol>
+<li>Myth; Two currencies will exist.</li>
+</ol>
+
+
+<p>This is based on the existing risk where there is mining power on both the
+old and the new side of the hardfork. The myth states that the amount of
+mining power will stay spread over both sides for such a long time (weeks)
+that we have to take both sides seriously.</p>
+
+<p>Economics and indeed practical considerations make this story to be so
+highly unlikely that it is fine to disregard this myth to the bin of
+irrational fears.</p>
+
+<p>Should a miner, or a group of miners, decide to not upgrade while the majority of the
+miners did upgrade they would end up creating a <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Chain_fork&amp;from=Hardfork" rel="nofollow">?</a>Chain fork</span>. There are several problems
+that those miners that are in minority will face;</p>
+
+<ol>
+<li>The network still assumes all miners on one chain, so they will have minority hashing power
+and the rate at which they find blocks will slow down relative to their
+percentage of hash power. The bi-weekly change of difficulty won&#39;t come
+every 2 weeks anymore. It will take much longer.</li>
+<li>With blocks not coming very regularly, the transaction backlog will
+grow. Notice that the transactions being sent on the main chain will be
+eligible for mining on the minority chain as well, causing this backlog to
+grow even faster.  A larger backlog will make users unhappy and they may
+switch to the main chain even if they dislike the new policies.</li>
+<li>Miners mining on the minority chain will get paid in bitcoins that will have zero value
+on the main chain. This is because they are unknown there. A miner mining on a minority
+chain thus needs to find people willing to pay for his electricity bills otherwise.</li>
+<li>Mining profits (coinbase) are not spend-able until 100 blocks have been
+mined on top of it, as part of the protocol rules. 100 blocks is normally
+about a day of mining. But due to point 1, it may take considerably longer.</li>
+<li>All above points combine to make miners uncertain of getting payment on
+the minority network.  On the main chain, however, their mining power can
+generate coins that actually can be used as payment later on.  If some
+miners leave they make the situation worse for everyone else on the
+minority chain.</li>
+<li>The last to leave the minority chain is the bag-holder. They get to pay
+all the unpaid bills and end up losing the most.</li>
+</ol>
+
+
+<p>The high risk and near certainty that you won&#39;t get paid for working on a minority chain
+makes this myth totally busted.</p>
+
+<h2 id="See_Also"><a name="index5h2"></a>See Also</h2>
 
 <ul>
 <li><a href="../Softfork/">Softfork</a></li>
@@ -179,13 +270,9 @@ Links:
 
 <a href="../Fork_(disambiguation)/">Fork (disambiguation)</a>
 
-<a href="../Hardfork_Wishlist/">Hardfork Wishlist</a>
-
 <a href="../Scalability_FAQ/">Scalability FAQ</a>
 
 <a href="../Softfork/">Softfork</a>
-
-<a href="../Softfork_wishlist/">Softfork wishlist</a>
 
 
 </nav>
@@ -196,7 +283,7 @@ Content is available under under <a href="https://creativecommons.org/licenses/b
 </div>
 
 <div class="pagedate">
-Last edited <time datetime="2016-06-09T12:17:39Z">Thu 09 Jun 2016 12:17:39 PM Europe</time>
+Last edited <time datetime="2016-06-14T11:44:24Z">Tue 14 Jun 2016 11:44:24 AM Europe</time>
 <!-- Created <time datetime="2014-03-22T17:44:00Z" pubdate="pubdate">Sat 22 Mar 2014 05:44:00 PM Europe</time> -->
 </div>
 
