@@ -70,7 +70,11 @@ Scalability
 <div id="pagebody">
 
 <section id="content" role="main">
-<p>A Bitcoin full node could be modified to scale to much higher transaction rates than are seen today, assuming that said node is running on a high end servers rather than a desktop. Bitcoin was designed to support lightweight clients that only process small parts of the block chain (see <em>simplified payment verification</em> below for more details on this).</p>
+<p>A Bitcoin full node could be modified to scale to much higher transaction
+rates than are seen today. Additionally, Bitcoin was designed to allow
+lightweight clients as well. Those lightweight clients only process small
+parts of the block chain (see <em>simplified payment verification</em> below for
+more details on this).</p>
 
 <p><em>Please note that this page exists to give calculations about the scalability of a Bitcoin full node and transactions on the block chain without regards to network security. It is not intended to discuss the scalability of alternative protocols or try and summarise philosophical debates. Create alternative pages if you want to do that.</em></p>
 
@@ -80,7 +84,8 @@ Scalability
 
 <p>PayPal, in contrast, handled around 10 million transactions per day for an average of 115 tps in late 2014. <a href="https://web.archive.org/web/20141226073503/https://www.paypal-media.com/about">(3)</a></p>
 
-<p>Let&#39;s take 4,000 tps as starting goal. Obviously if we want Bitcoin to scale to all economic transactions worldwide, including cash, it&#39;d be a lot higher than that, perhaps more in the region of a few hundred thousand tps. And the need to be able to withstand DoS attacks (which VISA does not have to deal with) implies we would want to scale far beyond the standard peak rates. Still, picking a target let us do some basic calculations even if it&#39;s a little arbitrary.</p>
+<p>Let&#39;s take 4,000 tps as starting goal. Obviously if we want Bitcoin to
+scale to all economic transactions worldwide, including cash.</p>
 
 <p>Today the Bitcoin network is restricted to a sustained rate of 7 tps due to the bitcoin protocol restricting block sizes to 1MB.</p>
 
@@ -88,11 +93,20 @@ Scalability
 
 <p>The protocol has two parts. Nodes send &quot;inv&quot; messages to other nodes telling them they have a new transaction. If the receiving node doesn&#39;t have that transaction it requests it with a getdata.</p>
 
-<p>The big cost is the crypto and block chain lookups involved with verifying the transaction. Verifying a transaction means some hashing and some <a href="../ECDSA/">ECDSA</a> signature verifications. RIPEMD-160 runs at 106 megabytes/sec (call it 100 for simplicity) and SHA256 is about the same. So hashing 1 megabyte should take around 10 milliseconds and hashing 1 kilobyte would take 0.01 milliseconds - fast enough that we can ignore it.</p>
+<p>The big cost is the crypto and block chain lookups involved with verifying
+the transaction. Verifying a transaction means some hashing and some
+<a href="../ECDSA/">ECDSA</a> signature verifications. RIPEMD-160 (in 2014) runs at 106
+megabytes/sec (call it 100 for simplicity) and SHA256 is about the same. So
+hashing 1 megabyte should take around 10 milliseconds and hashing 1
+kilobyte would take 0.01 milliseconds - fast enough that we can ignore it.
+And we didn&#39;t even count faster CPUs and multiple cores.</p>
 
-<p>Bitcoin is currently able (with a couple of simple optimizations that are prototyped but not merged yet) to perform around 8000 signature verifications per second on an quad core <a href="http://ark.intel.com/products/53469">Intel Core i7-2670QM 2.2Ghz processor</a>. The average number of inputs per transaction is around 2, so we must halve the rate. This means 4000 tps is easily achievable CPU-wise with a single fairly mainstream CPU.</p>
-
-<p>As we can see, this means as long as Bitcoin nodes are allowed to max out at least 4 cores of the machines they run on, we will not run out of CPU capacity for signature checking unless Bitcoin is handling 100 times as much traffic as PayPal. As of late 2015 the network is handling 1.5 transactions/second, so even assuming enormous growth in popularity we will not reach this level for a long time.</p>
+<p>As we can see, this means as long as Bitcoin nodes are allowed to max out
+at least 4 cores of the machines they run on, we will not run out of CPU
+capacity for signature checking unless Bitcoin is handling 100 times as
+much traffic as PayPal. As of half 2016 the network is handling 3
+transactions/second, so even assuming enormous growth in popularity we will
+not reach this level for a long time.</p>
 
 <p>Of course Bitcoin does other things beyond signature checking, most obviously, managing the database. We use LevelDB which does the bulk of the heavy lifting on a separate thread, and is capable of very high read/write loads. Overall Bitcoin&#39;s CPU usage is dominated by ECDSA.</p>
 
@@ -104,31 +118,47 @@ Scalability
 
 <p>This sort of bandwidth is already common for even residential connections today, and is certainly at the low end of what colocation providers would expect to provide you with.</p>
 
-<p>When blocks are solved, the current protocol will send the transactions again, even if a peer has already seen it at broadcast time. Fixing this to make blocks just list of hashes would resolve the issue and make the bandwidth needed for block broadcast negligable. So whilst this optimization isn&#39;t fully implemented today, we do not consider block transmission bandwidth here.</p>
-
 <h3 id="Storage">Storage</h3>
 
 <p>At very high transaction rates each block can be over half a gigabyte in size.</p>
 
-<p>It is not required for most fully validating nodes to store the entire chain. In Satoshi&#39;s paper he describes &quot;pruning&quot;, a way to delete unnecessary data about transactions that are fully spent. This reduces the amount of data that is needed for a fully validating node to be only the size of the current unspent output size, plus some additional data that is needed to handle re-orgs. As of October 2012 (block 203258) there have been 7,979,231 transactions, however the size of the unspent output set is less than 100MiB, which is small enough to easily fit in RAM for even quite old computers.</p>
+<p>It is not required for most fully validating nodes to store the entire
+chain. In Satoshi&#39;s paper he describes &quot;pruning&quot;, a way to delete
+unnecessary data about transactions that are fully spent. This reduces the
+amount of data that is needed for a fully validating node to be only the
+size of the current unspent output size, plus some additional data that is
+needed to handle re-orgs. A simple pruning has been implemented in the
+bitcoin full node software in 2016.
+As of October 2012 (block 203258) there have been 7,979,231 transactions,
+however the size of the unspent output set is less than 100MiB, which is
+small enough to easily fit in RAM for even quite old computers.</p>
 
 <p>Only a small number of archival nodes need to store the full chain going back to the genesis block. These nodes can be used to bootstrap new fully validating nodes from scratch but are otherwise unnecessary.</p>
 
 <p>The primary limiting factor in Bitcoin&#39;s performance is disk seeks once the unspent transaction output set stops fitting in memory. Once hard disks are phased out in favour of SSDs, it is quite possible that access to the UTXO set never becomes a serious bottleneck.</p>
 
-<h2 id="Optimizations">Optimizations</h2>
+<p>On the topic of actual harddrive space; at current 1MB block size the
+current mainstream harddrive would fill up after 75 years of blocks were
+stored on it. In real life people would have replaced such a drive with a
+much bigger one long before it reached 10% of that.</p>
 
-<p>The description above applies to the current software with only minor optimizations assumed (the type that can and have been done by one man in a few weeks).</p>
-
-<p>However there is potential for even greater optimizations to be made in future, at the cost of some additional complexity.</p>
+<p>If we have ViSA levels with simple transactions we&#39;d need 600MB blocks
+which result in almost 3TB of data per month. An actual node only needed to
+keep a day or two worth of blocks, though. So this would not actually be a
+limit to scaling.</p>
 
 <h3 id="CPU">CPU</h3>
 
-<p>Pieter Wuille has implemented a custom verifier tuned for secp256k1 that can go beyond 20,000 signature verifications per second. It would require careful review by professional cryptographers to gain as much confidence as OpenSSL, but this can easily halve CPU load.</p>
-
-<p>Algorithms exist to accelerate batch verification over elliptic curve signatures. This means if there are several inputs that are signing with the same key, it&#39;s possible to check their signatures simultaneously for another 9x speedup. This is a somewhat more complex implementation, however, it can work with existing signatures (clients don&#39;t need upgrading).</p>
-
-<p>Newly developed digital signature algorithms, like <a href="http://ed25519.cr.yp.to/ed25519-20110705.pdf">ed25519</a> have extremely efficient software implementations that can reach speeds of nearly 80,000 verifications per second, even on an old Westmere CPU. That is a 10x improvement over secp256k1, and most likely is even higher on more modern CPUs. Supporting this in Bitcoin would mean a chain fork. This ECC algorithm has also been shown to be <a href="http://eprint.iacr.org/2014/198">easily accelerated using GPUs</a>, yielding scalar point multiplication times of less than a microsecond (i.e. a million point multiplications per second).</p>
+<p>Newly developed digital signature algorithms, like
+<a href="http://ed25519.cr.yp.to/ed25519-20110705.pdf">ed25519</a> have extremely
+efficient software implementations that can reach speeds of nearly 80,000
+verifications per second, even on an old Westmere CPU. That is a 10x
+improvement over secp256k1, and most likely is even higher on more modern
+CPUs. Supporting this in Bitcoin would mean a [Hardfork]. This ECC
+algorithm has also been shown to be <a href="http://eprint.iacr.org/2014/198">easily accelerated using
+GPUs</a>, yielding scalar point
+multiplication times of less than a microsecond (i.e. a million point
+multiplications per second).</p>
 
 <p>At these speeds it is likely that disk and memory bandwidth would become the primary limiting factor, rather than signature checking.</p>
 
@@ -154,7 +184,6 @@ Scalability
 <p>There are a few proposals for optimizing Bitcoin&#39;s scalability. Some of these require an alt-chain / hard fork.</p>
 
 <ul>
-<li><a href="https://bitcointalk.org/index.php?topic=88208.0">Ultimate blockchain compression</a> - the idea that the blockchain can be compressed to achieve &quot;trust-free lite nodes&quot;</li>
 <li><a href="http://cryptonite.info/files/mbc-scheme-rev2.pdf">The Finite Blockchain</a> paper that describes splitting the blockchain into three data structures, each better suited for its purpose. The three data structures are a finite blockchain (keep N blocks into the past), an &quot;account tree&quot; which keeps account balance for every address with a non-zero balance, and a &quot;proof chain&quot; which is an (ever growing) slimmed down version of the blockchain.</li>
 <li><a href="https://lightning.network/">Lightning Network</a>, an alternative protocol for transaction clearance in which payment hubs set up micropayment channels between each other and settle up on the block chain occasionally. Ordinary users interact primarily or only with hubs.</li>
 </ul>
@@ -210,7 +239,7 @@ Content is available under under <a href="https://creativecommons.org/licenses/b
 </div>
 
 <div class="pagedate">
-Last edited <time datetime="2016-05-04T16:52:07Z">Wed 04 May 2016 04:52:07 PM Europe</time>
+Last edited <time datetime="2016-07-04T21:37:25Z">Mon 04 Jul 2016 09:37:25 PM Europe</time>
 <!-- Created <time datetime="2011-02-12T14:46:44Z" pubdate="pubdate">Sat 12 Feb 2011 02:46:44 PM Europe</time> -->
 </div>
 

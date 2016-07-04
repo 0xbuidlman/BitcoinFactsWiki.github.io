@@ -52,7 +52,7 @@ Hardfork
 
 
 
-<li><span class="createlink"><a href="/ikiwiki.cgi?page=Talk&amp;from=Hardfork&amp;do=create" rel="nofollow">?</a>Talk</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Hardfork" rel="nofollow">?</a>Talk</span></li>
 
 
 </ul>
@@ -94,7 +94,7 @@ network.</p>
 
 <p>Fundamentally, any fork changes the basic rules of Bitcoin. This can be a very
 subtle rule but also a new payment type or something as big and fundamental as the
-<a href="../Controlled_supply/">maximum about</a> of bitcoins that can exist. This page
+<a href="../Controlled_supply/">maximum amount</a> of bitcoins that can exist. This page
 focuses on the technique only.  The specific changes that can be done in a
 hardfork are out of scope for this page.</p>
 
@@ -138,7 +138,7 @@ rules and one that doesn&#39;t. Most of the risks involve this basic problem.</p
 
 <ol>
 <li><p>The risk is there if there are miners on the old rules still creating
-blocks while new miners create new blocks.  This creates a <span class="createlink"><a href="/ikiwiki.cgi?page=Chain_fork&amp;from=Hardfork&amp;do=create" rel="nofollow">?</a>Chain fork</span>.
+blocks while new miners create new blocks.  This creates a <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;from=Hardfork&amp;page=Chain_fork" rel="nofollow">?</a>Chain fork</span>.
 Various scenarios are possible depending on the amount of luck and amount
 of hashpower on each side.  The risk itself is based on the fact that we
 can&#39;t predict what kind of reorganizations will happen.  It is typically
@@ -192,10 +192,7 @@ haven&#39;t done so yet.</p>
 <p>There are various myths about risks of hardforks. Issues people see as
 risks, but in reality are not.</p>
 
-<ol>
-<li>Myth; Two currencies will exist.</li>
-</ol>
-
+<h4 id="Myth.3B_Two_currencies_will_exist."><a name="index1h4"></a>Myth; Two currencies will exist.</h4>
 
 <p>This is based on the existing risk where there is mining power on both the
 old and the new side of the hardfork. The myth states that the amount of
@@ -207,13 +204,15 @@ highly unlikely that it is fine to disregard this myth to the bin of
 irrational fears.</p>
 
 <p>Should a miner, or a group of miners, decide to not upgrade while the majority of the
-miners did upgrade they would end up creating a <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Chain_fork&amp;from=Hardfork" rel="nofollow">?</a>Chain fork</span>. There are several problems
+miners did upgrade they would end up creating a <span class="createlink"><a href="/ikiwiki.cgi?from=Hardfork&amp;page=Chain_fork&amp;do=create" rel="nofollow">?</a>Chain fork</span>. There are several problems
 that those miners that are in minority will face;</p>
 
 <ol>
 <li>The network still assumes all miners on one chain, so they will have minority hashing power
 and the rate at which they find blocks will slow down relative to their
-percentage of hash power. The bi-weekly change of difficulty won&#39;t come
+percentage of hash power. So if 10% of the hashpower is on the minority
+chain, it will take on average 100 minutes, instead of 10, to find a block.
+The bi-weekly change of difficulty won&#39;t come
 every 2 weeks anymore. It will take much longer.</li>
 <li>With blocks not coming very regularly, the transaction backlog will
 grow. Notice that the transactions being sent on the main chain will be
@@ -227,7 +226,7 @@ chain thus needs to find people willing to pay for his electricity bills otherwi
 mined on top of it, as part of the protocol rules. 100 blocks is normally
 about a day of mining. But due to point 1, it may take considerably longer.</li>
 <li>All above points combine to make miners uncertain of getting payment on
-the minority network.  On the main chain, however, their mining power can
+the minority chain.  On the main chain, however, their mining power can
 generate coins that actually can be used as payment later on.  If some
 miners leave they make the situation worse for everyone else on the
 minority chain.</li>
@@ -283,7 +282,7 @@ Content is available under under <a href="https://creativecommons.org/licenses/b
 </div>
 
 <div class="pagedate">
-Last edited <time datetime="2016-06-14T11:44:24Z">Tue 14 Jun 2016 11:44:24 AM Europe</time>
+Last edited <time datetime="2016-07-04T13:12:06Z">Mon 04 Jul 2016 01:12:06 PM Europe</time>
 <!-- Created <time datetime="2014-03-22T17:44:00Z" pubdate="pubdate">Sat 22 Mar 2014 05:44:00 PM Europe</time> -->
 </div>
 
