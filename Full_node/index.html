@@ -52,7 +52,7 @@ Full node
 
 
 
-<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Full_node" rel="nofollow">?</a>Talk</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;from=Full_node&amp;page=Talk" rel="nofollow">?</a>Talk</span></li>
 
 
 </ul>
@@ -70,7 +70,7 @@ Full node
 <div id="pagebody">
 
 <section id="content" role="main">
-<p>Any computer that connects to the Bitcoin <a href="../Network/">network</a> is called a <strong>node</strong>. Nodes that fully enforce all of the rules of Bitcoin are called <strong>full nodes</strong>. Most nodes on the network are <span class="createlink"><a href="/ikiwiki.cgi?from=Full_node&amp;do=create&amp;page=lightweight_node" rel="nofollow">?</a>lightweight node</span>s instead of full nodes, but full nodes form the backbone of the network.</p>
+<p>Any computer that connects to the Bitcoin <a href="../Network/">network</a> is called a <strong>node</strong>. Nodes that fully enforce all of the rules of Bitcoin are called <strong>full nodes</strong>. Most nodes on the network are <span class="createlink"><a href="/ikiwiki.cgi?page=lightweight_node&amp;from=Full_node&amp;do=create" rel="nofollow">?</a>lightweight node</span>s instead of full nodes, but full nodes form the backbone of the network.</p>
 
 <h2 id="What_makes_a_full_node.3F">What makes a full node?</h2>
 
@@ -86,7 +86,7 @@ Full node
 
 <p>If a transaction or block violates the consensus rules, then it is absolutely rejected, even if every other node on the network thinks that it is valid. This is one of the most important characteristics of full nodes: they do what&#39;s right <em>no matter what</em>. For full nodes, miners actually have fairly limited power: they can only reorder or remove transactions, and only by expending a lot of computing power. A powerful miner is able to execute <a href="../Weaknesses/#Attacker_has_a_lot_of_computing_power">some serious attacks</a>, but because full nodes rely on miners only for a few things, miners could not completely change or destroy Bitcoin.</p>
 
-<p>Nodes that have different <em>consensus</em> rules are actually using two different networks/currencies. Changing any of the consensus rules requires a <span class="createlink"><a href="/ikiwiki.cgi?page=hard_fork&amp;do=create&amp;from=Full_node" rel="nofollow">?</a>hard fork</span>, which can be thought of as creating a new currency and having everyone move to it. Consensus rules are different from <em>policy</em> rules, which specify how a node or miner prioritizes or discourages certain things. Policy rules can be changed freely, and different nodes can have different policy rules. Because all full nodes must use <em>exactly</em> the same consensus rules in order to remain compatible with each other, even duplicating bugs and oddities in the original consensus rules, creating a full node from scratch is extremely difficult and dangerous. It is therefore recommended that everyone who wishes to run a full node use software based on the <a href="../Reference_client/">reference client</a>, which is the only client guaranteed to behave correctly.</p>
+<p>Nodes that have different <em>consensus</em> rules are actually using two different networks/currencies. Changing any of the consensus rules requires a <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;from=Full_node&amp;page=hard_fork" rel="nofollow">?</a>hard fork</span>, which can be thought of as creating a new currency and having everyone move to it. Consensus rules are different from <em>policy</em> rules, which specify how a node or miner prioritizes or discourages certain things. Policy rules can be changed freely, and different nodes can have different policy rules. Because all full nodes must use <em>exactly</em> the same consensus rules in order to remain compatible with each other, even duplicating bugs and oddities in the original consensus rules, creating a full node from scratch is extremely difficult and dangerous. It is therefore recommended that everyone who wishes to run a full node use software based on the <a href="../Reference_client/">reference client</a>, which is the only client guaranteed to behave correctly.</p>
 
 <p>At minimum, a full node must download every transaction that has ever taken place, all new transactions, and all block headers and Merkle trees. Additionally, full nodes must store information about every unspent transaction output until it is spent. Modern-day full nodes are inefficient in that they download each new transaction at least twice, and they store the entire block chain (&gt;30 GB) forever, even though only the unspent transaction outputs (&lt;1 GB) are required.</p>
 
@@ -145,7 +145,7 @@ issues.</p>
 
 <h2 id="How_to_run_a_full_node">How to run a full node</h2>
 
-<p>If you run the <a href="../Bitcoin_Core/">Bitcoin Core</a>/<a href="../Bitcoind/">bitcoind</a> wallet, you are running a full node. If you open port 8333, you will contribute to the network&#39;s capacity. If you actually use the wallet feature, or if you use a lightweight client like <a href="../Multibit/">MultiBit</a> but configure it to connect exclusively to your full node, then you will contribute to the network&#39;s economic strength and receive protection from some possible attacks against lightweight nodes.</p>
+<p>If you run the <a href="../Bitcoin_Core/">Bitcoin Core</a>/<a href="../Bitcoind/">bitcoind</a> wallet, you are running a full node. If you open port 8333, you will contribute to the network&#39;s capacity. If you actually use the wallet feature, or if you use a lightweight client like MultiBit but configure it to connect exclusively to your full node, then you will contribute to the network&#39;s economic strength and receive protection from some possible attacks against lightweight nodes.</p>
 
 <p>There are a few alternate full node implementations, but they are not recommended for serious use because it is currently difficult to determine whether they implement the consensus rules with 100% accuracy. Even very slight inaccuracies could cause serious problems for the users of these alternate clients. One widespread example implementation is <a href="https://bitcore.io/guides/full-node/">Bitcore</a>.</p>
 
@@ -160,6 +160,9 @@ issues.</p>
 
 <p>7.1: <a href="https://jonasnick.github.io/blog/2015/02/12/privacy-in-bitcoinj/">Privacy in BitcoinJ</a><br />
 9.1: <a href="Bitcoin">Magazine</a>  of <i></i>; cf. https://blog.bitcoinfoundation.org/bitnodes-project-2015-q1-report-peer-index-and-incentivized-full-nodes/</p>
+
+<p>[[!template <span class="error">Error: failed to process template &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=%2Ftemplates%2Fbitcoin_core_documentation&amp;amp;from=Full_node&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;bitcoin core documentation&lt;/span&gt; template bitcoin_core_documentation not found
+</span>]]</p>
 
 </section>
 
@@ -209,8 +212,8 @@ Content is available under under <a href="https://creativecommons.org/licenses/b
 </div>
 
 <div class="pagedate">
-Last edited <time datetime="2016-05-25T12:41:25Z">Wed 25 May 2016 12:41:25 PM Europe</time>
-<!-- Created <time datetime="2014-12-18T15:05:41Z" pubdate="pubdate">Thu 18 Dec 2014 03:05:41 PM Europe</time> -->
+Last edited <time datetime="2016-07-06T10:12:32Z">Wed 06 Jul 2016 10:12:32 AM Europe</time>
+<!-- Created <time datetime="2016-07-06T10:09:14Z" pubdate="pubdate">Wed 06 Jul 2016 10:09:14 AM Europe</time> -->
 </div>
 
 </nav>

@@ -211,33 +211,33 @@ Byte vectors are interpreted as Booleans where False is represented by any repre
 <td>OP_IF</td>
 <td>99</td>
 <td>0x63</td>
-<td>colspan=&quot;2&quot;if <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=statements&amp;from=Script" rel="nofollow">?</a>statements</span><span class="createlink"><a href="/ikiwiki.cgi?from=Script&amp;page=statements&amp;do=create" rel="nofollow">?</a>statements</span>* endif</td>
-<td>If the top stack value is not 0, the statements are executed. The top stack value is removed.</td>
+<td>&lt;expression&gt; if [statements] [else [statements]]* endif</td>
 <td></td>
+<td>If the top stack value is not 0, the statements are executed. The top stack value is removed.</td>
 </tr>
 <tr>
 <td>OP_NOTIF</td>
 <td>100</td>
 <td>0x64</td>
-<td>colspan=&quot;2&quot;if <span class="createlink"><a href="/ikiwiki.cgi?from=Script&amp;page=statements&amp;do=create" rel="nofollow">?</a>statements</span><span class="createlink"><a href="/ikiwiki.cgi?from=Script&amp;page=statements&amp;do=create" rel="nofollow">?</a>statements</span>* endif</td>
-<td>If the top stack value is 0, the statements are executed. The top stack value is removed.</td>
+<td>&lt;expression&gt; if [statements] [else [statements]]* endif </td>
 <td></td>
+<td>If the top stack value is 0, the statements are executed. The top stack value is removed.</td>
 </tr>
 <tr>
 <td>OP_ELSE</td>
 <td>103</td>
 <td>0x67</td>
-<td>colspan=&quot;2&quot;if <span class="createlink"><a href="/ikiwiki.cgi?page=statements&amp;do=create&amp;from=Script" rel="nofollow">?</a>statements</span><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=statements&amp;from=Script" rel="nofollow">?</a>statements</span>* endif</td>
-<td>If the preceding OP_IF or OP_NOTIF or OP_ELSE was not executed then these statements are and if the preceding OP_IF or OP_NOTIF or OP_ELSE was executed then these statements are not.</td>
+<td>&lt;expression&gt; if [statements] [else [statements]]* endif </td>
 <td></td>
+<td>If the preceding OP_IF or OP_NOTIF or OP_ELSE was not executed then these statements are and if the preceding OP_IF or OP_NOTIF or OP_ELSE was executed then these statements are not.</td>
 </tr>
 <tr>
 <td>OP_ENDIF</td>
 <td>104</td>
 <td>0x68</td>
-<td>colspan=&quot;2&quot;if <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=statements&amp;from=Script" rel="nofollow">?</a>statements</span><span class="createlink"><a href="/ikiwiki.cgi?from=Script&amp;do=create&amp;page=statements" rel="nofollow">?</a>statements</span>* endif</td>
-<td>Ends an if/else block. All blocks must end, or the transaction is <strong>invalid</strong>. An OP_ENDIF without OP_IF earlier is also <strong>invalid</strong>.</td>
+<td>&lt;expression&gt; if [statements] [else [statements]]* endif </td>
 <td></td>
+<td>Ends an if/else block. All blocks must end, or the transaction is <strong>invalid</strong>. An OP_ENDIF without OP_IF earlier is also <strong>invalid</strong>.</td>
 </tr>
 <tr>
 <td>OP_VERIFY</td>
@@ -451,7 +451,7 @@ Byte vectors are interpreted as Booleans where False is represented by any repre
 <td>0x7e</td>
 <td>x1 x2</td>
 <td>out</td>
-<td>style=&quot;background:#D97171;&quot;Concatenates two strings. <em>disabled.</em></td>
+<td>Concatenates two strings. <em>disabled.</em></td>
 </tr>
 <tr>
 <td>OP_SUBSTR</td>
@@ -459,7 +459,7 @@ Byte vectors are interpreted as Booleans where False is represented by any repre
 <td>0x7f</td>
 <td>in begin size</td>
 <td>out</td>
-<td>style=&quot;background:#D97171;&quot;Returns a section of a string. <em>disabled.</em></td>
+<td>Returns a section of a string. <em>disabled.</em></td>
 </tr>
 <tr>
 <td>OP_LEFT</td>
@@ -467,7 +467,7 @@ Byte vectors are interpreted as Booleans where False is represented by any repre
 <td>0x80</td>
 <td>in size</td>
 <td>out</td>
-<td>style=&quot;background:#D97171;&quot;Keeps only characters left of the specified point in a string. <em>disabled.</em></td>
+<td>Keeps only characters left of the specified point in a string. <em>disabled.</em></td>
 </tr>
 <tr>
 <td>OP_RIGHT</td>
@@ -475,7 +475,7 @@ Byte vectors are interpreted as Booleans where False is represented by any repre
 <td>0x81</td>
 <td>in size</td>
 <td>out</td>
-<td>style=&quot;background:#D97171;&quot;Keeps only characters right of the specified point in a string. <em>disabled.</em></td>
+<td>Keeps only characters right of the specified point in a string. <em>disabled.</em></td>
 </tr>
 <tr>
 <td>OP_SIZE</td>
@@ -920,9 +920,9 @@ If any opcode marked as <em>disabled</em> is present in a script - it must also 
 <td>OP_CHECKSEQUENCEVERIFY (previously OP_NOP3)</td>
 <td>178</td>
 <td>0xb2</td>
-<td>Nothing</td>
-<td>Nothing <s>/ <em>fail</em></s></td>
-<td>The word is ignored until the <a href="../BIP_0068/">BIP 0068</a>and <a href="../BIP_0112/">BIP 0112</a>softfork completes.<s><strong>Marks transaction as invalid</strong>if the relative lock time of the input (enforced by <a href="../BIP_0068/">BIP 0068</a>with nSequence) is not equal to or longer than the value of the top stack item. The precise semantics are described in <a href="../BIP_0112/">BIP 0112</a>.</s></td>
+<td>x</td>
+<td>x / <em>fail</em></td>
+<td>Marks transaction as invalid if the relative lock time of the input (enforced by <a href="../BIP_0068/">BIP 0068</a> with nSequence) is not equal to or longer than the value of the top stack item. The precise semantics are described in <a href="../BIP_0112/">BIP 0112</a>.</td>
 </tr>
 </tbody>
 </table>
@@ -982,13 +982,13 @@ If any opcode marked as <em>disabled</em> is present in a script - it must also 
 <td>OP_RESERVED</td>
 <td>80</td>
 <td>0x50</td>
-<td><strong>Transaction is invalid</strong>unless occuring in an unexecuted OP_IF branch</td>
+<td><strong>Transaction is invalid</strong> unless occuring in an unexecuted OP_IF branch</td>
 </tr>
 <tr>
 <td>OP_VER</td>
 <td>98</td>
 <td>0x62</td>
-<td><strong>Transaction is invalid</strong>unless occuring in an unexecuted OP_IF branch</td>
+<td><strong>Transaction is invalid</strong> unless occuring in an unexecuted OP_IF branch</td>
 </tr>
 <tr>
 <td>OP_VERIF</td>
@@ -1006,13 +1006,13 @@ If any opcode marked as <em>disabled</em> is present in a script - it must also 
 <td>OP_RESERVED1</td>
 <td>137</td>
 <td>0x89</td>
-<td><strong>Transaction is invalid</strong>unless occuring in an unexecuted OP_IF branch</td>
+<td><strong>Transaction is invalid</strong> unless occuring in an unexecuted OP_IF branch</td>
 </tr>
 <tr>
 <td>OP_RESERVED2</td>
 <td>138</td>
 <td>0x8a</td>
-<td><strong>Transaction is invalid</strong>unless occuring in an unexecuted OP_IF branch</td>
+<td><strong>Transaction is invalid</strong> unless occuring in an unexecuted OP_IF branch</td>
 </tr>
 <tr>
 <td>OP_NOP1, OP_NOP4-OP_NOP10</td>
@@ -1143,7 +1143,7 @@ scriptSig: &lt;sig&gt;
 <pre><code>scriptPubKey: OP_RETURN {zero or more ops}
 </code></pre>
 
-<p>OP_RETURN immediately marks the script as invalid, guaranteeing that no scriptSig exists that could possibly spend that output. Thus the output can be immediately pruned from the UTXO set even if it has not been spent. <a href="http://blockexplorer.com/tx/eb31ca1a4cbd97c2770983164d7560d2d03276ae1aee26f12d7c2c6424252f29">eb31ca1a4cbd97c2770983164d7560d2d03276ae1aee26f12d7c2c6424252f29</a> is an example: it has a single output of zero value, thus giving the full 0.125BTC fee to the miner who mined the transaction without adding an entry to the UTXO set. You can also use OP_RETURN to add data to a transaction without the data ever appearing in the UTXO set, as seen in 1a2e22a717d626fc5db363582007c46924ae6b28319f07cb1b907776bd8293fc; <span class="createlink"><a href="/ikiwiki.cgi?page=P2Pool&amp;do=create&amp;from=Script" rel="nofollow">?</a>P2Pool</span> does this with the share chain hash txout in the coinbase of blocks it creates.</p>
+<p>OP_RETURN immediately marks the script as invalid, guaranteeing that no scriptSig exists that could possibly spend that output. Thus the output can be immediately pruned from the UTXO set even if it has not been spent. <a href="http://blockexplorer.com/tx/eb31ca1a4cbd97c2770983164d7560d2d03276ae1aee26f12d7c2c6424252f29">eb31ca1a4cbd97c2770983164d7560d2d03276ae1aee26f12d7c2c6424252f29</a> is an example: it has a single output of zero value, thus giving the full 0.125BTC fee to the miner who mined the transaction without adding an entry to the UTXO set. You can also use OP_RETURN to add data to a transaction without the data ever appearing in the UTXO set, as seen in 1a2e22a717d626fc5db363582007c46924ae6b28319f07cb1b907776bd8293fc; <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=P2Pool&amp;from=Script" rel="nofollow">?</a>P2Pool</span> does this with the share chain hash txout in the coinbase of blocks it creates.</p>
 
 <h3 id="Anyone-Can-Spend_Outputs">Anyone-Can-Spend Outputs</h3>
 
@@ -1225,6 +1225,9 @@ scriptSig: &lt;data&gt;
 </ul>
 
 
+<p>[[!template <span class="error">Error: failed to process template &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=%2Ftemplates%2Fbitcoin_core_documentation&amp;amp;from=Script&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;bitcoin core documentation&lt;/span&gt; template bitcoin_core_documentation not found
+</span>]]</p>
+
 </section>
 
 
@@ -1303,8 +1306,8 @@ Content is available under under <a href="https://creativecommons.org/licenses/b
 </div>
 
 <div class="pagedate">
-Last edited <time datetime="2016-03-31T09:33:34Z">Thu 31 Mar 2016 09:33:34 AM Europe</time>
-<!-- Created <time datetime="2010-12-19T21:39:26Z" pubdate="pubdate">Sun 19 Dec 2010 09:39:26 PM Europe</time> -->
+Last edited <time datetime="2016-07-06T10:12:32Z">Wed 06 Jul 2016 10:12:32 AM Europe</time>
+<!-- Created <time datetime="2016-07-06T10:09:14Z" pubdate="pubdate">Wed 06 Jul 2016 10:09:14 AM Europe</time> -->
 </div>
 
 </nav>
