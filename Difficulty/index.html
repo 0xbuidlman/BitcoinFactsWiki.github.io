@@ -72,18 +72,48 @@ Difficulty
 <section id="content" role="main">
 <p><em>See also: <a href="../Target/">target</a></em></p>
 
-<h3 id="What_is_difficulty.3F">What is &quot;difficulty&quot;?</h3>
+<div class="toc">
+		<ol>
+			<li class="L3"><a href="#index1h3">What is "difficulty"?</a>
+			</li>
+			<li class="L3"><a href="#index2h3">How often does the network difficulty change?</a>
+			</li>
+			<li class="L3"><a href="#index3h3">What is the formula for difficulty?</a>
+			</li>
+			<li class="L3"><a href="#index4h3">How is difficulty stored in blocks?</a>
+			</li>
+			<li class="L3"><a href="#index5h3">How is difficulty calculated? What is the difference between bdiff and pdiff?</a>
+			</li>
+			<li class="L3"><a href="#index6h3">What is the current difficulty?</a>
+			</li>
+			<li class="L3"><a href="#index7h3">What is the maximum difficulty?</a>
+			</li>
+			<li class="L3"><a href="#index8h3">Can the network difficulty go down?</a>
+			</li>
+			<li class="L3"><a href="#index9h3">What is the minimum difficulty?</a>
+			</li>
+			<li class="L3"><a href="#index10h3">What network hash rate results in a given difficulty?</a>
+			</li>
+			<li class="L3"><a href="#index11h3">How soon might I expect to generate a block?</a>
+			</li>
+			<li class="L3"><a href="#index1h2">Related Links</a>
+			</li>
+		</ol>
+</div>
+
+
+<h3 id="What_is_difficulty.3F"><a name="index1h3"></a>What is "difficulty"?</h3>
 
 <p>Difficulty is a measure of how difficult it is to find a hash below a given target.</p>
 
 <p>The Bitcoin network has a global block difficulty. Valid blocks must have a hash below this target.
 Mining pools also have a pool-specific share difficulty setting a lower limit for shares.</p>
 
-<h3 id="How_often_does_the_network_difficulty_change.3F">How often does the network difficulty change?</h3>
+<h3 id="How_often_does_the_network_difficulty_change.3F"><a name="index2h3"></a>How often does the network difficulty change?</h3>
 
 <p>Every 2016 <a href="../Block/">blocks</a>.</p>
 
-<h3 id="What_is_the_formula_for_difficulty.3F">What is the formula for difficulty?</h3>
+<h3 id="What_is_the_formula_for_difficulty.3F"><a name="index3h3"></a>What is the formula for difficulty?</h3>
 
 <p>difficulty = difficulty_1_target / current_target</p>
 
@@ -93,139 +123,135 @@ Mining pools also have a pool-specific share difficulty setting a lower limit fo
 Traditionally, it represents a hash where the leading 32 bits are zero and the rest are one (this is known as &quot;pool difficulty&quot; or &quot;pdiff&quot;).
 The Bitcoin protocol represents targets as a custom floating point type with limited precision; as a result, Bitcoin clients often approximate difficulty based on this (this is known as &quot;bdiff&quot;).</p>
 
-<h3 id="How_is_difficulty_stored_in_blocks.3F">How is difficulty stored in blocks?</h3>
+<h3 id="How_is_difficulty_stored_in_blocks.3F"><a name="index4h3"></a>How is difficulty stored in blocks?</h3>
 
 <p>Each block stores a packed representation (called &quot;Bits&quot;) for its actual hexadecimal <a href="../Target/">target</a>. The target can be derived from it via a predefined formula. For example, if the packed target in the block is 0x1b0404cb, the hexadecimal target is
-    0x0404cb * 2<em>*(8</em>(0x1b - 3)) = 0x00000000000404CB000000000000000000000000000000000000000000000000</p>
+    0x0404cb * 2<sup>8*(0x1b - 3)</sup> = 0x00000000000404CB000000000000000000000000000000000000000000000000</p>
 
 <p>Note that the 0x0404cb value is a signed value in this format. The largest legal value for this field is 0x7fffff. To make a larger value you must shift it down one full byte. Also 0x008000 is the smallest positive valid value.</p>
 
-<h3 id="How_is_difficulty_calculated.3F_What_is_the_difference_between_bdiff_and_pdiff.3F">How is difficulty calculated? What is the difference between bdiff and pdiff?</h3>
+<h3 id="How_is_difficulty_calculated.3F_What_is_the_difference_between_bdiff_and_pdiff.3F"><a name="index5h3"></a>How is difficulty calculated? What is the difference between bdiff and pdiff?</h3>
 
 <p>The highest possible target (difficulty 1) is defined as 0x1d00ffff, which gives us a hex target of
-    0x00ffff * 2<em>*(8</em>(0x1d - 3)) = 0x00000000FFFF0000000000000000000000000000000000000000000000000000</p>
+    0x00ffff * 2<sup>8*(0x1d - 3)</sup> = 0x00000000FFFF0000000000000000000000000000000000000000000000000000</p>
 
 <p>It should be noted that pooled mining often uses non-truncated targets, which puts &quot;pool difficulty 1&quot; at
     0x00000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF</p>
 
-<p>So the difficulty at 0x1b0404cb is therefore:
-    0x00000000FFFF0000000000000000000000000000000000000000000000000000 /
-    0x00000000000404CB000000000000000000000000000000000000000000000000
-    = 16307.420938523983 (bdiff)
-And:
-    0x00000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF /
-    0x00000000000404CB000000000000000000000000000000000000000000000000
-    = 16307.669773817162 (pdiff)</p>
+<dl>
+<dt>So the difficulty at 0x1b0404cb is therefore:</dt>
+<dd>0x00000000FFFF0000000000000000000000000000000000000000000000000000 /</dd>
+<dd>0x00000000000404CB000000000000000000000000000000000000000000000000</dd>
+<dd>= 16307.420938523983 (bdiff)</dd>
+<dt>And:</dt>
+<dd>0x00000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF /</dd>
+<dd>0x00000000000404CB000000000000000000000000000000000000000000000000</dd>
+<dd>= 16307.669773817162 (pdiff)</dd>
+</dl>
 
 <p>Here&#39;s a fast way to calculate bitcoin difficulty. It uses a modified Taylor series for the logarithm (you can see tutorials on flipcode and wikipedia) and relies on logs to transform the difficulty calculation:</p>
 
-<p><source lang="cpp"></source></p>
+<div class="highlight-cpp"><pre class="hl"><span class="hl ppc">#include &lt;iostream&gt;</span>
+<span class="hl ppc">#include &lt;cmath&gt;</span>
 
-<ol>
-<li>include </li>
-<li>include </li>
-</ol>
+<span class="hl kwc">inline</span> <span class="hl kwb">float</span> <span class="hl kwd">fast_log</span><span class="hl opt">(</span><span class="hl kwb">float</span> val<span class="hl opt">)</span>
+<span class="hl opt">{</span>
+    <span class="hl kwb">int</span> <span class="hl opt">*</span> <span class="hl kwb">const</span> exp_ptr <span class="hl opt">=</span> <span class="hl kwa">reinterpret_cast</span> <span class="hl opt">&lt;</span><span class="hl kwb">int</span> <span class="hl opt">*&gt;(&amp;</span>val<span class="hl opt">);</span>
+    <span class="hl kwb">int</span> x <span class="hl opt">= *</span>exp_ptr<span class="hl opt">;</span>
+    <span class="hl kwb">const int</span> log_2 <span class="hl opt">= ((</span>x <span class="hl opt">&gt;&gt;</span> <span class="hl num">23</span><span class="hl opt">) &amp;</span> <span class="hl num">255</span><span class="hl opt">) -</span> <span class="hl num">128</span><span class="hl opt">;</span>
+    x <span class="hl opt">&amp;= ~(</span><span class="hl num">255</span> <span class="hl opt">&lt;&lt;</span> <span class="hl num">23</span><span class="hl opt">);</span>
+    x <span class="hl opt">+=</span> <span class="hl num">127</span> <span class="hl opt">&lt;&lt;</span> <span class="hl num">23</span><span class="hl opt">;</span>
+    <span class="hl opt">*</span>exp_ptr <span class="hl opt">=</span> x<span class="hl opt">;</span>
 
+    val <span class="hl opt">= ((-</span><span class="hl num">1.0</span>f<span class="hl opt">/</span><span class="hl num">3</span><span class="hl opt">) *</span> val <span class="hl opt">+</span> <span class="hl num">2</span><span class="hl opt">) *</span> val <span class="hl opt">-</span> <span class="hl num">2.0</span>f<span class="hl opt">/</span><span class="hl num">3</span><span class="hl opt">;</span>
+    <span class="hl kwa">return</span> <span class="hl opt">((</span>val <span class="hl opt">+</span> log_2<span class="hl opt">) *</span> <span class="hl num">0.69314718</span>f<span class="hl opt">);</span>
+<span class="hl opt">}</span> 
 
-<p>inline float fast_log(float val)
-{
-    int * const exp_ptr = reinterpret_cast (&amp;val);
-    int x = <em>exp_ptr;
-    const int log_2 = ((x &gt;&gt; 23) &amp; 255) - 128;
-    x &amp;= ~(255 &lt;&lt; 23);
-    x += 127 &lt;&lt; 23;
-    </em>exp_ptr = x;</p>
+<span class="hl kwb">float</span> <span class="hl kwd">difficulty</span><span class="hl opt">(</span><span class="hl kwb">unsigned int</span> bits<span class="hl opt">)</span>
+<span class="hl opt">{</span>
+    <span class="hl kwb">static double</span> max_body <span class="hl opt">=</span> <span class="hl kwd">fast_log</span><span class="hl opt">(</span><span class="hl num">0x00ffff</span><span class="hl opt">),</span> scaland <span class="hl opt">=</span> <span class="hl kwd">fast_log</span><span class="hl opt">(</span><span class="hl num">256</span><span class="hl opt">);</span>
+    <span class="hl kwa">return</span> <span class="hl kwd">exp</span><span class="hl opt">(</span>max_body <span class="hl opt">-</span> <span class="hl kwd">fast_log</span><span class="hl opt">(</span>bits <span class="hl opt">&amp;</span> <span class="hl num">0x00ffffff</span><span class="hl opt">) +</span> scaland <span class="hl opt">* (</span><span class="hl num">0x1d</span> <span class="hl opt">- ((</span>bits <span class="hl opt">&amp;</span> <span class="hl num">0xff000000</span><span class="hl opt">) &gt;&gt;</span> <span class="hl num">24</span><span class="hl opt">)));</span>
+<span class="hl opt">}</span>
 
-<pre><code>val = ((-1.0f/3) * val + 2) * val - 2.0f/3;
-return ((val + log_2) * 0.69314718f);
-</code></pre>
+<span class="hl kwb">int</span> <span class="hl kwd">main</span><span class="hl opt">()</span>
+<span class="hl opt">{</span>
+    std<span class="hl opt">::</span>cout <span class="hl opt">&lt;&lt;</span> <span class="hl kwd">difficulty</span><span class="hl opt">(</span><span class="hl num">0x1b0404cb</span><span class="hl opt">) &lt;&lt;</span> std<span class="hl opt">::</span>endl<span class="hl opt">;</span>
+    <span class="hl kwa">return</span> <span class="hl num">0</span><span class="hl opt">;</span>
+<span class="hl opt">}</span>
+</pre></div>
 
-<p>}</p>
-
-<p>float difficulty(unsigned int bits)
-{
-    static double max_body = fast_log(0x00ffff), scaland = fast_log(256);
-    return exp(max_body - fast_log(bits &amp; 0x00ffffff) + scaland * (0x1d - ((bits &amp; 0xff000000) &gt;&gt; 24)));
-}</p>
-
-<p>int main()
-{
-    std::cout &lt;&lt; difficulty(0x1b0404cb) &lt;&lt; std::endl;
-    return 0;
-}
-</p>
 
 <p>To see the math to go from the normal difficulty calculations (which require large big ints bigger than the space in any normal integer) to the calculation above, here&#39;s some python:</p>
 
-<p><source lang="python">
-import decimal, math
-l = math.log
-e = math.e</source></p>
+<div class="highlight-python"><pre class="hl"><span class="hl kwa">import</span> decimal<span class="hl opt">,</span> math
+l <span class="hl opt">=</span> math<span class="hl opt">.</span>log
+e <span class="hl opt">=</span> math<span class="hl opt">.</span>e
 
-<p>print 0x00ffff * 2<strong>(8*(0x1d - 3)) / float(0x0404cb * 2</strong>(8<em>(0x1b - 3)))
-print l(0x00ffff * 2**(8</em>(0x1d - 3)) / float(0x0404cb * 2<strong>(8*(0x1b - 3))))
-print l(0x00ffff * 2</strong>(8<em>(0x1d - 3))) - l(0x0404cb * 2**(8</em>(0x1b - 3)))
-print l(0x00ffff) + l(2<strong>(8*(0x1d - 3))) - l(0x0404cb) - l(2</strong>(8<em>(0x1b - 3)))
-print l(0x00ffff) + (8</em>(0x1d - 3))<em>l(2) - l(0x0404cb) - (8</em>(0x1b - 3))<em>l(2)
-print l(0x00ffff / float(0x0404cb)) + (8</em>(0x1d - 3))<em>l(2) - (8</em>(0x1b - 3))<em>l(2)
-print l(0x00ffff / float(0x0404cb)) + (0x1d - 0x1b)</em>l(2**8)
-</p>
+<span class="hl kwa">print</span> <span class="hl num">0x00ffff</span> <span class="hl opt">*</span> <span class="hl num">2</span><span class="hl opt">**(</span><span class="hl num">8</span><span class="hl opt">*(</span><span class="hl num">0x1d</span> <span class="hl opt">-</span> <span class="hl num">3</span><span class="hl opt">)) /</span> <span class="hl kwb">float</span><span class="hl opt">(</span><span class="hl num">0x0404cb</span> <span class="hl opt">*</span> <span class="hl num">2</span><span class="hl opt">**(</span><span class="hl num">8</span><span class="hl opt">*(</span><span class="hl num">0x1b</span> <span class="hl opt">-</span> <span class="hl num">3</span><span class="hl opt">)))</span>
+<span class="hl kwa">print</span> <span class="hl kwd">l</span><span class="hl opt">(</span><span class="hl num">0x00ffff</span> <span class="hl opt">*</span> <span class="hl num">2</span><span class="hl opt">**(</span><span class="hl num">8</span><span class="hl opt">*(</span><span class="hl num">0x1d</span> <span class="hl opt">-</span> <span class="hl num">3</span><span class="hl opt">)) /</span> <span class="hl kwb">float</span><span class="hl opt">(</span><span class="hl num">0x0404cb</span> <span class="hl opt">*</span> <span class="hl num">2</span><span class="hl opt">**(</span><span class="hl num">8</span><span class="hl opt">*(</span><span class="hl num">0x1b</span> <span class="hl opt">-</span> <span class="hl num">3</span><span class="hl opt">))))</span>
+<span class="hl kwa">print</span> <span class="hl kwd">l</span><span class="hl opt">(</span><span class="hl num">0x00ffff</span> <span class="hl opt">*</span> <span class="hl num">2</span><span class="hl opt">**(</span><span class="hl num">8</span><span class="hl opt">*(</span><span class="hl num">0x1d</span> <span class="hl opt">-</span> <span class="hl num">3</span><span class="hl opt">))) -</span> <span class="hl kwd">l</span><span class="hl opt">(</span><span class="hl num">0x0404cb</span> <span class="hl opt">*</span> <span class="hl num">2</span><span class="hl opt">**(</span><span class="hl num">8</span><span class="hl opt">*(</span><span class="hl num">0x1b</span> <span class="hl opt">-</span> <span class="hl num">3</span><span class="hl opt">)))</span>
+<span class="hl kwa">print</span> <span class="hl kwd">l</span><span class="hl opt">(</span><span class="hl num">0x00ffff</span><span class="hl opt">) +</span> <span class="hl kwd">l</span><span class="hl opt">(</span><span class="hl num">2</span><span class="hl opt">**(</span><span class="hl num">8</span><span class="hl opt">*(</span><span class="hl num">0x1d</span> <span class="hl opt">-</span> <span class="hl num">3</span><span class="hl opt">))) -</span> <span class="hl kwd">l</span><span class="hl opt">(</span><span class="hl num">0x0404cb</span><span class="hl opt">) -</span> <span class="hl kwd">l</span><span class="hl opt">(</span><span class="hl num">2</span><span class="hl opt">**(</span><span class="hl num">8</span><span class="hl opt">*(</span><span class="hl num">0x1b</span> <span class="hl opt">-</span> <span class="hl num">3</span><span class="hl opt">)))</span>
+<span class="hl kwa">print</span> <span class="hl kwd">l</span><span class="hl opt">(</span><span class="hl num">0x00ffff</span><span class="hl opt">) + (</span><span class="hl num">8</span><span class="hl opt">*(</span><span class="hl num">0x1d</span> <span class="hl opt">-</span> <span class="hl num">3</span><span class="hl opt">))*</span><span class="hl kwd">l</span><span class="hl opt">(</span><span class="hl num">2</span><span class="hl opt">) -</span> <span class="hl kwd">l</span><span class="hl opt">(</span><span class="hl num">0x0404cb</span><span class="hl opt">) - (</span><span class="hl num">8</span><span class="hl opt">*(</span><span class="hl num">0x1b</span> <span class="hl opt">-</span> <span class="hl num">3</span><span class="hl opt">))*</span><span class="hl kwd">l</span><span class="hl opt">(</span><span class="hl num">2</span><span class="hl opt">)</span>
+<span class="hl kwa">print</span> <span class="hl kwd">l</span><span class="hl opt">(</span><span class="hl num">0x00ffff</span> <span class="hl opt">/</span> <span class="hl kwb">float</span><span class="hl opt">(</span><span class="hl num">0x0404cb</span><span class="hl opt">)) + (</span><span class="hl num">8</span><span class="hl opt">*(</span><span class="hl num">0x1d</span> <span class="hl opt">-</span> <span class="hl num">3</span><span class="hl opt">))*</span><span class="hl kwd">l</span><span class="hl opt">(</span><span class="hl num">2</span><span class="hl opt">) - (</span><span class="hl num">8</span><span class="hl opt">*(</span><span class="hl num">0x1b</span> <span class="hl opt">-</span> <span class="hl num">3</span><span class="hl opt">))*</span><span class="hl kwd">l</span><span class="hl opt">(</span><span class="hl num">2</span><span class="hl opt">)</span>
+<span class="hl kwa">print</span> <span class="hl kwd">l</span><span class="hl opt">(</span><span class="hl num">0x00ffff</span> <span class="hl opt">/</span> <span class="hl kwb">float</span><span class="hl opt">(</span><span class="hl num">0x0404cb</span><span class="hl opt">)) + (</span><span class="hl num">0x1d</span> <span class="hl opt">-</span> <span class="hl num">0x1b</span><span class="hl opt">)*</span><span class="hl kwd">l</span><span class="hl opt">(</span><span class="hl num">2</span><span class="hl opt">**</span><span class="hl num">8</span><span class="hl opt">)</span>
+</pre></div>
 
-<h3 id="What_is_the_current_difficulty.3F">What is the current difficulty?</h3>
+
+<h3 id="What_is_the_current_difficulty.3F"><a name="index6h3"></a>What is the current difficulty?</h3>
 
 <p><a href="http://blockexplorer.com/q/getdifficulty">Current difficulty</a>, as output by Bitcoin&#39;s getDifficulty.</p>
 
 <p><a href="http://bitcoin.sipa.be">Graphs</a></p>
 
-<h3 id="What_is_the_maximum_difficulty.3F">What is the maximum difficulty?</h3>
+<h3 id="What_is_the_maximum_difficulty.3F"><a name="index7h3"></a>What is the maximum difficulty?</h3>
 
 <p>There is no minimum target. The maximum difficulty is roughly: maximum_target / 1 (since 0 would result in infinity), which is a ridiculously huge number (about 2<sup>224</sup>).</p>
 
 <p>The actual maximum difficulty is when current_target=0, but we would not be able to calculate the difficulty if that happened. (fortunately it never will, so we&#39;re ok.)</p>
 
-<h3 id="Can_the_network_difficulty_go_down.3F">Can the network difficulty go down?</h3>
+<h3 id="Can_the_network_difficulty_go_down.3F"><a name="index8h3"></a>Can the network difficulty go down?</h3>
 
 <p>Yes it can. See discussion in <a href="../Target/">target</a>.</p>
 
-<h3 id="What_is_the_minimum_difficulty.3F">What is the minimum difficulty?</h3>
+<h3 id="What_is_the_minimum_difficulty.3F"><a name="index9h3"></a>What is the minimum difficulty?</h3>
 
 <p>The minimum difficulty, when the target is at the maximum allowed value, is 1.</p>
 
-<h3 id="What_network_hash_rate_results_in_a_given_difficulty.3F">What network hash rate results in a given difficulty?</h3>
+<h3 id="What_network_hash_rate_results_in_a_given_difficulty.3F"><a name="index10h3"></a>What network hash rate results in a given difficulty?</h3>
 
 <p>The difficulty is adjusted every 2016 blocks based on the <a href="../Block_timestamp/">time</a> it took to find the previous 2016 blocks.  At the desired rate of one block each 10 minutes, 2016 blocks would take exactly two weeks to find.  If the previous 2016 blocks took more than two weeks to find, the difficulty is reduced.  If they took less than two weeks, the difficulty is increased.  The change in difficulty is in proportion to the amount of time over or under two weeks the previous 2016 blocks took to find.</p>
 
-<p>To find a block, the hash must be less than the target.  The hash is effectively a random number between 0 and 2<strong>256-1.  The offset for difficulty 1 is
-    0xffff * 2</strong>208
+<p>To find a block, the hash must be less than the target.  The hash is effectively a random number between 0 and 2<sup>256</sup>-1.  The offset for difficulty 1 is
+    0xffff * 2<sup>208</sup>
 and for difficulty D is
-    (0xffff * 2**208)/D</p>
+    (0xffff * 2<sup>208</sup>)/D</p>
 
 <p>The expected number of hashes we need to calculate to find a block with difficulty D is therefore
-    D * 2<strong>256 / (0xffff * 2</strong>208)
+    D * 2<sup>256</sup> / (0xffff * 2<sup>208</sup>)
 or just
-    D * 2**48 / 0xffff</p>
+    D * 2<sup>48</sup> / 0xffff</p>
 
-<p>The difficulty is set such that the previous 2016 blocks would have been found at the rate of one every 10 minutes, so we were calculating (D * 2<strong>48 / 0xffff) hashes in 600 seconds.  That means the hash rate of the network was
-    D * 2</strong>48 / 0xffff / 600
+<p>The difficulty is set such that the previous 2016 blocks would have been found at the rate of one every 10 minutes, so we were calculating (D * 2<sup>48</sup> / 0xffff) hashes in 600 seconds.  That means the hash rate of the network was
+    D * 2<sup>48</sup> / 0xffff / 600
 over the previous 2016 blocks.  Can be further simplified to
-    D * 2**32 / 600
+    D * 2<sup>32</sup> / 600
 without much loss of accuracy.</p>
 
 <p>At difficulty 1, that is around 7 Mhashes per second.</p>
 
 <p>At the time of writing, the difficulty is 22012.4941572, which means that over the previous set of 2016 blocks found the average network hash rate was
-    22012.4941572 * 2**32 / 600 = around 157 Ghashes per second.</p>
+    22012.4941572 * 2<sup>32</sup> / 600 = around 157 Ghashes per second.</p>
 
-<h3 id="How_soon_might_I_expect_to_generate_a_block.3F">How soon might I expect to generate a block?</h3>
+<h3 id="How_soon_might_I_expect_to_generate_a_block.3F"><a name="index11h3"></a>How soon might I expect to generate a block?</h3>
 
 <p>(The <a href="https://www.bitcointalk.org/index.php?topic=1682.0">eternal question</a>.)</p>
 
 <p>The average time to find a block can be approximated by calculating:
-    time = difficulty * 2**32 / hashrate
+    time = difficulty * 2<sup>32</sup> / hashrate
 where difficulty is the current difficulty, hashrate is the number of hashes your miner calculates per second, and time is the average in seconds between the blocks you find.</p>
 
 <p>For example, using Python we calculate the average time to generate a block using a 1Ghash/s mining rig when the difficulty is 20000:
-    $ python -c &quot;print 20000 * 2<strong>32 / 10</strong>9 / 60 / 60.0&quot;
+    $ python -c &quot;print 20000 * 2<sup>32</sup> / 10<sup>9</sup> / 60 / 60.0&quot;
     23.85
 and find that it takes just under 24 hours on average.</p>
 
@@ -249,7 +275,7 @@ and find that it takes just under 24 hours on average.</p>
 </ul>
 
 
-<h2 id="Related_Links">Related Links</h2>
+<h2 id="Related_Links"><a name="index1h2"></a>Related Links</h2>
 
 <ul>
 <li><a href="https://docs.google.com/spreadsheet/ccc?key=0AiFMBvXvL2dtdEZkR2J4eU5rS3B4ei1iUmJxSWNlQ0E">Bitcoin Difficulty History</a></li>
@@ -257,8 +283,6 @@ and find that it takes just under 24 hours on average.</p>
 <li>See also: <a href="../Target/">target</a></li>
 </ul>
 
-
-<p><span class="createlink"><a href="/ikiwiki.cgi?from=Difficulty&amp;do=create&amp;page=pl%3ATrudno%C5%9B%C4%87" rel="nofollow">?</a>pl:Trudno&#x15B;&#x107;</span></p>
 
 </section>
 
@@ -358,8 +382,8 @@ Content is available under under <a href="https://creativecommons.org/licenses/b
 </div>
 
 <div class="pagedate">
-Last edited <time datetime="2016-04-09T12:32:20Z">Sat 09 Apr 2016 12:32:20 PM Europe</time>
-<!-- Created <time datetime="2010-12-19T20:45:59Z" pubdate="pubdate">Sun 19 Dec 2010 08:45:59 PM Europe</time> -->
+Last edited <time datetime="2016-07-08T09:08:11Z">Fri 08 Jul 2016 09:08:11 AM Europe</time>
+<!-- Created <time datetime="2016-07-06T10:09:14Z" pubdate="pubdate">Wed 06 Jul 2016 10:09:14 AM Europe</time> -->
 </div>
 
 </nav>

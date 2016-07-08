@@ -115,132 +115,130 @@ Generally, this version is recommended.</p>
 
 <p>While BitcoinRPC lacks a few obscure features from jsonrpc, software using only the ServiceProxy class can be written the same to work with either version the user might choose to install:</p>
 
-<p><source lang="python">
-from jsonrpc import ServiceProxy</source></p>
+<div class="highlight-python"><pre class="hl"><span class="hl kwa">from</span> jsonrpc <span class="hl kwa">import</span> ServiceProxy
+    
+access <span class="hl opt">=</span> <span class="hl kwd">ServiceProxy</span><span class="hl opt">(</span><span class="hl str">&quot;http://user:password@127.0.0.1:8332&quot;</span><span class="hl opt">)</span>
+access<span class="hl opt">.</span><span class="hl kwd">getinfo</span><span class="hl opt">()</span>
+access<span class="hl opt">.</span><span class="hl kwd">listreceivedbyaddress</span><span class="hl opt">(</span><span class="hl num">6</span><span class="hl opt">)</span>
 
-<p>access = ServiceProxy(&quot;http://user:password@127.0.0.1:8332&quot;)
-access.getinfo()
-access.listreceivedbyaddress(6)</p>
-
-<ol>
-<li>access.sendtoaddress(&quot;11yEmxiMso2RsFVfBcCa616npBvGgxiBX&quot;, 10)
-</li>
-</ol>
+<span class="hl slc">#access.sendtoaddress(&quot;11yEmxiMso2RsFVfBcCa616npBvGgxiBX&quot;, 10)</span>
+</pre></div>
 
 
-<p>The latest version of python-bitcoinrpc has a new syntax.
-<source lang="python">
-from bitcoinrpc.authproxy import AuthServiceProxy
-</source></p>
+<p>The latest version of python-bitcoinrpc has a new syntax.</p>
+
+<div class="highlight-python"><pre class="hl"><span class="hl kwa">from</span> bitcoinrpc<span class="hl opt">.</span>authproxy <span class="hl kwa">import</span> AuthServiceProxy
+</pre></div>
+
 
 <h2 id="Ruby">Ruby</h2>
 
-<p><source lang="ruby">
-require &#39;net/http&#39;
-require &#39;uri&#39;
-require &#39;json&#39;</source></p>
+<div class="highlight-ruby"><pre class="hl"><span class="hl kwa">require</span> <span class="hl str">&#39;net/http&#39;</span>
+<span class="hl kwa">require</span> <span class="hl str">&#39;uri&#39;</span>
+<span class="hl kwa">require</span> <span class="hl str">&#39;json&#39;</span>
 
-<p>class BitcoinRPC
-    def initialize(service_url)
-    @uri = URI.parse(service_url)
-    end</p>
+<span class="hl kwa">class</span> BitcoinRPC
+    <span class="hl kwa">def</span> <span class="hl kwd">initialize</span><span class="hl opt">(</span>service_url<span class="hl opt">)</span>
+    <span class="hl kwb">@uri</span> <span class="hl opt">=</span> URI<span class="hl opt">.</span><span class="hl kwd">parse</span><span class="hl opt">(</span>service_url<span class="hl opt">)</span>
+    <span class="hl kwa">end</span>
 
-<pre><code>def method_missing(name, *args)
-post_body = { &#39;method&#39; =&gt; name, &#39;params&#39; =&gt; args, &#39;id&#39; =&gt; &#39;jsonrpc&#39; }.to_json
-resp = JSON.parse( http_post_request(post_body) )
-raise JSONRPCError, resp&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=__39__error__39__&amp;amp;do=create&amp;amp;from=API_reference_%28JSON-RPC%29&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;&amp;#39;error&amp;#39;&lt;/span&gt; if resp&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=API_reference_%28JSON-RPC%29&amp;amp;page=__39__error__39__&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;&amp;#39;error&amp;#39;&lt;/span&gt;
-resp&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?page=__39__result__39__&amp;amp;do=create&amp;amp;from=API_reference_%28JSON-RPC%29&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;&amp;#39;result&amp;#39;&lt;/span&gt;
-end
+    <span class="hl kwa">def</span> <span class="hl kwd">method_missing</span><span class="hl opt">(</span>name<span class="hl opt">, *</span>args<span class="hl opt">)</span>
+    post_body <span class="hl opt">=</span> { &#39;method&#39; =&gt; name, &#39;params&#39; =&gt; args, &#39;id&#39; =&gt; &#39;jsonrpc&#39; }<span class="hl opt">.</span>to_json
+    resp <span class="hl opt">=</span> JSON<span class="hl opt">.</span><span class="hl kwd">parse</span><span class="hl opt">(</span> <span class="hl kwd">http_post_request</span><span class="hl opt">(</span>post_body<span class="hl opt">) )</span>
+    raise JSONRPCError<span class="hl opt">,</span> resp<span class="hl opt"><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;from=API_reference_%28JSON-RPC%29&amp;page=__60__%2Fspan__62____60__span%20class__61____34__hl%20str__34____62____39__error__39____60__%2Fspan__62____60__span%20class__61____34__hl%20opt__34____62__" rel="nofollow">?</a>span&gt;&lt;span class=&quot;hl opt&quot;&gt;</span></span> <span class="hl kwa">if</span> resp<span class="hl opt"><span class="createlink"><a href="/ikiwiki.cgi?page=__60__%2Fspan__62____60__span%20class__61____34__hl%20str__34____62____39__error__39____60__%2Fspan__62____60__span%20class__61____34__hl%20opt__34____62__&amp;do=create&amp;from=API_reference_%28JSON-RPC%29" rel="nofollow">?</a>span&gt;&lt;span class=&quot;hl opt&quot;&gt;</span></span>
+    resp<span class="hl opt"><span class="createlink"><a href="/ikiwiki.cgi?page=__60__%2Fspan__62____60__span%20class__61____34__hl%20str__34____62____39__result__39____60__%2Fspan__62____60__span%20class__61____34__hl%20opt__34____62__&amp;from=API_reference_%28JSON-RPC%29&amp;do=create" rel="nofollow">?</a>span&gt;&lt;span class=&quot;hl opt&quot;&gt;</span></span>
+    <span class="hl kwa">end</span>
 
-def http_post_request(post_body)
-http    = Net::HTTP.new(@uri.host, @uri.port)
-request = Net::HTTP::Post.new(@uri.request_uri)
-request.basic_auth @uri.user, @uri.password
-request.content_type = &#39;application/json&#39;
-request.body = post_body
-http.request(request).body
-end
+    <span class="hl kwa">def</span> <span class="hl kwd">http_post_request</span><span class="hl opt">(</span>post_body<span class="hl opt">)</span>
+    http    <span class="hl opt">=</span> Net<span class="hl opt">:</span><span class="hl kwc">:HTTP</span><span class="hl opt">.</span><span class="hl kwd">new</span><span class="hl opt">(</span><span class="hl kwb">@uri</span><span class="hl opt">.</span>host<span class="hl opt">,</span> <span class="hl kwb">@uri</span><span class="hl opt">.</span>port<span class="hl opt">)</span>
+    request <span class="hl opt">=</span> Net<span class="hl opt">:</span><span class="hl kwc">:HTTP</span><span class="hl opt">:</span><span class="hl kwc">:Post</span><span class="hl opt">.</span><span class="hl kwd">new</span><span class="hl opt">(</span><span class="hl kwb">@uri</span><span class="hl opt">.</span>request_uri<span class="hl opt">)</span>
+    request<span class="hl opt">.</span>basic_auth <span class="hl kwb">@uri</span><span class="hl opt">.</span>user<span class="hl opt">,</span> <span class="hl kwb">@uri</span><span class="hl opt">.</span>password
+    request<span class="hl opt">.</span>content_type <span class="hl opt">=</span> <span class="hl str">&#39;application/json&#39;</span>
+    request<span class="hl opt">.</span>body <span class="hl opt">=</span> post_body
+    http<span class="hl opt">.</span><span class="hl kwd">request</span><span class="hl opt">(</span>request<span class="hl opt">).</span>body
+    <span class="hl kwa">end</span>
 
-class JSONRPCError &lt; RuntimeError; end
-</code></pre>
+    <span class="hl kwa">class</span> JSONRPCError <span class="hl opt">&lt;</span> RuntimeError<span class="hl opt">;</span> <span class="hl kwa">end</span>
+<span class="hl kwa">end</span>
 
-<p>end</p>
+<span class="hl kwa">if</span> <span class="hl kwb">$0</span> <span class="hl opt">==</span> __FILE__
+    h <span class="hl opt">=</span> BitcoinRPC<span class="hl opt">.</span><span class="hl kwd">new</span><span class="hl opt">(</span><span class="hl str">&#39;http://user:password@127.0.0.1:8332&#39;</span><span class="hl opt">)</span>
+    p h<span class="hl opt">.</span>getbalance
+    p h<span class="hl opt">.</span>getinfo
+    p h<span class="hl opt">.</span>getnewaddress
+    p h<span class="hl opt">.</span><span class="hl kwd">dumpprivkey</span><span class="hl opt">(</span> h<span class="hl opt">.</span>getnewaddress <span class="hl opt">)</span>
+    <span class="hl slc"># also see: https://en.bitcoin.it/wiki/Original_Bitcoin_client/API_Calls_list</span>
+<span class="hl kwa">end</span>
+</pre></div>
 
-<p>if $0 == <strong>FILE</strong>
-    h = BitcoinRPC.new(&#39;http://user:password@127.0.0.1:8332&#39;)
-    p h.getbalance
-    p h.getinfo
-    p h.getnewaddress
-    p h.dumpprivkey( h.getnewaddress )
-    # also see: https://en.bitcoin.it/wiki/Original_Bitcoin_client/API_Calls_list
-end
-</p>
 
 <h2 id="Erlang">Erlang</h2>
 
-<p>Get the rebar dependency from https://github.com/edescourtis/ebitcoind . By default the client will use the configuration in <code>$HOME/.bitcoin/bitcoin.conf</code> or you can instead specify a URI like this:
-<source lang="erlang">ebitcoind:start_link(&lt;&lt;&quot;http://user:password@localhost:8332/&quot;&gt;&gt;).</source></p>
+<p>Get the rebar dependency from https://github.com/edescourtis/ebitcoind . By default the client will use the configuration in <code>$HOME/.bitcoin/bitcoin.conf</code> or you can instead specify a URI like this:</p>
 
-<p>Here is a usage example:
-<source lang="erlang">
-1&gt; {ok,Pid} = ebitcoind:start_link().
-{ok,&lt;0.177.0&gt;}
-2&gt; ebitcoind:getbalance(Pid).
-8437.02478294
-3&gt; ebitcoind:getinfo(Pid).
-{ok, #{&lt;&lt;&quot;balance&quot;&gt;&gt; =&gt; 8437.02478294,
-    &lt;&lt;&quot;blocks&quot;&gt;&gt; =&gt; 260404,
-    &lt;&lt;&quot;connections&quot;&gt;&gt; =&gt; 8,
-    &lt;&lt;&quot;difficulty&quot;&gt;&gt; =&gt; 148819199.80509263,
-    &lt;&lt;&quot;errors&quot;&gt;&gt; =&gt; &lt;&lt;&gt;&gt;,
-    &lt;&lt;&quot;keypoololdest&quot;&gt;&gt; =&gt; 1420307921,
-    &lt;&lt;&quot;keypoolsize&quot;&gt;&gt; =&gt; 102,
-    &lt;&lt;&quot;paytxfee&quot;&gt;&gt; =&gt; 0.0,
-    &lt;&lt;&quot;protocolversion&quot;&gt;&gt; =&gt; 70002,
-    &lt;&lt;&quot;proxy&quot;&gt;&gt; =&gt; &lt;&lt;&gt;&gt;,
-    &lt;&lt;&quot;relayfee&quot;&gt;&gt; =&gt; 1.0e-5,
-    &lt;&lt;&quot;testnet&quot;&gt;&gt; =&gt; false,
-    &lt;&lt;&quot;timeoffset&quot;&gt;&gt; =&gt; -3,
-    &lt;&lt;&quot;version&quot;&gt;&gt; =&gt; 90300,
-    &lt;&lt;&quot;walletversion&quot;&gt;&gt; =&gt; 60000}}
-4&gt; ebitcoind:setgenerate(Pid,true).
-{ok, null}
-5&gt; ebitcoind:getblocktemplate(Pid, #{}).                   <br />
-{ok,#{&lt;&lt;&quot;bits&quot;&gt;&gt; =&gt; &lt;&lt;&quot;181b0dca&quot;&gt;&gt;,
-    &lt;&lt;&quot;coinbaseaux&quot;&gt;&gt; =&gt; #{&lt;&lt;&quot;flags&quot;&gt;&gt; =&gt; &lt;&lt;&quot;062f503253482f&quot;&gt;&gt;},
-    &lt;&lt;&quot;coinbasevalue&quot;&gt;&gt; =&gt; 2518690558,
-    &lt;&lt;&quot;curtime&quot;&gt;&gt; =&gt; 1420421249,
-    &lt;&lt;&quot;height&quot;&gt;&gt; =&gt; 337533,
-    &lt;&lt;&quot;mintime&quot;&gt;&gt; =&gt; 1420416332,
-    &lt;&lt;&quot;mutable&quot;&gt;&gt; =&gt; &lt;&quot;time&quot;&gt;&lt;&quot;transactions&quot;&gt;&lt;&quot;prevblock&quot;&gt;<span class="createlink"><a href="/ikiwiki.cgi?from=API_reference_%28JSON-RPC%29&amp;do=create&amp;page=__62__" rel="nofollow">?</a>&gt;</span>,
-    &lt;&lt;&quot;noncerange&quot;&gt;&gt; =&gt; &lt;&lt;&quot;00000000ffffffff&quot;&gt;&gt;,
-    &lt;&lt;&quot;previousblockhash&quot;&gt;&gt; =&gt; &lt;&lt;&quot;000000000000000017ce0a0d328bf84cc597785844393e899e9a971a81679a5f&quot;&gt;&gt;,
-    &lt;&lt;&quot;sigoplimit&quot;&gt;&gt; =&gt; 20000,
-    &lt;&lt;&quot;sizelimit&quot;&gt;&gt; =&gt; 1000000,
-    &lt;&lt;&quot;target&quot;&gt;&gt; =&gt; &lt;&lt;&quot;00000000000000001b0dca00000000000000000000000000000000000000&quot;...&gt;&gt;,
-    &lt;&lt;&quot;transactions&quot;&gt;&gt; =&gt; {&lt;&quot;data&quot;&gt; &lt;&quot;depends&quot;&gt;[],
-    &lt;&lt;&quot;fee&quot;&gt;&gt; =&gt; 0,
-    &lt;&lt;&quot;hash&quot;&gt;&gt; =&gt; &lt;&lt;&quot;6d0d76e1f27b3a6f7325923710dcdb4107c9&quot;...&gt;&gt;,
-    &lt;&lt;&quot;sigops&quot;&gt;&gt; =&gt; 1},
-    ...
-</source></p>
+<div class="highlight-erlang"><pre class="hl"><span class="hl kwc">ebitcoind</span><span class="hl opt">:</span><span class="hl kwd">start_link</span><span class="hl opt">(&lt;&lt;</span><span class="hl str">&quot;http://user:password@localhost:8332/&quot;</span><span class="hl opt">&gt;&gt;).</span>
+</pre></div>
+
+
+<p>Here is a usage example:</p>
+
+<div class="highlight-erlang"><pre class="hl"><span class="hl num">1</span><span class="hl opt">&gt; {</span>ok<span class="hl opt">,</span>Pid<span class="hl opt">} =</span> <span class="hl kwc">ebitcoind</span><span class="hl opt">:</span><span class="hl kwd">start_link</span><span class="hl opt">().</span>
+<span class="hl opt">{</span>ok<span class="hl opt">,&lt;</span><span class="hl num">0.177.0</span><span class="hl opt">&gt;}</span>
+<span class="hl num">2</span><span class="hl opt">&gt;</span> <span class="hl kwc">ebitcoind</span><span class="hl opt">:</span><span class="hl kwd">getbalance</span><span class="hl opt">(</span>Pid<span class="hl opt">).</span>
+<span class="hl num">8437.02478294</span>
+<span class="hl num">3</span><span class="hl opt">&gt;</span> <span class="hl kwc">ebitcoind</span><span class="hl opt">:</span><span class="hl kwd">getinfo</span><span class="hl opt">(</span>Pid<span class="hl opt">).</span>
+<span class="hl opt">{</span>ok<span class="hl opt">,</span> #<span class="hl opt">{&lt;&lt;</span><span class="hl str">&quot;balance&quot;</span><span class="hl opt">&gt;&gt; =&gt;</span> <span class="hl num">8437.02478294</span><span class="hl opt">,</span>
+    <span class="hl opt">&lt;&lt;</span><span class="hl str">&quot;blocks&quot;</span><span class="hl opt">&gt;&gt; =&gt;</span> <span class="hl num">260404</span><span class="hl opt">,</span>
+    <span class="hl opt">&lt;&lt;</span><span class="hl str">&quot;connections&quot;</span><span class="hl opt">&gt;&gt; =&gt;</span> <span class="hl num">8</span><span class="hl opt">,</span>
+    <span class="hl opt">&lt;&lt;</span><span class="hl str">&quot;difficulty&quot;</span><span class="hl opt">&gt;&gt; =&gt;</span> <span class="hl num">148819199.80509263</span><span class="hl opt">,</span>
+    <span class="hl opt">&lt;&lt;</span><span class="hl str">&quot;errors&quot;</span><span class="hl opt">&gt;&gt; =&gt; &lt;&lt;&gt;&gt;,</span>
+    <span class="hl opt">&lt;&lt;</span><span class="hl str">&quot;keypoololdest&quot;</span><span class="hl opt">&gt;&gt; =&gt;</span> <span class="hl num">1420307921</span><span class="hl opt">,</span>
+    <span class="hl opt">&lt;&lt;</span><span class="hl str">&quot;keypoolsize&quot;</span><span class="hl opt">&gt;&gt; =&gt;</span> <span class="hl num">102</span><span class="hl opt">,</span>
+    <span class="hl opt">&lt;&lt;</span><span class="hl str">&quot;paytxfee&quot;</span><span class="hl opt">&gt;&gt; =&gt;</span> <span class="hl num">0.0</span><span class="hl opt">,</span>
+    <span class="hl opt">&lt;&lt;</span><span class="hl str">&quot;protocolversion&quot;</span><span class="hl opt">&gt;&gt; =&gt;</span> <span class="hl num">70002</span><span class="hl opt">,</span>
+    <span class="hl opt">&lt;&lt;</span><span class="hl str">&quot;proxy&quot;</span><span class="hl opt">&gt;&gt; =&gt; &lt;&lt;&gt;&gt;,</span>
+    <span class="hl opt">&lt;&lt;</span><span class="hl str">&quot;relayfee&quot;</span><span class="hl opt">&gt;&gt; =&gt;</span> <span class="hl num">1.0e-5</span><span class="hl opt">,</span>
+    <span class="hl opt">&lt;&lt;</span><span class="hl str">&quot;testnet&quot;</span><span class="hl opt">&gt;&gt; =&gt;</span> false<span class="hl opt">,</span>
+    <span class="hl opt">&lt;&lt;</span><span class="hl str">&quot;timeoffset&quot;</span><span class="hl opt">&gt;&gt; =&gt; -</span><span class="hl num">3</span><span class="hl opt">,</span>
+    <span class="hl opt">&lt;&lt;</span><span class="hl str">&quot;version&quot;</span><span class="hl opt">&gt;&gt; =&gt;</span> <span class="hl num">90300</span><span class="hl opt">,</span>
+    <span class="hl opt">&lt;&lt;</span><span class="hl str">&quot;walletversion&quot;</span><span class="hl opt">&gt;&gt; =&gt;</span> <span class="hl num">60000</span><span class="hl opt">}}</span>
+<span class="hl num">4</span><span class="hl opt">&gt;</span> <span class="hl kwc">ebitcoind</span><span class="hl opt">:</span><span class="hl kwd">setgenerate</span><span class="hl opt">(</span>Pid<span class="hl opt">,</span>true<span class="hl opt">).</span>
+<span class="hl opt">{</span>ok<span class="hl opt">,</span> null<span class="hl opt">}</span>
+<span class="hl num">5</span><span class="hl opt">&gt;</span> <span class="hl kwc">ebitcoind</span><span class="hl opt">:</span><span class="hl kwd">getblocktemplate</span><span class="hl opt">(</span>Pid<span class="hl opt">,</span> #<span class="hl opt">{}).</span>                     
+<span class="hl opt">{</span>ok<span class="hl opt">,</span>#<span class="hl opt">{&lt;&lt;</span><span class="hl str">&quot;bits&quot;</span><span class="hl opt">&gt;&gt; =&gt; &lt;&lt;</span><span class="hl str">&quot;181b0dca&quot;</span><span class="hl opt">&gt;&gt;,</span>
+    <span class="hl opt">&lt;&lt;</span><span class="hl str">&quot;coinbaseaux&quot;</span><span class="hl opt">&gt;&gt; =&gt;</span> #<span class="hl opt">{&lt;&lt;</span><span class="hl str">&quot;flags&quot;</span><span class="hl opt">&gt;&gt; =&gt; &lt;&lt;</span><span class="hl str">&quot;062f503253482f&quot;</span><span class="hl opt">&gt;&gt;},</span>
+    <span class="hl opt">&lt;&lt;</span><span class="hl str">&quot;coinbasevalue&quot;</span><span class="hl opt">&gt;&gt; =&gt;</span> <span class="hl num">2518690558</span><span class="hl opt">,</span>
+    <span class="hl opt">&lt;&lt;</span><span class="hl str">&quot;curtime&quot;</span><span class="hl opt">&gt;&gt; =&gt;</span> <span class="hl num">1420421249</span><span class="hl opt">,</span>
+    <span class="hl opt">&lt;&lt;</span><span class="hl str">&quot;height&quot;</span><span class="hl opt">&gt;&gt; =&gt;</span> <span class="hl num">337533</span><span class="hl opt">,</span>
+    <span class="hl opt">&lt;&lt;</span><span class="hl str">&quot;mintime&quot;</span><span class="hl opt">&gt;&gt; =&gt;</span> <span class="hl num">1420416332</span><span class="hl opt">,</span>
+    <span class="hl opt">&lt;&lt;</span><span class="hl str">&quot;mutable&quot;</span><span class="hl opt">&gt;&gt; =&gt; &lt;</span><span class="hl str">&quot;time&quot;</span><span class="hl opt">&gt;&lt;</span><span class="hl str">&quot;transactions&quot;</span><span class="hl opt">&gt;&lt;</span><span class="hl str">&quot;prevblock&quot;</span><span class="hl opt">&gt;<span class="createlink"><a href="/ikiwiki.cgi?from=API_reference_%28JSON-RPC%29&amp;do=create&amp;page=%26gt__59__" rel="nofollow">?</a>&gt;;</span>,</span>
+    <span class="hl opt">&lt;&lt;</span><span class="hl str">&quot;noncerange&quot;</span><span class="hl opt">&gt;&gt; =&gt; &lt;&lt;</span><span class="hl str">&quot;00000000ffffffff&quot;</span><span class="hl opt">&gt;&gt;,</span>
+    <span class="hl opt">&lt;&lt;</span><span class="hl str">&quot;previousblockhash&quot;</span><span class="hl opt">&gt;&gt; =&gt; &lt;&lt;</span><span class="hl str">&quot;000000000000000017ce0a0d328bf84cc597785844393e899e9a971a81679a5f&quot;</span><span class="hl opt">&gt;&gt;,</span>
+    <span class="hl opt">&lt;&lt;</span><span class="hl str">&quot;sigoplimit&quot;</span><span class="hl opt">&gt;&gt; =&gt;</span> <span class="hl num">20000</span><span class="hl opt">,</span>
+    <span class="hl opt">&lt;&lt;</span><span class="hl str">&quot;sizelimit&quot;</span><span class="hl opt">&gt;&gt; =&gt;</span> <span class="hl num">1000000</span><span class="hl opt">,</span>
+    <span class="hl opt">&lt;&lt;</span><span class="hl str">&quot;target&quot;</span><span class="hl opt">&gt;&gt; =&gt; &lt;&lt;</span><span class="hl str">&quot;00000000000000001b0dca00000000000000000000000000000000000000&quot;</span><span class="hl opt">...&gt;&gt;,</span>
+    <span class="hl opt">&lt;&lt;</span><span class="hl str">&quot;transactions&quot;</span><span class="hl opt">&gt;&gt; =&gt; {&lt;</span><span class="hl str">&quot;data&quot;</span><span class="hl opt">&gt;   &lt;</span><span class="hl str">&quot;depends&quot;</span><span class="hl opt">&gt;[],</span>
+    <span class="hl opt">&lt;&lt;</span><span class="hl str">&quot;fee&quot;</span><span class="hl opt">&gt;&gt; =&gt;</span> <span class="hl num">0</span><span class="hl opt">,</span>
+    <span class="hl opt">&lt;&lt;</span><span class="hl str">&quot;hash&quot;</span><span class="hl opt">&gt;&gt; =&gt; &lt;&lt;</span><span class="hl str">&quot;6d0d76e1f27b3a6f7325923710dcdb4107c9&quot;</span><span class="hl opt">...&gt;&gt;,</span>
+    <span class="hl opt">&lt;&lt;</span><span class="hl str">&quot;sigops&quot;</span><span class="hl opt">&gt;&gt; =&gt;</span> <span class="hl num">1</span><span class="hl opt">},</span>
+    <span class="hl opt">...</span>
+</pre></div>
+
 
 <h2 id="PHP">PHP</h2>
 
 <p>The <a href="http://jsonrpcphp.org/">JSON-RPC PHP</a> library also makes it very easy to connect to Bitcoin.  For example:</p>
 
-<p><source lang="php">
-    require_once &#39;jsonRPCClient.php&#39;;</source></p>
+<div class="highlight-php"><pre class="hl"> <span class="hl kwa">require_once</span> <span class="hl str">&#39;jsonRPCClient.php&#39;</span><span class="hl opt">;</span>
+    
+    <span class="hl kwc">$bitcoin</span> <span class="hl opt">=</span> <span class="hl kwa">new</span> <span class="hl kwd">jsonRPCClient</span><span class="hl opt">(</span><span class="hl str">&#39;http://user:password</span><span class="hl ipl">@127</span><span class="hl str">.0.0.1:8332/&#39;</span><span class="hl opt">);</span>
+    
+    <span class="hl kwa">echo</span> <span class="hl str">&quot;&lt;pre&gt;</span><span class="hl esc">\n</span><span class="hl str">&quot;</span><span class="hl opt">;</span>
+  <span class="hl kwd">print_r</span><span class="hl opt">(</span><span class="hl kwc">$bitcoin</span><span class="hl opt">-&gt;</span><span class="hl kwd">getinfo</span><span class="hl opt">());</span> <span class="hl kwa">echo</span> <span class="hl str">&quot;</span><span class="hl esc">\n</span><span class="hl str">&quot;</span><span class="hl opt">;</span>
+  <span class="hl kwa">echo</span> <span class="hl str">&quot;Received: &quot;</span><span class="hl opt">.</span><span class="hl kwc">$bitcoin</span><span class="hl opt">-&gt;</span><span class="hl kwd">getreceivedbylabel</span><span class="hl opt">(</span><span class="hl str">&quot;Your Address&quot;</span><span class="hl opt">).</span><span class="hl str">&quot;</span><span class="hl esc">\n</span><span class="hl str">&quot;</span><span class="hl opt">;</span>
+  <span class="hl kwa">echo</span> <span class="hl str">&quot;&lt;/pre&gt;&quot;</span><span class="hl opt">;</span>
+</pre></div>
 
-<pre><code>$bitcoin = new jsonRPCClient(&#39;http://user:password@127.0.0.1:8332/&#39;);
-
-echo &quot;&lt;pre&gt;\n&quot;;
-</code></pre>
-
-<p>  print_r($bitcoin-&gt;getinfo()); echo &quot;\n&quot;;
-  echo &quot;Received: &quot;.$bitcoin-&gt;getreceivedbylabel(&quot;Your Address&quot;).&quot;\n&quot;;
-  echo &quot;&quot;;
-</p>
 
 <p><strong>Note:</strong> The jsonRPCClient library uses fopen() and will throw an exception saying &quot;Unable to connect&quot; if it receives a 404 or 500 error from bitcoind. This prevents you from being able to see error messages generated by bitcoind (as they are sent with status 404 or 500). The <a href="https://github.com/aceat64/EasyBitcoin-PHP">EasyBitcoin-PHP library</a> is similar in function to JSON-RPC PHP but does not have this issue.</p>
 
@@ -248,18 +246,16 @@ echo &quot;&lt;pre&gt;\n&quot;;
 
 <p>The easiest way to tell Java to use HTTP Basic authentication is to set a default Authenticator:</p>
 
-<p><source lang="java">
-    final String rpcuser =&quot;...&quot;;
-    final String rpcpassword =&quot;...&quot;;</source></p>
+<div class="highlight-java"><pre class="hl">    <span class="hl kwa">final</span> String rpcuser <span class="hl opt">=</span><span class="hl str">&quot;...&quot;</span><span class="hl opt">;</span>
+    <span class="hl kwa">final</span> String rpcpassword <span class="hl opt">=</span><span class="hl str">&quot;...&quot;</span><span class="hl opt">;</span>
+    
+    Authenticator<span class="hl opt">.</span><span class="hl kwd">setDefault</span><span class="hl opt">(</span><span class="hl kwa">new</span> <span class="hl kwd">Authenticator</span><span class="hl opt">() {</span>
+    <span class="hl kwa">protected</span> PasswordAuthentication <span class="hl kwd">getPasswordAuthentication</span><span class="hl opt">() {</span>
+    <span class="hl kwa">return new</span> <span class="hl kwd">PasswordAuthentication</span> <span class="hl opt">(</span>rpcuser<span class="hl opt">,</span> rpcpassword<span class="hl opt">.</span><span class="hl kwd">toCharArray</span><span class="hl opt">());</span>
+    <span class="hl opt">}</span>
+    <span class="hl opt">});</span>
+</pre></div>
 
-<pre><code>Authenticator.setDefault(new Authenticator() {
-protected PasswordAuthentication getPasswordAuthentication() {
-return new PasswordAuthentication (rpcuser, rpcpassword.toCharArray());
-}
-});
-</code></pre>
-
-<p></p>
 
 <p>Once that is done, <a href="http://json-rpc.org/wiki/implementations">any JSON-RPC library for Java</a> (or ordinary URL POSTs) may be used to communicate with the Bitcoin server.</p>
 
@@ -269,95 +265,91 @@ return new PasswordAuthentication (rpcuser, rpcpassword.toCharArray());
 
 <p>The JSON::RPC package from CPAN can be used to communicate with Bitcoin.  You must set the client&#39;s credentials; for example:</p>
 
-<p><source lang="perl">
-    use JSON::RPC::Client;
-    use Data::Dumper;</source></p>
+<div class="highlight-perl"><pre class="hl">    <span class="hl kwa">use</span> JSON<span class="hl opt">::</span>RPC<span class="hl opt">::</span>Client<span class="hl opt">;</span>
+    <span class="hl kwa">use</span> Data<span class="hl opt">::</span>Dumper<span class="hl opt">;</span>
+    
+    <span class="hl kwc">my</span> <span class="hl kwb">$client</span> <span class="hl opt">=</span> new JSON<span class="hl opt">::</span>RPC<span class="hl opt">::</span>Client<span class="hl opt">;</span>
+    
+    <span class="hl kwb">$client</span><span class="hl opt">-&gt;</span><span class="hl kwd">ua</span><span class="hl opt">-&gt;</span><span class="hl kwd">credentials</span><span class="hl opt">(</span>
+    <span class="hl str">&#39;localhost:8332&#39;</span><span class="hl opt">,</span> <span class="hl str">&#39;jsonrpc&#39;</span><span class="hl opt">,</span> <span class="hl str">&#39;user&#39;</span> <span class="hl opt">=&gt;</span> <span class="hl str">&#39;password&#39;</span>  <span class="hl slc"># REPLACE WITH YOUR bitcoin.conf rpcuser/rpcpassword</span>
+    <span class="hl opt">);</span>
+    
+    <span class="hl kwc">my</span> <span class="hl kwb">$uri</span> <span class="hl opt">=</span> <span class="hl str">&#39;http://localhost:8332/&#39;</span><span class="hl opt">;</span>
+    <span class="hl kwc">my</span> <span class="hl kwb">$obj</span> <span class="hl opt">= {</span>
+    method  <span class="hl opt">=&gt;</span> <span class="hl str">&#39;getinfo&#39;</span><span class="hl opt">,</span>
+    params  <span class="hl opt">=&gt; [],</span>
+    <span class="hl opt">};</span>
+    
+    <span class="hl kwc">my</span> <span class="hl kwb">$res</span> <span class="hl opt">=</span> <span class="hl kwb">$client</span><span class="hl opt">-&gt;</span><span class="hl kwd">call</span><span class="hl opt">(</span> <span class="hl kwb">$uri</span><span class="hl opt">,</span> <span class="hl kwb">$obj</span> <span class="hl opt">);</span>
+    
+    <span class="hl kwa">if</span> <span class="hl opt">(</span><span class="hl kwb">$res</span><span class="hl opt">){</span>
+    <span class="hl kwa">if</span> <span class="hl opt">(</span><span class="hl kwb">$res</span><span class="hl opt">-&gt;</span><span class="hl kwd">is_error</span><span class="hl opt">) {</span> <span class="hl kwc">print</span> <span class="hl str">&quot;Error : &quot;</span><span class="hl opt">,</span> <span class="hl kwb">$res</span><span class="hl opt">-&gt;</span><span class="hl kwd">error_message</span><span class="hl opt">; }</span>
+    <span class="hl kwa">else</span> <span class="hl opt">{</span> <span class="hl kwc">print</span> Dumper<span class="hl opt">(</span><span class="hl kwb">$res</span><span class="hl opt">-&gt;</span><span class="hl kwd">result</span><span class="hl opt">); }</span>
+    <span class="hl opt">}</span> <span class="hl kwa">else</span> <span class="hl opt">{</span>
+    <span class="hl kwc">print</span> <span class="hl kwb">$client</span><span class="hl opt">-&gt;</span><span class="hl kwd">status_line</span><span class="hl opt">;</span>
+    <span class="hl opt">}</span>
+</pre></div>
 
-<pre><code>my $client = new JSON::RPC::Client;
-
-$client-&gt;ua-&gt;credentials(
-&#39;localhost:8332&#39;, &#39;jsonrpc&#39;, &#39;user&#39; =&gt; &#39;password&#39;  # REPLACE WITH YOUR bitcoin.conf rpcuser/rpcpassword
-);
-
-my $uri = &#39;http://localhost:8332/&#39;;
-my $obj = {
-method  =&gt; &#39;getinfo&#39;,
-params  =&gt; [],
-};
-
-my $res = $client-&gt;call( $uri, $obj );
-
-if ($res){
-if ($res-&gt;is_error) { print &quot;Error : &quot;, $res-&gt;error_message; }
-else { print Dumper($res-&gt;result); }
-} else {
-print $client-&gt;status_line;
-}
-</code></pre>
-
-<p></p>
 
 <h2 id="Go">Go</h2>
 
 <p>The <a href="https://github.com/btcsuite/btcrpcclient">btcrpcclient package</a> can be used to communicate with Bitcoin.  You must provide credentials to match the client you are communicating with.</p>
 
-<p><source lang="go">
-package main</source></p>
+<div class="highlight-go"><pre class="hl"><span class="hl kwa">package</span> main
 
-<p>import (
-    &quot;github.com/btcsuite/btcd/chaincfg&quot;
-    &quot;github.com/btcsuite/btcrpcclient&quot;
-    &quot;github.com/btcsuite/btcutil&quot;
-    &quot;log&quot;
-)</p>
+<span class="hl kwa">import</span> <span class="hl opt">(</span>
+    <span class="hl str">&quot;github.com/btcsuite/btcd/chaincfg&quot;</span>
+    <span class="hl str">&quot;github.com/btcsuite/btcrpcclient&quot;</span>
+    <span class="hl str">&quot;github.com/btcsuite/btcutil&quot;</span>
+    <span class="hl str">&quot;log&quot;</span>
+<span class="hl opt">)</span>
 
-<p>func main() {
-    // create new client instance
-    client, err := btcrpcclient.New(&amp;btcrpcclient.ConnConfig{
-    HTTPPostMode: true,
-    DisableTLS:   true,
-    Host:         &quot;127.0.0.1:8332&quot;,
-    User:         &quot;rpcUsername&quot;,
-    Pass:         &quot;rpcPassword&quot;,
-    }, nil)
-    if err != nil {
-    log.Fatalf(&quot;error creating new btc client: %v&quot;, err)
-    }</p>
+<span class="hl kwa">func</span> <span class="hl kwd">main</span><span class="hl opt">() {</span>
+    <span class="hl slc">// create new client instance</span>
+    client<span class="hl opt">,</span> err <span class="hl opt">:=</span> btcrpcclient<span class="hl opt">.</span><span class="hl kwd">New</span><span class="hl opt">(&amp;</span>btcrpcclient<span class="hl opt">.</span>ConnConfig<span class="hl opt">{</span>
+    HTTPPostMode<span class="hl opt">:</span> <span class="hl kwb">true</span><span class="hl opt">,</span>
+    DisableTLS<span class="hl opt">:</span>   <span class="hl kwb">true</span><span class="hl opt">,</span>
+    Host<span class="hl opt">:</span>         <span class="hl str">&quot;127.0.0.1:8332&quot;</span><span class="hl opt">,</span>
+    User<span class="hl opt">:</span>         <span class="hl str">&quot;rpcUsername&quot;</span><span class="hl opt">,</span>
+    Pass<span class="hl opt">:</span>         <span class="hl str">&quot;rpcPassword&quot;</span><span class="hl opt">,</span>
+    <span class="hl opt">},</span> <span class="hl kwb">nil</span><span class="hl opt">)</span>
+    <span class="hl kwa">if</span> err <span class="hl opt">!=</span> <span class="hl kwb">nil</span> <span class="hl opt">{</span>
+    log<span class="hl opt">.</span><span class="hl kwd">Fatalf</span><span class="hl opt">(</span><span class="hl str">&quot;error creating new btc client:</span> <span class="hl ipl">%v</span><span class="hl str">&quot;</span><span class="hl opt">,</span> err<span class="hl opt">)</span>
+    <span class="hl opt">}</span>
 
-<pre><code>// list accounts
-accounts, err := client.ListAccounts()
-if err != nil {
-log.Fatalf(&quot;error listing accounts: %v&quot;, err)
-}
-// iterate over accounts (map&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=API_reference_%28JSON-RPC%29&amp;amp;do=create&amp;amp;page=string&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;string&lt;/span&gt;btcutil.Amount) and write to stdout
-for label, amount := range accounts {
-log.Printf(&quot;%s: %s&quot;, label, amount)
-}
+    <span class="hl slc">// list accounts</span>
+    accounts<span class="hl opt">,</span> err <span class="hl opt">:=</span> client<span class="hl opt">.</span><span class="hl kwd">ListAccounts</span><span class="hl opt">()</span>
+    <span class="hl kwa">if</span> err <span class="hl opt">!=</span> <span class="hl kwb">nil</span> <span class="hl opt">{</span>
+    log<span class="hl opt">.</span><span class="hl kwd">Fatalf</span><span class="hl opt">(</span><span class="hl str">&quot;error listing accounts:</span> <span class="hl ipl">%v</span><span class="hl str">&quot;</span><span class="hl opt">,</span> err<span class="hl opt">)</span>
+    <span class="hl opt">}</span>
+    <span class="hl slc">// iterate over accounts (map<span class="createlink"><a href="/ikiwiki.cgi?from=API_reference_%28JSON-RPC%29&amp;do=create&amp;page=string" rel="nofollow">?</a>string</span>btcutil.Amount) and write to stdout</span>
+    <span class="hl kwa">for</span> label<span class="hl opt">,</span> amount <span class="hl opt">:=</span> <span class="hl kwa">range</span> accounts <span class="hl opt">{</span>
+    log<span class="hl opt">.</span><span class="hl kwd">Printf</span><span class="hl opt">(</span><span class="hl str">&quot;</span><span class="hl ipl">%s</span><span class="hl str">:</span> <span class="hl ipl">%s</span><span class="hl str">&quot;</span><span class="hl opt">,</span> label<span class="hl opt">,</span> amount<span class="hl opt">)</span>
+    <span class="hl opt">}</span>
 
-// prepare a sendMany transaction
-receiver1, err := btcutil.DecodeAddress(&quot;1someAddressThatIsActuallyReal&quot;, &amp;chaincfg.MainNetParams)
-if err != nil {
-log.Fatalf(&quot;address receiver1 seems to be invalid: %v&quot;, err)
-}
-receiver2, err := btcutil.DecodeAddress(&quot;1anotherAddressThatsPrettyReal&quot;, &amp;chaincfg.MainNetParams)
-if err != nil {
-log.Fatalf(&quot;address receiver2 seems to be invalid: %v&quot;, err)
-}
-receivers := map&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;page=btcutil.Address&amp;amp;from=API_reference_%28JSON-RPC%29&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;btcutil.Address&lt;/span&gt;btcutil.Amount{
-receiver1: 42,  // 42 satoshi
-receiver2: 100, // 100 satoshi
-}
+    <span class="hl slc">// prepare a sendMany transaction</span>
+    receiver1<span class="hl opt">,</span> err <span class="hl opt">:=</span> btcutil<span class="hl opt">.</span><span class="hl kwd">DecodeAddress</span><span class="hl opt">(</span><span class="hl str">&quot;1someAddressThatIsActuallyReal&quot;</span><span class="hl opt">, &amp;</span>chaincfg<span class="hl opt">.</span>MainNetParams<span class="hl opt">)</span>
+    <span class="hl kwa">if</span> err <span class="hl opt">!=</span> <span class="hl kwb">nil</span> <span class="hl opt">{</span>
+    log<span class="hl opt">.</span><span class="hl kwd">Fatalf</span><span class="hl opt">(</span><span class="hl str">&quot;address receiver1 seems to be invalid:</span> <span class="hl ipl">%v</span><span class="hl str">&quot;</span><span class="hl opt">,</span> err<span class="hl opt">)</span>
+    <span class="hl opt">}</span>
+    receiver2<span class="hl opt">,</span> err <span class="hl opt">:=</span> btcutil<span class="hl opt">.</span><span class="hl kwd">DecodeAddress</span><span class="hl opt">(</span><span class="hl str">&quot;1anotherAddressThatsPrettyReal&quot;</span><span class="hl opt">, &amp;</span>chaincfg<span class="hl opt">.</span>MainNetParams<span class="hl opt">)</span>
+    <span class="hl kwa">if</span> err <span class="hl opt">!=</span> <span class="hl kwb">nil</span> <span class="hl opt">{</span>
+    log<span class="hl opt">.</span><span class="hl kwd">Fatalf</span><span class="hl opt">(</span><span class="hl str">&quot;address receiver2 seems to be invalid:</span> <span class="hl ipl">%v</span><span class="hl str">&quot;</span><span class="hl opt">,</span> err<span class="hl opt">)</span>
+    <span class="hl opt">}</span>
+    receivers <span class="hl opt">:=</span> <span class="hl kwa">map</span><span class="hl opt"><span class="createlink"><a href="/ikiwiki.cgi?from=API_reference_%28JSON-RPC%29&amp;do=create&amp;page=__60__%2Fspan__62__btcutil__60__span%20class__61____34__hl%20opt__34____62__.__60__%2Fspan__62__Address__60__span%20class__61____34__hl%20opt__34____62__" rel="nofollow">?</a>span&gt;Address&lt;span class=&quot;hl opt&quot;&gt;</span></span>btcutil<span class="hl opt">.</span>Amount<span class="hl opt">{</span>
+    receiver1<span class="hl opt">:</span> <span class="hl num">42</span><span class="hl opt">,</span>  <span class="hl slc">// 42 satoshi</span>
+    receiver2<span class="hl opt">:</span> <span class="hl num">100</span><span class="hl opt">,</span> <span class="hl slc">// 100 satoshi</span>
+    <span class="hl opt">}</span>
 
-// create and send the sendMany tx
-txSha, err := client.SendMany(&quot;some-account-label-from-which-to-send&quot;, receivers)
-if err != nil {
-log.Fatalf(&quot;error sendMany: %v&quot;, err)
-}
-log.Printf(&quot;sendMany completed! tx sha is: %s&quot;, txSha.String())
-</code></pre>
+    <span class="hl slc">// create and send the sendMany tx</span>
+    txSha<span class="hl opt">,</span> err <span class="hl opt">:=</span> client<span class="hl opt">.</span><span class="hl kwd">SendMany</span><span class="hl opt">(</span><span class="hl str">&quot;some-account-label-from-which-to-send&quot;</span><span class="hl opt">,</span> receivers<span class="hl opt">)</span>
+    <span class="hl kwa">if</span> err <span class="hl opt">!=</span> <span class="hl kwb">nil</span> <span class="hl opt">{</span>
+    log<span class="hl opt">.</span><span class="hl kwd">Fatalf</span><span class="hl opt">(</span><span class="hl str">&quot;error sendMany:</span> <span class="hl ipl">%v</span><span class="hl str">&quot;</span><span class="hl opt">,</span> err<span class="hl opt">)</span>
+    <span class="hl opt">}</span>
+    log<span class="hl opt">.</span><span class="hl kwd">Printf</span><span class="hl opt">(</span><span class="hl str">&quot;sendMany completed! tx sha is:</span> <span class="hl ipl">%s</span><span class="hl str">&quot;</span><span class="hl opt">,</span> txSha<span class="hl opt">.</span><span class="hl kwd">String</span><span class="hl opt">())</span>
+<span class="hl opt">}</span>
+</pre></div>
 
-<p>}
-</p>
 
 <h2 id="z-NET_.28C.23.29">.NET (C#)</h2>
 
@@ -368,77 +360,71 @@ A library for serializing and deserializing Json will make your life a lot easie
 
 <p>The following example uses Json.NET:</p>
 
-<p><source lang="csharp">
-    HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(&quot;http://localhost.:8332&quot;);
-    webRequest.Credentials = new NetworkCredential(&quot;user&quot;, &quot;pwd&quot;);
-    /// important, otherwise the service can&#39;t desirialse your request properly
-    webRequest.ContentType = &quot;application/json-rpc&quot;;
-    webRequest.Method = &quot;POST&quot;;</source></p>
+<div class="highlight-csharp"><pre class="hl">  HttpWebRequest webRequest <span class="hl opt">= (</span>HttpWebRequest<span class="hl opt">)</span>WebRequest<span class="hl opt">.</span><span class="hl kwd">Create</span><span class="hl opt">(</span><span class="hl str">&quot;http://localhost.:8332&quot;</span><span class="hl opt">);</span>
+    webRequest<span class="hl opt">.</span>Credentials <span class="hl opt">=</span> <span class="hl kwa">new</span> <span class="hl kwd">NetworkCredential</span><span class="hl opt">(</span><span class="hl str">&quot;user&quot;</span><span class="hl opt">,</span> <span class="hl str">&quot;pwd&quot;</span><span class="hl opt">);</span>
+    <span class="hl slc">/// important, otherwise the service can&#39;t desirialse your request properly</span>
+    webRequest<span class="hl opt">.</span>ContentType <span class="hl opt">=</span> <span class="hl str">&quot;application/json-rpc&quot;</span><span class="hl opt">;</span>
+    webRequest<span class="hl opt">.</span>Method <span class="hl opt">=</span> <span class="hl str">&quot;POST&quot;</span><span class="hl opt">;</span>
+    
+    JObject joe <span class="hl opt">=</span> <span class="hl kwa">new</span> <span class="hl kwd">JObject</span><span class="hl opt">();</span>
+    joe<span class="hl opt">.</span><span class="hl kwd">Add</span><span class="hl opt">(</span><span class="hl kwa">new</span> <span class="hl kwd">JProperty</span><span class="hl opt">(</span><span class="hl str">&quot;jsonrpc&quot;</span><span class="hl opt">,</span> <span class="hl str">&quot;1.0&quot;</span><span class="hl opt">));</span>
+    joe<span class="hl opt">.</span><span class="hl kwd">Add</span><span class="hl opt">(</span><span class="hl kwa">new</span> <span class="hl kwd">JProperty</span><span class="hl opt">(</span><span class="hl str">&quot;id&quot;</span><span class="hl opt">,</span> <span class="hl str">&quot;1&quot;</span><span class="hl opt">));</span>
+    joe<span class="hl opt">.</span><span class="hl kwd">Add</span><span class="hl opt">(</span><span class="hl kwa">new</span> <span class="hl kwd">JProperty</span><span class="hl opt">(</span><span class="hl str">&quot;method&quot;</span><span class="hl opt">,</span> Method<span class="hl opt">));</span>
+    <span class="hl slc">// params is a collection values which the method requires..</span>
+    <span class="hl kwa">if</span> <span class="hl opt">(</span>Params<span class="hl opt">.</span>Keys<span class="hl opt">.</span>Count <span class="hl opt">==</span> <span class="hl num">0</span><span class="hl opt">)</span>
+    <span class="hl opt">{</span>
+    joe<span class="hl opt">.</span><span class="hl kwd">Add</span><span class="hl opt">(</span><span class="hl kwa">new</span> <span class="hl kwd">JProperty</span><span class="hl opt">(</span><span class="hl str">&quot;params&quot;</span><span class="hl opt">,</span> <span class="hl kwa">new</span> <span class="hl kwd">JArray</span><span class="hl opt">()));</span>
+    <span class="hl opt">}</span>
+    <span class="hl kwa">else</span>
+    <span class="hl opt">{</span>
+    JArray props <span class="hl opt">=</span> <span class="hl kwa">new</span> <span class="hl kwd">JArray</span><span class="hl opt">();</span>
+    <span class="hl slc">// add the props in the reverse order!</span>
+    <span class="hl kwa">for</span> <span class="hl opt">(</span><span class="hl kwb">int</span> i <span class="hl opt">=</span> Params<span class="hl opt">.</span>Keys<span class="hl opt">.</span>Count <span class="hl opt">-</span> <span class="hl num">1</span><span class="hl opt">;</span> i <span class="hl opt">&gt;=</span> <span class="hl num">0</span><span class="hl opt">;</span> i<span class="hl opt">--)</span>
+    <span class="hl opt">{</span>
+    <span class="hl opt">....</span> <span class="hl slc">// add the params</span>
+    <span class="hl opt">}</span>
+    joe<span class="hl opt">.</span><span class="hl kwd">Add</span><span class="hl opt">(</span><span class="hl kwa">new</span> <span class="hl kwd">JProperty</span><span class="hl opt">(</span><span class="hl str">&quot;params&quot;</span><span class="hl opt">,</span> props<span class="hl opt">));</span>
+    <span class="hl opt">}</span>
+    
+    <span class="hl slc">// serialize json for the request</span>
+    <span class="hl kwb">string</span> s <span class="hl opt">=</span> JsonConvert<span class="hl opt">.</span><span class="hl kwd">SerializeObject</span><span class="hl opt">(</span>joe<span class="hl opt">);</span>
+    <span class="hl kwb">byte</span><span class="hl opt">[]</span> byteArray <span class="hl opt">=</span> Encoding<span class="hl opt">.</span>UTF8<span class="hl opt">.</span><span class="hl kwd">GetBytes</span><span class="hl opt">(</span>s<span class="hl opt">);</span>
+    webRequest<span class="hl opt">.</span>ContentLength <span class="hl opt">=</span> byteArray<span class="hl opt">.</span>Length<span class="hl opt">;</span>
+    Stream dataStream <span class="hl opt">=</span> webRequest<span class="hl opt">.</span><span class="hl kwd">GetRequestStream</span><span class="hl opt">();</span>
+    dataStream<span class="hl opt">.</span><span class="hl kwd">Write</span><span class="hl opt">(</span>byteArray<span class="hl opt">,</span> <span class="hl num">0</span><span class="hl opt">,</span> byteArray<span class="hl opt">.</span>Length<span class="hl opt">);</span>
+    dataStream<span class="hl opt">.</span><span class="hl kwd">Close</span><span class="hl opt">();</span>
+    
+    
+    WebResponse webResponse <span class="hl opt">=</span> webRequest<span class="hl opt">.</span><span class="hl kwd">GetResponse</span><span class="hl opt">();</span>
+    
+    <span class="hl opt">...</span> <span class="hl slc">// deserialze the response</span>
+</pre></div>
 
-<pre><code>JObject joe = new JObject();
-joe.Add(new JProperty(&quot;jsonrpc&quot;, &quot;1.0&quot;));
-joe.Add(new JProperty(&quot;id&quot;, &quot;1&quot;));
-joe.Add(new JProperty(&quot;method&quot;, Method));
-// params is a collection values which the method requires..
-if (Params.Keys.Count == 0)
-{
-joe.Add(new JProperty(&quot;params&quot;, new JArray()));
-}
-else
-{
-JArray props = new JArray();
-// add the props in the reverse order!
-for (int i = Params.Keys.Count - 1; i &gt;= 0; i--)
-{
-.... // add the params
-}
-joe.Add(new JProperty(&quot;params&quot;, props));
-}
-
-// serialize json for the request
-string s = JsonConvert.SerializeObject(joe);
-byte[] byteArray = Encoding.UTF8.GetBytes(s);
-webRequest.ContentLength = byteArray.Length;
-Stream dataStream = webRequest.GetRequestStream();
-dataStream.Write(byteArray, 0, byteArray.Length);
-dataStream.Close();
-
-
-WebResponse webResponse = webRequest.GetResponse();
-
-... // deserialze the response
-</code></pre>
-
-<p></p>
 
 <p>There is also a wrapper for Json.NET called Bitnet (https://sourceforge.net/projects/bitnet)
 implementing Bitcoin API in more convenient way:</p>
 
-<p><source lang="csharp">
-    BitnetClient bc = new BitnetClient(&quot;http://127.0.0.1:8332&quot;);
-    bc.Credentials = new NetworkCredential(&quot;user&quot;, &quot;pass&quot;);</source></p>
+<div class="highlight-csharp"><pre class="hl">  BitnetClient bc <span class="hl opt">=</span> <span class="hl kwa">new</span> <span class="hl kwd">BitnetClient</span><span class="hl opt">(</span><span class="hl str">&quot;http://127.0.0.1:8332&quot;</span><span class="hl opt">);</span>
+    bc<span class="hl opt">.</span>Credentials <span class="hl opt">=</span> <span class="hl kwa">new</span> <span class="hl kwd">NetworkCredential</span><span class="hl opt">(</span><span class="hl str">&quot;user&quot;</span><span class="hl opt">,</span> <span class="hl str">&quot;pass&quot;</span><span class="hl opt">);</span>
 
-<pre><code>var p = bc.GetDifficulty();
-Console.WriteLine(&quot;Difficulty:&quot; + p.ToString());
+    var p <span class="hl opt">=</span> bc<span class="hl opt">.</span><span class="hl kwd">GetDifficulty</span><span class="hl opt">();</span>
+    Console<span class="hl opt">.</span><span class="hl kwd">WriteLine</span><span class="hl opt">(</span><span class="hl str">&quot;Difficulty:&quot;</span> <span class="hl opt">+</span> p<span class="hl opt">.</span><span class="hl kwd">ToString</span><span class="hl opt">());</span>
 
-var inf = bc.GetInfo();
-Console.WriteLine(&quot;Balance:&quot; + inf&lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?from=API_reference_%28JSON-RPC%29&amp;amp;page=__34__balance__34__&amp;amp;do=create&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;&amp;#34;balance&amp;#34;&lt;/span&gt;);
-</code></pre>
+    var inf <span class="hl opt">=</span> bc<span class="hl opt">.</span><span class="hl kwd">GetInfo</span><span class="hl opt">();</span>
+    Console<span class="hl opt">.</span><span class="hl kwd">WriteLine</span><span class="hl opt">(</span><span class="hl str">&quot;Balance:&quot;</span> <span class="hl opt">+</span> inf<span class="hl opt"><span class="createlink"><a href="/ikiwiki.cgi?from=API_reference_%28JSON-RPC%29&amp;do=create&amp;page=__60__%2Fspan__62____60__span%20class__61____34__hl%20str__34____62__%26quot__59__balance%26quot__59____60__%2Fspan__62____60__span%20class__61____34__hl%20opt__34____62__" rel="nofollow">?</a>span&gt;&lt;span class=&quot;hl opt&quot;&gt;</span>);</span>
+</pre></div>
 
-<p></p>
 
 <p>A more complete library and wrapper for Bitcoin (also for Litecoin and all Bitcoin clones) is <a href="https://github.com/GeorgeKimionis/BitcoinLib">BitcoinLib</a> (https://github.com/GeorgeKimionis/BitcoinLib) which is also available via <a href="https://www.nuget.org/packages/BitcoinLib/">NuGet</a> from the package manager console (Install-Package BitcoinLib).</p>
 
 <p>Querying the daemon with <a href="https://github.com/GeorgeKimionis/BitcoinLib">BitcoinLib</a> is as simple as:</p>
 
-<p><source lang="csharp">
-    IBitcoinService bitcoinService = new BitcoinService();</source></p>
+<div class="highlight-csharp"><pre class="hl">  IBitcoinService bitcoinService <span class="hl opt">=</span> <span class="hl kwa">new</span> <span class="hl kwd">BitcoinService</span><span class="hl opt">();</span>
 
-<pre><code>var networkDifficulty = bitcoinService.GetDifficulty();
-var myBalance = bitcoinService.GetBalance();
-</code></pre>
+    var networkDifficulty <span class="hl opt">=</span> bitcoinService<span class="hl opt">.</span><span class="hl kwd">GetDifficulty</span><span class="hl opt">();</span>
+    var myBalance <span class="hl opt">=</span> bitcoinService<span class="hl opt">.</span><span class="hl kwd">GetBalance</span><span class="hl opt">();</span>
+</pre></div>
 
-<p></p>
 
 <h2 id="Node.js">Node.js</h2>
 
@@ -449,70 +435,68 @@ var myBalance = bitcoinService.GetBalance();
 
 <p>Example using node-bitcoin:</p>
 
-<p><source lang="javascript">
-var bitcoin = require(&#39;bitcoin&#39;);
-var client = new bitcoin.Client({
-    host: &#39;localhost&#39;,
-    port: 8332,
-    user: &#39;user&#39;,
-    pass: &#39;pass&#39;
-});</source></p>
+<div class="highlight-java"><pre class="hl">var bitcoin <span class="hl opt">=</span> <span class="hl kwd">require</span><span class="hl opt">(</span><span class="hl str">&#39;bitcoin&#39;</span><span class="hl opt">);</span>
+var client <span class="hl opt">=</span> <span class="hl kwa">new</span> bitcoin<span class="hl opt">.</span><span class="hl kwd">Client</span><span class="hl opt">({</span>
+    host<span class="hl opt">:</span> <span class="hl str">&#39;localhost&#39;</span><span class="hl opt">,</span>
+    port<span class="hl opt">:</span> <span class="hl num">8332</span><span class="hl opt">,</span>
+    user<span class="hl opt">:</span> <span class="hl str">&#39;user&#39;</span><span class="hl opt">,</span>
+    pass<span class="hl opt">:</span> <span class="hl str">&#39;pass&#39;</span>
+<span class="hl opt">});</span>
 
-<p>client.getDifficulty(function(err, difficulty) {
-    if (err) {
-    return console.error(err);
-    }</p>
+client<span class="hl opt">.</span><span class="hl kwd">getDifficulty</span><span class="hl opt">(</span><span class="hl kwd">function</span><span class="hl opt">(</span>err<span class="hl opt">,</span> difficulty<span class="hl opt">) {</span>
+    <span class="hl kwa">if</span> <span class="hl opt">(</span>err<span class="hl opt">) {</span>
+    <span class="hl kwa">return</span> console<span class="hl opt">.</span><span class="hl kwd">error</span><span class="hl opt">(</span>err<span class="hl opt">);</span>
+    <span class="hl opt">}</span>
 
-<pre><code>console.log(&#39;Difficulty: &#39; + difficulty);
-</code></pre>
+    console<span class="hl opt">.</span><span class="hl kwd">log</span><span class="hl opt">(</span><span class="hl str">&#39;Difficulty: &#39;</span> <span class="hl opt">+</span> difficulty<span class="hl opt">);</span>
+<span class="hl opt">});</span>
+</pre></div>
 
-<p>});
-</p>
 
 <p>Example using Kapitalize:</p>
 
-<p><source lang="javascript">
-var client = require(&#39;kapitalize&#39;)()</source></p>
+<div class="highlight-java"><pre class="hl">var client <span class="hl opt">=</span> <span class="hl kwd">require</span><span class="hl opt">(</span><span class="hl str">&#39;kapitalize&#39;</span><span class="hl opt">)()</span>
 
-<p>client.auth(&#39;user&#39;, &#39;password&#39;)</p>
+client<span class="hl opt">.</span><span class="hl kwd">auth</span><span class="hl opt">(</span><span class="hl str">&#39;user&#39;</span><span class="hl opt">,</span> <span class="hl str">&#39;password&#39;</span><span class="hl opt">)</span>
 
-<p>client
-.getInfo()
-.getDifficulty(function(err, difficulty) {
-    console.log(&#39;Dificulty: &#39;, difficulty)
-})
-</p>
+client
+<span class="hl opt">.</span><span class="hl kwd">getInfo</span><span class="hl opt">()</span>
+<span class="hl opt">.</span><span class="hl kwd">getDifficulty</span><span class="hl opt">(</span><span class="hl kwd">function</span><span class="hl opt">(</span>err<span class="hl opt">,</span> difficulty<span class="hl opt">) {</span>
+    console<span class="hl opt">.</span><span class="hl kwd">log</span><span class="hl opt">(</span><span class="hl str">&#39;Dificulty: &#39;</span><span class="hl opt">,</span> difficulty<span class="hl opt">)</span>
+<span class="hl opt">})</span>
+</pre></div>
+
 
 <h2 id="Command_line_.28cURL.29">Command line (cURL)</h2>
 
 <p>You can also send commands and see results using <a href="http://curl.haxx.se/">cURL</a> or some other command-line HTTP-fetching utility; for example:</p>
 
-<p><source lang="bash">
-    curl --user user --data-binary &#39;{&quot;jsonrpc&quot;: &quot;1.0&quot;, &quot;id&quot;:&quot;curltest&quot;, &quot;method&quot;: &quot;getinfo&quot;, &quot;params&quot;: [] }&#39;
-    -H &#39;content-type: text/plain;&#39; http://127.0.0.1:8332/
-</source></p>
+<div class="highlight-bash"><pre class="hl">    curl <span class="hl opt">--</span>user user <span class="hl opt">--</span>data-binary <span class="hl str">&#39;{&quot;jsonrpc&quot;: &quot;1.0&quot;, &quot;id&quot;:&quot;curltest&quot;, &quot;method&quot;: &quot;getinfo&quot;, &quot;params&quot;: [] }&#39;</span> 
+    <span class="hl opt">-</span>H <span class="hl str">&#39;content-type: text/plain;&#39;</span> http<span class="hl opt">://</span><span class="hl num">127.0.0.1</span><span class="hl opt">:</span><span class="hl num">8332</span><span class="hl opt">/</span>
+</pre></div>
+
 
 <p>You will be prompted for your rpcpassword, and then will see something like:</p>
 
-<p><source lang="javascript">
-    {&quot;result&quot;:{&quot;balance&quot;:0.000000000000000,&quot;blocks&quot;:59952,&quot;connections&quot;:48,&quot;proxy&quot;:&quot;&quot;,&quot;generate&quot;:false,
-    &quot;genproclimit&quot;:-1,&quot;difficulty&quot;:16.61907875185736},&quot;error&quot;:null,&quot;id&quot;:&quot;curltest&quot;}
-</source></p>
+<div class="highlight-java"><pre class="hl">    <span class="hl opt">{</span><span class="hl str">&quot;result&quot;</span><span class="hl opt">:{</span><span class="hl str">&quot;balance&quot;</span><span class="hl opt">:</span><span class="hl num">0.000000000000000</span><span class="hl opt">,</span><span class="hl str">&quot;blocks&quot;</span><span class="hl opt">:</span><span class="hl num">59952</span><span class="hl opt">,</span><span class="hl str">&quot;connections&quot;</span><span class="hl opt">:</span><span class="hl num">48</span><span class="hl opt">,</span><span class="hl str">&quot;proxy&quot;</span><span class="hl opt">:</span><span class="hl str">&quot;&quot;</span><span class="hl opt">,</span><span class="hl str">&quot;generate&quot;</span><span class="hl opt">:</span>false<span class="hl opt">,</span>
+    <span class="hl str">&quot;genproclimit&quot;</span><span class="hl opt">:-</span><span class="hl num">1</span><span class="hl opt">,</span><span class="hl str">&quot;difficulty&quot;</span><span class="hl opt">:</span><span class="hl num">16.61907875185736</span><span class="hl opt">},</span><span class="hl str">&quot;error&quot;</span><span class="hl opt">:</span>null<span class="hl opt">,</span><span class="hl str">&quot;id&quot;</span><span class="hl opt">:</span><span class="hl str">&quot;curltest&quot;</span><span class="hl opt">}</span>
+</pre></div>
+
 
 <h2 id="Clojure">Clojure</h2>
 
 <p><a href="https://github.com/aviad/clj-btc">clj-btc</a> is a Clojure wrapper for the bitcoin API.</p>
 
-<p><source lang="clojure">
-user=&gt; (require &#39;<a href="clj-btc.core">:as btc</a>)
+<div class="highlight-clojure"><pre class="hl">user<span class="hl opt">=&gt; (</span>require <span class="hl opt">&#39;[:</span>as btc<span class="hl opt">](</span>clj-btc.core<span class="hl opt">))</span>
 nil
-user=&gt; (btc/getinfo)
-{&quot;timeoffset&quot; 0, &quot;protocolversion&quot; 70001, &quot;blocks&quot; 111908, &quot;errors&quot; &quot;&quot;,
-    &quot;testnet&quot; true, &quot;proxy&quot; &quot;&quot;, &quot;connections&quot; 4, &quot;version&quot; 80500,
-    &quot;keypoololdest&quot; 1380388750, &quot;paytxfee&quot; 0E-8M,
-    &quot;difficulty&quot; 4642.44443532M, &quot;keypoolsize&quot; 101, &quot;balance&quot; 0E-8M,
-    &quot;walletversion&quot; 60000}
-</source></p>
+user<span class="hl opt">=&gt; (</span>btc/getinfo<span class="hl opt">)</span>
+<span class="hl opt">{</span><span class="hl str">&quot;timeoffset&quot;</span> <span class="hl num">0</span><span class="hl opt">,</span> <span class="hl str">&quot;protocolversion&quot;</span> <span class="hl num">70001</span><span class="hl opt">,</span> <span class="hl str">&quot;blocks&quot;</span> <span class="hl num">111908</span><span class="hl opt">,</span> <span class="hl str">&quot;errors&quot;</span> <span class="hl str">&quot;&quot;</span><span class="hl opt">,</span>
+    <span class="hl str">&quot;testnet&quot;</span> true<span class="hl opt">,</span> <span class="hl str">&quot;proxy&quot;</span> <span class="hl str">&quot;&quot;</span><span class="hl opt">,</span> <span class="hl str">&quot;connections&quot;</span> <span class="hl num">4</span><span class="hl opt">,</span> <span class="hl str">&quot;version&quot;</span> <span class="hl num">80500</span><span class="hl opt">,</span>
+    <span class="hl str">&quot;keypoololdest&quot;</span> <span class="hl num">1380388750</span><span class="hl opt">,</span> <span class="hl str">&quot;paytxfee&quot;</span> <span class="hl num">0E-8</span>M<span class="hl opt">,</span>
+    <span class="hl str">&quot;difficulty&quot;</span> <span class="hl num">4642.44443532</span>M<span class="hl opt">,</span> <span class="hl str">&quot;keypoolsize&quot;</span> <span class="hl num">101</span><span class="hl opt">,</span> <span class="hl str">&quot;balance&quot;</span> <span class="hl num">0E-8</span>M<span class="hl opt">,</span>
+    <span class="hl str">&quot;walletversion&quot;</span> <span class="hl num">60000</span><span class="hl opt">}</span>
+</pre></div>
+
 
 <h2 id="C">C</h2>
 
@@ -520,42 +504,41 @@ user=&gt; (btc/getinfo)
 
 <p>For example basic usage (which can be easily modified for Bitcoin RPC), see the Jansson example <a href="https://jansson.readthedocs.org/en/latest/_downloads/github_commits.c">github_commits.c</a> and <a href="https://jansson.readthedocs.org/en/latest/tutorial.html#the-github-repo-commits-api">the associated tutorial</a>.</p>
 
-<p>The following does with libcurl what the <a href="./#Command_line_.28cURL.29">cURL example above</a> does:<source lang="c">#include &lt;stdlib.h&gt;</source></p>
+<p>The following does with libcurl what the <a href="./#Command_line_.28cURL.29">cURL example above</a> does:</p>
 
-<ol>
-<li>include &lt;curl/curl.h&gt;</li>
-</ol>
+<div class="highlight-cpp"><pre class="hl"><span class="hl ppc">#include &lt;stdlib.h&gt;</span>
+<span class="hl ppc">#include &lt;curl/curl.h&gt;</span>
+
+<span class="hl kwb">int</span> <span class="hl kwd">main</span><span class="hl opt">()</span>
+<span class="hl opt">{</span>
+    CURL <span class="hl opt">*</span>curl <span class="hl opt">=</span> <span class="hl kwd">curl_easy_init</span><span class="hl opt">();</span>
+    <span class="hl kwb">struct</span> curl_slist <span class="hl opt">*</span>headers <span class="hl opt">=</span> NULL<span class="hl opt">;</span>
+
+    <span class="hl kwa">if</span> <span class="hl opt">(</span>curl<span class="hl opt">) {</span>
+    <span class="hl kwb">const char</span> <span class="hl opt">*</span>data <span class="hl opt">=</span>
+    <span class="hl str">&quot;{</span><span class="hl esc">\&quot;</span><span class="hl str">jsonrpc</span><span class="hl esc">\&quot;</span><span class="hl str">:</span> <span class="hl esc">\&quot;</span><span class="hl str">1.0</span><span class="hl esc">\&quot;</span><span class="hl str">,</span> <span class="hl esc">\&quot;</span><span class="hl str">id</span><span class="hl esc">\&quot;</span><span class="hl str">:</span><span class="hl esc">\&quot;</span><span class="hl str">curltest</span><span class="hl esc">\&quot;</span><span class="hl str">,</span> <span class="hl esc">\&quot;</span><span class="hl str">method</span><span class="hl esc">\&quot;</span><span class="hl str">:</span> <span class="hl esc">\&quot;</span><span class="hl str">getinfo</span><span class="hl esc">\&quot;</span><span class="hl str">,</span> <span class="hl esc">\&quot;</span><span class="hl str">params</span><span class="hl esc">\&quot;</span><span class="hl str">: [] }&quot;</span><span class="hl opt">;</span>
+
+    headers <span class="hl opt">=</span> <span class="hl kwd">curl_slist_append</span><span class="hl opt">(</span>headers<span class="hl opt">,</span> <span class="hl str">&quot;content-type: text/plain;&quot;</span><span class="hl opt">);</span>
+    <span class="hl kwd">curl_easy_setopt</span><span class="hl opt">(</span>curl<span class="hl opt">,</span> CURLOPT_HTTPHEADER<span class="hl opt">,</span> headers<span class="hl opt">);</span>
+
+    <span class="hl kwd">curl_easy_setopt</span><span class="hl opt">(</span>curl<span class="hl opt">,</span> CURLOPT_URL<span class="hl opt">,</span> <span class="hl str">&quot;http://127.0.0.1:8332/&quot;</span><span class="hl opt">);</span>
+
+    <span class="hl kwd">curl_easy_setopt</span><span class="hl opt">(</span>curl<span class="hl opt">,</span> CURLOPT_POSTFIELDSIZE<span class="hl opt">, (</span><span class="hl kwb">long</span><span class="hl opt">)</span> <span class="hl kwd">strlen</span><span class="hl opt">(</span>data<span class="hl opt">));</span>
+    <span class="hl kwd">curl_easy_setopt</span><span class="hl opt">(</span>curl<span class="hl opt">,</span> CURLOPT_POSTFIELDS<span class="hl opt">,</span> data<span class="hl opt">);</span>
+
+    <span class="hl kwd">curl_easy_setopt</span><span class="hl opt">(</span>curl<span class="hl opt">,</span> CURLOPT_USERPWD<span class="hl opt">,</span>
+    <span class="hl str">&quot;bitcoinrpcUSERNAME:bitcoinrpcPASSWORD&quot;</span><span class="hl opt">);</span>
+
+    <span class="hl kwd">curl_easy_setopt</span><span class="hl opt">(</span>curl<span class="hl opt">,</span> CURLOPT_USE_SSL<span class="hl opt">,</span> CURLUSESSL_TRY<span class="hl opt">);</span>
+
+    <span class="hl kwd">curl_easy_perform</span><span class="hl opt">(</span>curl<span class="hl opt">);</span>
+    <span class="hl opt">}</span>
+    <span class="hl kwa">return</span> <span class="hl num">0</span><span class="hl opt">;</span>
+<span class="hl opt">}</span>
+</pre></div>
 
 
-<p>int main()
-{
-    CURL <em>curl = curl_easy_init();
-    struct curl_slist </em>headers = NULL;</p>
-
-<pre><code>if (curl) {
-const char *data =
-&quot;{\&quot;jsonrpc\&quot;: \&quot;1.0\&quot;, \&quot;id\&quot;:\&quot;curltest\&quot;, \&quot;method\&quot;: \&quot;getinfo\&quot;, \&quot;params\&quot;: [] }&quot;;
-
-headers = curl_slist_append(headers, &quot;content-type: text/plain;&quot;);
-curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
-
-curl_easy_setopt(curl, CURLOPT_URL, &quot;http://127.0.0.1:8332/&quot;);
-
-curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, (long) strlen(data));
-curl_easy_setopt(curl, CURLOPT_POSTFIELDS, data);
-
-curl_easy_setopt(curl, CURLOPT_USERPWD,
-&quot;bitcoinrpcUSERNAME:bitcoinrpcPASSWORD&quot;);
-
-curl_easy_setopt(curl, CURLOPT_USE_SSL, CURLUSESSL_TRY);
-
-curl_easy_perform(curl);
-}
-return 0;
-</code></pre>
-
-<p>}
-This output can be parsed with Jansson, <em>&agrave; la</em> the Jansson tutorial linked to above.</p>
+<p>This output can be parsed with Jansson, <em>&agrave; la</em> the Jansson tutorial linked to above.</p>
 
 <p>(source: <a href="https://bitcoin.stackexchange.com/a/41158/4334">Bitcoin StackExchange</a>)</p>
 
@@ -563,115 +546,110 @@ This output can be parsed with Jansson, <em>&agrave; la</em> the Jansson tutoria
 
 <p><a href="https://bitbucket.org/devonit/qjsonrpc/overview">QJsonRpc</a> is a Qt/C++ implementation of the JSON-RPC protocol. It integrates nicely with Qt, leveraging Qt&#39;s meta object system in order to provide services over the JSON-RPC protocol. QJsonRpc is licensed under the LGPLv2.1.</p>
 
-<p><source lang="cpp">
-/<em>
-    * Copyright (C) 2012-2013 Matt Broadstone
-    * Contact: http://bitbucket.org/devonit/qjsonrpc
-    *
-    * This file is part of the QJsonRpc Library.
-    *
-    * This library is free software; you can redistribute it and/or
-    * modify it under the terms of the GNU Lesser General Public
-    * License as published by the Free Software Foundation; either
-    * version 2.1 of the License, or (at your option) any later version.
-    *
-    * This library is distributed in the hope that it will be useful,
-    * but WITHOUT ANY WARRANTY; without even the implied warranty of
-    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    * Lesser General Public License for more details.
-    </em>/</source></p>
+<div class="highlight-cpp"><pre class="hl"><span class="hl com">/*</span>
+<span class="hl com">   * Copyright (C) 2012-2013 Matt Broadstone</span>
+<span class="hl com">   * Contact: http://bitbucket.org/devonit/qjsonrpc</span>
+<span class="hl com">   *</span>
+<span class="hl com">   * This file is part of the QJsonRpc Library.</span>
+<span class="hl com">   *</span>
+<span class="hl com">   * This library is free software; you can redistribute it and/or</span>
+<span class="hl com">   * modify it under the terms of the GNU Lesser General Public</span>
+<span class="hl com">   * License as published by the Free Software Foundation; either</span>
+<span class="hl com">   * version 2.1 of the License, or (at your option) any later version.</span>
+<span class="hl com">   *</span>
+<span class="hl com">   * This library is distributed in the hope that it will be useful,</span>
+<span class="hl com">   * but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="hl com">   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU</span>
+<span class="hl com">   * Lesser General Public License for more details.</span>
+<span class="hl com">   */</span>
 
-<ol>
-<li>include </li>
-<li>include </li>
-<li>include </li>
-<li><p>include </p></li>
-<li><p>include &quot;qjsonrpchttpclient.h&quot;</p></li>
-</ol>
+<span class="hl ppc">#include &lt;QCoreApplication&gt;</span>
+<span class="hl ppc">#include &lt;QAuthenticator&gt;</span>
+<span class="hl ppc">#include &lt;QStringList&gt;</span>
+<span class="hl ppc">#include &lt;QDebug&gt;</span>
 
+<span class="hl ppc">#include</span> <span class="hl pps">&quot;qjsonrpchttpclient.h&quot;</span><span class="hl ppc"></span>
 
-<p>class HttpClient : public QJsonRpcHttpClient
-{
+<span class="hl kwc">class</span> HttpClient <span class="hl opt">:</span> <span class="hl kwc">public</span> QJsonRpcHttpClient
+<span class="hl opt">{</span>
     Q_OBJECT
-public:
-    HttpClient(const QString &amp;endpoint, QObject *parent = 0)
-         QJsonRpcHttpClient(endpoint, parent)
-    {
-    // defaults added for my local test server
-    m_username = &quot;bitcoinrpc&quot;;
-    m_password = &quot;232fb3276bbb7437d265298ea48bdc46&quot;;
-    }</p>
+<span class="hl kwc">public</span><span class="hl opt">:</span>
+    <span class="hl kwd">HttpClient</span><span class="hl opt">(</span><span class="hl kwb">const</span> QString <span class="hl opt">&amp;</span>endpoint<span class="hl opt">,</span> QObject <span class="hl opt">*</span>parent <span class="hl opt">=</span> <span class="hl num">0</span><span class="hl opt">)</span>
+         <span class="hl kwd">QJsonRpcHttpClient</span><span class="hl opt">(</span>endpoint<span class="hl opt">,</span> parent<span class="hl opt">)</span>
+    <span class="hl opt">{</span>
+    <span class="hl slc">// defaults added for my local test server</span>
+    m_username <span class="hl opt">=</span> <span class="hl str">&quot;bitcoinrpc&quot;</span><span class="hl opt">;</span>
+    m_password <span class="hl opt">=</span> <span class="hl str">&quot;232fb3276bbb7437d265298ea48bdc46&quot;</span><span class="hl opt">;</span>
+    <span class="hl opt">}</span>
 
-<pre><code>void setUsername(const QString &amp;username) {
-m_username = username;
-}
+    <span class="hl kwb">void</span> <span class="hl kwd">setUsername</span><span class="hl opt">(</span><span class="hl kwb">const</span> QString <span class="hl opt">&amp;</span>username<span class="hl opt">) {</span>
+    m_username <span class="hl opt">=</span> username<span class="hl opt">;</span>
+    <span class="hl opt">}</span>
 
-void setPassword(const QString &amp;password) {
-m_password = password;
-}
-</code></pre>
+    <span class="hl kwb">void</span> <span class="hl kwd">setPassword</span><span class="hl opt">(</span><span class="hl kwb">const</span> QString <span class="hl opt">&amp;</span>password<span class="hl opt">) {</span>
+    m_password <span class="hl opt">=</span> password<span class="hl opt">;</span>
+    <span class="hl opt">}</span>
 
-<p>private Q_SLOTS:
-    virtual void handleAuthenticationRequired(QNetworkReply *reply, QAuthenticator * authenticator)
-    {
-    Q_UNUSED(reply)
-    authenticator-&gt;setUser(m_username);
-    authenticator-&gt;setPassword(m_password);
-    }</p>
+<span class="hl kwc">private</span> Q_SLOTS<span class="hl opt">:</span>
+    <span class="hl kwc">virtual</span> <span class="hl kwb">void</span> <span class="hl kwd">handleAuthenticationRequired</span><span class="hl opt">(</span>QNetworkReply <span class="hl opt">*</span>reply<span class="hl opt">,</span> QAuthenticator <span class="hl opt">*</span> authenticator<span class="hl opt">)</span>
+    <span class="hl opt">{</span>
+    <span class="hl kwd">Q_UNUSED</span><span class="hl opt">(</span>reply<span class="hl opt">)</span>
+    authenticator<span class="hl opt">-&gt;</span><span class="hl kwd">setUser</span><span class="hl opt">(</span>m_username<span class="hl opt">);</span>
+    authenticator<span class="hl opt">-&gt;</span><span class="hl kwd">setPassword</span><span class="hl opt">(</span>m_password<span class="hl opt">);</span>
+    <span class="hl opt">}</span>
 
-<p>private:
-    QString m_username;
-    QString m_password;</p>
+<span class="hl kwc">private</span><span class="hl opt">:</span>
+    QString m_username<span class="hl opt">;</span>
+    QString m_password<span class="hl opt">;</span>
 
-<p>};</p>
+<span class="hl opt">};</span>
 
-<p>int main(int argc, char **argv)
-{
-    QCoreApplication app(argc, argv);
-    if (app.arguments().size() &lt; 2) {
-    qDebug() &lt;&lt; &quot;usage: &quot; &lt;&lt; argv<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=0&amp;from=API_reference_%28JSON-RPC%29" rel="nofollow">?</a>0</span> &lt;&lt; &quot;<a href="-u">username</a> <a href="-p">password</a>  &quot;;
-    return -1;
-    }</p>
+<span class="hl kwb">int</span> <span class="hl kwd">main</span><span class="hl opt">(</span><span class="hl kwb">int</span> argc<span class="hl opt">,</span> <span class="hl kwb">char</span> <span class="hl opt">**</span>argv<span class="hl opt">)</span>
+<span class="hl opt">{</span>
+    QCoreApplication <span class="hl kwd">app</span><span class="hl opt">(</span>argc<span class="hl opt">,</span> argv<span class="hl opt">);</span>
+    <span class="hl kwa">if</span> <span class="hl opt">(</span>app<span class="hl opt">.</span><span class="hl kwd">arguments</span><span class="hl opt">().</span><span class="hl kwd">size</span><span class="hl opt">() &lt;</span> <span class="hl num">2</span><span class="hl opt">) {</span>
+    <span class="hl kwd">qDebug</span><span class="hl opt">() &lt;&lt;</span> <span class="hl str">&quot;usage: &quot;</span> <span class="hl opt">&lt;&lt;</span> argv<span class="hl opt"><span class="createlink"><a href="/ikiwiki.cgi?from=API_reference_%28JSON-RPC%29&amp;do=create&amp;page=__60__%2Fspan__62____60__span%20class__61____34__hl%20num__34____62__0__60__%2Fspan__62____60__span%20class__61____34__hl%20opt__34____62__" rel="nofollow">?</a>span&gt;&lt;span class=&quot;hl opt&quot;&gt;</span> &lt;&lt;</span> <span class="hl str">&quot;[username](-u) [password](-p) &lt;command&gt; &lt;arguments&gt;&quot;</span><span class="hl opt">;</span>
+    <span class="hl kwa">return</span> <span class="hl opt">-</span><span class="hl num">1</span><span class="hl opt">;</span>
+    <span class="hl opt">}</span>
 
-<pre><code>HttpClient client(&quot;http://127.0.0.1:8332&quot;);
-if (app.arguments().contains(&quot;-u&quot;)) {
-int idx = app.arguments().indexOf(&quot;-u&quot;);
-app.arguments().removeAt(idx);
-client.setUsername(app.arguments().takeAt(idx));
-}
+    HttpClient <span class="hl kwd">client</span><span class="hl opt">(</span><span class="hl str">&quot;http://127.0.0.1:8332&quot;</span><span class="hl opt">);</span>
+    <span class="hl kwa">if</span> <span class="hl opt">(</span>app<span class="hl opt">.</span><span class="hl kwd">arguments</span><span class="hl opt">().</span><span class="hl kwd">contains</span><span class="hl opt">(</span><span class="hl str">&quot;-u&quot;</span><span class="hl opt">)) {</span>
+    <span class="hl kwb">int</span> idx <span class="hl opt">=</span> app<span class="hl opt">.</span><span class="hl kwd">arguments</span><span class="hl opt">().</span><span class="hl kwd">indexOf</span><span class="hl opt">(</span><span class="hl str">&quot;-u&quot;</span><span class="hl opt">);</span>
+    app<span class="hl opt">.</span><span class="hl kwd">arguments</span><span class="hl opt">().</span><span class="hl kwd">removeAt</span><span class="hl opt">(</span>idx<span class="hl opt">);</span>
+    client<span class="hl opt">.</span><span class="hl kwd">setUsername</span><span class="hl opt">(</span>app<span class="hl opt">.</span><span class="hl kwd">arguments</span><span class="hl opt">().</span><span class="hl kwd">takeAt</span><span class="hl opt">(</span>idx<span class="hl opt">));</span>
+    <span class="hl opt">}</span>
 
-if (app.arguments().contains(&quot;-p&quot;)) {
-int idx = app.arguments().indexOf(&quot;-p&quot;);
-app.arguments().removeAt(idx);
-client.setPassword(app.arguments().takeAt(idx));
-}
+    <span class="hl kwa">if</span> <span class="hl opt">(</span>app<span class="hl opt">.</span><span class="hl kwd">arguments</span><span class="hl opt">().</span><span class="hl kwd">contains</span><span class="hl opt">(</span><span class="hl str">&quot;-p&quot;</span><span class="hl opt">)) {</span>
+    <span class="hl kwb">int</span> idx <span class="hl opt">=</span> app<span class="hl opt">.</span><span class="hl kwd">arguments</span><span class="hl opt">().</span><span class="hl kwd">indexOf</span><span class="hl opt">(</span><span class="hl str">&quot;-p&quot;</span><span class="hl opt">);</span>
+    app<span class="hl opt">.</span><span class="hl kwd">arguments</span><span class="hl opt">().</span><span class="hl kwd">removeAt</span><span class="hl opt">(</span>idx<span class="hl opt">);</span>
+    client<span class="hl opt">.</span><span class="hl kwd">setPassword</span><span class="hl opt">(</span>app<span class="hl opt">.</span><span class="hl kwd">arguments</span><span class="hl opt">().</span><span class="hl kwd">takeAt</span><span class="hl opt">(</span>idx<span class="hl opt">));</span>
+    <span class="hl opt">}</span>
 
-QJsonRpcMessage message = QJsonRpcMessage::createRequest(app.arguments().at(1));
-QJsonRpcMessage response = client.sendMessageBlocking(message);
-if (response.type() == QJsonRpcMessage::Error) {
-qDebug() &lt;&lt; response.errorData();
-return -1;
-}
+    QJsonRpcMessage message <span class="hl opt">=</span> QJsonRpcMessage<span class="hl opt">::</span><span class="hl kwd">createRequest</span><span class="hl opt">(</span>app<span class="hl opt">.</span><span class="hl kwd">arguments</span><span class="hl opt">().</span><span class="hl kwd">at</span><span class="hl opt">(</span><span class="hl num">1</span><span class="hl opt">));</span>
+    QJsonRpcMessage response <span class="hl opt">=</span> client<span class="hl opt">.</span><span class="hl kwd">sendMessageBlocking</span><span class="hl opt">(</span>message<span class="hl opt">);</span>
+    <span class="hl kwa">if</span> <span class="hl opt">(</span>response<span class="hl opt">.</span><span class="hl kwd">type</span><span class="hl opt">() ==</span> QJsonRpcMessage<span class="hl opt">::</span>Error<span class="hl opt">) {</span>
+    <span class="hl kwd">qDebug</span><span class="hl opt">() &lt;&lt;</span> response<span class="hl opt">.</span><span class="hl kwd">errorData</span><span class="hl opt">();</span>
+    <span class="hl kwa">return</span> <span class="hl opt">-</span><span class="hl num">1</span><span class="hl opt">;</span>
+    <span class="hl opt">}</span>
 
-qDebug() &lt;&lt; response.toJson();
-</code></pre>
+    <span class="hl kwd">qDebug</span><span class="hl opt">() &lt;&lt;</span> response<span class="hl opt">.</span><span class="hl kwd">toJson</span><span class="hl opt">();</span>
+<span class="hl opt">}</span>
+</pre></div>
 
-<p>}
-</p>
 
 <h2 id="See_Also">See Also</h2>
 
 <ul>
 <li><a href="../Original_Bitcoin_client/API_Calls_list/">API calls list</a></li>
 <li><a href="../Running_Bitcoin/">Running Bitcoin</a></li>
-<li><span class="createlink"><a href="/ikiwiki.cgi?from=API_reference_%28JSON-RPC%29&amp;do=create&amp;page=Lazy_API" rel="nofollow">?</a>Lazy API</span></li>
 <li><a href="../Raw_Transactions/">Raw Transactions API</a></li>
 <li><a href="https://gourl.io/bitcoin-payment-gateway-api.html">GoUrl Bitcoin PHP Payment API</a></li>
 <li><a href="http://blockchain.info/api/json_rpc_api">Web Based JSON RPC interface.</a></li>
 </ul>
 
 
-<p><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=zh-cn%3AAPI_reference_%28JSON-RPC%29&amp;from=API_reference_%28JSON-RPC%29" rel="nofollow">?</a>zh-cn:API reference (JSON-RPC)</span></p>
+<p>[[!template <span class="error">Error: failed to process template &lt;span class=&quot;createlink&quot;&gt;&lt;a href=&quot;/ikiwiki.cgi?do=create&amp;amp;from=API_reference_%28JSON-RPC%29&amp;amp;page=%2Ftemplates%2Fbitcoin_core_documentation&quot; rel=&quot;nofollow&quot;&gt;?&lt;/a&gt;bitcoin core documentation&lt;/span&gt; template bitcoin_core_documentation not found
+</span>]]</p>
 
 </section>
 
@@ -727,8 +705,8 @@ Content is available under under <a href="https://creativecommons.org/licenses/b
 </div>
 
 <div class="pagedate">
-Last edited <time datetime="2016-06-06T21:17:30Z">Mon 06 Jun 2016 09:17:30 PM Europe</time>
-<!-- Created <time datetime="2010-12-17T21:33:13Z" pubdate="pubdate">Fri 17 Dec 2010 09:33:13 PM Europe</time> -->
+Last edited <time datetime="2016-07-08T09:08:11Z">Fri 08 Jul 2016 09:08:11 AM Europe</time>
+<!-- Created <time datetime="2016-07-06T10:09:14Z" pubdate="pubdate">Wed 06 Jul 2016 10:09:14 AM Europe</time> -->
 </div>
 
 </nav>
