@@ -72,7 +72,24 @@ NLockTime
 <section id="content" role="main">
 <p>nLockTime is a parameter that can be attached to a transaction, that mandates a minimal time (specified in either unix time or block height), that before this time, the transaction cannot be accepted into a block.</p>
 
-<p>See lock_time in <a href="../Protocol_documentation/#tx">the protocol specification</a></p>
+<p>nLockTime allows users to lock a transaction&#39;s validity until a future
+block height or <a href="https://en.wikipedia.org/wiki/UTC">UTC</a> timestamp is reached. In theory this
+allows users to send Bitcoin transactions in the form of a basic time delay
+<a href="http://www.investopedia.com/terms/t/trust-fund.asp">trust</a>, with the
+Blockchain serving as the trustee. The system implemented does not allow
+for transactions containing a future nLockTime to be mined into a block
+until the lock time passes &ndash; the transaction will be forgotten in mempools
+and the user has to hold on to it themselves. Due to miners not including
+this type of transaction into a block, a user can spend the inputs of the
+locked transaction with a non-time-locked transactions, effectively making
+the recipient of the locked transaction the victim of a double spend
+attack.</p>
+
+<p>See also lock_time in <a href="../Protocol_documentation/#tx">the protocol specification</a></p>
+
+<p>This tag is deprecated and
+[OP_CHECKLOCKTIMEVERIFY|Script/#Locktime] is the suggested
+replacement.</p>
 
 </section>
 
@@ -122,8 +139,8 @@ Content is available under under <a href="https://creativecommons.org/licenses/b
 </div>
 
 <div class="pagedate">
-Last edited <time datetime="2016-06-07T14:24:02Z">Tue 07 Jun 2016 02:24:02 PM Europe</time>
-<!-- Created <time datetime="2013-05-21T07:59:33Z" pubdate="pubdate">Tue 21 May 2013 07:59:33 AM Europe</time> -->
+Last edited <time datetime="2016-07-18T20:29:40Z">Mon 18 Jul 2016 08:29:40 PM Europe</time>
+<!-- Created <time datetime="2016-07-06T10:09:14Z" pubdate="pubdate">Wed 06 Jul 2016 10:09:14 AM Europe</time> -->
 </div>
 
 </nav>
