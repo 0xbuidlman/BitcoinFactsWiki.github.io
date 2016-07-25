@@ -70,9 +70,26 @@ Anonymity
 <div id="pagebody">
 
 <section id="content" role="main">
+<h2 id="Information_on_this_page_may_be_outdated"><a name="index1h2"></a> Information on this page may be outdated</h2>
+
+
 <p>While the Bitcoin technology <a href="http://www.bitcointalk.org/index.php?topic=241.0">can support</a> strong anonymity, the current implementation is usually not very anonymous.</p>
 
-<p><strong>TOC</strong></p>
+<div class="toc">
+	<ol>
+		<li class="L2"><a href="#index1h2"> Information on this page may be outdated</a>
+		</li>
+		<li class="L2"><a href="#index2h2">Staying Anonymous</a>
+		</li>
+		<li class="L2"><a href="#index3h2">Legality</a>
+		</li>
+		<li class="L2"><a href="#index4h2">See Also</a>
+		</li>
+		<li class="L2"><a href="#index5h2">References</a>
+		</li>
+	</ol>
+</div>
+
 
 <p>The main problem is that every transaction is publicly logged. Anyone can see the flow of Bitcoins from address to address (see first image). Alone, this information can&#39;t identify anyone because the addresses are just random numbers. However, if <em>any</em> of the addresses in a transaction&#39;s past or future can be tied to an actual identity, it might be possible to work from that point and guess who may own all of the other addresses. This identity information might come from network analysis, surveillance, or just Googling the address. The officially encouraged practice of using a new address for every transaction is designed to make this attack more difficult.
 <a href="../Unknownaddress.png"><img class="img" height="158" src="../Unknownaddress.png" title="The flow of Bitcoins is highly public." width="638" /></a></p>
@@ -101,7 +118,7 @@ Bitcoin transactions do not have a <a href="../From_address/">&quot;from&quot; a
 
 <p>You need to protect yourself from both forward attacks (getting something that identifies you using coins that you got with methods that must remain secret, like the scammer example) and reverse attacks (getting something that must remain secret using coins that identify you, like the newspaper example).</p>
 
-<h2 id="Staying_Anonymous">Staying Anonymous</h2>
+<h2 id="Staying_Anonymous"><a name="index2h2"></a>Staying Anonymous</h2>
 
 <p>By necessity the history of all the bitcoins must be highly public. However, if one has bitcoins on paid to address, one can theoretically choose the coins they spend in a way that will minimize the amount of information they leak. Choosing personally generated coins or an address that you know doesn&#39;t reveal information would protect you. Unfortunately, the default Bitcoin client doesn&#39;t support this currently, so you must assume that your entire balance can identify you if any of the addresses can.</p>
 
@@ -131,9 +148,9 @@ Bitcoin transactions do not have a <a href="../From_address/">&quot;from&quot; a
 
 <p>A future version of the client will have more control which will allow the sender to specify which coins to use in a transaction (2.1).</p>
 
-<p>In the future, trusted relay servers operating on the <span class="createlink"><a href="/ikiwiki.cgi?from=Anonymity&amp;page=friendly_addresses_with_enhanced_privacy&amp;do=create" rel="nofollow">?</a>friendly addresses with enhanced privacy</span> protocol could provide bitcoin users strong anonymity with increased convenience, thereby eliminating the need to make a trade-off between privacy and ease of use.</p>
+<p>In the future, trusted relay servers operating on the <span class="createlink"><a href="/ikiwiki.cgi?page=friendly_addresses_with_enhanced_privacy&amp;do=create&amp;from=Anonymity" rel="nofollow">?</a>friendly addresses with enhanced privacy</span> protocol could provide bitcoin users strong anonymity with increased convenience, thereby eliminating the need to make a trade-off between privacy and ease of use.</p>
 
-<h3 id="Helping_other_people_stay_anonymous">Helping other people stay anonymous</h3>
+<h3 id="Helping_other_people_stay_anonymous"><a name="index1h3"></a>Helping other people stay anonymous</h3>
 
 <ul>
 <li>Set up a real <a href="http://www.bitcointalk.org/index.php?topic=241.0">external mixing service</a>. Make it like an eWallet service but make sure that a user never withdraws the same coins that are put in.  Also delete empty addresses and transaction logs.</li>
@@ -151,17 +168,17 @@ Bitcoin transactions do not have a <a href="../From_address/">&quot;from&quot; a
 </ul>
 
 
-<h3 id="CoinJoin">CoinJoin</h3>
+<h3 id="CoinJoin"><a name="index2h3"></a>CoinJoin</h3>
 
 <p>While external mixers are useful and historically important, they have several problems. The mixer may also steal the customer&#39;s coins. Thus the mixer service will depend significantly on it&#39;s reputation to maintain customer&#39;s privacy and not steal their money, which allows them to charge a significant fee far above the marginal cost which takes advantage of this reputation.</p>
 
 <p><a href="../CoinJoin/">CoinJoin</a> is a special kind of bitcoin transaction that solves these problems. It is a kind of smart contract which does not allow any party to steal the coins of any other party.</p>
 
-<h2 id="Legality">Legality</h2>
+<h2 id="Legality"><a name="index3h2"></a>Legality</h2>
 
 <p>Obviously, using Bitcoin anonymity techniques for the purposes of <a>money laundering</a> is illegal, but participating or running schemes which others use for money laundering may also be illegal or at least leave the participant vulnerable to accusations of aiding criminals and terrorists. Bitcoin anonymity techniques involving bitcoins worth large amounts of money (over some value between FJ$1,100 and US$58,000, depending on your jurisdiction) is illegal in most jurisdictions, being in violation of <a>anti-structuring laws</a>.</p>
 
-<h2 id="See_Also">See Also</h2>
+<h2 id="See_Also"><a name="index4h2"></a>See Also</h2>
 
 <ul>
 <li><a href="../Anonymity_&amp;_Security/">Anonymity &amp; Security</a></li>
@@ -175,7 +192,7 @@ Bitcoin transactions do not have a <a href="../From_address/">&quot;from&quot; a
 </ul>
 
 
-<h2 id="References">References</h2>
+<h2 id="References"><a name="index5h2"></a>References</h2>
 
 <p>2.1: <a href="http://bitcointalk.org/index.php?topic=24784.msg307661#msg307661">Patching The Bitcoin Client To Make It More Anonymous</a></p>
 
@@ -239,8 +256,8 @@ Content is available under under <a href="https://creativecommons.org/licenses/b
 </div>
 
 <div class="pagedate">
-Last edited <time datetime="2016-06-07T12:53:17Z">Tue 07 Jun 2016 12:53:17 PM Europe</time>
-<!-- Created <time datetime="2010-12-19T20:00:33Z" pubdate="pubdate">Sun 19 Dec 2010 08:00:33 PM Europe</time> -->
+Last edited <time datetime="2016-07-25T08:47:34Z">Mon 25 Jul 2016 08:47:34 AM Europe</time>
+<!-- Created <time datetime="2016-07-06T10:09:14Z" pubdate="pubdate">Wed 06 Jul 2016 10:09:14 AM Europe</time> -->
 </div>
 
 </nav>

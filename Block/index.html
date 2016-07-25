@@ -100,13 +100,13 @@ Block
 </tr>
 <tr>
 <td>Transaction counter</td>
-<td>positive integer <a href="../Protocol_specification/#Variable_length_integer">VI = VarInt</a></td>
+<td>positive integer <a href="../Protocol_documentation/#Variable_length_integer">VI = VarInt</a></td>
 <td>1 - 9 bytes</td>
 </tr>
 <tr>
-<td><a href="../Transactions/">transactions</a></td>
+<td><a href="../Transaction/">Transaction</a>s</td>
 <td>the (non empty) list of transactions</td>
-<td>-many transactions</td>
+<td>&lt;Transaction counter&gt;-many transactions</td>
 </tr>
 </tbody>
 </table>
@@ -114,11 +114,11 @@ Block
 
 <h2 id="Description">Description</h2>
 
-<p>Each block contains, among other things, a record of some or all recent <a href="../Transactions/">transactions</a>, and a reference to the block that came immediately before it. It also contains an answer to a difficult-to-solve mathematical puzzle - the answer to which is unique to each block.  New blocks cannot be submitted to the network without the correct answer - the process of &quot;<a href="../Mining/">mining</a>&quot; is essentially the process of competing to be the next to find the answer that &quot;solves&quot; the current block.  The mathematical problem in each block is extremely <a href="../Difficulty/">difficult</a> to solve, but once a valid solution is found, it is very easy for the rest of the network to confirm that the solution is correct.  There are multiple valid solutions for any given block - only one of the solutions needs to be found for the block to be solved.</p>
+<p>Each block contains, among other things, a record of some or all recent <a href="../Transaction/">transaction</a>s, and a reference to the block that came immediately before it. It also contains an answer to a difficult-to-solve mathematical puzzle - the answer to which is unique to each block.  New blocks cannot be submitted to the network without the correct answer - the process of &quot;<a href="../Mining/">mining</a>&quot; is essentially the process of competing to be the next to find the answer that &quot;solves&quot; the current block.  The mathematical problem in each block is extremely <a href="../Difficulty/">difficult</a> to solve, but once a valid solution is found, it is very easy for the rest of the network to confirm that the solution is correct.  There are multiple valid solutions for any given block - only one of the solutions needs to be found for the block to be solved.</p>
 
-<p>Because there is a reward of brand new bitcoins for solving each block, every block also contains a record of which <a href="../Bitcoin_address/">Bitcoin address</a>es or <a href="../Script/">script</a>s are entitled to receive the reward. This record is known as a generation transaction, or a <a href="../Coinbase/">coinbase</a> transaction, and is always the first transaction appearing in every block. The number of <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Bitcoins&amp;from=Block" rel="nofollow">?</a>Bitcoins</span> generated per block starts at 50 and is <a href="../Controlled_supply/">halved</a> every 210,000 blocks (about four years).</p>
+<p>Because there is a reward of brand new bitcoins for solving each block, every block also contains a record of which <a href="../Bitcoin_address/">Bitcoin address</a>es or <a href="../Script/">script</a>s are entitled to receive the reward. This record is known as a generation transaction, or a <a href="../Coinbase/">coinbase</a> transaction, and is always the first transaction appearing in every block. The number of Bitcoins generated per block starts at 50 and is <a href="../Controlled_supply/">halved</a> every 210,000 blocks (about four years).</p>
 
-<p>Bitcoin transactions are <span class="createlink"><a href="/ikiwiki.cgi?page=transaction_broadcasting&amp;do=create&amp;from=Block" rel="nofollow">?</a>broadcast</span> to the <a href="../Network/">network</a> by the sender, and all peers trying to solve blocks collect the transaction records and add them to the block they are working to solve. Miners get incentive to include transactions in their blocks because of attached transaction fees.</p>
+<p>Bitcoin transactions are broadcast to the <a href="../Network/">network</a> by the sender, and all peers trying to solve blocks collect the transaction records and add them to the block they are working to solve. Miners get incentive to include transactions in their blocks because of attached transaction fees.</p>
 
 <p>The <a href="../Difficulty/">difficulty</a> of the mathematical problem is automatically adjusted by the network, such that it targets a goal of solving an average of 6 blocks per hour.  Every 2016 blocks (solved in about two weeks), all Bitcoin clients compare the actual number created with this goal and modify the target by the percentage that it varied. The network comes to a consensus and automatically increases (or decreases) the difficulty of generating blocks.</p>
 
@@ -136,15 +136,15 @@ Block
 
 <p>There is no maximum number, blocks just keep getting added to the end of the chain at an average rate of one every 10 minutes.</p>
 
-<h4 id="Even_when_all_21_million_coins_have_been_generated.3F">Even when all 21 million coins have been generated?</h4>
+<h3 id="Even_when_all_21_million_coins_have_been_generated.3F">Even when all 21 million coins have been generated?</h3>
 
 <p>Yes. The blocks are for proving that transactions existed at a particular time. Transactions will still occur once all the coins have been generated, so blocks will still be created as long as people are trading Bitcoins.</p>
 
 <h3 id="How_long_will_it_take_me_to_generate_a_block.3F">How long will it take me to generate a block?</h3>
 
-<p>No one can say exactly. There is a <span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Generation_Calculator&amp;from=Block" rel="nofollow">?</a>generation calculator</span> that will tell you how long it <strong>might</strong> take.</p>
+<p>No one can say exactly. There is a <span class="createlink"><a href="/ikiwiki.cgi?page=Generation_Calculator&amp;from=Block&amp;do=create" rel="nofollow">?</a>generation calculator</span> that will tell you how long it <strong>might</strong> take.</p>
 
-<h3 id="What_if_I.27m_1.25_towards_calculating_a_block_and....3F">What if I&#39;m 1% towards calculating a block and...?</h3>
+<h3 id="What_if_I.26.2339.3Bm_1.25_towards_calculating_a_block_and....3F">What if I&#39;m 1% towards calculating a block and...?</h3>
 
 <p>There&#39;s no such thing as being 1% towards solving a block.  You don&#39;t make progress towards solving it.  After working on it for 24 hours, your chances of solving it are equal to what your chances were at the start or at any moment. Believing otherwise is what&#39;s known as the Gambler&#39;s fallacy <a href="http://en.wikipedia.org/wiki/Gambler&#39;s_fallacy">(1)</a>.</p>
 
@@ -161,9 +161,6 @@ Block
 <li><a href="https://bitcointalk.org/index.php?topic=101514.0">Format of the BDB-style block files</a></li>
 </ul>
 
-
-<p><span class="createlink"><a href="/ikiwiki.cgi?from=Block&amp;do=create&amp;page=fr%3ABlocs" rel="nofollow">?</a>fr:Blocs</span><span class="createlink"><a href="/ikiwiki.cgi?from=Block&amp;do=create&amp;page=pl%3ABloki" rel="nofollow">?</a>pl:Bloki</span><span class="createlink"><a href="/ikiwiki.cgi?from=Block&amp;do=create&amp;page=zh-cn%3ABlock" rel="nofollow">?</a>zh-cn:Block</span>
-<span class="createlink"><a href="/ikiwiki.cgi?from=Block&amp;page=de%3ABlock&amp;do=create" rel="nofollow">?</a>de:Block</span></p>
 
 </section>
 
@@ -210,17 +207,15 @@ Links:
 
 <a href="../Difficulty/">Difficulty</a>
 
-<a href="../Difficulty/talk/">Difficulty/talk</a>
-
 <a href="../Empty_block/">Empty block</a>
 
 <a href="../Flood_attack/">Flood attack</a>
 
+<a href="../Hash/">Hash</a>
+
 
 <span class="popup">...
 <span class="balloon">
-
-<a href="../Hash/">Hash</a>
 
 <a href="../Help:FAQ/">Help:FAQ</a>
 
@@ -257,8 +252,8 @@ Content is available under under <a href="https://creativecommons.org/licenses/b
 </div>
 
 <div class="pagedate">
-Last edited <time datetime="2016-03-04T19:25:05Z">Fri 04 Mar 2016 07:25:05 PM Europe</time>
-<!-- Created <time datetime="2010-12-17T19:58:31Z" pubdate="pubdate">Fri 17 Dec 2010 07:58:31 PM Europe</time> -->
+Last edited <time datetime="2016-07-25T08:41:33Z">Mon 25 Jul 2016 08:41:33 AM Europe</time>
+<!-- Created <time datetime="2016-07-06T10:09:14Z" pubdate="pubdate">Wed 06 Jul 2016 10:09:14 AM Europe</time> -->
 </div>
 
 </nav>

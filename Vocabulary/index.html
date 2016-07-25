@@ -52,7 +52,7 @@ Vocabulary
 
 
 
-<li><span class="createlink"><a href="/ikiwiki.cgi?from=Vocabulary&amp;page=Talk&amp;do=create" rel="nofollow">?</a>Talk</span></li>
+<li><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=Talk&amp;from=Vocabulary" rel="nofollow">?</a>Talk</span></li>
 
 
 </ul>
@@ -70,139 +70,135 @@ Vocabulary
 <div id="pagebody">
 
 <section id="content" role="main">
-<h5 id="Bitcoin">Bitcoin</h5>
+<h3 id="Bitcoin">Bitcoin</h3>
 
 <p>The name of a decentralized p2p crypto-currency network.</p>
 
-<h5><span class="createlink"><a href="/ikiwiki.cgi?from=Vocabulary&amp;page=Bitcoins&amp;do=create" rel="nofollow">?</a>Bitcoins</span></h5>
-
-<p>Digital currency units generated and used within the Bitcoin system.  Common abbreviations include BTC, XBT or lowercase <em>bitcoin</em> when referring to units of the currency.</p>
-
-<h5><a href="../Block/">Block</a></h5>
+<h3><a href="../Block/">Block</a></h3>
 
 <p>Blocks are links in a chain of transaction verifications. Outstanding transactions get bundled into a block and are verified roughly every ten minutes on average. Each subsequent block strengthens the verification of previous blocks. Each block contains one or more transactions.</p>
 
-<h5><a href="../Block_chain/">Block chain</a></h5>
+<h3><a href="../Block_chain/">Block chain</a></h3>
 
 <p>Each block includes the difficult-to-produce verification hash of the previous block. This allows each subsequent block to be linked to all previous blocks. These blocks which are linked together for the purpose of verifying transactions within blocks is called the block chain.</p>
 
-<h5><a href="../Mining/#Reward">Block Reward</a></h5>
+<h3><a href="../Mining/#Reward">Block Reward</a></h3>
 
 <p>When a Bitcoin miner finds a block, it receives newly minted bitcoins known as the &quot;Block Reward&quot;. The reward (aka subsidy) is halved every four years and is responsible for bitcoin&#39;s <a href="../Controlled_supply/">controlled supply</a>.</p>
 
-<h5 id="Branching_Point">Branching Point</h5>
+<h3 id="Branching_Point">Branching Point</h3>
 
 <p>The block at which the block chain diverges into multiple chain branches</p>
 
-<h5 id="BTC">BTC</h5>
+<h3 id="BTC">BTC</h3>
 
-<p>The common decimal <span class="createlink"><a href="/ikiwiki.cgi?from=Vocabulary&amp;page=Units&amp;do=create" rel="nofollow">?</a>unit</span> of a single bitcoin. Equal to 100,000,000 satoshis.</p>
+<p>The common decimal <span class="createlink"><a href="/ikiwiki.cgi?page=Units&amp;from=Vocabulary&amp;do=create" rel="nofollow">?</a>unit</span> of a single bitcoin. Equal to 100,000,000 satoshis.</p>
 
-<h5><a href="../Checkpoint_Lockin/">Checkpoint Lockin</a></h5>
+<h3><a href="../Checkpoint_Lockin/">Checkpoint Lockin</a></h3>
 
 <p>Every once in a while, an old block hash is hardcoded into Bitcoin software. Different implementations choose different checkpoint locations. Checkpoints prevent various DOS attacks from nodes flooding unusable chains and attacks involving isolating nodes and giving them fake chains. Satoshi announced the feature <a href="https://bitcointalk.org/index.php?topic=437">here</a> and it was discussed to death <a href="https://bitcointalk.org/index.php?topic=1647">here</a>.</p>
 
-<h5 id="Coinbase">Coinbase</h5>
+<h3 id="Coinbase">Coinbase</h3>
 
 <p>&quot;Coinbase&quot; is another name for a generation transaction. The input of such a transaction contains some arbitrary data where the scriptSig would go in normal transactions -- this data is sometimes called the &quot;coinbase&quot;, as well.</p>
 
-<h5><a href="../Confirmation/">Confirmation</a></h5>
+<h3><a href="../Confirmation/">Confirmation</a></h3>
 
 <p>To protect against double spending, a transaction should not be considered as &quot;confirmed&quot; until a certain number of blocks in the block chain confirm, or verify that the transaction.  The classic bitcoin client will show a transaction as &quot;n/unconfirmed&quot; until 6 blocks confirm the transaction.</p>
 
-<h5><a href="../Difficulty/">Difficulty</a></h5>
+<h3><a href="../Difficulty/">Difficulty</a></h3>
 
 <p>Every 2016 blocks, Bitcoin adjusts the difficulty of verifying blocks based on the time it took to verify the previous 2016 blocks. The difficulty is adjusted so that given the average estimated computing power of the whole bitcoin network, only one block will verified on average every ten minutes for the next 2016 blocks. The difficulty is usually expressed as a number, optionally accurate to many decimal places (eg. in <a href="http://blockexplorer.com/b/100000">block 100,000</a> it was 14,484.162361.  The difficulty is inversely proportional to the hash target, which is expressed as a hex number with around 50 digits, and is the number under which a block&#39;s generated hash must be to qualify as an officially verified block. The hash target is equal to ((65535 &lt;&lt; 208) / difficulty).  Difficulty is also often called block difficulty, hash difficulty, verification difficulty or the difficulty of generating bitcoins.</p>
 
-<h5><a href="../Double-spending/">Double-Spending</a></h5>
+<h3><a href="../Double-spending/">Double-Spending</a></h3>
 
 <p>Attempting to spend coins that have already been spent in another transaction</p>
 
-<h5 id="Generate_Bitcoins">Generate Bitcoins</h5>
+<h3 id="Generate_Bitcoins">Generate Bitcoins</h3>
 
 <p>The process by which new bitcoins (aka the &quot;Block Reward&quot;) are distributed via <a href="../Mining/">Mining</a>.</p>
 
-<h5><a href="../Hash/">Hash</a></h5>
+<h3><a href="../Hash/">Hash</a></h3>
 
 <p>The output of a cryptographic <a href="./#Hash_function">hash function</a>.</p>
 
-<h5 id="Hash_function">Hash function</h5>
+<h3 id="Hash_function">Hash function</h3>
 
 <p>A computer algorithm which takes an arbitrary amount of input data and deterministically produces fixed length output, known as the data&#39;s &quot;hash&quot;, that can be used to easily verify that data has not been altered. If you change any single bit of the original data and run the hash algorithm, the hash will completely change. Because the hash is seemingly random, it is prohibitively difficult to try to produce a specific hash by changing the data which is being hashed.</p>
 
-<h5 id="Low_Priority">Low Priority</h5>
+<h3 id="Low_Priority">Low Priority</h3>
 
 <p>See Priority.</p>
 
-<h5 id="Main_Chain">Main Chain</h5>
+<h3 id="Main_Chain">Main Chain</h3>
 
 <p>The longest <a href="../Block_chain/">Block chain</a>.</p>
 
-<h5 id="Memory_pool">Memory pool</h5>
+<h3 id="Memory_pool">Memory pool</h3>
 
 <p>Generators store <a href="../Transactions/">transactions</a> waiting to get into a block in their memory pool after receiving them. Received transactions are stored even if they are invalid to prevent nodes from constantly requesting transactions that they&#39;ve already seen. The memory pool is cleared when Bitcoin is shut down, causing the <a href="../Network/">network</a> to gradually forget about transactions that haven&#39;t been included in a <a href="../Block/">block</a>.</p>
 
-<h5 id="Merkle_root">Merkle root</h5>
+<h3 id="Merkle_root">Merkle root</h3>
 
 <p>Every <a href="../Transactions/">transaction</a> has a <a href="../Hash/">hash</a> associated with it. In a <a href="../Block/">block</a>, all of the transaction hashes in the block are themselves hashed (sometimes several times -- the exact process is complex), and the result is the Merkle root. In other words, the Merkle root is the hash of all the hashes of all the transactions in the block. The Merkle root is included in the <a href="../Block_hashing_algorithm/">block header</a>. With this scheme, it is possible to securely verify that a transaction has been accepted by the network (and get the number of confirmations) by downloading just the tiny block headers and <a>Merkle tree</a> -- downloading the entire block chain is unnecessary. This feature is currently not used in Bitcoin, but it will be in the future.</p>
 
-<h5 id="Miner">Miner</h5>
+<h3 id="Miner">Miner</h3>
 
 <p>Computer software which is designed to repeatedly calculate hashes with the intention to create a successful block and earn coins from transaction fees and new coins created with the block itself.  The term references an analogy of gold miners who dig gold out of the ground and thus &quot;discover&quot; new gold that can be used to create new coins with a similar kind of discovery occurring with a successful hash to create new Bitcoins.</p>
 
-<h5 id="Node">Node</h5>
+<h3 id="Node">Node</h3>
 
 <p>Each Bitcoin client currently running within the network is referred to as a Node of the system.</p>
 
-<h5 id="Nonce">Nonce</h5>
+<h3 id="Nonce">Nonce</h3>
 
 <p>A nonce is an otherwise meaningless number which is used to alter the outcome of a hash. Each time Bitcoin hashes a block, it increments a nonce within the block which it is trying verify. If the numeric value of the effectively random hash is below a certain amount determined by the block generation difficulty, then the block is accepted by other clients and gets added to the chain.</p>
 
-<h5><a href="../Orphan_Block/">Orphan Block</a></h5>
+<h3><a href="../Orphan_Block/">Orphan Block</a></h3>
 
 <p>An orphan block is a block which has no known parent in the currently-longest <a href="../Block_chain/">block chain</a>. Not to be confused with a <a href="./#Stale_Block">Stale Block</a> (which has a known parent, but is no longer part of the longest chain).</p>
 
-<h5 id="Orphan_root">Orphan root</h5>
+<h3 id="Orphan_root">Orphan root</h3>
 
 <p>The root (first) block in an <a href="../Orphan_Block/">orphan</a> block chain.</p>
 
-<h5 id="Priority">Priority</h5>
+<h3 id="Priority">Priority</h3>
 
 <p>A scoring mechanism to help ensure that expensive data storage isn&#39;t consumed by lower quality and spam. Low priority transactions will not get included by a miner if the limited space is already filled by higher priority transactions.  A <a href="../Transaction_Fee/">transaction fee</a> will affect priority.</p>
 
-<h5><a href="../Proof_of_work/">Proof of work</a></h5>
+<h3><a href="../Proof_of_work/">Proof of work</a></h3>
 
 <p>A result that can only be obtained through the use of computational resources. Changing the data in the proof of work requires redoing the work.</p>
 
-<h5 id="Reorganize">Reorganize</h5>
+<h3 id="Reorganize">Reorganize</h3>
 
 <p>A block chain reorganize (or <strong>reorg</strong>) happens when one chain becomes longer than the one you are currently working on. All of the blocks in the old chain that are not in the new one become orphan blocks, and their generations are invalidated. Transactions that use the newly-invalid generated coins also become invalid, though this is only possible in large chain splits because generations can&#39;t be spent for 100 blocks. The number of confirmations for transactions may change after a reorg, and transactions that are not in the new chain will become &quot;0/unconfirmed&quot; again. If a transaction in the old chain conflicts with one in the new chain (as a result of double-spending), the old one becomes invalid.</p>
 
-<h5 id="Satoshi">Satoshi</h5>
+<h3 id="Satoshi">Satoshi</h3>
 
 <p>The base unit of Bitcoin (0.00000001 BTC) is sometimes called a Satoshi, after Bitcoin&#39;s creator <a href="../Satoshi_Nakamoto/">Satoshi Nakamoto</a>.</p>
 
-<h5 id="Seed_Nodes">Seed Nodes</h5>
+<h3 id="Seed_Nodes">Seed Nodes</h3>
 
 <p>Nodes whose IP addresses are included in the <a href="../Original_Bitcoin_client/">Bitcoin client</a> for use during a new installation when the normal bootstrapping process through IRC wasn&#39;t possible.</p>
 
-<h5 id="Stale_Block">Stale Block</h5>
+<h3 id="Stale_Block">Stale Block</h3>
 
 <p>A well-formed block which is no longer part of the difficultywise-longest and well-formed blockchain.  Not to be confused with an <a href="./#Orphan_Block">Orphan Block</a> (which has no known parent in the longest <a href="../Block_chain/">block chain</a>).</p>
 
-<h5 id="Subsidy">Subsidy</h5>
+<h3 id="Subsidy">Subsidy</h3>
 
 <p>See &quot;<a href="./#Block_Reward">Block Reward</a>&quot; above.</p>
 
-<h5 id="Super_Nodes">Super Nodes</h5>
+<h3 id="Super_Nodes">Super Nodes</h3>
 
 <p>A participant in a p2p network which connects to as many other nodes as possible.</p>
 
-<h5><a href="../Transaction_Fee/">Transaction Fee</a></h5>
+<h3><a href="../Transaction_Fee/">Transaction Fee</a></h3>
 
 <p>A voluntary fee which can be added to a transaction which is used as an incentive to add the bitcoin transaction to a block.  The fee determines the likelihood of inclusion in any given block, where a high fee included with a transaction has a priority over transactions with a lower fee included or no fee at all.</p>
 
-<h5 id="Virgin_bitcoin">Virgin bitcoin</h5>
+<h3 id="Virgin_bitcoin">Virgin bitcoin</h3>
 
 <p>The reward for generating a <a href="../Block/">block</a> that has not yet been spent, a state which might increase the ability to transact <a href="../Anonymity/">anonymously</a>.</p>
 
@@ -252,8 +248,8 @@ Content is available under under <a href="https://creativecommons.org/licenses/b
 </div>
 
 <div class="pagedate">
-Last edited <time datetime="2016-06-07T14:24:02Z">Tue 07 Jun 2016 02:24:02 PM Europe</time>
-<!-- Created <time datetime="2010-12-19T20:19:01Z" pubdate="pubdate">Sun 19 Dec 2010 08:19:01 PM Europe</time> -->
+Last edited <time datetime="2016-07-25T08:41:33Z">Mon 25 Jul 2016 08:41:33 AM Europe</time>
+<!-- Created <time datetime="2016-07-06T10:09:14Z" pubdate="pubdate">Wed 06 Jul 2016 10:09:14 AM Europe</time> -->
 </div>
 
 </nav>

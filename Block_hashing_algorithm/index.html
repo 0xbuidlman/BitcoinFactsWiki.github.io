@@ -76,14 +76,55 @@ When mining bitcoin, the hashcash algorithm repeatedly hashes the block header w
 
 <p>A block header contains these fields:</p>
 
-<p>|Field|Purpose|Updated when...|Size (Bytes)
-|---|---|---|---
-|Version|Block version number|You upgrade the software and it specifies a new version|4
-|hashPrevBlock|256-bit hash of the previous block header|A new block comes in|32
-d|hashMerkleRoot|256-bit hash based on all of the transactions in the block|A transaction is accepted|32
-|Time|Current timestamp as seconds since 1970-01-01T00:00 UTC|Every few seconds|4
-|Bits|Current <a href="../Target/">target</a>in compact format|The <a href="../Difficulty/">difficulty</a>is adjusted|4
-|Nonce|32-bit number (starts at 0)|A hash is tried (increments)|4</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Purpose</th>
+<th>Updated when...</th>
+<th>Size (Bytes)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Version</td>
+<td>Block version number</td>
+<td>You upgrade the software and it specifies a new version</td>
+<td>4</td>
+</tr>
+<tr>
+<td>hashPrevBlock</td>
+<td>256-bit hash of the previous block header</td>
+<td>A new block comes in</td>
+<td>32</td>
+</tr>
+<tr>
+<td>hashMerkleRoot</td>
+<td>256-bit hash based on all of the transactions in the block</td>
+<td>A transaction is accepted</td>
+<td>32</td>
+</tr>
+<tr>
+<td>Time</td>
+<td>Current timestamp as seconds since 1970-01-01T00:00 UTC</td>
+<td>Every few seconds</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Bits</td>
+<td>Current <a href="../Target/">target</a> in compact format</td>
+<td>The <a href="../Difficulty/">difficulty</a> is adjusted</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Nonce</td>
+<td>32-bit number (starts at 0)</td>
+<td>A hash is tried (increments)</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+
 
 <p>The body of the block contains the transactions. These are hashed only indirectly through the Merkle root. Because transactions aren&#39;t hashed directly, hashing a block with 1 transaction takes exactly the same amount of effort as hashing a block with 10,000 transactions.</p>
 
@@ -94,23 +135,23 @@ Most of these fields will be the same for all users. There might be some minor v
 
 <p>Bitcoin uses: SHA256(SHA256(Block_Header)) but you have to be careful about byte-order.</p>
 
-<p>For example, this python code will calculate the hash of the block with the smallest hash as of June 2011, <a href="http://blockexplorer.com/block/00000000000000001e8d6829a8a21adc5d38d0a473b144b6765798e61f98bd1d">Block 125552</a>.  The header is built from the six fields described above, concatenated together as little-endian values in hex notation:
-<source lang="python"></source></p>
+<p>For example, this python code will calculate the hash of the block with the smallest hash as of June 2011, <a href="http://blockexplorer.com/block/00000000000000001e8d6829a8a21adc5d38d0a473b144b6765798e61f98bd1d">Block 125552</a>.  The header is built from the six fields described above, concatenated together as little-endian values in hex notation:</p>
 
-<blockquote><blockquote><blockquote><p>import hashlib
-header_hex = (&quot;01000000&quot; +
-    &quot;81cd02ab7e569e8bcd9317e2fe99f2de44d49ab2b8851ba4a308000000000000&quot; +
-    &quot;e320b6c2fffc8d750423db8b1eb942ae710e951ed797f7affc8892b0f1fc122b&quot; +
-    &quot;c7f5d74d&quot; +
-    &quot;f2b9441a&quot; +
-    &quot;42a14695&quot;)
-header_bin = header_hex.decode(&#39;hex&#39;)
-hash = hashlib.sha256(hashlib.sha256(header_bin).digest()).digest()
-hash.encode(&#39;hex_codec&#39;)
-&#39;1dbd981fe6985776b644b173a4d0385ddc1aa2a829688d1e0000000000000000&#39;
-hash<span class="createlink"><a href="/ikiwiki.cgi?page=%3A%3A-1&amp;do=create&amp;from=Block_hashing_algorithm" rel="nofollow">?</a>::-1</span>.encode(&#39;hex_codec&#39;)
-&#39;00000000000000001e8d6829a8a21adc5d38d0a473b144b6765798e61f98bd1d&#39;
-</p></blockquote></blockquote></blockquote>
+<div class="highlight-python"><pre class="hl"><span class="hl opt">&gt;&gt;&gt;</span> <span class="hl kwa">import</span> hashlib
+<span class="hl opt">&gt;&gt;&gt;</span> header_hex <span class="hl opt">= (</span><span class="hl str">&quot;01000000&quot;</span> <span class="hl opt">+</span>
+    <span class="hl str">&quot;81cd02ab7e569e8bcd9317e2fe99f2de44d49ab2b8851ba4a308000000000000&quot;</span> <span class="hl opt">+</span>
+    <span class="hl str">&quot;e320b6c2fffc8d750423db8b1eb942ae710e951ed797f7affc8892b0f1fc122b&quot;</span> <span class="hl opt">+</span>
+    <span class="hl str">&quot;c7f5d74d&quot;</span> <span class="hl opt">+</span>
+    <span class="hl str">&quot;f2b9441a&quot;</span> <span class="hl opt">+</span>
+    <span class="hl str">&quot;42a14695&quot;</span><span class="hl opt">)</span>
+<span class="hl opt">&gt;&gt;&gt;</span> header_bin <span class="hl opt">=</span> header_hex<span class="hl opt">.</span><span class="hl kwd">decode</span><span class="hl opt">(</span><span class="hl str">&#39;hex&#39;</span><span class="hl opt">)</span>
+<span class="hl opt">&gt;&gt;&gt;</span> <span class="hl kwb">hash</span> <span class="hl opt">=</span> hashlib<span class="hl opt">.</span><span class="hl kwd">sha256</span><span class="hl opt">(</span>hashlib<span class="hl opt">.</span><span class="hl kwd">sha256</span><span class="hl opt">(</span>header_bin<span class="hl opt">).</span><span class="hl kwd">digest</span><span class="hl opt">()).</span><span class="hl kwd">digest</span><span class="hl opt">()</span>
+<span class="hl opt">&gt;&gt;&gt;</span> <span class="hl kwb">hash</span><span class="hl opt">.</span><span class="hl kwd">encode</span><span class="hl opt">(</span><span class="hl str">&#39;hex_codec&#39;</span><span class="hl opt">)</span>
+<span class="hl str">&#39;1dbd981fe6985776b644b173a4d0385ddc1aa2a829688d1e0000000000000000&#39;</span>
+<span class="hl opt">&gt;&gt;&gt;</span> <span class="hl kwb">hash</span><span class="hl opt"><span class="createlink"><a href="/ikiwiki.cgi?from=Block_hashing_algorithm&amp;page=%3A%3A-__60__%2Fspan__62____60__span%20class__61____34__hl%20num__34____62__1__60__%2Fspan__62____60__span%20class__61____34__hl%20opt__34____62__&amp;do=create" rel="nofollow">?</a>span&gt;&lt;span class=&quot;hl opt&quot;&gt;</span>.</span><span class="hl kwd">encode</span><span class="hl opt">(</span><span class="hl str">&#39;hex_codec&#39;</span><span class="hl opt">)</span>
+<span class="hl str">&#39;00000000000000001e8d6829a8a21adc5d38d0a473b144b6765798e61f98bd1d&#39;</span>
+</pre></div>
+
 
 <h2 id="Endianess">Endianess</h2>
 
@@ -120,48 +161,49 @@ hash<span class="createlink"><a href="/ikiwiki.cgi?page=%3A%3A-1&amp;do=create&a
 
 <p>For another example, <a href="http://pastebin.com/bW3fQA2a">here</a> is a version in plain C without any optimization, threading or error checking.</p>
 
-<p>Here is the same example in plain PHP without any optimization.
-<source lang="php">
-&lt;?
-    //This reverses and then swaps every other char
-    function SwapOrder($in){
-    $Split = str_split(strrev($in));
-    $x=*;
-    for ($i = 0; $i &lt; count($Split); $i+=2) {
-    $x .= $Split<span class="createlink"><a href="/ikiwiki.cgi?page=__36__i%2B1&amp;do=create&amp;from=Block_hashing_algorithm" rel="nofollow">?</a>$i+1</span>.$Split<span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=__36__i&amp;from=Block_hashing_algorithm" rel="nofollow">?</a>$i</span>;
-    }
-    return $x;
-    }</source></p>
+<p>Here is the same example in plain PHP without any optimization.</p>
 
-<pre><code>//makes the littleEndian
-function littleEndian($value){
-return implode (unpack(&#39;H*&#39;,pack(&quot;V*&quot;,$value)));
-}
+<div class="highlight-php"><pre class="hl"><span class="hl opt">&lt;</span>?
+    <span class="hl slc">//This reverses and then swaps every other char</span>
+    <span class="hl kwa">function</span> <span class="hl kwd">SwapOrder</span><span class="hl opt">(</span><span class="hl kwc">$in</span><span class="hl opt">){</span>
+    <span class="hl kwc">$Split</span> <span class="hl opt">=</span> <span class="hl kwd">str_split</span><span class="hl opt">(</span><span class="hl kwd">strrev</span><span class="hl opt">(</span><span class="hl kwc">$in</span><span class="hl opt">));</span>
+    <span class="hl kwc">$x</span><span class="hl opt">=*;</span>
+    <span class="hl kwa">for</span> <span class="hl opt">(</span><span class="hl kwc">$i</span> <span class="hl opt">=</span> <span class="hl num">0</span><span class="hl opt">;</span> <span class="hl kwc">$i</span> <span class="hl opt">&lt;</span> <span class="hl kwd">count</span><span class="hl opt">(</span><span class="hl kwc">$Split</span><span class="hl opt">);</span> <span class="hl kwc">$i</span>+<span class="hl opt">=</span><span class="hl num">2</span><span class="hl opt">) {</span>
+    <span class="hl kwc">$x</span> <span class="hl opt">.=</span> <span class="hl kwc">$Split</span><span class="hl opt"><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;page=__60__%2Fspan__62____60__span%20class__61____34__hl%20kwc__34____62____36__i__60__%2Fspan__62__%2B__60__span%20class__61____34__hl%20num__34____62__1__60__%2Fspan__62____60__span%20class__61____34__hl%20opt__34____62__&amp;from=Block_hashing_algorithm" rel="nofollow">?</a>span&gt;&lt;span class=&quot;hl opt&quot;&gt;</span>.</span><span class="hl kwc">$Split</span><span class="hl opt"><span class="createlink"><a href="/ikiwiki.cgi?do=create&amp;from=Block_hashing_algorithm&amp;page=__60__%2Fspan__62____60__span%20class__61____34__hl%20kwc__34____62____36__i__60__%2Fspan__62____60__span%20class__61____34__hl%20opt__34____62__" rel="nofollow">?</a>span&gt;&lt;span class=&quot;hl opt&quot;&gt;</span>;</span>
+    <span class="hl opt">}</span> 
+    <span class="hl kwa">return</span> <span class="hl kwc">$x</span><span class="hl opt">;</span>
+    <span class="hl opt">}</span>
+    
+    <span class="hl slc">//makes the littleEndian</span>
+    <span class="hl kwa">function</span> <span class="hl kwd">littleEndian</span><span class="hl opt">(</span><span class="hl kwc">$value</span><span class="hl opt">){</span>
+    <span class="hl kwa">return</span> <span class="hl kwd">implode</span> <span class="hl opt">(</span><span class="hl kwd">unpack</span><span class="hl opt">(</span><span class="hl str">&#39;H*&#39;</span><span class="hl opt">,</span><span class="hl kwd">pack</span><span class="hl opt">(</span><span class="hl str">&quot;V*&quot;</span><span class="hl opt">,</span><span class="hl kwc">$value</span><span class="hl opt">)));</span>
+    <span class="hl opt">}</span>
+    
+    <span class="hl kwc">$version</span> <span class="hl opt">=</span> <span class="hl kwd">littleEndian</span><span class="hl opt">(</span><span class="hl num">1</span><span class="hl opt">);</span>
+    <span class="hl kwc">$prevBlockHash</span> <span class="hl opt">=</span> <span class="hl kwd">SwapOrder</span><span class="hl opt">(</span><span class="hl str">&#39;00000000000008a3a41b85b8b29ad444def299fee21793cd8b9e567eab02cd81&#39;</span><span class="hl opt">);</span>
+    <span class="hl kwc">$rootHash</span> <span class="hl opt">=</span> <span class="hl kwd">SwapOrder</span><span class="hl opt">(</span><span class="hl str">&#39;2b12fcf1b09288fcaff797d71e950e71ae42b91e8bdb2304758dfcffc2b620e3&#39;</span><span class="hl opt">);</span>
+    <span class="hl kwc">$time</span> <span class="hl opt">=</span> <span class="hl kwd">littleEndian</span><span class="hl opt">(</span><span class="hl num">1305998791</span><span class="hl opt">);</span>
+    <span class="hl kwc">$bits</span> <span class="hl opt">=</span> <span class="hl kwd">littleEndian</span><span class="hl opt">(</span><span class="hl num">440711666</span><span class="hl opt">);</span> 
+    <span class="hl kwc">$nonce</span> <span class="hl opt">=</span> <span class="hl kwd">littleEndian</span><span class="hl opt">(</span><span class="hl num">2504433986</span><span class="hl opt">);</span> 
+    
+    <span class="hl slc">//concat it all</span>
+    <span class="hl kwc">$header_hex</span> <span class="hl opt">=</span> <span class="hl kwc">$version</span> <span class="hl opt">.</span> <span class="hl kwc">$prevBlockHash</span> <span class="hl opt">.</span> <span class="hl kwc">$rootHash</span> <span class="hl opt">.</span> <span class="hl kwc">$time</span> <span class="hl opt">.</span> <span class="hl kwc">$bits</span> <span class="hl opt">.</span> <span class="hl kwc">$nonce</span><span class="hl opt">;</span>
+    
+    <span class="hl slc">//convert from hex to binary </span>
+    <span class="hl kwc">$header_bin</span>  <span class="hl opt">=</span> <span class="hl kwd">hex2bin</span><span class="hl opt">(</span><span class="hl kwc">$header_hex</span><span class="hl opt">);</span>
+    <span class="hl slc">//hash it then convert from hex to binary </span>
+    <span class="hl kwc">$pass1</span> <span class="hl opt">=</span> <span class="hl kwd">hex2bin</span><span class="hl opt">(</span>  <span class="hl kwd">hash</span><span class="hl opt">(</span><span class="hl str">&#39;sha256&#39;</span><span class="hl opt">,</span> <span class="hl kwc">$header_bin</span> <span class="hl opt">)  );</span>
+    <span class="hl slc">//Hash it for the seconded time</span>
+    <span class="hl kwc">$pass2</span> <span class="hl opt">=</span> <span class="hl kwd">hash</span><span class="hl opt">(</span><span class="hl str">&#39;sha256&#39;</span><span class="hl opt">,</span> <span class="hl kwc">$pass1</span><span class="hl opt">);</span>
+    <span class="hl slc">//fix the order</span>
+    <span class="hl kwc">$FinalHash</span> <span class="hl opt">=</span> <span class="hl kwd">SwapOrder</span><span class="hl opt">(</span><span class="hl kwc">$pass2</span><span class="hl opt">);</span>
+    
+    <span class="hl kwa">echo</span>   <span class="hl kwc">$FinalHash</span><span class="hl opt">;</span>
+?<span class="hl opt">&gt;</span>
+</pre></div>
 
-$version = littleEndian(1);
-$prevBlockHash = SwapOrder(&#39;00000000000008a3a41b85b8b29ad444def299fee21793cd8b9e567eab02cd81&#39;);
-$rootHash = SwapOrder(&#39;2b12fcf1b09288fcaff797d71e950e71ae42b91e8bdb2304758dfcffc2b620e3&#39;);
-$time = littleEndian(1305998791);
-$bits = littleEndian(440711666); 
-$nonce = littleEndian(2504433986); 
 
-//concat it all
-$header_hex = $version . $prevBlockHash . $rootHash . $time . $bits . $nonce;
 
-//convert from hex to binary 
-$header_bin  = hex2bin($header_hex);
-//hash it then convert from hex to binary 
-$pass1 = hex2bin(  hash(&#39;sha256&#39;, $header_bin )  );
-//Hash it for the seconded time
-$pass2 = hash(&#39;sha256&#39;, $pass1);
-//fix the order
-$FinalHash = SwapOrder($pass2);
-
-echo   $FinalHash;
-</code></pre>
-
-<p>?&gt;
-</p>
 
 </section>
 
@@ -217,8 +259,8 @@ Content is available under under <a href="https://creativecommons.org/licenses/b
 </div>
 
 <div class="pagedate">
-Last edited <time datetime="2015-12-12T16:27:58Z">Sat 12 Dec 2015 04:27:58 PM Europe</time>
-<!-- Created <time datetime="2010-12-19T20:42:13Z" pubdate="pubdate">Sun 19 Dec 2010 08:42:13 PM Europe</time> -->
+Last edited <time datetime="2016-07-25T08:41:33Z">Mon 25 Jul 2016 08:41:33 AM Europe</time>
+<!-- Created <time datetime="2016-07-06T10:09:14Z" pubdate="pubdate">Wed 06 Jul 2016 10:09:14 AM Europe</time> -->
 </div>
 
 </nav>
